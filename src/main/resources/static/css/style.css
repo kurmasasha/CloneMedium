@@ -16,6 +16,10 @@ body {
     background-color: #EAEAEA;
 }
 
+#left-menu{
+    margin-left: 20px;
+}
+
 #login .container #login-row #login-column #login-box #login-form {
     padding: 20px;
 }
