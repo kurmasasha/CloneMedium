@@ -3,6 +3,7 @@ package ru.javamentor.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,5 +32,9 @@ public class User {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Role role;
+
+    @ManyToMany
+//    @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="topic_id"))
+    private Set<Topic> topicCollection;
 
 }
