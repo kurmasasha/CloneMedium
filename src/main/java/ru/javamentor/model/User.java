@@ -40,6 +40,9 @@ public class User implements UserDetails {
 //    @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="topic_id"))
     private Set<Topic> topicCollection;
 
+    @OneToMany(mappedBy = "authorOfComment", fetch = FetchType.EAGER)
+    private Collection<Comment> allComments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return (Collection<? extends GrantedAuthority>) role;
