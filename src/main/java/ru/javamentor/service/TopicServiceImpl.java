@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
 import ru.javamentor.model.Topic;
 
+import java.util.Set;
+
 @Service
 public class TopicServiceImpl implements TopicService {
 
@@ -46,5 +48,10 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public void removeTopicById(Long id) {
         topicDAO.removeTopicById(id);
+    }
+
+    @Override
+    public Set<Topic> getAllTopicsByUserId(Long userId) {
+        return topicDAO.getAllTopicsByUserId(userId);
     }
 }
