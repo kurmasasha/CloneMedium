@@ -60,17 +60,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "authorOfComment", fetch = FetchType.EAGER)
     private Collection<Comment> allComments;
 
-    @Override
+  /*  @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return (Collection<? extends GrantedAuthority>) role;
-        }
+        }*/
 
-    /*@Override
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> setRoles = new HashSet<>();
         setRoles.add(new SimpleGrantedAuthority(role.getName()));
         return setRoles;
-    }*/
+    }
 
     @Override
     public boolean isAccountNonExpired() {

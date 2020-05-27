@@ -20,16 +20,16 @@ import ru.javamentor.config.handler.LoginSuccessHandler;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-/*    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public SecurityConfig(@Qualifier("userServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-    }*/
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService);
         auth.inMemoryAuthentication()
                 .withUser("user").password("user").roles("USER").and()
                 .withUser("admin").password("admin").roles("ADMIN");

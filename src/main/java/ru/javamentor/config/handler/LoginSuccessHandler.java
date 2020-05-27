@@ -19,30 +19,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
-/*User user = (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         if (user.getAuthorities()
                 .stream()
-                .anyMatch(role -> "ADMIN".equals(role.getAuthority()))
+                .anyMatch(role -> "ADMIN".equals(role.getAuthority()) || "ROLE_ADMIN".equals(role.getAuthority()))
         ) {
             httpServletResponse.sendRedirect("/home");
         } else if (user.getAuthorities()
                 .stream()
-                .anyMatch(role -> "USER".equals(role.getAuthority()))
-        ){
+                .anyMatch(role -> "USER".equals(role.getAuthority()) || "ROLE_USER".equals(role.getAuthority()))
+        ) {
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("user", user);
-            httpServletResponse.sendRedirect("/index");
-        }*/
-
-        if (authentication.getAuthorities()
-                .stream()
-                .anyMatch(role -> "ROLE_ADMIN".equals(role.getAuthority()))
-        ) {
-            httpServletResponse.sendRedirect("/home");
-        } else if (authentication.getAuthorities()
-                .stream()
-                .anyMatch(role -> "ROLE_USER".equals(role.getAuthority()))
-        ){
             httpServletResponse.sendRedirect("/index");
         }
     }

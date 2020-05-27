@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class UserDAOImpl implements UserDAO{
+public class UserDAOImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,8 +38,16 @@ public class UserDAOImpl implements UserDAO{
         entityManager.remove(getUserById(id));
     }
 
+    //    @Override
+//    public User getUserByUsername(String userName) {
+//        return entityManager.find(User.class, userName);
+//    }
     @Override
     public User getUserByUsername(String userName) {
-        return entityManager.find(User.class, userName);
+//        return (User) entityManager.createQuery("FROM User u WHERE u.userName =:username")
+        return (User) entityManager.createQuery("FROM User WHERE userName =:username")
+                .setParameter("username", userName)
+                .getSingleResult();
     }
 }
+

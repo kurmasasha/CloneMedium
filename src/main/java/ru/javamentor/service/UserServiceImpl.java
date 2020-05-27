@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDAO.removeUser(id);
     }
 
-   /* @Transactional
+ /*   @Transactional
     @Override
     public UserDetails loadUserByUsername(String userName) {
         Optional<User> currentUser = Optional.ofNullable(userDAO.getUserByUsername(userName));
