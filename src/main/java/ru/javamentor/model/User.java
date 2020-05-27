@@ -1,12 +1,13 @@
 package ru.javamentor.model;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +34,24 @@ public class User implements UserDetails {
     @Column
     String password;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Role role;
+
+    public User(String firstName, String lastName, String username, String password, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+    public User(Long id, String firstName, String lastName, String username, String password, Role role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @ManyToMany
 //    @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="topic_id"))
@@ -44,9 +61,16 @@ public class User implements UserDetails {
     private Collection<Comment> allComments;
 
     @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return (Collection<? extends GrantedAuthority>) role;
+        }
+
+    /*@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return (Collection<? extends GrantedAuthority>) role;
-    }
+        Set<GrantedAuthority> setRoles = new HashSet<>();
+        setRoles.add(new SimpleGrantedAuthority(role.getName()));
+        return setRoles;
+    }*/
 
     @Override
     public boolean isAccountNonExpired() {

@@ -24,6 +24,11 @@ public class Topic {
     @Column
     String content;
 
+    public Topic(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     @ManyToMany(mappedBy = "topicCollection")
     private Set<User> authorsOfTopic;
 }

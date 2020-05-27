@@ -2,6 +2,7 @@ package ru.javamentor.model;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -10,7 +11,6 @@ import java.util.Collection;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 public class Role implements GrantedAuthority {
 
@@ -20,6 +20,10 @@ public class Role implements GrantedAuthority {
 
     @Column
     String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private Collection<User> listOfUsers;

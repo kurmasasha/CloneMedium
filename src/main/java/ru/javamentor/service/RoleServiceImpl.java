@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.RoleDAO;
 import ru.javamentor.model.Role;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService{
 
@@ -18,8 +20,9 @@ public class RoleServiceImpl implements RoleService{
 
     @Transactional
     @Override
-    public void addRole(String role) {
+    public boolean addRole(Role role) {
         roleDAO.addRole(role);
+        return true;
     }
 
     @Transactional(readOnly = true)
@@ -32,5 +35,17 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Role getRoleByName(String name) {
         return roleDAO.getRoleByName(name);
+    }
+
+    @Transactional
+    @Override
+    public void removeRole(Long id) {
+        roleDAO.removeRole(id);
+    }
+
+    @Transactional
+    @Override
+    public List<Role> getAllRoles() {
+        return roleDAO.getAllRoles();
     }
 }
