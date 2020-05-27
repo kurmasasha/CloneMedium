@@ -60,10 +60,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "authorOfComment", fetch = FetchType.EAGER)
     private Collection<Comment> allComments;
 
-  /*  @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return (Collection<? extends GrantedAuthority>) role;
-        }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
