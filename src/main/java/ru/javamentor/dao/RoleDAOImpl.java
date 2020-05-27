@@ -5,6 +5,7 @@ import ru.javamentor.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class RoleDAOImpl  implements RoleDAO{
@@ -13,7 +14,7 @@ public class RoleDAOImpl  implements RoleDAO{
     private EntityManager entityManager;
 
     @Override
-    public void addRole(String role) {
+    public void addRole(Role role) {
         entityManager.persist(role);
     }
 
@@ -22,8 +23,24 @@ public class RoleDAOImpl  implements RoleDAO{
         return entityManager.find(Role.class, id);
     }
 
-    @Override
+    /*@Override
     public Role getRoleByName(String name) {
         return entityManager.find(Role.class, name);
+    }*/
+    @Override
+    public Role getRoleByName(String name) {
+        return (Role) entityManager.createQuery("FROM Role WHERE name =:n")
+                .setParameter("n", name)
+                .getSingleResult();
+    }
+
+    @Override
+    public void removeRole(Long id) {
+        entityManager.remove(getRoleById(id));
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return entityManager.createQuery("FROM Role", Role.class).getResultList();
     }
 }

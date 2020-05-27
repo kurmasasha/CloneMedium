@@ -19,6 +19,10 @@ public class Comment {
     @Column
     String text;
 
+    public Comment(String text) {
+        this.text = text;
+    }
+
     @ManyToOne(cascade = CascadeType.ALL)
     User authorOfComment;
 }
