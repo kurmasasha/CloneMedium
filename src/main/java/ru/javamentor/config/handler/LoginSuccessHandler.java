@@ -22,7 +22,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         User user = (User) authentication.getPrincipal();
         if (user.getAuthorities()
                 .stream()
-                .anyMatch(role -> "ADMIN".equals(role.getAuthority()) || "ROLE_ADMIN".equals(role.getAuthority()))
+//                .anyMatch(role -> "ADMIN".equals(role.getAuthority()) || "ROLE_ADMIN".equals(role.getAuthority()))
+                .anyMatch(role -> "ADMIN".equals(role.getAuthority()))
         ) {
             httpServletResponse.sendRedirect("/home");
         } else if (user.getAuthorities()
