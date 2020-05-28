@@ -37,7 +37,7 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping("/admin/removeRole/{id}")
-    public ResponseEntity<User> removeUser(@PathVariable Long id) {
+    public ResponseEntity<User> removeRole(@PathVariable Long id) {
         roleService.removeRole(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
