@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Component
+//Тестовый комментарий
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
