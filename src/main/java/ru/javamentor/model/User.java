@@ -56,9 +56,14 @@ public class User implements UserDetails {
     }
 
     @ManyToMany
+
     @JsonIgnore
 //    @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="topic_id"))
     private Set<Topic> topicCollection;
+=======
+    @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
+    private Set<Topic> topicCollection = new HashSet<>();;
+
 
     @OneToMany(mappedBy = "authorOfComment", fetch = FetchType.EAGER)
     @JsonIgnore
