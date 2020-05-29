@@ -33,11 +33,6 @@ public class UserControllers {
         return new ResponseEntity<> (userService.getAllUsers(), HttpStatus.OK);
     }
 
-  /*  @PostMapping("/admin/addUser")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        userService.addUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }*/
     @PostMapping("/admin/addUser")
     public ResponseEntity<User> addUser(String firstName, String lastName, String username, String password, String role) {
         Role userRole = roleService.getRoleByName(role);
@@ -51,15 +46,10 @@ public class UserControllers {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-   /* @PutMapping("/admin/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.updateUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }*/
     @PutMapping("/admin/update")
     public ResponseEntity<User> updateUser(Long id, String firstName, String lastName, String username, String password, String role) {
         Role userRole = roleService.getRoleByName(role);
-        userService.updateUser(new User(id, firstName, lastName, username, password, userRole));
+        userService.updateUser(new User(firstName, lastName, username, password, userRole));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
