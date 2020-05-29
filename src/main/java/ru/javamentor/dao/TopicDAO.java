@@ -17,4 +17,6 @@ public interface TopicDAO {
     void removeTopicById(Long id);
 
     Set<Topic> getAllTopicsByUserId(Long userId);
+
+    Set<Topic> getAllTopicsOfAllUsers();
 }

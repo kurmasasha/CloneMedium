@@ -7,6 +7,7 @@ import ru.javamentor.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class TopicDAOImpl implements TopicDAO {
@@ -42,5 +43,10 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public Set<Topic> getAllTopicsByUserId(Long userId) {
         return entityManager.find(User.class, userId).getTopicCollection();
+    }
+
+    @Override
+    public Set<Topic> getAllTopicsOfAllUsers() {
+        return entityManager.createQuery("SELECT t FROM Topic t", Topic.class).getResultList().stream().collect(Collectors.toSet());
     }
 }
