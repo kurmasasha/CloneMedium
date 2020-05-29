@@ -1,5 +1,6 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +36,7 @@ public class User implements UserDetails {
     String password;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Role role;
 
     public User(String firstName, String lastName, String username, String password, Role role) {
@@ -54,10 +56,12 @@ public class User implements UserDetails {
     }
 
     @ManyToMany
+    @JsonIgnore
 //    @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name="topic_id"))
     private Set<Topic> topicCollection;
 
     @OneToMany(mappedBy = "authorOfComment", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Collection<Comment> allComments;
 
     @Override

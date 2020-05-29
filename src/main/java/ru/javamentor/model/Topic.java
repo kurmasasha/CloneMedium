@@ -1,5 +1,6 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Getter
 @Setter
 @Builder
@@ -30,5 +32,6 @@ public class Topic {
     }
 
     @ManyToMany(mappedBy = "topicCollection")
+    @JsonIgnore
     private Set<User> authorsOfTopic;
 }

@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Lists;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -22,8 +25,8 @@ public class TopicControllers {
         this.topicService = topicService;
     }
 
-    @GetMapping("/user/allTopics")
-    public ResponseEntity<Set<Topic>> getAllTopicsByUserId(Long userId) {
+    @GetMapping("/user/allTopics/{id}")
+    public ResponseEntity<Set<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
     }
 
