@@ -3,10 +3,12 @@ package ru.javamentor.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -23,6 +25,8 @@ public class Topic {
     @Column
     String content;
 
+    final LocalDateTime dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
+
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
@@ -31,7 +35,11 @@ public class Topic {
         this.title = title;
         this.content = content;
         this.authors = authors;
+        LocalDateTime dateCreated = this.dateCreated;
     }
 
-
+    public String getDateCreated() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy, HH:mm");
+        return dateCreated.format(formatter);
+    }
 }
