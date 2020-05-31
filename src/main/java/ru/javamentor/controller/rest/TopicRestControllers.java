@@ -1,4 +1,4 @@
-package ru.javamentor.controller;
+package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +16,14 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
-public class TopicControllers {
+public class TopicRestControllers {
 
     private final TopicService topicService;
 
     private final UserService userService;
 
     @Autowired
-    public TopicControllers(TopicService topicService, UserService userService) {
+    public TopicRestControllers(TopicService topicService, UserService userService) {
         this.topicService = topicService;
         this.userService = userService;
     }

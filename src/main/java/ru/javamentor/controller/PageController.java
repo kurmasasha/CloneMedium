@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.User;
@@ -35,6 +36,11 @@ public class PageController {
     @GetMapping("/index")
     public String indexPage() {
         return "index";
+    }
+
+    @GetMapping
+    public String topicPage() {
+        return "topic";
     }
 
 }
