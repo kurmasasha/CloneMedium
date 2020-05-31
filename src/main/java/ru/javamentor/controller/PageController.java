@@ -9,16 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.javamentor.model.User;
-import ru.javamentor.service.UserServiceImpl;
+import ru.javamentor.model.Topic;
+import ru.javamentor.service.TopicService;
+
 
 
 //@org.springframework.stereotype.Controller
 @Controller
 public class PageController {
 
-    @Autowired
-    UserServiceImpl userService;
+    public final TopicService topicService;
+
+    public PageController(TopicService topicService) {
+        this.topicService = topicService;
+    }
 
 
     @RequestMapping(value = "/*", method = RequestMethod.GET)
@@ -37,9 +41,11 @@ public class PageController {
     public String indexPage() {
         return "index";
     }
-
-    @GetMapping
-    public String topicPage() {
+  
+    @GetMapping("/topic/id")
+    public String topicPage(@PathVariable Long id, Model model) {
+        Topic topic = topicService.getTopicById(id);
+        model.addAttribute("topic", topic);
         return "topic";
     }
 
