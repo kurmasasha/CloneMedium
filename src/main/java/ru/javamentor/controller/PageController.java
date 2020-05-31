@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.Topic;
 import ru.javamentor.service.TopicService;
 
-
-
-//@org.springframework.stereotype.Controller
 @Controller
 public class PageController {
 
     public final TopicService topicService;
 
+    @Autowired
     public PageController(TopicService topicService) {
         this.topicService = topicService;
     }
@@ -32,8 +30,7 @@ public class PageController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
-        model.addAttribute("dy_home", user);
+        model.addAttribute("dy_home", currentUser);
         return "dy_home";
     }
 
