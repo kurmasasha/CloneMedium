@@ -20,7 +20,12 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("FROM User", User.class).getResultList();
+        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+    }
+
+    @Override
+    public List<User> getAllUsersByTopicId() {
+        return null;//Написать реализацию
     }
 
     @Override
@@ -38,14 +43,9 @@ public class UserDAOImpl implements UserDAO {
         entityManager.remove(getUserById(id));
     }
 
-    //    @Override
-//    public User getUserByUsername(String userName) {
-//        return entityManager.find(User.class, userName);
-//    }
     @Override
     public User getUserByUsername(String userName) {
-//        return (User) entityManager.createQuery("FROM User u WHERE u.userName =:username")
-        return (User) entityManager.createQuery("FROM User WHERE userName =:username")
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.username =:username", User.class)
                 .setParameter("username", userName)
                 .getSingleResult();
     }

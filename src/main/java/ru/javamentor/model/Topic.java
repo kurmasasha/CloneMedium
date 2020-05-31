@@ -9,7 +9,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -26,21 +25,13 @@ public class Topic {
 
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> authorsOfTopic;
+    private Set<User> authors;
 
-    public Topic(String title, String content) {
+    public Topic(String title, String content, Set<User> authors) {
         this.title = title;
         this.content = content;
+        this.authors = authors;
     }
 
-    public Topic(Long id, String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
-    public Topic(String title, String content, Set<User> authorsOfTopic) {
-        this.title = title;
-        this.content = content;
-        this.authorsOfTopic = authorsOfTopic;
-    }
 }

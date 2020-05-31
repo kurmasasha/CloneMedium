@@ -12,6 +12,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -24,9 +25,6 @@ public class Role implements GrantedAuthority {
     public Role(String name) {
         this.name = name;
     }
-
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
-    private Collection<User> listOfUsers;
 
     @Override
     public String getAuthority() {

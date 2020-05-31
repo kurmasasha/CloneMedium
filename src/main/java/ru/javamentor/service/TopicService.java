@@ -2,6 +2,7 @@ package ru.javamentor.service;
 
 import ru.javamentor.model.Topic;
 
+import java.util.List;
 import java.util.Set;
 
 public interface TopicService {
@@ -12,10 +13,10 @@ public interface TopicService {
 
     Topic getTopicByTitle(String title);
 
-    boolean updateTopic(Topic topic);
+    boolean updateTopic(Long topicId, String TopicTitle, String topicContent);
 
     void removeTopicById(Long id);
 
-    Set<Topic> getAllTopicsByUserId(Long userId);
+    List<Topic> getAllTopicsByUserId(Long userId);
 
 }

@@ -1,21 +1,27 @@
 package ru.javamentor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
+import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.Topic;
+import ru.javamentor.model.User;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class TopicServiceImpl implements TopicService {
 
-    TopicDAO topicDAO;
+    private final TopicDAO topicDAO;
+    private final UserDAO userDAO;
+
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO) {
         this.topicDAO = topicDAO;
+        this.userDAO = userDAO;
     }
 
     @Transactional
@@ -39,8 +45,16 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public boolean updateTopic(Topic topic) {
-        topicDAO.updateTopic(topic);
+    public boolean updateTopic(Long topicId, String topicTitle, String topicContent) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<User> userList = userDAO.getAllUsersByTopicId();
+        if (userList.contains(currentUser)) {
+            Topic topicForUpdate = topicDAO.getTopicById(topicId);
+            topicForUpdate.setTitle(topicTitle);
+            topicForUpdate.setContent(topicContent);
+            topicDAO.updateTopic(topicForUpdate);
+            return true;
+        }
         return true;
     }
 
@@ -51,7 +65,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Set<Topic> getAllTopicsByUserId(Long userId) {
+    public List<Topic> getAllTopicsByUserId(Long userId) {
         return topicDAO.getAllTopicsByUserId(userId);
     }
 }

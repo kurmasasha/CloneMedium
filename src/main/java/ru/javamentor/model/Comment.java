@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @Builder
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id
@@ -18,6 +19,10 @@ public class Comment {
 
     @Column
     String text;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 
     public Comment(String text) {
         this.text = text;
