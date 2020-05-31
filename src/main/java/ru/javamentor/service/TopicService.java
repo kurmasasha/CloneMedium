@@ -13,7 +13,7 @@ public interface TopicService {
 
     Topic getTopicByTitle(String title);
 
-    boolean updateTopic(Long topicId, String TopicTitle, String topicContent);
+    boolean updateTopic(Topic topic);
 
     void removeTopicById(Long id);
 

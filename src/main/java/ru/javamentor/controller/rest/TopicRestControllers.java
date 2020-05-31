@@ -50,9 +50,9 @@ public class TopicRestControllers {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/user/topic/update/{topicId}")
-    public ResponseEntity<String> updateTopic(@PathVariable Long topicId, String topicTitle, String topicContent) {
-        if (topicService.updateTopic(topicId, topicTitle, topicContent)) {
+    @PostMapping("/user/topic/update")
+    public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
+        if (topicService.updateTopic(topic)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
