@@ -2,7 +2,7 @@ package ru.javamentor.dao;
 
 import ru.javamentor.model.Topic;
 
-import java.util.Set;
+import java.util.List;
 
 public interface TopicDAO {
 
@@ -16,7 +16,5 @@ public interface TopicDAO {
 
     void removeTopicById(Long id);
 
-    Set<Topic> getAllTopicsByUserId(Long userId);
-
-    Set<Topic> getAllTopicsOfAllUsers();
+    List<Topic> getAllTopicsByUserId(Long userId);
 }

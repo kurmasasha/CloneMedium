@@ -1,4 +1,4 @@
-package ru.javamentor.controller;
+package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,14 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class UserControllers {
+public class UserRestControllers {
 
     private UserService userService;
 
     private RoleService roleService;
 
     @Autowired
-    public UserControllers(UserService userService, RoleService roleService)
+    public UserRestControllers(UserService userService, RoleService roleService)
     {
         this.userService = userService;
         this.roleService = roleService;
@@ -33,15 +33,9 @@ public class UserControllers {
         return new ResponseEntity<> (userService.getAllUsers(), HttpStatus.OK);
     }
 
-  /*  @PostMapping("/admin/addUser")
+    @PostMapping("/admin/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         userService.addUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }*/
-    @PostMapping("/admin/addUser")
-    public ResponseEntity<User> addUser(String firstName, String lastName, String username, String password, String role) {
-        Role userRole = roleService.getRoleByName(role);
-        userService.addUser(new User(firstName, lastName, username, password, userRole));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -51,15 +45,9 @@ public class UserControllers {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-   /* @PutMapping("/admin/update")
+    @PutMapping("/admin/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.updateUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }*/
-    @PutMapping("/admin/update")
-    public ResponseEntity<User> updateUser(Long id, String firstName, String lastName, String username, String password, String role) {
-        Role userRole = roleService.getRoleByName(role);
-        userService.updateUser(new User(id, firstName, lastName, username, password, userRole));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
