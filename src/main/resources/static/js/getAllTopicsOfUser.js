@@ -5,7 +5,7 @@ $(document).ready(function () {
 function getAllTopicsOfUser() {
     $.ajax({
 
-        url: '/api/user/allTopics' + $("#userId").val(),
+        url: '/api/user/allTopics/' + $("#userId").val(),
         method: "GET",
         dataType: "json",
         success: function (data) {
@@ -21,7 +21,7 @@ function getAllTopicsOfUser() {
                     
                     <td> <span> ${topic.title} </span> </td>                  
                                         
-                    <td>${ts}</td>
+                    <td>${topic.time}</td>
                      
                     </tr>`);
             })
