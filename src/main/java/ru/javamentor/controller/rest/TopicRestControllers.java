@@ -40,14 +40,12 @@ public class TopicRestControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(String title, String content, @RequestParam(value = "authorsId") Set<Long> authorsId) {
-        Set<User> authorsOfTopic = new HashSet<>();
-        for (Long id : authorsId) {
-            User user = userService.getUserById(id);
-            authorsOfTopic.add(user);
+    public ResponseEntity<Topic> addTopic(String title, String content) {
+        if (topicService.addTopic(title, content)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        topicService.addTopic(new Topic(title, content, authorsOfTopic));
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/user/topic/update")
