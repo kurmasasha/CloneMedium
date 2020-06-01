@@ -7,26 +7,27 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
-@Setter
 @Entity
 @Table(name = "topics")
 public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     Long id;
 
     @Column
+    @Setter
     String title;
 
     @Column
+    @Setter
     String content;
 
     @Column
-    final LocalDateTime dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
+    final LocalDateTime dateCreated;
 
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -36,8 +37,7 @@ public class Topic {
         this.title = title;
         this.content = content;
         this.authors = authors;
-        LocalDateTime dateCreated = this.dateCreated;
+        this.dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
     }
-
 
 }
