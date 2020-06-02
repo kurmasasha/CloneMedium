@@ -28,7 +28,7 @@ public class TopicRestControllers {
         this.userService = userService;
     }
 
-    @GetMapping("/user/totalTopicsList/")
+    @GetMapping("/user/totalTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics( ) {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }

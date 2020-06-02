@@ -33,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         ) {
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("user", user);
-            httpServletResponse.sendRedirect("/index");
+            httpServletResponse.sendRedirect("/home");
         }
     }
 }
