@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -28,9 +26,7 @@ public class Topic {
     private String content;
 
     @Column
-    private LocalDateTime time;
-
-    final LocalDateTime dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
+    final LocalDateTime dateCreated;
 
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -40,6 +36,6 @@ public class Topic {
         this.title = title;
         this.content = content;
         this.authors = authors;
-        this.time = time;
+        this.dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
     }
 }
