@@ -11,6 +11,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -25,17 +26,17 @@ public class Topic {
     @Column
     private String content;
 
-    @Column
-    final LocalDateTime dateCreated;
+    @Column(updatable = false)
+    private LocalDateTime dateCreated;
 
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
-    public Topic(String title, String content, Set<User> authors, LocalDateTime time) {
+    public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated) {
         this.title = title;
         this.content = content;
         this.authors = authors;
-        this.dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
+        this.dateCreated = dateCreated;
     }
 }
