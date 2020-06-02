@@ -9,7 +9,8 @@ import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -26,7 +27,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public boolean addTopic(Topic topic) {
+    public boolean addTopic(String title, String content) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<User> users = new HashSet<>();
+        users.add(currentUser);
+        Topic topic = new Topic(title, content, users, LocalDateTime.now());
         topicDAO.addTopic(topic);
         return true;
     }
@@ -45,14 +50,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public boolean updateTopic(Long topicId, String topicTitle, String topicContent) {
+    public boolean updateTopic(Topic topic) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = userDAO.getAllUsersByTopicId();
         if (userList.contains(currentUser)) {
-            Topic topicForUpdate = topicDAO.getTopicById(topicId);
-            topicForUpdate.setTitle(topicTitle);
-            topicForUpdate.setContent(topicContent);
-            topicDAO.updateTopic(topicForUpdate);
+            topicDAO.updateTopic(topic);
             return true;
         }
         return true;

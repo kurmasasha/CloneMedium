@@ -1,4 +1,4 @@
-package ru.javamentor.controller;
+package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +16,14 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
-public class TopicControllers {
+public class TopicRestControllers {
 
     private final TopicService topicService;
 
     private final UserService userService;
 
     @Autowired
-    public TopicControllers(TopicService topicService, UserService userService) {
+    public TopicRestControllers(TopicService topicService, UserService userService) {
         this.topicService = topicService;
         this.userService = userService;
     }
@@ -40,19 +40,17 @@ public class TopicControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(String title, String content, @RequestParam(value = "authorsId") Set<Long> authorsId) {
-        Set<User> authorsOfTopic = new HashSet<>();
-        for (Long id : authorsId) {
-            User user = userService.getUserById(id);
-            authorsOfTopic.add(user);
+    public ResponseEntity<Topic> addTopic(String title, String content) {
+        if (topicService.addTopic(title, content)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        topicService.addTopic(new Topic(title, content, authorsOfTopic));
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/user/topic/update/{topicId}")
-    public ResponseEntity<String> updateTopic(@PathVariable Long topicId, String topicTitle, String topicContent) {
-        if (topicService.updateTopic(topicId, topicTitle, topicContent)) {
+    @PostMapping("/user/topic/update")
+    public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
+        if (topicService.updateTopic(topic)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);

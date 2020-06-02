@@ -7,13 +7,13 @@ import java.util.Set;
 
 public interface TopicService {
 
-    boolean addTopic(Topic topic);
+    boolean addTopic(String title, String content);
 
     Topic getTopicById(Long id);
 
     Topic getTopicByTitle(String title);
 
-    boolean updateTopic(Long topicId, String TopicTitle, String topicContent);
+    boolean updateTopic(Topic topic);
 
     void removeTopicById(Long id);
 

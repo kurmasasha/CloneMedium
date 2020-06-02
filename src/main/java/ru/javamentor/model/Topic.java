@@ -1,11 +1,13 @@
 package ru.javamentor.model;
 
 import lombok.*;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.*;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -17,13 +19,16 @@ public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column
-    String title;
+    private String title;
 
     @Column
-    String content;
+    private String content;
+
+    @Column
+    private LocalDateTime time;
 
     final LocalDateTime dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
 
@@ -31,15 +36,10 @@ public class Topic {
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
-    public Topic(String title, String content, Set<User> authors) {
+    public Topic(String title, String content, Set<User> authors, LocalDateTime time) {
         this.title = title;
         this.content = content;
         this.authors = authors;
-        LocalDateTime dateCreated = this.dateCreated;
-    }
-
-    public String getDateCreated() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy, HH:mm");
-        return dateCreated.format(formatter);
+        this.time = time;
     }
 }
