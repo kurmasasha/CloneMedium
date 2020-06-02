@@ -19,7 +19,7 @@ function getAllTopicsOfUser() {
                     
                     <td>${topic.id}</td>
                     
-                    <td> <span> ${topic.title} </span> </td>                  
+                    <td> <a href="/topic/${topic.id}"></a> <span> ${topic.title} </span> </td>                  
                                         
                     <td>${topic.time}</td>
                      
