@@ -1,13 +1,28 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!--    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />-->
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+    <meta charset="UTF-8">
+    <title>Topic page</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-<div id="topic">
-    <h1>topic page</h1>
-    <div id="topicTitle">Topic title</div>
-    <div id="topicContent">Topic content</div>
+
+</head>
+<body>
+<div class="card p-3" th:id="topicId" th:data-topic-id="${topicId}">
+    <h5 class="card-header" id="topicAuthor">Featured</h5>
+    <div class="card-body">
+        <h5 class="card-title" id="topicTitle">Специальный заголовок</h5>
+        <p class="card-text" id="topicContent">With supporting text below as a natural lead-in to additional
+            content.</p>
+        <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
+    </div>
 </div>
+</body>
+<script src="/js/getTopicById.js"></script>
+</html>
