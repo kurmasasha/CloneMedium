@@ -39,12 +39,11 @@ public class PageController {
         return "index";
     }
   
-    @GetMapping("/topic/id")
+    @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
         Topic topic = topicService.getTopicById(id);
         model.addAttribute("topic", topic);
         return "topic";
     }
-
 }
 

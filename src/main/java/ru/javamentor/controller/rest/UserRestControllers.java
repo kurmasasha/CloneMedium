@@ -34,9 +34,8 @@ public class UserRestControllers {
     }
 
     @PostMapping("/admin/addUser")
-    public ResponseEntity<User> addUser(String firstName, String lastName, String username, String password, String role) {
-        Role userRole = roleService.getRoleByName(role);
-        userService.addUser(new User(firstName, lastName, username, password, userRole));
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -47,9 +46,8 @@ public class UserRestControllers {
     }
 
     @PutMapping("/admin/update")
-    public ResponseEntity<User> updateUser(Long id, String firstName, String lastName, String username, String password, String role) {
-        Role userRole = roleService.getRoleByName(role);
-        userService.updateUser(new User(firstName, lastName, username, password, userRole));
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
