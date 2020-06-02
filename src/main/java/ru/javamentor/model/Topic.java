@@ -4,13 +4,13 @@ import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.*;
 import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -29,6 +29,8 @@ public class Topic {
 
     @Column
     private LocalDateTime time;
+
+    final LocalDateTime dateCreated = LocalDateTime.now(ZoneId.of("GMT"));
 
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
