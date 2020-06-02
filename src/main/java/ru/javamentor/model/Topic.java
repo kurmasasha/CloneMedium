@@ -30,6 +30,9 @@ public class Topic {
     @Column
     private LocalDateTime time;
 
+    @Column
+    private boolean isModerate;
+
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
