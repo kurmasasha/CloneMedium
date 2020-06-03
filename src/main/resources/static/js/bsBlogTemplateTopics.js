@@ -30,6 +30,7 @@ function bsBlogTemplateTopics() {
                     
                     `);
             })
+
         },
         error: function (error) {
             alert(error);
