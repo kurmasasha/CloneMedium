@@ -1,5 +1,6 @@
 package ru.javamentor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,16 +14,14 @@ import java.time.*;
 import java.util.*;
 
 @Service
+@Slf4j
 public class TopicServiceImpl implements TopicService {
 
     private final TopicDAO topicDAO;
-    private final UserDAO userDAO;
-
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO) {
         this.topicDAO = topicDAO;
-        this.userDAO = userDAO;
     }
 
     @Transactional
@@ -31,43 +30,70 @@ public class TopicServiceImpl implements TopicService {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<User> users = new HashSet<>();
         users.add(currentUser);
+//        Topic topic = new Topic(title, content, users, LocalDateTime.now(ZoneId.of("UTC")));
         Topic topic = new Topic(title, content, users, LocalDateTime.now());
         topicDAO.addTopic(topic);
+        log.info("IN addTopic - topic: {} successfully added", topic);
         return true;
     }
 
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicById(Long id) {
-        return topicDAO.getTopicById(id);
+        Topic result = topicDAO.getTopicById(id);
+        log.info("IN getTopicById - topic: {} found by id: {}", result, id);
+        return result;
     }
 
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicByTitle(String title) {
-        return topicDAO.getTopicByTitle(title);
+        Topic result = topicDAO.getTopicByTitle(title);
+        log.info("IN getTopicByTitle - topic: {} found by title: {}", result, title);
+        return result;
     }
 
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<User> userList = userDAO.getAllUsersByTopicId();
+        List<User> userList = getAllUsersByTopicId(topic.getId());
         if (userList.contains(currentUser)) {
             topicDAO.updateTopic(topic);
+            log.info("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
             return true;
         }
-        return true;
+        log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
+        return false;
     }
 
     @Transactional
     @Override
-    public void removeTopicById(Long id) {
-        topicDAO.removeTopicById(id);
+    public boolean removeTopicById(Long id) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<User> userList = getAllUsersByTopicId(id);
+        if (userList.contains(currentUser)) {
+            topicDAO.removeTopicById(id);
+            log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
+            return true;
+        }
+        log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
+        return false;
     }
 
+    @Transactional
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
-        return topicDAO.getAllTopicsByUserId(userId);
+        List<Topic> result = topicDAO.getAllTopicsByUserId(userId);
+        log.info("IN getAllTopicsByUserId - {} topics found", result.size());
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public List<User> getAllUsersByTopicId(Long topicId) {
+        List<User> result = topicDAO.getAllUsersByTopicId(topicId);
+        log.info("IN getAllUsersByTopicId - {} authors found", result.size());
+        return result;
     }
 }

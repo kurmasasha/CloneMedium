@@ -20,18 +20,20 @@ public class TopicRestControllers {
 
     private final TopicService topicService;
 
-    private final UserService userService;
-
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService) {
+    public TopicRestControllers(TopicService topicService) {
         this.topicService = topicService;
-        this.userService = userService;
     }
 
 
-    @GetMapping("/user/allTopics/{id}")
+    @GetMapping("/user/allTopicsByUserId/{id}")
     public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/allUsersByTopicId/{id}")
+    public ResponseEntity<List<User>> getAllUsersByTopicId(@PathVariable(value = "id") Long topicId) {
+        return new ResponseEntity<>(topicService.getAllUsersByTopicId(topicId), HttpStatus.OK);
     }
 
     @GetMapping("/user/topic/{id}")
@@ -57,17 +59,9 @@ public class TopicRestControllers {
         }
     }
 
-    private boolean topicOfUser(Long idOfTopic, Principal principal) {
-        String username = principal.getName();
-        Topic topic = topicService.getTopicById(idOfTopic);
-        Set<User> authors = topic.getAuthors();
-        return authors.contains(username);
-    }
-
     @DeleteMapping("/user/topic/delete/{id}")
-    public ResponseEntity<String> deleteTopic(@PathVariable Long id, Principal principal) {
-        if (topicOfUser(id, principal)) {
-            topicService.removeTopicById(id);
+    public ResponseEntity<String> deleteTopic(@PathVariable Long id) {
+        if (topicService.removeTopicById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);

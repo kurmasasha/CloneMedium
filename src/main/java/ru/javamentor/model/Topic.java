@@ -39,4 +39,5 @@ public class Topic {
         this.authors = authors;
         this.dateCreated = dateCreated;
     }
+
 }
