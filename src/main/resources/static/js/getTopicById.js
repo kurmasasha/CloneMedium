@@ -1,19 +1,14 @@
-let topicId = $('#topicId').data('topicId')
-getTopicById(topicId)
-
-function getTopicById(id) {
-    $.ajax({
-        url: `http://localhost:5050/api/user/topic/${id}`,
-        success: function (topic) {
-            $('#topicAuthor').text(`Author - ${topic.authors[0].firstName}  ${topic.authors[0].lastName}`)
-            $('#topicTitle').text(topic.title)
-            $('#topicContent').text(topic.content)
-            console.log(topic)
-        },
-        error: function (error) {
-            console.log(error)
-        }
-    })
+async function getTopicById(id) {
+    fetch(`http://localhost:5050/api/user/topic/${id}`)
+        .then(result => result.json())
+        .then(topic => {
+            document.getElementById("topicAuthor").append(topic.authors[0].firstName + " " + topic.authors[0].lastName)
+            document.getElementById("topicTitle").append(topic.title)
+            document.getElementById("topicContent").append(topic.content)
+        })
 }
+
+let topicId = document.getElementById("topicId").dataset.topicId;
+getTopicById(topicId)
 
 
