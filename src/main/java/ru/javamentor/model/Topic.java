@@ -10,7 +10,6 @@ import java.time.*;
 import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,8 +26,8 @@ public class Topic {
     @Column
     private String content;
 
-    @Column
-    private LocalDateTime time;
+    @Column(updatable = false)
+    private LocalDateTime dateCreated;
 
     @Column
     private boolean isModerate = false;
@@ -36,6 +35,7 @@ public class Topic {
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
+
 
     public Topic(String title, String content, Set<User> authors, LocalDateTime time, boolean isModerate) {
         this.title = title;
