@@ -25,10 +25,14 @@ public class TopicRestControllers {
         this.topicService = topicService;
     }
 
-
-    @GetMapping("/user/allTopicsByUserId/{id}")
+    @GetMapping("/admin/TopicsByUser/{id}")
     public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/MyTopics")
+    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser() {
+        return new ResponseEntity<>(topicService.getAllTopicsOfAuthenticatedUser(), HttpStatus.OK);
     }
 
     @GetMapping("/user/allUsersByTopicId/{id}")

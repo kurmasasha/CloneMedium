@@ -21,4 +21,5 @@ public interface TopicService {
 
     List<User> getAllUsersByTopicId(Long topicId);
 
+    List<Topic> getAllTopicsOfAuthenticatedUser();
 }
