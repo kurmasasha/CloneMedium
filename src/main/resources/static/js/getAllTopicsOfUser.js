@@ -1,36 +1,50 @@
-$(document).ready(function () {
-    getAllTopicsOfUser();
-});
 
-function getAllTopicsOfUser() {
-    $.ajax({
+let container = document.getElementById("topicsContainer");
 
-        url: '/api/user/allTopics/' + $("#userId").val(),
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var tableBody = $('#tableAllTopicsOfUser tbody');
-            tableBody.empty();
-            $(data).each(function (i, topic) {
-                let ts = new Date().getTime();
+let title = document.getElementById("bsBlogTemplate");
 
-                tableBody.append(`
-                    <tr> 
-                    
-                    <td>${topic.id}</td>                                                   
-                   
-                    <td> <a href="/topic/${topic.id}">  <h4 class="post-title"> ${topic.title} </h4>  </a>                  
-                                        
-                    <td>${topic.time}</td>
-                     
-                    </tr>`);
+let userId = container.dataset.userId;
+
+console.log(userId);
+
+async function getAllTopicsOfUser(userId) {
+
+    fetch(`http://localhost:5050/api/user/allTopics/${userId}`)
+
+        .then(result => result.json())
+
+        .then(arrayTopics => {
+
+            arrayTopics.forEach(function (topic) {
+
+              let output = '<div class="post-preview"> <a href="/topic/' + topic.id + '">' + '<h4 class="post-title">'
+
+                            + topic.title + '</h4> </a> '
+
+                            + '<p class="post-meta">Posted by <a href="/admin/oneUser/' + userId + '">'
+
+                            + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
+
+                console.log(output)
+
+              $('#bsBlogTemplate').append(output)
+
             })
-        },
-        error: function (error) {
-            alert(error);
-        }
-    })
+        })
 }
+
+getAllTopicsOfUser(userId)
+
+    // <a href="post.html">
+    //
+    // <h4 class="post-title" id="topicTitle">
+    // </h4>
+    //
+    //  </a>
+    //  <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2019</p>
+
+
+
 
 //  onclick="getContentOfTopic(${topic.id})"
 //

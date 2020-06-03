@@ -39,6 +39,7 @@ public class PageController {
     public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
+        model.addAttribute("userId", user.getId());
         return "dy_home";
     }
 
