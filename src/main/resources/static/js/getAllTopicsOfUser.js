@@ -17,9 +17,9 @@ function getAllTopicsOfUser() {
                 tableBody.append(`
                     <tr> 
                     
-                    <td>${topic.id}</td>
-                    
-                    <td> <a href="/topic/${topic.id}"></a> <span> ${topic.title} </span> </td>                  
+                    <td>${topic.id}</td>                                                   
+                   
+                    <td> <a href="/topic/${topic.id}">  <h4 class="post-title"> ${topic.title} </h4>  </a>                  
                                         
                     <td>${topic.time}</td>
                      

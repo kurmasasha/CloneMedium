@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script type="text/javascript" src="..static/js/getAllTopicsOfUser.js" th:src="@{/js/getAllTopicsOfUser.js}"></script>
+  <script type="text/javascript" src="..static/js/bsBlogTemplateTopics.js" th:src="@{/js/bsBlogTemplateTopics.js}"></script>
 
   <title>Posts of an author</title>
 </head>
@@ -36,12 +37,11 @@
       <ul class="navbar-nav">
         <li class="nav-item px-2">
 
-          <a href="/api/user/allTopics/{userId}" class="nav-link">Главная</a>
+          <a href="/api/user/allTopics/${user.name}" class="nav-link">Главная</a>
 
           <div>
             <input type="hidden" id="userId" name="userId" th:value="${user.id}"/>
           </div>
-
 
         </li>
         <li class="nav-item px-2">
@@ -93,6 +93,25 @@
             </tbody>
 
           </table>
+
+          <!-- Main Content -->
+<!--          <div class="container">-->
+            <div class="row" >
+              <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-preview" id="bsBlogTemplate">
+<!--                  <a href="post.html">-->
+<!--                    <h4 class="post-title">-->
+<!--                      Man must explore, and this is exploration at its greatest-->
+<!--                    </h4>-->
+<!--                    <h3 class="post-subtitle">-->
+<!--                      Problems look mighty small from 150 miles up-->
+<!--                    </h3>-->
+<!--                  </a>-->
+<!--                  <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2019</p>-->
+                </div>
+                <hr>
+              </div>
+            </div>
 
           <!-- PAGINATION -->
 <!--          <nav class="ml-4">-->
