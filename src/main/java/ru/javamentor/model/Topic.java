@@ -44,4 +44,5 @@ public class Topic {
         this.time = time;
         this.isModerate = isModerate;
     }
+
 }

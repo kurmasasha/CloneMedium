@@ -1,9 +1,9 @@
 package ru.javamentor.service;
 
 import ru.javamentor.model.Topic;
+import ru.javamentor.model.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface TopicService {
 
@@ -15,8 +15,11 @@ public interface TopicService {
 
     boolean updateTopic(Topic topic);
 
-    void removeTopicById(Long id);
+    boolean removeTopicById(Long id);
 
     List<Topic> getAllTopicsByUserId(Long userId);
 
+    List<User> getAllUsersByTopicId(Long topicId);
+
+    List<Topic> getAllTopicsOfAuthenticatedUser();
 }
