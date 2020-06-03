@@ -10,12 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.Topic;
+import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
+import ru.javamentor.service.UserServiceImpl;
+
+import java.util.List;
 
 @Controller
 public class PageController {
 
     public final TopicService topicService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @Autowired
     public PageController(TopicService topicService) {
@@ -30,8 +37,16 @@ public class PageController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        model.addAttribute("dy_home", currentUser);
+        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
+        model.addAttribute("user", user);
         return "dy_home";
+    }
+
+    @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
+    public String allTopicsPage(Model model) {
+        List<Topic> allTopics = topicService.getTotalListOfTopics();
+        model.addAttribute("allTopics", allTopics);
+        return "all_topics_page";
     }
 
     @GetMapping("/index")

@@ -1,15 +1,15 @@
 $(document).ready(function () {
-    getAllTopicsOfUser();
+    getAllTopics();
 });
 
-function getAllTopicsOfUser() {
+function getAllTopics() {
     $.ajax({
 
-        url: '/api/user/allTopics/' + $("#userId").val(),
+        url: '/api/user/totalTopicsList',
         method: "GET",
         dataType: "json",
         success: function (data) {
-            var tableBody = $('#tableAllTopicsOfUser tbody');
+            var tableBody = $('#justAllTopics tbody');
             tableBody.empty();
             $(data).each(function (i, topic) {
                 let ts = new Date().getTime();
@@ -17,9 +17,9 @@ function getAllTopicsOfUser() {
                 tableBody.append(`
                     <tr> 
                     
-                    <td>${topic.id}</td>                                                   
-                   
-                    <td> <a href="/topic/${topic.id}">  <h4 class="post-title"> ${topic.title} </h4>  </a>                  
+                    <td>${topic.id}</td>
+                    
+                    <td> <a href="/topic/${topic.id}"></a> <span> ${topic.title} </span> </td>                  
                                         
                     <td>${topic.time}</td>
                      

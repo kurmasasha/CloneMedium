@@ -19,4 +19,6 @@ public interface TopicService {
 
     List<Topic> getAllTopicsByUserId(Long userId);
 
+    List<Topic> getTotalListOfTopics();
+
 }
