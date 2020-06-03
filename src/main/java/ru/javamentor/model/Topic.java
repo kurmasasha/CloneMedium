@@ -37,11 +37,11 @@ public class Topic {
     private Set<User> authors;
 
 
-    public Topic(String title, String content, Set<User> authors, LocalDateTime time, boolean isModerate) {
+    public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
-        this.time = time;
+        this.dateCreated = dateCreated;
         this.isModerate = isModerate;
     }
 

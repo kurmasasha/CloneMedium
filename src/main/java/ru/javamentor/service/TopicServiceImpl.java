@@ -31,7 +31,7 @@ public class TopicServiceImpl implements TopicService {
         Set<User> users = new HashSet<>();
         users.add(currentUser);
 //        Topic topic = new Topic(title, content, users, LocalDateTime.now(ZoneId.of("UTC")));
-        Topic topic = new Topic(title, content, users, LocalDateTime.now());
+        Topic topic = new Topic(title, content, users, LocalDateTime.now(), false);
         topicDAO.addTopic(topic);
         log.info("IN addTopic - topic: {} successfully added", topic);
         return true;
