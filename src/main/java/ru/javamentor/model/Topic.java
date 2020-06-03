@@ -30,14 +30,18 @@ public class Topic {
     @Column
     private LocalDateTime time;
 
+    @Column
+    private boolean isModerate = false;
+
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
-    public Topic(String title, String content, Set<User> authors, LocalDateTime time) {
+    public Topic(String title, String content, Set<User> authors, LocalDateTime time, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.time = time;
+        this.isModerate = isModerate;
     }
 }
