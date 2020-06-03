@@ -2,11 +2,9 @@ package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.javamentor.model.Topic;
-import ru.javamentor.model.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public class TopicDAOImpl implements TopicDAO {
@@ -40,7 +38,8 @@ public class TopicDAOImpl implements TopicDAO {
     }
 
     @Override
-    public Set<Topic> getAllTopicsByUserId(Long userId) {
-        return entityManager.find(User.class, userId).getTopicCollection();
+    public List<Topic> getAllTopicsByUserId(Long userId) {
+        return entityManager.createQuery("SELECT t FROM Topic t JOIN t.authors a  WHERE a.id = :userId", Topic.class).setParameter("userId", userId).getResultList();
     }
+
 }

@@ -1,4 +1,4 @@
-package ru.javamentor.controller;
+package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,12 +12,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class RoleController {
+public class RoleRestController {
 
     public RoleService roleService;
 
     @Autowired
-    public RoleController(RoleService roleService) {
+    public RoleRestController(RoleService roleService) {
         this.roleService = roleService;
     }
 
@@ -37,7 +37,7 @@ public class RoleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping("/admin/removeRole/{id}")
-    public ResponseEntity<User> removeUser(@PathVariable Long id) {
+    public ResponseEntity<User> removeRole(@PathVariable Long id) {
         roleService.removeRole(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
