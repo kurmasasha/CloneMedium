@@ -1,7 +1,7 @@
 
 let container = document.getElementById("topicsContainer");
 
-let title = document.getElementById("bsBlogTemplate");
+let title = document.getElementById("mainBlogContent");
 
 let userId = container.dataset.userId;
 
@@ -17,38 +17,21 @@ async function getAllTopicsOfUser(userId) {
 
             arrayTopics.forEach(function (topic) {
 
-              let output = '<div class="post-preview"> <a href="/topic/' + topic.id + '">' + '<h4 class="post-title">'
+              let output = '<div class="post-preview"> <a href="/topic/' + topic.id + '">'
 
-                            + topic.title + '</h4> </a> '
+                            + '<h4 class="post-title">' + topic.title + '</h4> </a> '
 
                             + '<p class="post-meta">Posted by <a href="/admin/oneUser/' + userId + '">'
 
                             + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
 
-                console.log(output)
-
-              $('#bsBlogTemplate').append(output)
+              $('#mainBlogContent').append(output)
 
             })
         })
 }
 
 getAllTopicsOfUser(userId)
-
-    // <a href="post.html">
-    //
-    // <h4 class="post-title" id="topicTitle">
-    // </h4>
-    //
-    //  </a>
-    //  <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2019</p>
-
-
-
-
-//  onclick="getContentOfTopic(${topic.id})"
-//
-// <td>${stringAuthors}</td>
 
 
 // Реализовать страницу домашнюю страницу /home + контроллер на которую попадает пользователь после логина.

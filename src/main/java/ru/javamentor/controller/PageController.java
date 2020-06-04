@@ -40,13 +40,11 @@ public class PageController {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
-        return "dy_home";
+        return "home";
     }
 
     @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
-        List<Topic> allTopics = topicService.getTotalListOfTopics();
-        model.addAttribute("allTopics", allTopics);
         return "all_topics_page";
     }
 
