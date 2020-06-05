@@ -9,7 +9,7 @@ console.log(userId);
 
 async function getAllTopicsOfUser(userId) {
 
-    fetch(`http://localhost:5050/api/user/allTopics/${userId}`)
+    fetch(`http://localhost:5050/api/admin/TopicsByUser/${userId}`)
 
         .then(result => result.json())
 
