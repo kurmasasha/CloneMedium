@@ -56,8 +56,7 @@ public class PageController {
   
     @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
-        Topic topic = topicService.getTopicById(id);
-        model.addAttribute("topic", topic);
+        model.addAttribute("topicId", id);
         return "topic";
     }
 }

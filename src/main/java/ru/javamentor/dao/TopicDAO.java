@@ -1,6 +1,7 @@
 package ru.javamentor.dao;
 
 import ru.javamentor.model.Topic;
+import ru.javamentor.model.User;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface TopicDAO {
 
     List<Topic> getAllTopicsByUserId(Long userId);
 
+
     List<Topic> getTotalListOfTopics();
+
+    List<User> getAllUsersByTopicId(Long topicId);
+
 }
