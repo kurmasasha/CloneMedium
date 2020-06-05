@@ -1,40 +1,37 @@
-$(document).ready(function () {
-    getAllTopicsOfUser();
-});
 
-function getAllTopicsOfUser() {
-    $.ajax({
+let container = document.getElementById("topicsContainer");
 
-        url: '/api/user/allTopics/' + $("#userId").val(),
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var tableBody = $('#tableAllTopicsOfUser tbody');
-            tableBody.empty();
-            $(data).each(function (i, topic) {
-                let ts = new Date().getTime();
+let title = document.getElementById("mainBlogContent");
 
-                tableBody.append(`
-                    <tr> 
-                    
-                    <td>${topic.id}</td>                                                   
-                   
-                    <td> <a href="/topic/${topic.id}">  <h4 class="post-title"> ${topic.title} </h4>  </a>                  
-                                        
-                    <td>${topic.time}</td>
-                     
-                    </tr>`);
+let userId = container.dataset.userId;
+
+console.log(userId);
+
+async function getAllTopicsOfUser(userId) {
+
+    fetch(`http://localhost:5050/api/user/allTopics/${userId}`)
+
+        .then(result => result.json())
+
+        .then(arrayTopics => {
+
+            arrayTopics.forEach(function (topic) {
+
+              let output = '<div class="post-preview"> <a href="/topic/' + topic.id + '">'
+
+                            + '<h4 class="post-title">' + topic.title + '</h4> </a> '
+
+                            + '<p class="post-meta">Posted by <a href="/admin/oneUser/' + userId + '">'
+
+                            + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
+
+              $('#mainBlogContent').append(output)
+
             })
-        },
-        error: function (error) {
-            alert(error);
-        }
-    })
+        })
 }
 
-//  onclick="getContentOfTopic(${topic.id})"
-//
-// <td>${stringAuthors}</td>
+getAllTopicsOfUser(userId)
 
 
 // Реализовать страницу домашнюю страницу /home + контроллер на которую попадает пользователь после логина.

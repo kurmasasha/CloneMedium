@@ -1,48 +1,30 @@
-$(document).ready(function () {
-    getAllTopics();
-});
 
-function getAllTopics() {
-    $.ajax({
+let title = document.getElementById("allTopics");
 
-        url: '/api/user/totalTopicsList',
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            var tableBody = $('#justAllTopics tbody');
-            tableBody.empty();
-            $(data).each(function (i, topic) {
-                let ts = new Date().getTime();
 
-                tableBody.append(`
-                    <tr> 
-                    
-                    <td>${topic.id}</td>
-                    
-                    <td> <a href="/topic/${topic.id}"></a> <span> ${topic.title} </span> </td>                  
-                                        
-                    <td>${topic.time}</td>
-                     
-                    </tr>`);
+async function justAllTopics() {
+
+    fetch(`http://localhost:5050/api/user/totalTopicsList/`)
+
+        .then(result => result.json())
+
+        .then(arrayTopics => {
+
+            arrayTopics.forEach(function (topic) {
+
+                let output = '<div class="post-preview"> <a href="/topic/' + topic.id + '">'
+
+                    + '<h4 class="post-title">' + topic.title + '</h4> </a> '
+
+                    + '<p class="post-meta">Posted by <a href="/admin/oneUser/' + topic.authors[0].username + '">'
+
+                    + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
+
+                $('#allTopics').append(output)
+
             })
-        },
-        error: function (error) {
-            alert(error);
-        }
-    })
+        })
 }
 
-//  onclick="getContentOfTopic(${topic.id})"
-//
-// <td>${stringAuthors}</td>
+justAllTopics()
 
-
-// Реализовать страницу домашнюю страницу /home + контроллер на которую попадает пользователь после логина.
-//
-// На странице доджен быть верхний навбар с вкладкой Главная и кнопкой Выход.
-//
-// В основном поле должны выводиться статьи которые принадлежат текущему пользователю.
-//
-// Отображать только заголовок Запрос на сервер через js и рест-контроллер. использовать Bootstrap 4.
-
-// Добавить событие клика на каждую статью. При нажатии откраывается сама статься по урлу /topic/{id}
