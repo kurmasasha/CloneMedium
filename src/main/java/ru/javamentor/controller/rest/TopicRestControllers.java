@@ -78,4 +78,10 @@ public class TopicRestControllers {
             return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/user/topic/find-by-hashtag")
+    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@RequestParam(value = "uid", required = false) Long uid, @RequestParam("tag") String tag) {
+        List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
+        return new ResponseEntity<>(topics, HttpStatus.OK);
+    }
 }

@@ -24,4 +24,5 @@ public interface TopicDAO {
 
     List<User> getAllUsersByTopicId(Long topicId);
 
+    List<Topic> getAllTopicsByHashtag(String value);
 }

@@ -109,4 +109,11 @@ public class TopicServiceImpl implements TopicService {
         log.info("IN getAllTopicsOFAuthenticatedUser - {} topics found", result.size());
         return result;
     }
+
+    @Override
+    public List<Topic> getAllTopicsByHashtag(String value) {
+        List<Topic> result = topicDAO.getAllTopicsByHashtag(value);
+        log.info("IN getAllTopicsByHashtag - {} topics found", result.size());
+        return result;
+    }
 }

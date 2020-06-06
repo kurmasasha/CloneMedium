@@ -46,8 +46,8 @@
                 </li>
                 <li class="nav-item px-2 d-flex align-items-center">
                     <form class="form-inline">
-                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#поиск" aria-label="Search">
-                        <button id="hashtag_button" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
+                        <button id="hashtag_button" th:data-user-id="${user.id}" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
                     </form>
                 </li>
             </ul>
@@ -134,6 +134,7 @@
     // Get the current year for the copyright
     $('#year').text(new Date().getFullYear());
 </script>
+<script type="text/javascript" src="js/events.js"></script>
 </body>
 
 <script type="text/javascript" src="..static/js/getAllTopicsOfUser.js" th:src="@{/js/getAllTopicsOfUser.js}"></script>

@@ -1,6 +1,7 @@
 package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
+import ru.javamentor.model.Hashtag;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -52,6 +53,18 @@ public class TopicDAOImpl implements TopicDAO {
 
     public List<User> getAllUsersByTopicId(Long topicId) {
         return entityManager.createQuery("SELECT u FROM Topic t JOIN t.authors u WHERE t.id = :topicId", User.class).setParameter("topicId", topicId).getResultList();
+    }
+
+    @Override
+    public List<Topic> getAllTopicsByHashtag(String value) {
+        value = value.trim();
+        if (value.isEmpty()) {
+            return getTotalListOfTopics();
+        }
+        return entityManager
+                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class).
+                        setParameter("value", value).
+                        getResultList();
     }
 
 

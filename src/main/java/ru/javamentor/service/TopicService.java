@@ -25,4 +25,6 @@ public interface TopicService {
 
     List<Topic> getAllTopicsOfAuthenticatedUser();
 
+    List<Topic> getAllTopicsByHashtag(String value);
+
 }
