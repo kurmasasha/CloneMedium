@@ -36,6 +36,10 @@ public class Topic {
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
+    @ManyToMany
+    @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "hashtag_id"))
+    private Set<Hashtag> hashtags;
+
 
     public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
