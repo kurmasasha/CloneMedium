@@ -110,10 +110,28 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
+    /**
+     * Поиск топиков по значению связанного с ними хэштега.
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         List<Topic> result = topicDAO.getAllTopicsByHashtag(value);
         log.info("IN getAllTopicsByHashtag - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск топиков пользователя по значению связанного с ними хэштега.
+     * @param userId - id пользователя
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
+        List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
+        log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
         return result;
     }
 }

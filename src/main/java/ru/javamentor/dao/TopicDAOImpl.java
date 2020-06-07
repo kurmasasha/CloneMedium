@@ -55,6 +55,11 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager.createQuery("SELECT u FROM Topic t JOIN t.authors u WHERE t.id = :topicId", User.class).setParameter("topicId", topicId).getResultList();
     }
 
+    /**
+     * Поиск топиков по значению связанного с ними хэштега.
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         value = value.trim();
@@ -62,9 +67,28 @@ public class TopicDAOImpl implements TopicDAO {
             return getTotalListOfTopics();
         }
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class).
-                        setParameter("value", value).
-                        getResultList();
+                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class)
+                        .setParameter("value", value)
+                        .getResultList();
+    }
+
+    /**
+     * Поиск топиков пользователя по значению связанного с ними хэштега.
+     * @param userId - id пользователя
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
+        value = value.trim();
+        if (value.isEmpty()) {
+            return getAllTopicsByUserId(userId);
+        }
+        return entityManager
+                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h JOIN t.authors a WHERE h.name = :value AND a.id = :userId", Topic.class)
+                        .setParameter("value", value)
+                        .setParameter("userId", userId)
+                        .getResultList();
     }
 
 

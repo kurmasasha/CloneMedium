@@ -42,9 +42,10 @@
           <a href="/allTopics" class="nav-link active">Все статьи</a>
         </li>
         <li class="nav-item px-2 d-flex align-items-center">
+          <!-- Форма поиска топиков по хэштегу -->
           <form class="form-inline">
             <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#поиск" aria-label="Search">
-            <button id="hashtag_button" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+            <button id="hashtag_all_button" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
           </form>
         </li>
       </ul>
@@ -122,7 +123,7 @@
   // Get the current year for the copyright
   $('#year').text(new Date().getFullYear());
 </script>
-<script type="text/javascript" src="js/events.js"></script>
+<script type="text/javascript" src="js/all_topics_events.js"></script>
 
 
 </body>
