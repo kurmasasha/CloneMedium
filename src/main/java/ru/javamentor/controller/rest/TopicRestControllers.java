@@ -82,23 +82,18 @@ public class TopicRestControllers {
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      * @param tag - строковое представление хэштега
+     * @param uid - строковое представление id пользователя, связанного с топиками
      * @return список топиков
      */
-    @PostMapping("/user/topic/find-by-hashtag")
-    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@RequestParam("tag") String tag) {
-        List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
-        return new ResponseEntity<>(topics, HttpStatus.OK);
-    }
-
-    /**
-     * Поиск топиков пользователя по значению связанного с ними хэштега.
-     * @param userId - id пользователя
-     * @param tag - строковое представление хэштега
-     * @return список топиков
-     */
-    @PostMapping("/user/topic/find-by-uid-hashtag")
-    public ResponseEntity<List<Topic>> getAllTopicsOfUserByHashtag(@RequestParam("uid") Long userId, @RequestParam("tag") String tag) {
-        List<Topic> topics = topicService.getAllTopicsOfUserByHashtag(userId, tag);
+    @GetMapping("/admin/get-all-topics-by-hashtag/{tag}")
+    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag, @RequestHeader String uid) {
+        tag = "#" + tag;
+        List<Topic> topics = null;
+        if (uid.equals("all")) {
+            topics = topicService.getAllTopicsByHashtag(tag);
+        } else {
+            topics = topicService.getAllTopicsOfUserByHashtag(Long.parseLong(uid), tag);
+        }
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 }

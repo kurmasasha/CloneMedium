@@ -62,10 +62,6 @@ public class TopicDAOImpl implements TopicDAO {
      */
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
-        value = value.trim();
-        if (value.isEmpty()) {
-            return getTotalListOfTopics();
-        }
         return entityManager
                 .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class)
                         .setParameter("value", value)
@@ -80,10 +76,6 @@ public class TopicDAOImpl implements TopicDAO {
      */
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
-        value = value.trim();
-        if (value.isEmpty()) {
-            return getAllTopicsByUserId(userId);
-        }
         return entityManager
                 .createQuery("SELECT t FROM Topic t JOIN t.hashtags h JOIN t.authors a WHERE h.name = :value AND a.id = :userId", Topic.class)
                         .setParameter("value", value)

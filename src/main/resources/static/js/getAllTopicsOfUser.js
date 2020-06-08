@@ -8,7 +8,9 @@ let userId = container.dataset.userId;
 console.log(userId);
 
 async function getAllTopicsOfUser(userId) {
-
+    let contentContainer = $('#mainBlogContent');
+    contentContainer.empty();
+    contentContainer.append('<hr>');
     fetch(`http://localhost:5050/api/admin/TopicsByUser/${userId}`)
 
         .then(result => result.json())
@@ -25,7 +27,7 @@ async function getAllTopicsOfUser(userId) {
 
                             + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
 
-              $('#mainBlogContent').append(output)
+                contentContainer.append(output)
 
             })
         })
