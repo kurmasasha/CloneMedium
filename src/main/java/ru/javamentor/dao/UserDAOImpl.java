@@ -49,5 +49,12 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("username", userName)
                 .getSingleResult();
     }
+
+    @Override
+    public User findByActivationCode(String code) {
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.activationCode =:code", User.class)
+                .setParameter("code", code)
+                .getSingleResult();
+    }
 }
 

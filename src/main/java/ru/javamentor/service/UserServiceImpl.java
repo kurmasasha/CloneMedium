@@ -1,31 +1,51 @@
 package ru.javamentor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.User;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserDAO userDAO;
+    private MailSender mailSender;
+
+    @Value("${site.link}")
+    private String link;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, MailSender mailSender) {
         this.userDAO = userDAO;
+        this.mailSender = mailSender;
     }
 
     @Transactional
     @Override
     public boolean addUser(User user) {
+        user.setActivationCode(UUID.randomUUID().toString());
         userDAO.addUser(user);
+
+        if(!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello, %s \n" +
+                            "Welcome to CloneMedium. Please visit next link for confirm email: %s"+
+                    "activate/%s",
+                    user.getUsername(),
+                    link,
+                    user.getActivationCode()
+            );
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
         return true;
     }
 
@@ -54,12 +74,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDAO.removeUser(id);
     }
 
- /*   @Transactional
+    @Transactional
     @Override
-    public UserDetails loadUserByUsername(String userName) {
-        Optional<User> currentUser = Optional.ofNullable(userDAO.getUserByUsername(userName));
-        return currentUser.orElseThrow(IllegalArgumentException::new);
-    }*/
+    public boolean activateUser(String code) {
+        User user = userDAO.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActivationCode(null);
+        userDAO.updateUser(user);
+
+        return true;
+    }
+
+    /*   @Transactional
+       @Override
+       public UserDetails loadUserByUsername(String userName) {
+           Optional<User> currentUser = Optional.ofNullable(userDAO.getUserByUsername(userName));
+           return currentUser.orElseThrow(IllegalArgumentException::new);
+       }*/
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{

@@ -32,6 +32,12 @@ public class User implements UserDetails {
     @Column
     String password;
 
+    @Column
+    private String email;
+
+    @Column
+    private String activationCode;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
     private Role role;
