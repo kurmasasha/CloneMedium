@@ -3,34 +3,41 @@ package ru.javamentor.model;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column
-    String firstName;
+    @NotNull
+    @NotEmpty
+    private String firstName;
 
-    @Column
-    String lastName;
+    @NotNull
+    @NotEmpty
+    private String lastName;
 
-    @Column
-    String username;
+    @NotNull
+    @NotEmpty
+    private String username;
 
-    @Column
-    String password;
+    @NotNull
+    @NotEmpty
+    private String password;
+
+    @Transient
+    private String matchingPassword;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
@@ -70,7 +77,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
-
 }

@@ -49,5 +49,14 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("username", userName)
                 .getSingleResult();
     }
-}
 
+    public User getUserByEmail(String email) {
+        try {
+            return entityManager.createQuery("FROM User WHERE username = :username", User.class)
+                    .setParameter("username", email)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+}
