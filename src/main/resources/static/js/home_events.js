@@ -15,6 +15,9 @@ $('#hashtag_home_button').on('click', function() {
     if (hashtag !== '') {
         getAllTopicsByHashtag(uid, hashtag, $('#mainBlogContent'));
     } else {
+        let contentContainer = $('#mainBlogContent');
+        contentContainer.empty();
+        contentContainer.append('<hr>');
         getAllTopicsOfUser(uid);
     }
 });

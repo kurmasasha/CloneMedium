@@ -14,6 +14,9 @@ $('#hashtag_all_button').on('click', function() {
     if (hashtag !== '') {
         getAllTopicsByHashtag('all', hashtag, $('#allTopics'));
     } else {
+        let contentContainer = $('#mainBlogContent');
+        contentContainer.empty();
+        contentContainer.append('<hr>');
         justAllTopics();
     }
 });
