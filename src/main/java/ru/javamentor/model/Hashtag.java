@@ -3,6 +3,7 @@ package ru.javamentor.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
