@@ -20,4 +20,6 @@ public interface UserDAO {
     void removeUser(Long id);
 
     User getUserByUsername(String userName);
+
+    User findByActivationCode(String code);
 }
