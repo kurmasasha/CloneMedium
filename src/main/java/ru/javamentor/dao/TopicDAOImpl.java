@@ -9,6 +9,7 @@ import ru.javamentor.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class TopicDAOImpl implements TopicDAO {
@@ -38,7 +39,16 @@ public class TopicDAOImpl implements TopicDAO {
 
     @Override
     public void removeTopicById(Long id) {
-        entityManager.remove(getTopicById(id));
+        Topic topic = getTopicById(id);
+        if (topic != null) {
+            entityManager.remove(topic);
+            for (Hashtag tag : topic.getHashtags()) {
+                Set<Topic> topics = tag.getTopics();
+                if (topics.isEmpty()) {
+                    entityManager.remove(tag);
+                }
+            }
+        }
     }
 
     @Override

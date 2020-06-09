@@ -74,15 +74,15 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean removeTopicById(Long id) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(id);
-        if (userList.contains(currentUser)) {
+        if (userList.contains(currentUser)) {*/
             topicDAO.removeTopicById(id);
             log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
             return true;
-        }
+        /*}
         log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
-        return false;
+        return false;*/
     }
 
     @Transactional

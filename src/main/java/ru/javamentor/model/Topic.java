@@ -37,9 +37,17 @@ public class Topic {
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "hashtag_id"))
     private Set<Hashtag> hashtags;
+
+    @PreRemove
+    public void preRemove() {
+        for (Hashtag tag : hashtags) {
+            Set<Topic> topics = tag.getTopics();
+            topics.remove(this);
+        }
+    }
 
 
     public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {

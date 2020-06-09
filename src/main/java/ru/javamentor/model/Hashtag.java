@@ -1,5 +1,6 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,11 @@ public class Hashtag {
 
     @Column
     String name;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "hashtag_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
+    Set<Topic> topics;
 
     public Hashtag(String name) {
         this.name = name;
