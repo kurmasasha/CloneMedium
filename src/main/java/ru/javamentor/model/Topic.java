@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.*;
@@ -35,6 +36,18 @@ public class Topic {
     @ManyToMany
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
+
+    @ManyToMany
+    @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "hashtag_id"))
+    private Set<Hashtag> hashtags;
+
+    @PreRemove
+    public void preRemove() {
+        for (Hashtag tag : hashtags) {
+            Set<Topic> topics = tag.getTopics();
+            topics.remove(this);
+        }
+    }
 
 
     public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {

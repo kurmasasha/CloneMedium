@@ -74,15 +74,15 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean removeTopicById(Long id) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(id);
-        if (userList.contains(currentUser)) {
+        if (userList.contains(currentUser)) {*/
             topicDAO.removeTopicById(id);
             log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
             return true;
-        }
+        /*}
         log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
-        return false;
+        return false;*/
     }
 
     @Transactional
@@ -107,6 +107,31 @@ public class TopicServiceImpl implements TopicService {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Topic> result = topicDAO.getAllTopicsByUserId(currentUser.getId());
         log.info("IN getAllTopicsOFAuthenticatedUser - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск топиков по значению связанного с ними хэштега.
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getAllTopicsByHashtag(String value) {
+        List<Topic> result = topicDAO.getAllTopicsByHashtag(value);
+        log.info("IN getAllTopicsByHashtag - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск топиков пользователя по значению связанного с ними хэштега.
+     * @param userId - id пользователя
+     * @param value - строковое представление хэштега
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
+        List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
+        log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
         return result;
     }
 }
