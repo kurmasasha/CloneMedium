@@ -30,8 +30,6 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
 
-    //@GetMapping("/user/allTopics/{id}")
-
     @GetMapping("/admin/TopicsByUser/{id}")
     public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
@@ -77,5 +75,23 @@ public class TopicRestControllers {
         } else {
             return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * Поиск топиков по значению связанного с ними хэштега.
+     * @param tag - строковое представление хэштега
+     * @param uid - строковое представление id пользователя, связанного с топиками
+     * @return список топиков
+     */
+    @GetMapping("/admin/get-all-topics-by-hashtag/{tag}")
+    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag, @RequestHeader String uid) {
+        tag = "#" + tag;
+        List<Topic> topics = null;
+        if (uid.equals("all")) {
+            topics = topicService.getAllTopicsByHashtag(tag);
+        } else {
+            topics = topicService.getAllTopicsOfUserByHashtag(Long.parseLong(uid), tag);
+        }
+        return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 }

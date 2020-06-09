@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form registration</title>
+</head>
+<body>
+
+
+<div class="container w-50">
+    <h2 class="p-2">registration user</h2>
+    <form action="/registration" method="post" th:object="${user}">
+
+        <div class="form-group">
+            <label for="firstName">Name</label>
+            <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</span>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Surname</label>
+            <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+            <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{username}">
+            <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+            <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="matchingPassword">Confirm password</label>
+            <input type="password" class="form-control" id="matchingPassword" name="matchingPassword">
+            <span class="text-danger" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registration</button>
+
+    </form>
+</div>
+</body>
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</html>

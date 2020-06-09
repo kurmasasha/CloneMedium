@@ -17,4 +17,8 @@ public interface UserService {
     public void removeUser(Long id);
 
     boolean activateUser(String code);
+
+    public User getUserByEmail(String email);
+
+
 }

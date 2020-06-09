@@ -25,7 +25,7 @@ async function getAllTopicsOfUser(userId) {
 
                             + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
 
-              $('#mainBlogContent').append(output)
+                $('#mainBlogContent').append(output)
 
             })
         })

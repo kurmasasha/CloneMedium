@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDAO.removeUser(id);
     }
 
+
     @Transactional
     @Override
     public boolean activateUser(String code) {
@@ -89,12 +90,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return true;
     }
 
-    /*   @Transactional
-       @Override
-       public UserDetails loadUserByUsername(String userName) {
-           Optional<User> currentUser = Optional.ofNullable(userDAO.getUserByUsername(userName));
-           return currentUser.orElseThrow(IllegalArgumentException::new);
-       }*/
+    @Override
+    public User getUserByEmail(String email) {
+        return userDAO.getUserByUsername(email);
+    }
+
+
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
