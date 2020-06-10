@@ -56,7 +56,6 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("code", code)
                 .getSingleResult();
     }
-}
 
 
     public User getUserByEmail(String email) {

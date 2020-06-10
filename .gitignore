@@ -38,6 +38,8 @@ src/main/resources/hibernate.properties
 *.ipr
 *.iws
 
+src/main/resources/application.properties
+
 ## Plugin-specific files:
 
 # IntelliJ
