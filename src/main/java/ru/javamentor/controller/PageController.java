@@ -50,7 +50,8 @@ public class PageController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String noLoggedPage(Model model) {
-        return "no_logged_home_dbg";
+        //return "no_logged_home_dbg";
+        return "z";
     }
 
     @GetMapping("/index")
