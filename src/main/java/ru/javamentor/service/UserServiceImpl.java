@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setActivationCode(UUID.randomUUID().toString());
         userDAO.addUser(user);
 
-        if(!StringUtils.isEmpty(user.getEmail())) {
+        if(!StringUtils.isEmpty(user.getUsername())) {
             String message = String.format(
                     "Hello, %s \n" +
                             "Welcome to CloneMedium. Please visit next link for confirm email: %s"+
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     link,
                     user.getActivationCode()
             );
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailSender.send(user.getUsername(), "Activation code", message);
         }
         return true;
     }
