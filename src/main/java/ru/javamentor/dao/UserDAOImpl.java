@@ -58,7 +58,6 @@ public class UserDAOImpl implements UserDAO {
     }
 
 
-
     public User getUserByEmail(String email) {
         try {
             return entityManager.createQuery("FROM User WHERE username = :username", User.class)

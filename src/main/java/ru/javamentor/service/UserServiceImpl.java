@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean addUser(User user) {
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.addUser(user);
 
         if(!StringUtils.isEmpty(user.getUsername())) {
@@ -64,6 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public boolean updateUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.updateUser(user);
         return true;
     }
@@ -93,18 +96,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserByEmail(String email) {
         return userDAO.getUserByUsername(email);
-    }
-
-
-    @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
-        User currentUser = userDAO.getUserByUsername(userName);
-        if (currentUser == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        } else {
-            return currentUser;
-        }
     }
 
 }
