@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
@@ -96,18 +96,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserByEmail(String email) {
         return userDAO.getUserByUsername(email);
-    }
-
-
-    @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
-        User currentUser = userDAO.getUserByUsername(userName);
-        if (currentUser == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        } else {
-            return currentUser;
-        }
     }
 
 }
