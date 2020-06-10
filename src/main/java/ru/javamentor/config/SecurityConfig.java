@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,6 +38,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        //Web resources
+        web.ignoring().antMatchers("/css/**");
+        web.ignoring().antMatchers("/img/**");
+        web.ignoring().antMatchers("/js/**");
+        web.ignoring().antMatchers("/scss/**");
+        web.ignoring().antMatchers("/vendor/**");
+
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login")
@@ -53,7 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
         http
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/registration", "/activate/*").permitAll()
+                .antMatchers("/api/user/totalTopicsList/").permitAll()
 
                 .antMatchers("/login").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")

@@ -48,6 +48,11 @@ public class PageController {
         return "all_topics_page";
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String noLoggedPage(Model model) {
+        return "no_logged_home_dbg";
+    }
+
     @GetMapping("/index")
     public String indexPage() {
         return "index";

@@ -18,7 +18,7 @@ async function justAllTopics() {
 
                     + '<p class="post-meta">Posted by <a href="/admin/oneUser/' + topic.authors[0].username + '">'
 
-                    + topic.authors[0].username + '</a>' + ' on ' + topic.time + '</p>' + '</div> <hr>'
+                    + topic.authors[0].username + '</a>' + ' on ' + topic.dateCreated + '</p>' + '</div> <hr>'
 
                 $('#allTopics').append(output)
 

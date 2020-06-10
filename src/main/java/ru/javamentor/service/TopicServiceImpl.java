@@ -12,6 +12,7 @@ import ru.javamentor.model.User;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,7 +48,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Topic> getTotalListOfTopics() {  return topicDAO.getTotalListOfTopics();  }
+    public List<Topic> getTotalListOfTopics() {
+
+        return topicDAO.getTotalListOfTopics().stream().sorted(Comparator.comparing(Topic::getDateCreated).reversed()).collect(Collectors.toList());
+
+    }
 
     @Transactional(readOnly = true)
     @Override
