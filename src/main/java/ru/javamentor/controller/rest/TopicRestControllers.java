@@ -30,6 +30,11 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
 
+    @GetMapping("/admin/notModeratedTopicsList")
+    public ResponseEntity<List<Topic>> getNotModeratedTopics( ) {
+        return new ResponseEntity<>(topicService.getNotModeratedTopics(), HttpStatus.OK);
+    }
+
     @GetMapping("/admin/TopicsByUser/{id}")
     public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);

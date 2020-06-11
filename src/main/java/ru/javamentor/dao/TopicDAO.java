@@ -19,7 +19,6 @@ public interface TopicDAO {
 
     List<Topic> getAllTopicsByUserId(Long userId);
 
-
     List<Topic> getTotalListOfTopics();
 
     List<User> getAllUsersByTopicId(Long topicId);
@@ -38,4 +37,10 @@ public interface TopicDAO {
      * @return список топиков
      */
     List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value);
+
+    /**
+     * Поиск не модерированных топиков
+     * @return список топиков
+     */
+    List<Topic> getNotModeratedTopics();
 }

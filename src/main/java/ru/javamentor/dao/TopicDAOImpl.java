@@ -93,5 +93,14 @@ public class TopicDAOImpl implements TopicDAO {
                         .getResultList();
     }
 
-
+    /**
+     * Поиск не модерированных топиков
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopics() {
+        return entityManager
+                .createQuery("SELECT t FROM Topic t WHERE t.isModerate = false", Topic.class)
+                .getResultList();
+    }
 }

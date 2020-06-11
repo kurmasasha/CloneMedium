@@ -66,5 +66,10 @@ public class PageController {
     public String adminAllUsersPage() {
         return "admin-all_users";
     }
+
+    @GetMapping("/admin/moderate")
+    public String adminModeratePage() {
+        return "admin-moderate";
+    }
 }
 
