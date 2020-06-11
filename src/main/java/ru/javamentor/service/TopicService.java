@@ -45,4 +45,19 @@ public interface TopicService {
      * @return список топиков
      */
     List<Topic> getNotModeratedTopics();
+
+    /**
+     * Поиск не модерированных топиков.
+     * Добавлена пагинация.
+     * @param page - номер страницы
+     * @param pageSize - размер страницы
+     * @return список топиков
+     */
+    List<Topic> getNotModeratedTopicsPage(int page, int pageSize);
+
+    /**
+     * Определение числа  не модерированных топиков
+     * @return
+     */
+    Long getNotModeratedTopicsCount();
 }

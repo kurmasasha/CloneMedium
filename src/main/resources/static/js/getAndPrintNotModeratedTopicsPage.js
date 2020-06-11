@@ -2,8 +2,8 @@
  * Вывод всех топиков в контейнер
  *
  */
-async function getAndPrintAllNotModeratedTopics(container) {
-    fetch(`http://localhost:5050/api/user/totalTopicsList`)
+async function getAndPrintNotModeratedTopicsPage(page, container) {
+    fetch(`http://localhost:5050/api/admin/notModeratedTopicsPage/${page}`)
         .then(result => result.json())
         .then(response => {
             response.forEach(function (topic) {
@@ -26,7 +26,7 @@ async function getAndPrintAllNotModeratedTopics(container) {
                     author_label = 'Авторы: ';
                 }
                 let card =
-                    '<div class="card">' +
+                    '<div class="card mb-2">' +
                         '<h5 class="card-header">' + topic.title + '</h5>' +
                             '<div class="card-body">' +
                                 '<h5 class="card-title">' + author_label + authors + '</h5>' +

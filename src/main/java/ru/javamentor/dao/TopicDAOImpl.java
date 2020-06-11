@@ -2,7 +2,6 @@ package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.javamentor.model.Hashtag;
-import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -94,7 +93,7 @@ public class TopicDAOImpl implements TopicDAO {
     }
 
     /**
-     * Поиск не модерированных топиков
+     * Поиск не модерированных топиков.
      * @return список топиков
      */
     @Override
@@ -102,5 +101,32 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery("SELECT t FROM Topic t WHERE t.isModerate = false", Topic.class)
                 .getResultList();
+    }
+
+    /**
+     * Поиск не модерированных топиков.
+     * Добавлена пагинация.
+     * @param page - номер страницы
+     * @param pageSize - размер страницы
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
+        return entityManager
+                .createQuery("SELECT t FROM Topic t WHERE t.isModerate = false", Topic.class)
+                .setFirstResult(pageSize * (page-1))
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    /**
+     * Определение числа  не модерированных топиков
+     * @return
+     */
+    @Override
+    public Long getNotModeratedTopicsCount() {
+        return entityManager
+                .createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.isModerate = false", Long.class)
+                .getSingleResult();
     }
 }

@@ -145,4 +145,27 @@ public class TopicServiceImpl implements TopicService {
         log.info("IN getNotModeratedTopics - {} topics found", result.size());
         return result;
     }
+
+    /**
+     * Поиск не модерированных топиков.
+     * Добавлена пагинация.
+     * @param page - номер страницы
+     * @param pageSize - размер страницы
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
+        List<Topic> result = topicDAO.getNotModeratedTopicsPage(page, pageSize);
+        log.info("IN getNotModeratedTopicsPage - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Определение числа не модерированных топиков
+     * @return
+     */
+    @Override
+    public Long getNotModeratedTopicsCount() {
+        return topicDAO.getNotModeratedTopicsCount();
+    }
 }
