@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
@@ -12,6 +12,7 @@
     </head>
 
 <body class="bg-light text-center">
+<div th:if="${message}" class="alert alert-danger alet mx-auto my-5" role="alert"><p th:text="message"></p></div>
 <form class="form-signin" method="post" action="/login">
     <div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>

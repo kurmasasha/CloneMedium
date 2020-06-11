@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @Column
     private String activationCode;
 
+    @Column
+    private boolean isActivated;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
     private Role role;

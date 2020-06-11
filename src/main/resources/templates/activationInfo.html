@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
@@ -12,7 +12,16 @@
     </head>
 
 <body class="bg-light text-center">
-<form class="form-registr" method="post" action="/registration">
+<div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
+    <p>Вы успешно зарегистрировались на сайте. Проверьте почту чтобы подтвердить свой Email.</p>
+    <p>Если письмо не пришло нажмите сюда: </p>
+    <form action="/registration/resend">
+        <input type="hidden" th:value="${regUser.username}">
+        <button type="button" name="btnSend" onclick="reSendActivation(this)">Отправить повторно</button>
+    </form>
+    <p>Выполнить вход: <a href="/login" class="btn">Вход</a></p>
+</div>
+<!--<form class="form-registr" method="post" action="/registration">
     <div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <input type="text" name="firstName" class="form-control " placeholder="First Name">
@@ -23,6 +32,12 @@
 
         <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
     </div>
-</form>
+</form>-->
+<script>
+    function reSendActivation(btnSend) {
+        alert("Пиьсо отправлено!");
+        window.location.replace("/login");
+    }
+</script>
 </body>
 </html>

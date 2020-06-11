@@ -2,10 +2,9 @@ package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
@@ -29,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registrationUser(@Valid User user, BindingResult bindingResult) {
+    public String registrationUser(@Valid User user, BindingResult bindingResult, Model model) {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "registration_form";
@@ -37,6 +36,32 @@ public class RegistrationController {
         Role roleUser = roleService.getRoleByName("USER");
         user.setRole(roleUser);
         userService.addUser(user);
-        return "redirect:/login";
+        model.addAttribute("regUser", user);
+        return "activationInfo";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if(isActivated) {
+            model.addAttribute("message", "User activated");
+        } else {
+            model.addAttribute("message", "Activation code not found!");
+        }
+
+        return "login";
+    }
+
+    @GetMapping("/resend")
+    public String resend(Model model, @RequestParam String username) {
+        User user = userService.getUserByUsername(username);
+        if(!(user.getActivationCode() == null)) {
+            userService.resendActivationCode(user);
+            //model.addAttribute("message", "Письмо отправлено");
+        } else {
+            model.addAttribute("message", "Email уже подтвержден!");
+        }
+        return "login";
     }
 }
