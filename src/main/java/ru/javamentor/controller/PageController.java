@@ -1,6 +1,7 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ public class PageController {
 
     public final TopicService topicService;
 
+    @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userService;
 
@@ -58,6 +60,11 @@ public class PageController {
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
         return "topic";
+    }
+
+    @GetMapping("/admin/allUsers")
+    public String adminAllUsersPage() {
+        return "admin-all_users";
     }
 }
 
