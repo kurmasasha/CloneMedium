@@ -38,34 +38,24 @@ public class UserServiceImpl implements UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.addUser(user);
 
-        if(!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s \n" +
-                            "Welcome to CloneMedium. Please visit next link for confirm email: <a href=" + "%s"+
-                    "registration/activate/%s" + ">Confirm</a>",
-                    user.getUsername(),
-                    link,
-                    user.getActivationCode()
-            );
-            mailSender.send(user.getUsername(), "Activation code", message);
+        if(!StringUtils.isEmpty(user.getUsername())) {
+            sendCode(user);
         }
         return true;
     }
 
     @Transactional
     @Override
-    public void resendActivationCode(User user) {
-        if(!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s \n" +
-                            "Welcome to CloneMedium. Please visit next link for confirm email: <a href=" + "%s"+
-                            "registration/activate/%s" + ">Confirm</a>",
-                    user.getUsername(),
-                    link,
-                    user.getActivationCode()
-            );
-            mailSender.send(user.getUsername(), "Activation code", message);
-        }
+    public void sendCode(User user) {
+        String message = String.format(
+                "Hello, %s \n" +
+                        "Welcome to CloneMedium. Please visit next link for confirm email: <a target=\"_blank\" href=" + "%s" +
+                        "registration/activate/%s" + ">Confirm</a>",
+                user.getUsername(),
+                link,
+                user.getActivationCode()
+        );
+        mailSender.send(user.getUsername(), "Activation code", message);
     }
 
     @Transactional

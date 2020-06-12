@@ -40,9 +40,6 @@ public class User implements UserDetails {
     private String matchingPassword;
 
     @Column
-    private String email;
-
-    @Column
     private String activationCode;
 
     @Column

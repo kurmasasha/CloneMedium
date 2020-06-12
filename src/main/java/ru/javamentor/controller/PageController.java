@@ -6,10 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
@@ -32,7 +29,17 @@ public class PageController {
 
 
     @RequestMapping(value = "/*", method = RequestMethod.GET)
-    public String loginPage() {
+    public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
+        boolean flagMes = false;
+        boolean flagWar = false;
+        if (message != null && !message.equals("")) {
+            flagMes = true;
+        }
+        if (warning != null && !warning.equals("")) {
+            flagWar = true;
+        }
+        model.addAttribute("flagMes", flagMes);
+        model.addAttribute("flagWar", flagWar);
         return "login";
     }
 

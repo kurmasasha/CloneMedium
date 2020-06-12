@@ -6,38 +6,25 @@
     <head>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"  id="bootstrap-css">
         <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
-        <!--        <link rel="stylesheet" type="text/css" href="/css/style.css"/>-->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
 
 <body class="bg-light text-center">
 <div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
-    <p>Вы успешно зарегистрировались на сайте. Проверьте почту чтобы подтвердить свой Email.</p>
-    <p>Если письмо не пришло нажмите сюда: </p>
-    <form action="/registration/resend">
-        <input type="hidden" th:value="${regUser.username}">
-        <button type="button" name="btnSend" onclick="reSendActivation(this)">Отправить повторно</button>
-    </form>
-    <p>Выполнить вход: <a href="/login" class="btn">Вход</a></p>
-</div>
-<!--<form class="form-registr" method="post" action="/registration">
-    <div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <input type="text" name="firstName" class="form-control " placeholder="First Name">
-        <input type="text" name="lastName" class="form-control " placeholder="Last Name">
-        <input type="text" name="username" class="form-control " placeholder="Username">
-        <input type="password" name="password" class="form-control" placeholder="Password">
-        <input type="email" name="email" class="form-control" placeholder="example@email.com">
-
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+    <div>
+        <p th:if="${flag}" th:text="${resend}" class="alert alert-warning"></p>
+        <p th:unless="${flag}" class="alert alert-success">Вы успешно зарегистрировались на сайте. Проверьте почту чтобы подтвердить свой Email.</p>
     </div>
-</form>-->
-<script>
-    function reSendActivation(btnSend) {
-        alert("Пиьсо отправлено!");
-        window.location.replace("/login");
-    }
-</script>
+    <p>Если письмо не пришло нажмите сюда: </p>
+    <form action="/registration/resend" method="post">
+        <input type="hidden" name="username" th:value="${regUser.username}">
+        <button type="submit" class="btn btn-primary" name="btnSend">Отправить повторно</button>
+    </form>
+    <br>
+    <p>Или выполните вход: </p>
+    <a href="/login" class="btn btn-success">Вход</a>
+</div>
+
 </body>
 </html>

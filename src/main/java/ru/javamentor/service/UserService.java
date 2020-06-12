@@ -22,6 +22,6 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    void resendActivationCode(User user);
+    void sendCode(User user);
 
 }
