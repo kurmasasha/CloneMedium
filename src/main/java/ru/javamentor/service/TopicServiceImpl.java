@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
-import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -47,7 +46,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Topic> getTotalListOfTopics() {  return topicDAO.getTotalListOfTopics();  }
+    public List<Topic> getTotalListOfTopics() {
+        List<Topic> result = topicDAO.getTotalListOfTopics();
+        log.info("IN getTotalListOfTopics - {} topics found", result.size());
+        return result;
+    }
 
     @Transactional(readOnly = true)
     @Override
