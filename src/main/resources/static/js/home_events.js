@@ -13,11 +13,13 @@ $('#hashtag_home_button').on('click', function() {
         hashtag = hashtag.slice(1);
     }
     if (hashtag !== '') {
-        getAllTopicsByHashtag(uid, hashtag, $('#mainBlogContent'));
+        getAllTopicsByHashtag(uid, hashtag, $('#mainBlogContent'))
+            .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
     } else {
         let contentContainer = $('#mainBlogContent');
         contentContainer.empty();
         contentContainer.append('<hr>');
-        getAllTopicsOfUser(uid);
+        getAllTopicsOfUser(uid)
+            .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
     }
 });

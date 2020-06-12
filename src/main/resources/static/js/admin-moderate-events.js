@@ -4,7 +4,8 @@ $(document).ready(function(){
     let page_number = 1;
 
     admin_moderate_link.addClass('active');
-    getAndPrintNotModeratedTopicsPage(1, moderate_cards);
+    getAndPrintNotModeratedTopicsPage(1, moderate_cards)
+        .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
     //размер страницы жестко задан
     let pageSize = 5;
     getNotModeratedTopicsCount().then(count => {
@@ -27,7 +28,8 @@ $(document).ready(function(){
         let new_page_number = this.id.replace("p_", '');
         if (new_page_number > page_number || new_page_number < page_number) {
             moderate_cards.empty();
-            getAndPrintNotModeratedTopicsPage(new_page_number, moderate_cards);
+            getAndPrintNotModeratedTopicsPage(new_page_number, moderate_cards)
+                .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
             $('#pi_' + page_number).removeClass('active');
             $('#pi_' + new_page_number).addClass('active');
             page_number = new_page_number;
