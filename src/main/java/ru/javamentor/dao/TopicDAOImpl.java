@@ -53,12 +53,12 @@ public class TopicDAOImpl implements TopicDAO {
 
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
-        return entityManager.createQuery("SELECT t FROM Topic t JOIN t.authors a  WHERE a.id = :userId", Topic.class).setParameter("userId", userId).getResultList();
+        return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.hashtags h JOIN FETCH t.authors a  JOIN FETCH a.role r  WHERE a.id = :userId", Topic.class).setParameter("userId", userId).getResultList();
     }
 
     @Override
     public List<Topic> getTotalListOfTopics() {
-        return entityManager.createQuery("SELECT t FROM Topic t", Topic.class).getResultList();
+        return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.hashtags h JOIN FETCH t.authors a  JOIN FETCH a.role r", Topic.class).getResultList();
     }
 
     public List<User> getAllUsersByTopicId(Long topicId) {
@@ -73,7 +73,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class)
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.hashtags h JOIN FETCH t.authors a  JOIN FETCH a.role r WHERE h.name = :value", Topic.class)
                         .setParameter("value", value)
                         .getResultList();
     }
@@ -87,7 +87,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h JOIN t.authors a WHERE h.name = :value AND a.id = :userId", Topic.class)
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.hashtags h JOIN FETCH t.authors a  JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId", Topic.class)
                         .setParameter("value", value)
                         .setParameter("userId", userId)
                         .getResultList();

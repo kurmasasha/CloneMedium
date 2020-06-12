@@ -47,7 +47,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Topic> getTotalListOfTopics() {  return topicDAO.getTotalListOfTopics();  }
+    public List<Topic> getTotalListOfTopics() {
+        List<Topic> result = topicDAO.getTotalListOfTopics();
+        log.info("IN getTotalListOfTopics - {} topics found", result.size());
+        return result;
+    }
 
     @Transactional(readOnly = true)
     @Override
