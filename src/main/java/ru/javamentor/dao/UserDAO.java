@@ -1,5 +1,6 @@
 package ru.javamentor.dao;
 
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserDAO {
     void removeUser(Long id);
 
     User getUserByUsername(String userName);
+
+    User findByActivationCode(String code);
 }

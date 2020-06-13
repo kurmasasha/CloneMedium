@@ -57,3 +57,4 @@ crashlytics-build.properties
 
 # Mysql test db dump
 my-db/*.sql
+/dump/

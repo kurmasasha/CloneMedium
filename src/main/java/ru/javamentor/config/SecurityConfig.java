@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -23,13 +24,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(@Qualifier("userServiceImpl") UserDetailsService userDetailsService) {
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public SecurityConfig(@Qualifier("userDetailServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 /*        auth.inMemoryAuthentication()
                 .withUser("user").password("user").roles("USER").and()
                 .withUser("admin").password("admin").roles("ADMIN");*/
@@ -52,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/registration").anonymous()
+                .antMatchers("/registration", "/activate/*").permitAll()
+
                 .antMatchers("/login").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/*").hasAnyAuthority("USER", "ADMIN")
@@ -60,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder getBCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

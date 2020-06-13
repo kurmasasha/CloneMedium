@@ -41,7 +41,13 @@
         <li class="nav-item px-2">
           <a href="/allTopics" class="nav-link active">Все статьи</a>
         </li>
-
+        <li class="nav-item px-2 d-flex align-items-center">
+          <!-- Форма поиска топиков по хэштегу -->
+          <form class="form-inline">
+            <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#поиск" aria-label="Search">
+            <button id="hashtag_all_button" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+          </form>
+        </li>
       </ul>
 
       <ul class="navbar-nav ml-auto">
@@ -118,6 +124,8 @@
   $('#year').text(new Date().getFullYear());
 </script>
 
+<script type="text/javascript" src="js/getAllTopicsByHashtag.js"></script>
+<script type="text/javascript" src="js/all_topics_events.js"></script>
 
 
 </body>
