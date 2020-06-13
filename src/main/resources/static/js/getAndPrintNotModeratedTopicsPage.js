@@ -29,7 +29,7 @@ async function getAndPrintNotModeratedTopicsPage(page, container) {
                     '<div class="card mb-2">' +
                         '<h5 class="card-header">' + topic.title + '</h5>' +
                             '<div class="card-body">' +
-                                '<h5 class="card-title">' + author_label + authors + '</h5>' +
+                                '<h6 class="card-title">' + author_label + authors + '</h6>' +
                                 '<h6 class="card-title">' + tags + '</h6>' +
                                 '<p class="card-text">' + topic.content + '</p>' +
                                 '<a href="#" class="btn btn-dark">Модерация</a>' +

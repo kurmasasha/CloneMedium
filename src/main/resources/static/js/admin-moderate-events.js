@@ -15,7 +15,7 @@ $(document).ready(function(){
                                 '<button id="p_1" class="page-link page-btn" type="button">1</button>' +
                             '</li>');
 
-        for (let i = 2; i <= Math.ceil(count/pageSize); i++) {
+        for (let i = 2; i <= Math.floor(count/pageSize); i++) {
             page_buttons.append('<li id="pi_' + i + '" class="page-item">' +
                                     '<button id="p_' + i + '" class="page-link page-btn" type="button">' + i + '</button>' +
                                 '</li>');
