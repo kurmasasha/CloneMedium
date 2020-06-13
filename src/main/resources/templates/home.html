@@ -7,12 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet" />
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+          integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 
     <title>Posts of an author</title>
@@ -39,8 +41,11 @@
                 <li class="nav-item px-2 d-flex align-items-center">
                     <!-- Форма поиска топиков по хэштегу -->
                     <form class="form-inline">
-                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
-                        <button id="hashtag_home_button" th:data-user-id="${user.id}" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search"
+                               placeholder="#Поиск" aria-label="Search">
+                        <button id="hashtag_home_button" th:data-user-id="${user.id}"
+                                class="btn btn-primary btn-sm rounded-right" type="button">Искать
+                        </button>
                     </form>
                 </li>
             </ul>
@@ -60,11 +65,13 @@
 <section id="addNewPost" class="py-4 mb-4 bg-light">
     <div class="container" align="right">
         <div style="width:350px;" align="right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTopic">Новая статья</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTopic">Новая статья
+            </button>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="createTopic" tabindex="-1" role="dialog" aria-labelledby="createTopic" aria-hidden="true">
+    <div class="modal fade" id="createTopic" tabindex="-1" role="dialog" aria-labelledby="createTopic"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -74,25 +81,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="titleTopic">Заголовок</label>
-                            <input type="text" class="form-control" id="titleTopic">
-                        </div>
-                        <div class="form-group">
-                            <label for="contentTopic">Содержание</label>
-                            <textarea class="form-control" id="contentTopic" rows="10"></textarea>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label for="titleTopic">Заголовок</label>
+                        <input type="text" class="form-control" id="titleTopic">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentTopic">Содержание</label>
+                        <textarea class="form-control" id="contentTopic" rows="10"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-primary" id="btnCreateTopic">Сохранить</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- POSTS -->
 <section id="posts">
@@ -103,7 +109,7 @@
 
                     <!-- Main Content -->
                     <div class="container" id="topicsContainer" th:data-user-id="${user.id}">
-                        <div class="row" >
+                        <div class="row">
                             <div class="col-lg-8 col-md-10 mx-auto" id="mainBlogContent">
                                 <hr>
 
@@ -145,9 +151,11 @@
 
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
 
 
@@ -157,9 +165,12 @@
 </script>
 <script type="text/javascript" src="js/getAllTopicsByHashtag.js"></script>
 <script type="text/javascript" src="js/home_events.js"></script>
+<script type="text/javascript" src="js/addTopic.js"></script>
 </body>
 
 <script type="text/javascript" src="..static/js/getAllTopicsOfUser.js" th:src="@{/js/getAllTopicsOfUser.js}"></script>
-<script type="text/javascript" src="..static/js/bsBlogTemplateTopics.js" th:src="@{/js/bsBlogTemplateTopics.js}"></script>
+<script type="text/javascript" src="..static/js/bsBlogTemplateTopics.js"
+        th:src="@{/js/bsBlogTemplateTopics.js}"></script>
+
 
 </html>

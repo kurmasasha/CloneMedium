@@ -55,13 +55,17 @@ public class Topic {
         }
     }
 
-
     public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
+    }
+
+    public Topic(String  title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 }
