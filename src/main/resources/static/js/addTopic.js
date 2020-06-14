@@ -1,27 +1,30 @@
-let btnCreateTopic = document.getElementById("btnCreateTopic");
-btnCreateTopic.onclick = function () {
+let btnCreateTopic = document.getElementById("btnCreateTopic")
+let form = document.forms.namedItem('formAddTopic')
+
+
+btnCreateTopic.onclick = async function () {
+    console.log("click btnCreateTopic")
     let topic = {
-        title: document.getElementById('titleTopic'),
-        content: document.getElementById('contentTopic')
+        title: form.elements.namedItem('title').value,
+        content: form.elements.namedItem('content').value,
     }
-    addTopic(topic)
-        .then(response => {
-            console.log(response)
-        })
-        .then(result => {
-            console.log(result)
-        })
-}
 
+    console.log(topic)
 
-async function addTopic(topic) {
-    console.log('start function createTopic')
     await fetch('/api/user/topic/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(topic)
-    });
+    }).then(response => {
+            if (response.ok) {
+                alert("ваша статья успешно добавлена")
+                //$('#modalWindowCreateTopic').modal('hide')
+            } else {
+                alert("что то пошло не так, попробуйте заново")
+            }
+        })
 }
+
 
