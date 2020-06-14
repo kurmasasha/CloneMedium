@@ -51,9 +51,9 @@ public class TopicRestControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(String title, String content) {
-        if (topicService.addTopic(title, content)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Topic> addTopic(@RequestBody Topic topic) {
+        if (topicService.addTopic(topic.getTitle(), topic.getContent())) {
+            return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
