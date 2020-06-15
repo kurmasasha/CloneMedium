@@ -30,6 +30,22 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
 
+    @GetMapping("/admin/notModeratedTopics")
+    public ResponseEntity<List<Topic>> getNotModeratedTopics( ) {
+        return new ResponseEntity<>(topicService.getNotModeratedTopics(), HttpStatus.OK);
+    }
+
+    //TODO пока жестко задаю количество записей на странице
+    @GetMapping("/admin/notModeratedTopicsPage/{page}")
+    public ResponseEntity<List<Topic>> getNotModeratedTopicsPage(@PathVariable(value = "page") Integer page) {
+        return new ResponseEntity<>(topicService.getNotModeratedTopicsPage(page, 5), HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/notModeratedTopicsCount")
+    public ResponseEntity<Long> getNotModeratedTopicsCount() {
+        return new ResponseEntity<>(topicService.getNotModeratedTopicsCount(), HttpStatus.OK);
+    }
+
     @GetMapping("/admin/TopicsByUser/{id}")
     public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);

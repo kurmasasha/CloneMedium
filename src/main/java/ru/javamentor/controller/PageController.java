@@ -1,6 +1,7 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,18 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
-import ru.javamentor.service.UserServiceImpl;
-
-import java.util.List;
 
 @Controller
 public class PageController {
 
     public final TopicService topicService;
 
+    @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userService;
 
@@ -45,7 +43,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
-    public String allTopicsPage(Model model) {
+    public String allTopicsPage() {
         return "all_topics_page";
     }
 
@@ -58,6 +56,16 @@ public class PageController {
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
         return "topic";
+    }
+
+    @GetMapping("/admin/allUsers")
+    public String adminAllUsersPage() {
+        return "admin-all_users";
+    }
+
+    @GetMapping("/admin/moderate")
+    public String adminModeratePage() {
+        return "admin-moderate";
     }
 }
 

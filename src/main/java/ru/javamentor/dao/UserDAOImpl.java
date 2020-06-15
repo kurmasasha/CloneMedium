@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role", User.class).getResultList();
     }
 
     @Override
@@ -45,14 +45,14 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByUsername(String userName) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.username =:username", User.class)
+        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role WHERE u.username =:username", User.class)
                 .setParameter("username", userName)
                 .getSingleResult();
     }
 
     @Override
     public User findByActivationCode(String code) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.activationCode =:code", User.class)
+        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role WHERE u.activationCode =:code", User.class)
                 .setParameter("code", code)
                 .getSingleResult();
     }

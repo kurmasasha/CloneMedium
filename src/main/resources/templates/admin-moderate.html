@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <title>Admin</title>
+</head>
+<body>
+<!------------------------------------------------------- Шапка ------------------------------------------------------->
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 m-0 p-0" href="/home">
+        <img src="/img/logo.svg" width="32" height="32" class="d-inline-block align-top m-1" alt="..."> <h2 class="d-inline-block m-0">Clone medium</h2></a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/logout">Выход</a>
+        </li>
+    </ul>
+</nav>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<div class="container-fluid">
+    <div class="row">
+        <!------------------------------------------ Боковая панель ------------------------------------------>
+        <nav th:replace="side-bar :: admin-left_side_bar"></nav>
+        <!---------------------------------------------------------------------------------------------------->
+
+        <!------------------------------------ Область отображения данных ------------------------------------>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>Section title</h2>
+            <div id="moderate_cards"></div>
+
+            <nav>
+                <ul id="page_buttons" class="pagination">
+                </ul>
+            </nav>
+        </main>
+        <!---------------------------------------------------------------------------------------------------->
+    </div>
+</div>
+
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/getNotModeratedTopicsCount.js"></script>
+<script src="/js/getAndPrintNotModeratedTopicsPage.js"></script>
+<script src="/js/admin-moderate-events.js"></script>
+
+</body>
+</html>
