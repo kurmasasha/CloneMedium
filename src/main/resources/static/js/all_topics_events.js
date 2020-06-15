@@ -1,5 +1,5 @@
 /**
- * Обработчики событий на странице all_topics_page.html (/allTopics)
+ * Обработчики событий на странице __all_topics_page.html (/allTopics)
  */
 
 /**

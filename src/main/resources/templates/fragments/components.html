@@ -43,10 +43,11 @@
                 <li class="nav-item align-items-center">
                     <!-- Форма поиска топиков по хэштегу -->
                     <form class="form-inline">
+
                         <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
 
                         <div sec:authorize="isAuthenticated()">
-                        <button id="hashtag_home_button" data-user-id="1" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+                            <button id="hashtag_home_button" data-user-id="1" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
                         </div>
 
                         <div sec:authorize="isAnonymous()">

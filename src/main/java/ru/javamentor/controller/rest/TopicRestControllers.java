@@ -30,6 +30,10 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return список отмодерированных топиков для ROOT страницы
+     */
     @GetMapping("/user/totalModeratedTopicsList")
     public ResponseEntity<List<Topic>> getModeratredTotalTopics( ) {
         return new ResponseEntity<>(topicService.getAllModeratedTopics(), HttpStatus.OK);
