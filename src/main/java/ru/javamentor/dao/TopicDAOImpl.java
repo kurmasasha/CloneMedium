@@ -93,5 +93,14 @@ public class TopicDAOImpl implements TopicDAO {
                         .getResultList();
     }
 
+    /**
+     *
+     * @return список всех отмодерированных топиков
+     */
+    @Override
+    public List<Topic> getAllModeratedTopics() {
+        return entityManager.createQuery("SELECT t FROM Topic t WHERE t.isModerate = TRUE order by t.dateCreated DESC", Topic.class).getResultList();
+    }
+
 
 }

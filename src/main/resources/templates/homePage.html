@@ -48,14 +48,28 @@
 
 <body>
 
+
+
 <!-- Navigation -->
 <div th:insert="fragments/components :: navBarMenu"></div>
 
 <div th:insert="fragments/components :: header"></div>
 
-<main role="main" class="container">
+
+<!-- ADD NEW POST BUTTON-->
+<section id="addNewPost" class="py-4 mb-4 bg-light">
+    <div class="container" align="right">
+        <div style="width:350px;" align="right">
+            <button type="button" class="btn btn-primary">Новая статья</button>
+        </div>
+    </div>
+</section>
+
+
+<main role="main" class="container" id="topicsContainer" th:data-user-id="${user.id}">
     <div class="row">
         <div class="col-md-8 blog-main">
+
 
             <div class="blog-post"  id="mainBlogContent">
                 <hr>
@@ -68,9 +82,6 @@
             </nav>
 
         </div>
-        <!-- /.blog-main -->
-
-<!--        <aside th:insert="fragments/components :: asideBar"></aside>-->
 
         <aside class="col-md-4 blog-sidebar" th:fragment="asideBar">
 
@@ -125,11 +136,11 @@
 </script>
 
 <script type="text/javascript" src="js/getAllTopicsByHashtag.js"></script>
-<script type="text/javascript" src="js/all_topics_events.js"></script>
+<script type="text/javascript" src="js/home_events.js"></script>
 
 
 </body>
 
-<script type="text/javascript" src="..static/js/justAllTopics.js" th:src="@{/js/justAllTopics.js}"></script>
+<script type="text/javascript" src="..static/js/getAllTopicsOfUser.js" th:src="@{/js/getAllTopicsOfUser.js}"></script>
 
 </html>

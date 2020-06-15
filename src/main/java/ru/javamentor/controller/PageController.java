@@ -37,13 +37,15 @@ public class PageController {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
-        return "home";
+        //return "home";
+        return "homePage";
     }
 
-    @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
-    public String allTopicsPage(Model model) {
-        return "all_topics_page";
-    }
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String allTopicsPage(Model model) {
+//        //return "all_topics_page";
+//        return "rootPage";
+//    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String noLoggedPage(Model model) {

@@ -4,9 +4,8 @@
 
 <header class="masthead" style="height: 5rem; padding:0" th:fragment="header">
     <!--    style="background-image: url('img/home-bg.jpg')"-->
-    <div class="overlay">
 
-    </div>
+    <div class="overlay">   </div>
 
     <div class="container">
         <!--        <div class="row">-->
@@ -28,7 +27,7 @@
     <div class="container">
 
         <div sec:authorize="isAuthenticated()">
-            <a class="btn btn-success"th:href="@{/allTopics}">Главная</a>
+            <a class="btn btn-success"th:href="@{/}">Главная</a>
         </div>
 
         <div sec:authorize="isAnonymous()">
@@ -45,7 +44,15 @@
                     <!-- Форма поиска топиков по хэштегу -->
                     <form class="form-inline">
                         <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
+
+                        <div sec:authorize="isAuthenticated()">
                         <button id="hashtag_home_button" data-user-id="1" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+                        </div>
+
+                        <div sec:authorize="isAnonymous()">
+                            <button id="hashtag_all_button" data-user-id="1" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
+                        </div>
+
                     </form>
                 </li>
 

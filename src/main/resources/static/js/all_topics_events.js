@@ -12,7 +12,7 @@ $('#hashtag_all_button').on('click', function() {
         hashtag = hashtag.slice(1);
     }
     if (hashtag !== '') {
-        getAllTopicsByHashtag('all', hashtag, $('#allTopics'));
+        getAllTopicsByHashtag('all', hashtag, $('#mainBlogContent'));
     } else {
         let contentContainer = $('#mainBlogContent');
         contentContainer.empty();

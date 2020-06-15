@@ -139,4 +139,15 @@ public class TopicServiceImpl implements TopicService {
         log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
         return result;
     }
+
+    /**
+     *
+     * @return список всех отмодерированных топиков
+     */
+    @Override
+    public List<Topic> getAllModeratedTopics() {
+        List<Topic> result = topicDAO.getAllModeratedTopics();
+        log.info("IN getAllModeratedTopics - {} topics found", result.size());
+        return result;
+    }
 }
