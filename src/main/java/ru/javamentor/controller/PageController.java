@@ -33,16 +33,16 @@ public class PageController {
 
     @RequestMapping(value = "/*", method = RequestMethod.GET)
     public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
-        boolean flagMes = false;
-        boolean flagWar = false;
+        boolean flagMessage = false;
+        boolean flagWarning = false;
         if (message != null && !message.equals("")) {
-            flagMes = true;
+            flagMessage = true;
         }
         if (warning != null && !warning.equals("")) {
-            flagWar = true;
+            flagWarning = true;
         }
-        model.addAttribute("flagMes", flagMes);
-        model.addAttribute("flagWar", flagWar);
+        model.addAttribute("flagMes", flagMessage);
+        model.addAttribute("flagWar", flagWarning);
         return "login";
     }
 
