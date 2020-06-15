@@ -36,22 +36,29 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean addUser(User user) {
+        user.setActivated(false);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.addUser(user);
 
         if(!StringUtils.isEmpty(user.getUsername())) {
-            String message = String.format(
-                    "Hello, %s \n" +
-                            "Welcome to CloneMedium. Please visit next link for confirm email: %s"+
-                    "activate/%s",
-                    user.getUsername(),
-                    link,
-                    user.getActivationCode()
-            );
-            mailSender.send(user.getUsername(), "Activation code", message);
+            sendCode(user);
         }
         return true;
+    }
+
+    @Transactional
+    @Override
+    public void sendCode(User user) {
+        String message = String.format(
+                "Hello, %s \n" +
+                        "Welcome to CloneMedium. Please visit next link for confirm email: <a target=\"_blank\" href=" + "%s" +
+                        "registration/activate/%s" + ">Confirm</a>",
+                user.getUsername(),
+                link,
+                user.getActivationCode()
+        );
+        mailSender.send(user.getUsername(), "Activation code", message);
     }
 
     @Transactional
@@ -93,6 +100,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setActivationCode(null);
+        user.setActivated(true);
         userDAO.updateUser(user);
 
         return true;
@@ -101,6 +109,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(String email) {
         return userDAO.getUserByUsername(email);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
     }
 
 }
