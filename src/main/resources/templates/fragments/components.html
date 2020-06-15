@@ -1,16 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" th:fragment="navBarMenu">
-    <div class="container">
-        <a class="navbar-brand" href="/home">Clone of the Medium - Login</a>
+<header class="masthead" style="height: 5rem; padding:0" th:fragment="header">
+    <!--    style="background-image: url('img/home-bg.jpg')"-->
+    <div class="overlay">
 
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            Menu
-            <i class="fas fa-bars"></i>
-        </button>
+    </div>
+
+    <div class="container">
+        <!--        <div class="row">-->
+        <!--            <div class="col-lg-3 col-md-7 mx-auto">-->
+        <!--                <div class="site-heading">-->
+        <!--                    <h3>Clean Blog</h3>-->
+        <!--                    <span class="subheading">A Blog Theme by Start Bootstrap</span>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+
+</header>
+
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" th:fragment="navBarMenu">
+
+    <div class="container">
+
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-success"th:href="@{/allTopics}">Главная</a>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a class="btn btn-success" th:href="@{/login}">Login</a>
+            <a class="btn btn-primary" th:href="@{/registration}">Register</a>
+        </div>
+
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
 
@@ -26,36 +51,13 @@
 
             </ul>
         </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-success"th:href="@{/logout}">Выход</a>
+        </div>
+
     </div>
 </nav>
-
-<!-- Logged Navigation -->
-<!--<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" th:fragment="navBarLoggedMenu">-->
-
-<!--    <div class="container">-->
-<!--        <a class="navbar-brand" href="/home">Clone of the Medium - Login</a>-->
-
-<!--        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            Menu-->
-<!--            <i class="fas fa-bars"></i>-->
-<!--        </button>-->
-
-<!--        <div class="collapse navbar-collapse" id="navbarResponsive">-->
-
-<!--            <ul class="navbar-nav ml-auto">-->
-
-<!--                <li class="nav-item align-items-center">-->
-<!--                    &lt;!&ndash; Форма поиска топиков по хэштегу &ndash;&gt;-->
-<!--                    <form class="form-inline">-->
-<!--                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">-->
-<!--                        <button id="hashtag_home_button" data-user-id="1" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>-->
-<!--                    </form>-->
-<!--                </li>-->
-
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
 
 
 <!-- Footer -->
@@ -98,6 +100,8 @@
         </div>
     </div>
 </footer>
+
+
 
 </body>
 </html>

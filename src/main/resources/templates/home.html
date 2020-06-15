@@ -23,50 +23,62 @@
 
 <body>
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+<div th:insert="fragments/components :: navBarMenu"></div>
 
-    <div class="container">
+<!--<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">-->
 
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!--    <div class="container">-->
 
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+<!--        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
 
-            <ul class="navbar-nav">
+<!--        <div class="collapse navbar-collapse" id="navbarCollapse">-->
 
-                <li class="nav-item px-2">
+<!--            <ul class="navbar-nav">-->
 
-                    <a href="/home" class="nav-link">Главная</a>
+<!--                <li class="nav-item px-2">-->
 
-                    <div>
-                        <input type="hidden" id="userId" name="userId" th:value="${user.id}"/>
-                    </div>
+<!--                    <a href="/home" class="nav-link">Главная</a>-->
 
-                </li>
+<!--                    <div>-->
+<!--                        <input type="hidden" id="userId" name="userId" th:value="${user.id}"/>-->
+<!--                    </div>-->
 
-                <li class="nav-item px-2">
-                    <a href="/" class="nav-link active">Все статьи</a>
-                </li>
-                <li class="nav-item px-2 d-flex align-items-center">
-                    <!-- Форма поиска топиков по хэштегу -->
-                    <form class="form-inline">
-                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
-                        <button id="hashtag_home_button" th:data-user-id="${user.id}" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>
-                    </form>
-                </li>
-            </ul>
+<!--                    <div sec:authorize="isAuthenticated()">-->
+<!--                        <a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>-->
+<!--                    </div>-->
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="login.html" class="nav-link">
-                        <a href="/logout" class="nav-link">Выход</a>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!--                    <div sec:authorize="isAnonymous()">-->
+<!--                        <a class="btn btn-success" th:href="@{/login}">Login</a>-->
+<!--                        <a class="btn btn-primary" th:href="@{/register}">Register</a>-->
+<!--                    </div>-->
+
+<!--                </li>-->
+
+<!--                <li class="nav-item px-2">-->
+<!--                    <a href="/allTopics" class="nav-link active">Все статьи</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item px-2 d-flex align-items-center">-->
+<!--                    &lt;!&ndash; Форма поиска топиков по хэштегу &ndash;&gt;-->
+<!--                    <form class="form-inline">-->
+<!--                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">-->
+<!--                        <button id="hashtag_home_button" th:data-user-id="${user.id}" class="btn btn-primary btn-sm rounded-right" type="button">Искать</button>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                <li class="nav-item">-->
+<!--                    <a href="login.html" class="nav-link">-->
+<!--                        <a href="/logout" class="nav-link">Выход</a>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
 
 
 <!-- ADD NEW POST BUTTON -->
@@ -137,6 +149,7 @@
 
 <script type="text/javascript" src="js/getAllTopicsByHashtag.js"></script>
 <script type="text/javascript" src="js/home_events.js"></script>
+
 </body>
 
 <script type="text/javascript" src="..static/js/getAllTopicsOfUser.js" th:src="@{/js/getAllTopicsOfUser.js}"></script>

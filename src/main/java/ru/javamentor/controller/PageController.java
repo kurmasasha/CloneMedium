@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserServiceImpl;
-
-import java.util.List;
 
 @Controller
 public class PageController {
@@ -51,7 +48,8 @@ public class PageController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String noLoggedPage(Model model) {
         //return "no_logged_home_dbg";
-        return "z";
+        return "rootPage";
+        //return "all_topics_page";
     }
 
     @GetMapping("/index")
