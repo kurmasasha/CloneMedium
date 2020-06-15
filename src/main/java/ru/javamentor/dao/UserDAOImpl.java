@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUsers() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role", User.class).getResultList();
     }
 
     @Override
@@ -55,6 +55,7 @@ public class UserDAOImpl implements UserDAO {
             user = null;
         }
         return user;
+
     }
 
     @Override

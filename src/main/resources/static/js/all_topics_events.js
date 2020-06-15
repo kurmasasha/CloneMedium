@@ -12,11 +12,13 @@ $('#hashtag_all_button').on('click', function() {
         hashtag = hashtag.slice(1);
     }
     if (hashtag !== '') {
-        getAllTopicsByHashtag('all', hashtag, $('#allTopics'));
+        getAllTopicsByHashtag('all', hashtag, $('#allTopics'))
+            .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
     } else {
         let contentContainer = $('#mainBlogContent');
         contentContainer.empty();
         contentContainer.append('<hr>');
-        justAllTopics();
+        justAllTopics()
+            .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
     }
 });

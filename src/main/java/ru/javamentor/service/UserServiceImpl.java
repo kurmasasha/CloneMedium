@@ -1,5 +1,6 @@
 package ru.javamentor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,12 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javamentor.dao.UserDAO;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
@@ -67,7 +70,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+        List<User> result = userDAO.getAllUsers();
+        log.info("IN getAllUsers - {} users found", result.size());
+        return result;
     }
 
     @Transactional
