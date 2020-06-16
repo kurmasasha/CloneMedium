@@ -1,19 +1,8 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #17a2b8;
     height: 100vh;
 }
 
-#home .container-fluid #tab-pane{
-    background-color: #EAEAEA;
-}
-
-#left-menu{
-    margin-left: 20px;
-}
-
-#hashtag_input, #hashtag_button {
+#hashtag_input, #hashtag_home_button {
     border-radius: 0px;
 }
 
