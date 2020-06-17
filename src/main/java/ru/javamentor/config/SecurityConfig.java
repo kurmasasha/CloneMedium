@@ -56,12 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/registration/**", "/activate/*").permitAll()
+                .antMatchers("/registration/**", "/activate/*", "/api/free-user/**").permitAll()
                 .antMatchers("/webjars/bootstrap/4.3.1/css/bootstrap.min.css", "/css/style.css",
                         "/webjars/jquery/3.4.1/jquery.min.js", "/webjars/bootstrap/4.3.1/js/bootstrap.min.js",
                         "/js/all_topics_events.js", "/js/getAllTopicsByHashtag.js", "/js/getAndPrintAllTopics.js").permitAll()
 
-                .antMatchers("/login", "/", "/api/free-user/**").anonymous()
+                .antMatchers("/login", "/").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();

@@ -6,7 +6,7 @@
  */
 
 async function getAllTopicsByHashtag(id, hashtag, container) {
-    fetch(`http://localhost:5050/api/admin/get-all-topics-by-hashtag/${hashtag}`, {
+    fetch(`http://localhost:5050/api/free-user/get-all-topics-by-hashtag/${hashtag}`, {
         headers: {
             uid: id
         }
