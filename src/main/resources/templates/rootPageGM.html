@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Home</title>
+</head>
+<body>
+<!------------------------------------------------------- Шапка ------------------------------------------------------->
+<nav th:replace="fragments/header :: home_header"></nav>
+<!--<div>-->
+<!--    <input type="hidden" id="userId" name="userId" th:value="${user.id}"/>-->
+<!--</div>-->
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Топики ------------------------------------------------------>
+
+<div class="d-flex justify-content-center py-5">
+    <div id="topics_container" class="container mx-0 py-3">
+        <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
+        <!--        th:data-user-id="${user.id}"-->
+    </div>
+    <!-- Кнопка добавления топика -->
+    <div class="my-3">
+        <button type="button" class="btn btn-dark">Новая статья</button>
+    </div>
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/root_events.js"></script>
+<script src="/js/getAllTopicsByHashtag.js"></script>
+<script src="/js/getAndPrintAllTopics.js"></script>
+</body>
+</html>

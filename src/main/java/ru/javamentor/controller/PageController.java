@@ -37,12 +37,15 @@ public class PageController {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
-        return "homePage";
+        //return "homePage";
+        return "homePageGM";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String noLoggedPage(Model model) {
-        return "rootPage";
+
+        //return "rootPage";
+        return "rootPageGM";
     }
 
     @GetMapping("/index")

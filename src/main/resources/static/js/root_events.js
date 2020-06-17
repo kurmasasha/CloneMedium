@@ -1,14 +1,14 @@
 /**
- * Обработчики событий на странице __home.html (/home)
+ * Обработчики событий на странице rootPage.html ( / )
  */
 
 /**
  * Нажатие на кнопку поиска по хэштегу
  */
 $(document).ready(function(){
-    $('#main_page_link').addClass('active');
-    let uid = $('#userId').val();
-    getAndPrintAllTopicsOfUser(uid, $('#topics_container'))
+    $('#all_page_link').addClass('active');
+    //let uid = $('#userId').val();
+    getAndPrintAllTopics( $('#topics_container'))
         .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
 
     /**
@@ -26,7 +26,7 @@ $(document).ready(function(){
         } else {
             let contentContainer = $('#topics_container');
             contentContainer.empty();
-            getAndPrintAllTopicsOfUser(uid, contentContainer)
+            getAndPrintAllTopics(contentContainer)
                 .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
         }
     });
