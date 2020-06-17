@@ -18,7 +18,7 @@
     </div>
     <p>Если письмо не пришло нажмите сюда: </p>
     <form action="/registration/resend" method="post">
-        <input type="hidden" name="username" th:value="${regUser.username}">
+        <input type="hidden" name="code" th:value="${regUser.activationCode}">
         <button type="submit" class="btn btn-primary" name="btnSend">Отправить повторно</button>
     </form>
     <br>
