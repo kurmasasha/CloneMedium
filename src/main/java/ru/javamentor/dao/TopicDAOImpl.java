@@ -52,16 +52,16 @@ public class TopicDAOImpl implements TopicDAO {
 
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
-        return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r  WHERE a.id = :userId", Topic.class).setParameter("userId", userId).getResultList();
+        return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r  WHERE a.id = :userId GROUP BY t.id", Topic.class).setParameter("userId", userId).getResultList();
     }
     @Override
 
     public List<Topic> getTotalListOfTopics() {
-        return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r", Topic.class).getResultList();
+        return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH t.authors a LEFT JOIN FETCH a.role r GROUP BY t.id", Topic.class).getResultList();
     }
 
     public List<User> getAllUsersByTopicId(Long topicId) {
-        return entityManager.createQuery("SELECT u FROM Topic t JOIN t.authors u WHERE t.id = :topicId", User.class).setParameter("topicId", topicId).getResultList();
+        return entityManager.createQuery("SELECT u FROM Topic t LEFT JOIN FETCH t.authors u WHERE t.id = :topicId GROUP BY u.id", User.class).setParameter("topicId", topicId).getResultList();
     }
 
     /**
@@ -72,7 +72,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE h.name = :value", Topic.class)
+                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value GROUP BY t.id", Topic.class)
                         .setParameter("value", value)
                         .getResultList();
     }
@@ -86,7 +86,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId", Topic.class)
+                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId GROUP BY t.id", Topic.class)
                         .setParameter("value", value)
                         .setParameter("userId", userId)
                         .getResultList();
@@ -113,7 +113,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE t.isModerate = false", Topic.class)
+                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false GROUP BY t.id", Topic.class)
                 .setFirstResult(pageSize * (page-1))
                 .setMaxResults(pageSize)
                 .getResultList();
