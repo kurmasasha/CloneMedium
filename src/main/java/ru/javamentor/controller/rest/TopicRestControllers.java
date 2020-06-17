@@ -27,7 +27,7 @@ public class TopicRestControllers {
         this.topicService = topicService;
     }
 
-    @GetMapping("/user/totalTopicsList")
+    @GetMapping("/free-user/totalTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics( ) {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class TopicRestControllers {
      * @param uid - строковое представление id пользователя, связанного с топиками
      * @return список топиков
      */
-    @GetMapping("/admin/get-all-topics-by-hashtag/{tag}")
+    @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag, @RequestHeader String uid) {
         tag = "#" + tag;
         List<Topic> topics = null;
