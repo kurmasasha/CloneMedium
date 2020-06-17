@@ -20,5 +20,8 @@ public interface UserService {
 
     public User getUserByEmail(String email);
 
+    User getUserByUsername(String username);
+
+    void sendCode(User user);
 
 }

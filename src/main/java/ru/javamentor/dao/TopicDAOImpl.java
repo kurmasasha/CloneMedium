@@ -73,7 +73,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h WHERE h.name = :value", Topic.class)
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE h.name = :value", Topic.class)
                         .setParameter("value", value)
                         .getResultList();
     }
@@ -87,7 +87,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN t.hashtags h JOIN t.authors a WHERE h.name = :value AND a.id = :userId", Topic.class)
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId", Topic.class)
                         .setParameter("value", value)
                         .setParameter("userId", userId)
                         .getResultList();
@@ -103,4 +103,41 @@ public class TopicDAOImpl implements TopicDAO {
     }
 
 
+    /**
+     * Поиск не модерированных топиков.
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopics() {
+        return entityManager
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE t.isModerate = false", Topic.class)
+                .getResultList();
+    }
+
+    /**
+     * Поиск не модерированных топиков.
+     * Добавлена пагинация.
+     * @param page - номер страницы
+     * @param pageSize - размер страницы
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
+        return entityManager
+                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE t.isModerate = false", Topic.class)
+                .setFirstResult(pageSize * (page-1))
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    /**
+     * Определение числа  не модерированных топиков
+     * @return
+     */
+    @Override
+    public Long getNotModeratedTopicsCount() {
+        return entityManager
+                .createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.isModerate = false", Long.class)
+                .getSingleResult();
+    }
 }

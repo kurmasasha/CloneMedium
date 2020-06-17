@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
-import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -49,9 +48,9 @@ public class TopicServiceImpl implements TopicService {
     @Transactional(readOnly = true)
     @Override
     public List<Topic> getTotalListOfTopics() {
-
-        return topicDAO.getTotalListOfTopics().stream().sorted(Comparator.comparing(Topic::getDateCreated).reversed()).collect(Collectors.toList());
-
+        List<Topic> result = topicDAO.getTotalListOfTopics();
+        log.info("IN getTotalListOfTopics - {} topics found", result.size());
+        return result;
     }
 
     @Transactional(readOnly = true)
@@ -149,5 +148,39 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> result = topicDAO.getAllModeratedTopics();
         log.info("IN getAllModeratedTopics - {} topics found", result.size());
         return result;
+    }
+
+    /**
+     * Поиск не модерированных топиков
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopics() {
+        List<Topic> result = topicDAO.getNotModeratedTopics();
+        log.info("IN getNotModeratedTopics - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск не модерированных топиков.
+     * Добавлена пагинация.
+     * @param page - номер страницы
+     * @param pageSize - размер страницы
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
+        List<Topic> result = topicDAO.getNotModeratedTopicsPage(page, pageSize);
+        log.info("IN getNotModeratedTopicsPage - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Определение числа не модерированных топиков
+     * @return
+     */
+    @Override
+    public Long getNotModeratedTopicsCount() {
+        return topicDAO.getNotModeratedTopicsCount();
     }
 }

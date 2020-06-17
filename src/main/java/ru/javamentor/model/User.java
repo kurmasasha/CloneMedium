@@ -40,10 +40,10 @@ public class User implements UserDetails {
     private String matchingPassword;
 
     @Column
-    private String email;
+    private String activationCode;
 
     @Column
-    private String activationCode;
+    private boolean isActivated;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")

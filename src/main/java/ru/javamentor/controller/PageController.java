@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserServiceImpl;
+
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -28,7 +31,17 @@ public class PageController {
 
 
     @RequestMapping(value = "/*", method = RequestMethod.GET)
-    public String loginPage() {
+    public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
+        boolean flagMes = false;
+        boolean flagWar = false;
+        if (message != null && !message.equals("")) {
+            flagMes = true;
+        }
+        if (warning != null && !warning.equals("")) {
+            flagWar = true;
+        }
+        model.addAttribute("flagMes", flagMes);
+        model.addAttribute("flagWar", flagWar);
         return "login";
     }
 
@@ -37,8 +50,7 @@ public class PageController {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
-        //return "homePage";
-        return "homePageGM";
+        return "home";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -57,6 +69,16 @@ public class PageController {
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
         return "topic";
+    }
+
+    @GetMapping("/admin/allUsers")
+    public String adminAllUsersPage() {
+        return "admin-all_users";
+    }
+
+    @GetMapping("/admin/moderate")
+    public String adminModeratePage() {
+        return "admin-moderate";
     }
 }
 

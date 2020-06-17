@@ -1,21 +1,25 @@
 package ru.javamentor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javamentor.dao.UserDAO;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+@Slf4j
+public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
@@ -32,21 +36,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public boolean addUser(User user) {
+        user.setActivated(false);
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.addUser(user);
 
-        if(!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s \n" +
-                            "Welcome to CloneMedium. Please visit next link for confirm email: %s"+
-                    "activate/%s",
-                    user.getUsername(),
-                    link,
-                    user.getActivationCode()
-            );
-            mailSender.send(user.getEmail(), "Activation code", message);
+        if(!StringUtils.isEmpty(user.getUsername())) {
+            sendCode(user);
         }
         return true;
+    }
+
+    @Transactional
+    @Override
+    public void sendCode(User user) {
+        String message = String.format(
+                "Hello, %s \n" +
+                        "Welcome to CloneMedium. Please visit next link for confirm email: <a target=\"_blank\" href=" + "%s" +
+                        "registration/activate/%s" + ">Confirm</a>",
+                user.getUsername(),
+                link,
+                user.getActivationCode()
+        );
+        mailSender.send(user.getUsername(), "Activation code", message);
     }
 
     @Transactional
@@ -58,12 +70,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+        List<User> result = userDAO.getAllUsers();
+        log.info("IN getAllUsers - {} users found", result.size());
+        return result;
     }
 
     @Transactional
     @Override
     public boolean updateUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userDAO.updateUser(user);
         return true;
     }
@@ -85,6 +100,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.setActivationCode(null);
+        user.setActivated(true);
         userDAO.updateUser(user);
 
         return true;
@@ -95,16 +111,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userDAO.getUserByUsername(email);
     }
 
-
-    @Transactional
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
-        User currentUser = userDAO.getUserByUsername(userName);
-        if (currentUser == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        } else {
-            return currentUser;
-        }
+    public User getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
     }
 
 }

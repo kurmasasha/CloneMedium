@@ -22,13 +22,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(@Qualifier("userServiceImpl") UserDetailsService userDetailsService) {
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public SecurityConfig(@Qualifier("userDetailServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 /*        auth.inMemoryAuthentication()
                 .withUser("user").password("user").roles("USER").and()
                 .withUser("admin").password("admin").roles("ADMIN");*/
@@ -63,10 +66,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/registration", "/activate/*").permitAll()
                 .antMatchers("/api/user/totalModeratedTopicsList/").permitAll()
+                .antMatchers("/registration/**", "/activate/*").permitAll()
 
                 .antMatchers("/login").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/*").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();
+    }
+
+    @Bean
+    public PasswordEncoder getBCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

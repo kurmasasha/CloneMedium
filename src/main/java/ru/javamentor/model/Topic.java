@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.*;
 import java.util.Set;
 
@@ -23,9 +25,13 @@ public class Topic {
     private Long id;
 
     @Column
+    @NotEmpty
+    @NotNull
     private String title;
 
     @Column
+    @NotEmpty
+    @NotNull
     private String content;
 
     @Column(updatable = false)
@@ -50,13 +56,17 @@ public class Topic {
         }
     }
 
-
     public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
+    }
+
+    public Topic(String  title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 }
