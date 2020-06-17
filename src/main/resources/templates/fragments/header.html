@@ -1,59 +1,115 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 
 <nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-
     <div class="collapse navbar-collapse d-flex" id="navbarCollapse">
-
         <ul class="navbar-nav mr-auto flex-grow-1">
 
-            <div sec:authorize="isAuthenticated()">
-                <li id="main_page_link" class="nav-item">
-                    <a class="nav-link" href="/home">Главная</a>
-                </li>
-            </div>
+            <li sec:authorize="isAuthenticated()" id="main_page_link" class="nav-item">
+                <a class="nav-link" href="/home">Главная</a>
+            </li>
 
-            <div sec:authorize="isAnonymous()">
-                <li id="login_page_link" class="nav-item">
-                    <a class="nav-link" href="/login">Вход</a>
-                </li>
-
-                <li id="to_reg_page_link" class="nav-item">
-                    <a class="nav-link" href="/registration">Регистрация</a>
-                </li>
-
-            </div>
-
-            <li id="all_page_link" class="nav-item">
+            <li sec:authorize="isAuthenticated()" id="all_page_link" class="nav-item">
                 <a class="nav-link" href="/">Все статьи</a>
             </li>
+
+            <li sec:authorize="isAnonymous()" id="login_page_link" class="nav-item">
+                <a class="nav-link" href="/login">Вход</a>
+            </li>
+
+            <li sec:authorize="isAnonymous()" id="to_reg_page_link" class="nav-item">
+                <a class="nav-link" href="/registration">Регистрация</a>
+            </li>
+
+
+<!--            <div sec:authorize="isAnonymous()">-->
+<!--                <a class="btn btn-success" th:href="@{/login}">Login</a>-->
+<!--                <a class="btn btn-primary" th:href="@{/registration}">Register</a>-->
+<!--            </div>-->
 
             <li class="nav-item px-2 d-flex align-items-center">
                 <!-- Форма поиска топиков по хэштегу -->
                 <form class="form-inline">
-                    <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">
-
-                    <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать</button>
+                    <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search"
+                           placeholder="#Поиск" aria-label="Search">
+                    <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать
+                    </button>
                 </form>
             </li>
         </ul>
-
         <ul class="navbar-nav mr-auto">
-            <div sec:authorize="isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Выход</a>
-                </li>
-            </div>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/logout">Выход</a>
+            </li>
+            <li sec:authorize="isAnonymous()" class="nav-item">
+                <a class="nav-link" href="/login">Войти</a>
+            </li>
         </ul>
-
     </div>
 </nav>
 
 </body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+
+<!--<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+
+<!--<body>-->
+
+<!--<nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">-->
+
+<!--    <div class="collapse navbar-collapse d-flex" id="navbarCollapse">-->
+
+<!--        <ul class="navbar-nav mr-auto flex-grow-1">-->
+
+<!--            <div sec:authorize="isAuthenticated()">-->
+<!--                <li id="main_page_link" class="nav-item">-->
+<!--                    <a class="nav-link" href="/home">Главная</a>-->
+<!--                </li>-->
+<!--            </div>-->
+
+<!--            <div sec:authorize="isAnonymous()">-->
+<!--                <li id="login_page_link" class="nav-item">-->
+<!--                    <a class="nav-link" href="/login">Вход</a>-->
+<!--                </li>-->
+
+<!--                <li id="to_reg_page_link" class="nav-item">-->
+<!--                    <a class="nav-link" href="/registration">Регистрация</a>-->
+<!--                </li>-->
+
+<!--            </div>-->
+
+<!--            <li id="all_page_link" class="nav-item">-->
+<!--                <a class="nav-link" href="/">Все статьи</a>-->
+<!--            </li>-->
+
+<!--            <li class="nav-item px-2 d-flex align-items-center">-->
+<!--                &lt;!&ndash; Форма поиска топиков по хэштегу &ndash;&gt;-->
+<!--                <form class="form-inline">-->
+<!--                    <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search" placeholder="#Поиск" aria-label="Search">-->
+
+<!--                    <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать</button>-->
+<!--                </form>-->
+<!--            </li>-->
+<!--        </ul>-->
+
+<!--        <ul class="navbar-nav mr-auto">-->
+<!--            <div sec:authorize="isAuthenticated()">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="/logout">Выход</a>-->
+<!--                </li>-->
+<!--            </div>-->
+<!--        </ul>-->
+
+<!--    </div>-->
+<!--</nav>-->
+
+<!--</body>-->
+<!--</html>-->
 
 
 <!--<div sec:authorize="isAuthenticated()">-->

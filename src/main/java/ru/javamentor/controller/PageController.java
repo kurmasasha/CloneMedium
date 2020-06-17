@@ -1,14 +1,13 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
@@ -21,8 +20,9 @@ public class PageController {
 
     public final TopicService topicService;
 
+    @Qualifier("userDetailServiceImpl")
     @Autowired
-    private UserServiceImpl userService;
+    private UserDetailsService userService;
 
     @Autowired
     public PageController(TopicService topicService) {
@@ -50,14 +50,15 @@ public class PageController {
         User user = (User) userService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
-        return "home";
+        return "homePage";
+        //return "homePageGM";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String noLoggedPage(Model model) {
 
-        //return "rootPage";
-        return "rootPageGM";
+        return "rootPage";
+        //return "rootPageGM";
     }
 
     @GetMapping("/index")

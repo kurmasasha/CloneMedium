@@ -2,6 +2,7 @@ package ru.javamentor.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.javamentor.config.handler.LoginSuccessHandler;
 
@@ -65,10 +67,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/registration", "/activate/*").permitAll()
+                .antMatchers("/webjars/bootstrap/4.3.1/css/bootstrap.min.css", "/css/style.css",
+                        "/webjars/jquery/3.4.1/jquery.min.js", "/webjars/bootstrap/4.3.1/js/bootstrap.min.js",
+                        "/js/all_topics_events.js", "/js/getAllTopicsByHashtag.js", "/js/getAndPrintAllTopics.js").permitAll()
                 .antMatchers("/api/user/totalModeratedTopicsList/").permitAll()
-                .antMatchers("/registration/**", "/activate/*").permitAll()
+                .antMatchers("/api/user/totalTopicsList/").permitAll()
+                //.antMatchers("/registration/**", "/activate/*").permitAll()
 
-                .antMatchers("/login").anonymous()
+                .antMatchers("/login", "/").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/*").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();
