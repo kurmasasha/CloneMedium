@@ -63,8 +63,6 @@
             <version>3.0.4.RELEASE</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
