@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -23,8 +23,18 @@
 <body>
 
 <!-- Modal -->
-<div class="modal fade" id="modalWindowCreateTopic" tabindex="-1" role="dialog" aria-labelledby="createTopic"
-     aria-hidden="true">
+<div
+        class="modal fade"
+        id="modalWindowCreateTopic"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="createTopic"
+        aria-hidden="true"
+>
+
+<!--    контейнер уведомлений создания топиков-->
+    <div id="containerAlertsCreatedTopic"></div>
+
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -34,7 +44,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" name="formAddTopic">
+                <form name="formAddTopic">
                     <div class="form-group">
                         <label for="titleTopic">Заголовок</label>
                         <input type="text" class="form-control" id="titleTopic" name="title">
@@ -46,7 +56,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">Закрыть</button>
                 <button type="button" class="btn btn-primary" id="btnCreateTopic">Сохранить</button>
             </div>
         </div>
