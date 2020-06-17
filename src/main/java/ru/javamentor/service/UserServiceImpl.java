@@ -63,6 +63,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public User findByActivationCode(String code) {
+        return userDAO.findByActivationCode(code);
+    }
+
+    @Transactional
+    @Override
     public User getUserById(Long id) {
         return userDAO.getUserById(id);
     }

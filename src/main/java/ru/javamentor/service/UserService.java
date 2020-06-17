@@ -24,4 +24,6 @@ public interface UserService {
 
     void sendCode(User user);
 
+    User findByActivationCode(String code);
+
 }
