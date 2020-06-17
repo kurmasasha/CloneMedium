@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.javamentor.model.Topic;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class PageController {
     }
 
 
-    @RequestMapping(value = "/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
         boolean flagMes = false;
         boolean flagWar = false;
@@ -59,9 +58,9 @@ public class PageController {
         return "all_topics_page";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String indexPage() {
-        return "index";
+        return "root";
     }
   
     @GetMapping("/topic/{id}")
