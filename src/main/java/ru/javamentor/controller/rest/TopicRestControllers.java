@@ -110,4 +110,18 @@ public class TopicRestControllers {
         }
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
+
+    @DeleteMapping("/admin/topic/delete/{id}")
+    public ResponseEntity<String> deleteTopicByAdmin(@PathVariable Long id) {
+        if (topicService.removeTopicById(id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Cannot delete this topic, try again", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/admin/topic/{id}")
+    public ResponseEntity<Topic> getNomoderatedTopicById(@PathVariable Long id) {
+        return new ResponseEntity<>(topicService.getTopicById(id), HttpStatus.OK);
+    }
 }
