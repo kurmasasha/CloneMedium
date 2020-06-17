@@ -54,8 +54,8 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getAllTopicsByUserId(Long userId) {
         return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r  WHERE a.id = :userId", Topic.class).setParameter("userId", userId).getResultList();
     }
-
     @Override
+
     public List<Topic> getTotalListOfTopics() {
         return entityManager.createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r", Topic.class).getResultList();
     }
