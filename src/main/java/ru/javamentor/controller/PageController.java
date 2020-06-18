@@ -1,5 +1,6 @@
 package ru.javamentor.controller;
 
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -7,30 +8,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
+import ru.javamentor.util.validation.ValidatorFormEditUser;
+import javax.validation.Valid;
 
 @Controller
 public class PageController {
 
+    private final UserService userService;
     public final TopicService topicService;
+    private final ValidatorFormEditUser validatorFormEditUser;
+
 
     @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    public PageController(TopicService topicService) {
+    public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
+        this.userService = userService;
         this.topicService = topicService;
+        this.validatorFormEditUser = validatorFormEditUser;
     }
 
 
@@ -66,7 +68,7 @@ public class PageController {
     public String indexPage() {
         return "root";
     }
-  
+
     @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
@@ -84,10 +86,24 @@ public class PageController {
     }
 
     @GetMapping("/admin/form_edit_user/{id}")
-    public String adminGetFormEditUser(@PathVariable Long id, Model model) {
+    public String adminShowFormEditUser(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "form_edit_user";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String adminUserUpdate(@Valid User user, BindingResult bindingResult) {
+        validatorFormEditUser.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "form_edit_user";
+        }
+        User userFromBD = userService.getUserById(user.getId());
+        userFromBD.setFirstName(user.getFirstName());
+        userFromBD.setLastName(user.getLastName());
+        userFromBD.setPassword(user.getPassword());
+        userService.updateUser(userFromBD);
+        return "redirect:/admin/allUsers";
     }
 }
 

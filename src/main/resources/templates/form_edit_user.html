@@ -5,17 +5,22 @@
     <title>Форма редактирования пользователя</title>
 </head>
 <body>
+<div class="container w-50">
     <h1>Форма редактирования пользователя</h1>
-    <form action="/admin/update" method="post" th:object="${user}" id="formEditUser">
+
+    <form th:action="@{/admin/user/update}" th:method="POST" th:object="${user}">
+        <input type="hidden" id="id" th:field="*{id}">
 
         <div class="form-group">
             <label for="firstName">Имя</label>
             <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
         </div>
 
         <div class="form-group">
             <label for="lastName">Фамилия</label>
             <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+            <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
         </div>
 
         <div class="form-group">
@@ -26,16 +31,18 @@
         <div class="form-group">
             <label for="password">Пароль</label>
             <input type="password" class="form-control" id="password" name="password">
+            <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
         </div>
 
         <div class="form-group">
             <label for="matchingPassword">Подтверждение пароля</label>
             <input type="password" class="form-control" id="matchingPassword" name="matchingPassword">
+            <span class="text-danger" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Редактировать</button>
-
+        <button type="submit" class="btn btn-primary" id="btnEditUser">Редактировать</button>
     </form>
+</div>
 
 </body>
 
@@ -47,6 +54,5 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script
         src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script src="js/editUser.js"></script>
 
 </html>
