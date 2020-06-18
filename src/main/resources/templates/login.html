@@ -6,6 +6,7 @@
     <head>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"  id="bootstrap-css">
             <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 <!--        <link rel="stylesheet" type="text/css" href="/css/style.css"/>-->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -27,6 +28,22 @@
         </div>
         <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
         <a href="/registration" class="btn btn-lg btn-success btn-block">Registration</a>
+        <div>
+            <span class="social h5">Login through social networks</span>
+        </div>
+
+        <div class="social-buttons">
+            <div class="social facebook-f">
+                <a href="/authorization/facebookAuthorization" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>
+            </div>
+            <div class="social google-plus-g">
+                <a href="#" target="_blank"><i class="fab fa-google-plus-g fa-2x"></i></a>
+            </div>
+            <div class="social vk">
+                <a href="/authorization/vkAuthorization" target="_blank"><i class="fab fa-vk fa-2x"></i></a>
+            </div>
+        </div>
+
     </div>
 </form>
 </body>

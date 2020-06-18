@@ -22,18 +22,22 @@ public class User implements UserDetails {
 
     @NotNull
     @NotEmpty
+    @Column
     private String firstName;
 
     @NotNull
     @NotEmpty
+    @Column
     private String lastName;
 
     @NotNull
     @NotEmpty
+    @Column(unique = true)
     private String username;
 
     @NotNull
     @NotEmpty
+    @Column
     private String password;
 
     @Transient
