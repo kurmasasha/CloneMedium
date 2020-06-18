@@ -1,19 +1,7 @@
-/**
- * Поиск топиков по связанному с ними хэштегу
- * @param id - id потльзователя
- * @param hashtag - текстовое представление хэштега
- * @param container - контейнер на странице, в который будут выведены результаты
- */
-
-async function getAllTopicsByHashtag(id, hashtag, container) {
-    fetch(`http://localhost:5050/api/free-user/get-all-topics-by-hashtag/${hashtag}`, {
-        headers: {
-            uid: id
-        }
-    })
+async function getAndPrintAllTopicsOfUser(userId, container) {
+    fetch(`http://localhost:5050/api/admin/TopicsByUser/${userId}`)
         .then(result => result.json())
         .then(arrayTopics => {
-            container.empty();
             arrayTopics.forEach(function (topic) {
                 let tags = '';
                 $.each(topic.hashtags, function (index, tag) {
@@ -35,12 +23,15 @@ async function getAllTopicsByHashtag(id, hashtag, container) {
                 }
                 let card =
                     '<div class="card mb-2">' +
-                    '<h5 class="card-header">' + topic.title + '</h5>' +
-                    '<div class="card-body">' +
-                    '<h6 class="card-title">' + author_label + authors + '</h6>' +
-                    '<h6 class="card-title">' + tags + '</h6>' +
-                    '<p class="card-text">' + topic.content + '</p>' +
-                    '</div>' +
+                        '<div class="card-header d-flex justify-content-between">' +
+                            '<h5>' + topic.title + '</h5>' +
+                            '<h5>' + topic.dateCreated + '</h5>' +
+                        '</div>' +
+                        '<div class="card-body">' +
+                            '<h6 class="card-title">' + author_label + authors + '</h6>' +
+                            '<h6 class="card-title">' + tags + '</h6>' +
+                            '<p class="card-text">' + topic.content + '</p>' +
+                        '</div>' +
                     '</div>';
                 container.append(card);
             })

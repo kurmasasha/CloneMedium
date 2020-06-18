@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+
+<nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="collapse navbar-collapse d-flex" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto d-flex flex-grow-1">
+            <a class="navbar-brand col-2 p-0" href="/home">
+            <img src="/img/logo.svg" width="32" height="32" class="d-inline-block align-top m-1" alt="..."> <h2 class="d-inline-block m-0">Clone medium</h2></a>
+            <li sec:authorize="isAuthenticated()" id="main_page_link" class="nav-item ml-5">
+                <a class="nav-link" href="/home">Главная</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" id="all_page_link" class="nav-item">
+                <a class="nav-link" href="/allTopics">Все статьи</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item px-2 d-flex align-items-center">
+                <!-- Форма поиска топиков по хэштегу -->
+            <form class="form-inline">
+                <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search"
+                       placeholder="#Поиск" aria-label="Search">
+                <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать
+                </button>
+            </form>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/logout">Выход</a>
+            </li>
+            <li sec:authorize="isAnonymous()" class="nav-item">
+                <a class="nav-link" href="/login">Войти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+</body>
+</html>

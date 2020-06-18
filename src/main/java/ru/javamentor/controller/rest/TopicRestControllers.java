@@ -3,12 +3,14 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,7 @@ public class TopicRestControllers {
         this.topicService = topicService;
     }
 
-    @GetMapping("/user/totalTopicsList")
+    @GetMapping("/free-user/totalTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics( ) {
         return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
     }
@@ -99,7 +101,7 @@ public class TopicRestControllers {
      * @param uid - строковое представление id пользователя, связанного с топиками
      * @return список топиков
      */
-    @GetMapping("/admin/get-all-topics-by-hashtag/{tag}")
+    @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag, @RequestHeader String uid) {
         tag = "#" + tag;
         List<Topic> topics = null;
