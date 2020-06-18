@@ -3,6 +3,8 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
@@ -69,8 +71,11 @@ public class TopicRestControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(@RequestBody Topic topic) {
-        if (topicService.addTopic(topic.getTitle(), topic.getContent())) {
+    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, @AuthenticationPrincipal User user) {
+        Set<User> users = new HashSet<>();
+        users.add(user);
+        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), users);
+        if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
