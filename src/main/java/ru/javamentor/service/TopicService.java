@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TopicService {
 
-    boolean addTopic(String title, String content);
+    Topic addTopic(String title, String content);
 
     Topic getTopicById(Long id);
 

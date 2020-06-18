@@ -25,46 +25,9 @@
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
-<!-- Modal -->
-<div
-        class="modal fade"
-        id="modalWindowCreateTopic"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="createTopic"
-        aria-hidden="true"
->
-
-  <!--    контейнер уведомлений создания топиков-->
-  <div id="containerAlertsCreatedTopic"></div>
-
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Создать статью</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form name="formAddTopic">
-          <div class="form-group">
-            <label for="titleTopic">Заголовок</label>
-            <input type="text" class="form-control" id="titleTopic" name="title">
-          </div>
-          <div class="form-group">
-            <label for="contentTopic">Содержание</label>
-            <textarea class="form-control" id="contentTopic" rows="10" name="content"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">Закрыть</button>
-        <button type="button" class="btn btn-primary" id="btnCreateTopic">Сохранить</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!------------------------------------------------ Модальное окно ----------------------------------------------------->
+<nav th:replace="fragments/add-topic-modal :: add-topic_modal"></nav>
+<!--------------------------------------------------------------------------------------------------------------------->
 
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
