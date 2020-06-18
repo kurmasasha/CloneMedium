@@ -2,7 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="add-topic_modal" class="modal fade" id="modalWindowCreateTopic" tabindex="-1" role="dialog" aria-labelledby="createTopic" aria-hidden="true">
+<!--------------------------------- Кнопка вызова модального окна (добавление топика) --------------------------------->
+<div th:fragment="add-topic_button" class="my-3">
+    <button id="modal_add-topic_button" type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalWindowCreateTopic">
+        Новая статья
+    </button>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<!--------------------------------------------------- Модальное окно -------------------------------------------------->
+<div th:fragment="add-topic_modal"
+     class="modal fade" id="modalWindowCreateTopic" tabindex="-1" role="dialog"
+     aria-labelledby="createTopic" aria-hidden="true">
     <div id="alerts_container"></div>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,12 +36,14 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">Закрыть</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">
+                    Закрыть
+                </button>
                 <button type="button" class="btn btn-primary" id="add_topic_button">Сохранить</button>
             </div>
         </div>
     </div>
 </div>
-
+<!--------------------------------------------------------------------------------------------------------------------->
 </body>
 </html>

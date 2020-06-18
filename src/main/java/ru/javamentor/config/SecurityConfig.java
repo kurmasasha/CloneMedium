@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/registration/**", "/activate/*", "/api/free-user/**",
+                                        "/js/util/topic-in-card.js",
                                         "/webjars/bootstrap/4.3.1/css/bootstrap.min.css",
                                         "/css/style.css", "/img/logo.svg",
                                         "/webjars/jquery/3.4.1/jquery.min.js",
