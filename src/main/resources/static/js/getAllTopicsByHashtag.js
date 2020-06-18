@@ -33,13 +33,14 @@ async function getAllTopicsByHashtag(id, hashtag, container) {
                 if (topic.authors.length > 1) {
                     author_label = 'Авторы: ';
                 }
+                let date = new Date(Date.parse(topic.dateCreated));
                 let card =
                     '<div class="card mb-2">' +
                         '<div class="card-header d-flex justify-content-between">' +
                             '<a href="/topic/' + topic.id + '">' +
                                 '<h5>' + topic.title + '</h5>' +
                             '</a>' +
-                            '<h5>' + topic.dateCreated + '</h5>' +
+                            '<h6>' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + '</h6>' +
                         '</div>' +
                         '<div class="card-body">' +
                             '<h6 class="card-title">' + author_label + authors + '</h6>' +
