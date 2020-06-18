@@ -11,6 +11,7 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.UserValidator;
+
 import javax.validation.Valid;
 
 @Controller

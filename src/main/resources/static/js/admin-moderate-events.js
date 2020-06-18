@@ -68,7 +68,8 @@ $(document).ready(function () {
             .then(result => {
                 title.append(result.title);
                 body.append('<p>');
-                body.append(result.content);
+                let text = linkify(result.content);
+                body.append(text);
                 body.append('</p>');
             });
     });
