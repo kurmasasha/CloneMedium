@@ -43,11 +43,11 @@ $(document).ready(function(){
                     .then(result => result.json())
                     .then(topic => {
                         let card = topicInCard(topic);
-                        successAddTopic($('#alerts_container'), 2000)
+                        successAddTopic(alert_container, 2000)
                         $('#topics_container').prepend(card);
                     })
             } else {
-                failAddTopic($('#alerts_container'), 2000)
+                failAddTopic(alert_container, 2000)
             }
         }
     });
