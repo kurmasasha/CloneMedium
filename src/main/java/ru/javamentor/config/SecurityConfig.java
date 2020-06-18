@@ -34,9 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-/*        auth.inMemoryAuthentication()
-                .withUser("user").password("user").roles("USER").and()
-                .withUser("admin").password("admin").roles("ADMIN");*/
     }
 
     @Override
@@ -57,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/registration/**", "/activate/*", "/api/free-user/**",
+                                        "/js/util/topic-in-card.js",
                                         "/webjars/bootstrap/4.3.1/css/bootstrap.min.css",
                                         "/css/style.css", "/img/logo.svg",
                                         "/webjars/jquery/3.4.1/jquery.min.js",
