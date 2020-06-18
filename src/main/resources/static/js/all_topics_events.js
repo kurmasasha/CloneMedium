@@ -5,7 +5,7 @@
 $(document).ready(function() {
     $('#all_page_link').addClass('active');
     getAndPrintAllTopics($('#topics_container'))
-        .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
+        .then();
 
     /**
      * Нажатие на кнопку поиска по хэштегу
@@ -18,12 +18,12 @@ $(document).ready(function() {
         }
         if (hashtag !== '') {
             getAllTopicsByHashtag('all', hashtag, $('#topics_container'))
-                .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
+                .then();
         } else {
             let contentContainer = $('#topics_container');
             contentContainer.empty();
             getAndPrintAllTopics(contentContainer)
-                .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
+                .then();
         }
     });
 })

@@ -25,11 +25,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public Topic addTopic(String title, String content) {
+    public Topic addTopic(String title, String content, Set<User> users) {
         try {
-            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Set<User> users = new HashSet<>();
-            users.add(currentUser);
             Topic topic = new Topic(title, content, users, LocalDateTime.now(), false);
             topicDAO.addTopic(topic);
             log.info("IN addTopic - topic: {} successfully added", topic);
