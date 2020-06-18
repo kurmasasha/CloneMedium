@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${site.link}")
     private String link;
@@ -38,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public boolean addUser(User user) {
         user.setActivated(false);
         user.setActivationCode(UUID.randomUUID().toString());
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.addUser(user);
 
         if(!StringUtils.isEmpty(user.getUsername())) {
@@ -84,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean updateUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.updateUser(user);
         return true;
     }
