@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма редактирования пользователя</title>
+</head>
+<body>
+    <h1>Форма редактирования пользователя</h1>
+    <form action="/admin/update" method="post" th:object="${user}" id="formEditUser">
+
+        <div class="form-group">
+            <label for="firstName">Имя</label>
+            <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{username}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+
+        <div class="form-group">
+            <label for="matchingPassword">Подтверждение пароля</label>
+            <input type="password" class="form-control" id="matchingPassword" name="matchingPassword">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Редактировать</button>
+
+    </form>
+
+</body>
+
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="js/editUser.js"></script>
+
+</html>
