@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
+import ru.javamentor.service.UserService;
 
 @Controller
 public class PageController {
@@ -22,7 +23,10 @@ public class PageController {
 
     @Qualifier("userDetailServiceImpl")
     @Autowired
-    private UserDetailsService userService;
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public PageController(TopicService topicService) {
@@ -47,7 +51,7 @@ public class PageController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
+        User user = (User) userDetailsService.loadUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
         return "home";
@@ -77,6 +81,13 @@ public class PageController {
     @GetMapping("/admin/moderate")
     public String adminModeratePage() {
         return "admin-moderate";
+    }
+
+    @GetMapping("/admin/form_edit_user/{id}")
+    public String adminGetFormEditUser(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "form_edit_user";
     }
 }
 
