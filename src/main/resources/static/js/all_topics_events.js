@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
     $('#all_page_link').addClass('active');
-    getAndPrintAllTopics($('#topics_container'))
+    getAndPrintModeratedTopics($('#topics_container'))
         .then();
 
     /**
@@ -22,7 +22,7 @@ $(document).ready(function() {
         } else {
             let contentContainer = $('#topics_container');
             contentContainer.empty();
-            getAndPrintAllTopics(contentContainer)
+            getAndPrintModeratedTopics(contentContainer)
                 .then();
         }
     });

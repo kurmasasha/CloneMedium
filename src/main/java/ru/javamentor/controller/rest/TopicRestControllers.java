@@ -29,9 +29,9 @@ public class TopicRestControllers {
         this.topicService = topicService;
     }
 
-    @GetMapping("/free-user/totalTopicsList")
+    @GetMapping("/free-user/moderatedTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics( ) {
-        return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
+        return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
     }
 
     @GetMapping("/admin/notModeratedTopics")

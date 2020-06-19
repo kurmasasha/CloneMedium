@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         "/webjars/bootstrap/4.3.1/js/bootstrap.min.js",
                                         "/js/all_topics_events.js",
                                         "/js/getAllTopicsByHashtag.js",
-                                        "/js/getAndPrintAllTopics.js").permitAll()
+                                        "/js/getAndPrintModeratedTopics.js").permitAll()
 
                 .antMatchers("/login", "/").anonymous()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")

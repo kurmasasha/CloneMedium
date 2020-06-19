@@ -42,6 +42,12 @@ public interface TopicService {
     List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value);
 
     /**
+     * Поиск модерированных топиков
+     * @return список топиков
+     */
+    List<Topic> getModeratedTopics();
+
+    /**
      * Поиск не модерированных топиков
      * @return список топиков
      */

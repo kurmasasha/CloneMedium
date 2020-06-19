@@ -139,6 +139,17 @@ public class TopicServiceImpl implements TopicService {
     }
 
     /**
+     * Поиск модерированных топиков
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getModeratedTopics() {
+        List<Topic> result = topicDAO.getModeratedTopics();
+        log.info("IN getModeratedTopics - {} topics found", result.size());
+        return result;
+    }
+
+    /**
      * Поиск не модерированных топиков
      * @return список топиков
      */
