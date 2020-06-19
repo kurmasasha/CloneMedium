@@ -34,11 +34,11 @@ public class Facebook {
         this.roleService = roleService;
     }
 
-    public static final String PROTECTED_RESOURCE_URL = "https://api.vk.com/method/users.get?v=" + VkontakteApi.VERSION;
+    public final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email";
 
-    final String clientId = "307372773616495";
-    final String clientSecret = "b8687788f300561bb70131728272e269";
-    final String customScope = "email";
+   final String clientId = "307372773616495";
+   final String clientSecret = "b8687788f300561bb70131728272e269";
+   final String customScope = "email";
 
     @Getter
     final OAuth20Service service = new ServiceBuilder(clientId)
@@ -52,19 +52,19 @@ public class Facebook {
             .scope(customScope)
             .build();
 
-    public OAuth2AccessToken toGetTokenVK(String code) throws InterruptedException, ExecutionException, IOException {
+    public OAuth2AccessToken toGetTokenFacebook(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
-    public User toCreateUser(OAuth2AccessToken token, String email) throws InterruptedException, ExecutionException, IOException {
+    public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(token, request);
         try (Response response = service.execute(request)) {
             JSONObject jsonObj = new JSONObject(response.getBody());
-            JSONArray jArray = jsonObj.getJSONArray("response");
-            String password = jArray.getJSONObject(0).optString("id");
-            String firstName = jArray.getJSONObject(0).optString("first_name");
-            String lastName = jArray.getJSONObject(0).optString("last_name");
+            String password = jsonObj.getString("id");
+            String email = jsonObj.getString("email");
+            String firstName = jsonObj.getString("first_name");
+            String lastName = jsonObj.getString("last_name");
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
         }
