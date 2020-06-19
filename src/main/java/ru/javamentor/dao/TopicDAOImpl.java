@@ -66,6 +66,7 @@ public class TopicDAOImpl implements TopicDAO {
 
     /**
      * Поиск топиков по значению связанного с ними хэштега.
+     *
      * @param value - строковое представление хэштега
      * @return список топиков
      */
@@ -79,8 +80,9 @@ public class TopicDAOImpl implements TopicDAO {
 
     /**
      * Поиск топиков пользователя по значению связанного с ними хэштега.
+     *
      * @param userId - id пользователя
-     * @param value - строковое представление хэштега
+     * @param value  - строковое представление хэштега
      * @return список топиков
      */
     @Override
@@ -105,6 +107,7 @@ public class TopicDAOImpl implements TopicDAO {
 
     /**
      * Поиск не модерированных топиков.
+     *
      * @return список топиков
      */
     @Override
@@ -117,7 +120,8 @@ public class TopicDAOImpl implements TopicDAO {
     /**
      * Поиск не модерированных топиков.
      * Добавлена пагинация.
-     * @param page - номер страницы
+     *
+     * @param page     - номер страницы
      * @param pageSize - размер страницы
      * @return список топиков
      */
@@ -132,6 +136,7 @@ public class TopicDAOImpl implements TopicDAO {
 
     /**
      * Определение числа  не модерированных топиков
+     *
      * @return
      */
     @Override
