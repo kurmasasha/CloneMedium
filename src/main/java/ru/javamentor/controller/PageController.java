@@ -12,8 +12,8 @@ import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
-import ru.javamentor.util.validation.ValidatorFormEditUser;
-import javax.validation.Valid;
+import java.security.Principal;
+
 
 @Controller
 public class PageController {
@@ -23,10 +23,8 @@ public class PageController {
     private final ValidatorFormEditUser validatorFormEditUser;
 
 
-    @Qualifier("userDetailServiceImpl")
     @Autowired
-    private UserDetailsService userDetailsService;
-
+    private UserService userService;
 
     @Autowired
     public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
@@ -52,8 +50,8 @@ public class PageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userDetailsService.loadUserByUsername(currentUser.getUsername());
+    public String homePage(Model model, Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
         return "home";
