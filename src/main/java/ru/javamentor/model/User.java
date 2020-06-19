@@ -36,7 +36,6 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull
-    @NotEmpty
     @Column
     private String password;
 

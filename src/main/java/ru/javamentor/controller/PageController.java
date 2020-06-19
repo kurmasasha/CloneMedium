@@ -2,17 +2,14 @@ package ru.javamentor.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
-import java.security.Principal;
+import ru.javamentor.util.validation.ValidatorFormEditUser;
+import javax.validation.Valid;
 
 
 @Controller
@@ -21,10 +18,6 @@ public class PageController {
     private final UserService userService;
     public final TopicService topicService;
     private final ValidatorFormEditUser validatorFormEditUser;
-
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
@@ -96,7 +89,9 @@ public class PageController {
         User userFromBD = userService.getUserById(user.getId());
         userFromBD.setFirstName(user.getFirstName());
         userFromBD.setLastName(user.getLastName());
-        userFromBD.setPassword(user.getPassword());
+        if (!user.getPassword().equals("")) {
+            userFromBD.setPassword(user.getPassword());
+        }
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
     }
