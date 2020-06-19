@@ -14,15 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
+import ru.javamentor.service.UserService;
+
+import java.security.Principal;
 
 @Controller
 public class PageController {
 
     public final TopicService topicService;
 
-    @Qualifier("userDetailServiceImpl")
     @Autowired
-    private UserDetailsService userService;
+    private UserService userService;
 
     @Autowired
     public PageController(TopicService topicService) {
@@ -46,8 +48,8 @@ public class PageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
+    public String homePage(Model model, Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
         return "home";
