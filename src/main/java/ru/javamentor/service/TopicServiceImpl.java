@@ -104,15 +104,6 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
-    @Transactional
-    @Override
-    public List<Topic> getAllTopicsOfAuthenticatedUser() {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Topic> result = topicDAO.getAllTopicsByUserId(currentUser.getId());
-        log.info("IN getAllTopicsOFAuthenticatedUser - {} topics found", result.size());
-        return result;
-    }
-
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      * @param value - строковое представление хэштега
@@ -135,6 +126,17 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
         log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск модерированных топиков
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getModeratedTopics() {
+        List<Topic> result = topicDAO.getModeratedTopics();
+        log.info("IN getModeratedTopics - {} topics found", result.size());
         return result;
     }
 

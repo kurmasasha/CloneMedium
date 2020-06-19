@@ -18,11 +18,7 @@
     <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
   </div>
   <!-- Кнопка добавления топика -->
-  <div class="my-3">
-    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalWindowCreateTopic">
-      Новая статья
-    </button>
-  </div>
+  <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
 </div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -35,7 +31,7 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/all_topics_events.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
-<script src="/js/getAndPrintAllTopics.js"></script>
+<script src="/js/getAndPrintModeratedTopics.js"></script>
 <script src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/add-topic_events.js"></script>

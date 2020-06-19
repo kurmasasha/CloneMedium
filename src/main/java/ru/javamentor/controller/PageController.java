@@ -50,10 +50,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, Principal principal) {
-        User user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
-        model.addAttribute("userId", user.getId());
+    public String homePage() {
         return "home";
     }
 

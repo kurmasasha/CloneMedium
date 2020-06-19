@@ -93,13 +93,24 @@ public class TopicDAOImpl implements TopicDAO {
     }
 
     /**
+     * Поиск модерированных топиков.
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getModeratedTopics() {
+        return entityManager
+                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = true GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+                .getResultList();
+    }
+
+    /**
      * Поиск не модерированных топиков.
      * @return список топиков
      */
     @Override
     public List<Topic> getNotModeratedTopics() {
         return entityManager
-                .createQuery("SELECT t FROM Topic t JOIN FETCH t.authors a JOIN FETCH t.hashtags h JOIN FETCH a.role r WHERE t.isModerate = false ORDER BY t.dateCreated  DESC", Topic.class)
+                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
                 .getResultList();
     }
 
