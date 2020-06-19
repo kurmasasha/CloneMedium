@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.javamentor.model.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -46,29 +45,20 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByUsername(String userName) {
-        User user;
         try {
-            user = entityManager.createQuery("SELECT u FROM User u WHERE u.username =:username", User.class)
+            return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role WHERE u.username =:username", User.class)
                     .setParameter("username", userName)
                     .getSingleResult();
-        } catch (NoResultException e) {
-            user = null;
+        } catch (Exception e) {
+            return null;
         }
-        return user;
-
     }
 
     @Override
     public User findByActivationCode(String code) {
-        User user;
-        try {
-            user = entityManager.createQuery("SELECT u FROM User u WHERE u.activationCode =:code", User.class)
-                    .setParameter("code", code)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            user = null;
-        }
-        return user;
+        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role WHERE u.activationCode =:code", User.class)
+                .setParameter("code", code)
+                .getSingleResult();
     }
 
 

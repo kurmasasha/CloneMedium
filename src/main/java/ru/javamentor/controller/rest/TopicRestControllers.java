@@ -3,12 +3,16 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -25,9 +29,9 @@ public class TopicRestControllers {
         this.topicService = topicService;
     }
 
-    @GetMapping("/user/totalTopicsList")
+    @GetMapping("/free-user/moderatedTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics( ) {
-        return new ResponseEntity<>(topicService.getTotalListOfTopics(), HttpStatus.OK);
+        return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
     }
 
     @GetMapping("/admin/notModeratedTopics")
@@ -46,14 +50,9 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getNotModeratedTopicsCount(), HttpStatus.OK);
     }
 
-    @GetMapping("/admin/TopicsByUser/{id}")
-    public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
-        return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
-    }
-
     @GetMapping("/user/MyTopics")
-    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser() {
-        return new ResponseEntity<>(topicService.getAllTopicsOfAuthenticatedUser(), HttpStatus.OK);
+    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/user/allUsersByTopicId/{id}")
@@ -67,8 +66,11 @@ public class TopicRestControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(@RequestBody Topic topic) {
-        if (topicService.addTopic(topic.getTitle(), topic.getContent())) {
+    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, @AuthenticationPrincipal User user) {
+        Set<User> users = new HashSet<>();
+        users.add(user);
+        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), users);
+        if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -99,7 +101,7 @@ public class TopicRestControllers {
      * @param uid - строковое представление id пользователя, связанного с топиками
      * @return список топиков
      */
-    @GetMapping("/admin/get-all-topics-by-hashtag/{tag}")
+    @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag, @RequestHeader String uid) {
         tag = "#" + tag;
         List<Topic> topics = null;

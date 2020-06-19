@@ -2,20 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <title>Форма регистрации</title>
+    <title>Форма редактирования пользователя</title>
 </head>
 <body>
-
 <div class="container w-50">
-    <h2 class="p-2">Форма регистрации пользователя</h2>
-    <form action="/registration" method="post" th:object="${user}">
+    <h1>Форма редактирования пользователя</h1>
+
+    <form th:action="@{/admin/user/update}" th:method="POST" th:object="${user}">
+        <input type="hidden" id="id" th:field="*{id}">
 
         <div class="form-group">
             <label for="firstName">Имя</label>
             <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
-            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</span>
+            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
         </div>
 
         <div class="form-group">
@@ -26,8 +25,7 @@
 
         <div class="form-group">
             <label for="email">Электронная почта</label>
-            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{username}">
-            <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            <input type="text" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{username}" readonly>
         </div>
 
         <div class="form-group">
@@ -42,11 +40,19 @@
             <span class="text-danger" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Регистрация</button>
-
+        <button type="submit" class="btn btn-primary" id="btnEditUser">Редактировать</button>
     </form>
 </div>
-<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
+
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
 </html>

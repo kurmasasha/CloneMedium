@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Home</title>
+    <title>Root</title>
 </head>
 <body>
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
@@ -17,22 +17,15 @@
     <div id="topics_container" class="container mx-0 py-3">
         <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
     </div>
-    <!-- Кнопка добавления топика -->
-    <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
 </div>
-<!--------------------------------------------------------------------------------------------------------------------->
 
-<!------------------------------------------------ Модальное окно ----------------------------------------------------->
-<div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/home_events.js"></script>
+<script src="/js/all_topics_events.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
-<script src="/js/getAndPrintAllTopicsOfUser.js"></script>
-<script src="/js/addTopic.js"></script>
+<script src="/js/getAndPrintModeratedTopics.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
-<script src="/js/add-topic_events.js"></script>
 </body>
 </html>

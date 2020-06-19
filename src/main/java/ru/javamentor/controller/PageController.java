@@ -1,5 +1,6 @@
 package ru.javamentor.controller;
 
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -7,50 +8,49 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.javamentor.model.Topic;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
+import ru.javamentor.service.UserService;
+import java.security.Principal;
+
 
 @Controller
 public class PageController {
 
+    private final UserService userService;
     public final TopicService topicService;
+    private final ValidatorFormEditUser validatorFormEditUser;
 
-    @Qualifier("userDetailServiceImpl")
-    @Autowired
-    private UserDetailsService userService;
 
     @Autowired
-    public PageController(TopicService topicService) {
+    private UserService userService;
+
+    @Autowired
+    public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
+        this.userService = userService;
         this.topicService = topicService;
+        this.validatorFormEditUser = validatorFormEditUser;
     }
 
 
-    @RequestMapping(value = "/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
-        boolean flagMes = false;
-        boolean flagWar = false;
+        boolean flagMessage = false;
+        boolean flagWarning = false;
         if (message != null && !message.equals("")) {
-            flagMes = true;
+            flagMessage = true;
         }
         if (warning != null && !warning.equals("")) {
-            flagWar = true;
+            flagWarning = true;
         }
-        model.addAttribute("flagMes", flagMes);
-        model.addAttribute("flagWar", flagWar);
+        model.addAttribute("flagMes", flagMessage);
+        model.addAttribute("flagWar", flagWarning);
         return "login";
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
-        model.addAttribute("user", user);
-        model.addAttribute("userId", user.getId());
+    public String homePage() {
         return "home";
     }
 
@@ -59,11 +59,11 @@ public class PageController {
         return "all_topics_page";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String indexPage() {
-        return "index";
+        return "root";
     }
-  
+
     @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
@@ -78,6 +78,27 @@ public class PageController {
     @GetMapping("/admin/moderate")
     public String adminModeratePage() {
         return "admin-moderate";
+    }
+
+    @GetMapping("/admin/form_edit_user/{id}")
+    public String adminShowFormEditUser(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "form_edit_user";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String adminUserUpdate(@Valid User user, BindingResult bindingResult) {
+        validatorFormEditUser.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "form_edit_user";
+        }
+        User userFromBD = userService.getUserById(user.getId());
+        userFromBD.setFirstName(user.getFirstName());
+        userFromBD.setLastName(user.getLastName());
+        userFromBD.setPassword(user.getPassword());
+        userService.updateUser(userFromBD);
+        return "redirect:/admin/allUsers";
     }
 }
 

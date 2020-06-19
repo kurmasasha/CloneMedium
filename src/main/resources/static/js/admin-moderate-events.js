@@ -5,8 +5,7 @@ $(document).ready(function () {
 
     admin_moderate_link.addClass('active');
     getAndPrintNotModeratedTopicsPage(1, moderate_cards)
-        .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
-    //размер страницы жестко задан
+        .then();
     let pageSize = 5;
     getNotModeratedTopicsCount().then(count => {
         let page_buttons = $('#page_buttons');
@@ -14,8 +13,7 @@ $(document).ready(function () {
         page_buttons.append('<li id="pi_1" class="page-item active">' +
             '<button id="p_1" class="page-link page-btn" type="button">1</button>' +
             '</li>');
-
-        for (let i = 2; i <= Math.floor(count / pageSize); i++) {
+        for (let i = 2; i <= Math.ceil(count/pageSize); i++) {
             page_buttons.append('<li id="pi_' + i + '" class="page-item">' +
                 '<button id="p_' + i + '" class="page-link page-btn" type="button">' + i + '</button>' +
                 '</li>');
@@ -29,7 +27,7 @@ $(document).ready(function () {
         if (new_page_number > page_number || new_page_number < page_number) {
             moderate_cards.empty();
             getAndPrintNotModeratedTopicsPage(new_page_number, moderate_cards)
-                .then(); // чтобы предупреждение не мазолило глаза, но по сути это лишнее, т.к. все-равно возвращается промис :)
+                .then();
             $('#pi_' + page_number).removeClass('active');
             $('#pi_' + new_page_number).addClass('active');
             page_number = new_page_number;

@@ -3,18 +3,26 @@ package ru.javamentor.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javamentor.dao.UserDAO;
+import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -23,6 +31,8 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${site.link}")
     private String link;
@@ -38,12 +48,20 @@ public class UserServiceImpl implements UserService {
     public boolean addUser(User user) {
         user.setActivated(false);
         user.setActivationCode(UUID.randomUUID().toString());
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.addUser(user);
 
         if(!StringUtils.isEmpty(user.getUsername())) {
             sendCode(user);
         }
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean addUserThroughSocialNetworks(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        userDAO.addUser(user);
         return true;
     }
 
@@ -63,6 +81,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public User findByActivationCode(String code) {
+        return userDAO.findByActivationCode(code);
+    }
+
+    @Transactional
+    @Override
     public User getUserById(Long id) {
         return userDAO.getUserById(id);
     }
@@ -78,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean updateUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.updateUser(user);
         return true;
     }
@@ -116,4 +140,16 @@ public class UserServiceImpl implements UserService {
         return userDAO.getUserByUsername(username);
     }
 
+    @Override
+    public void login(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(username, password, authorities);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(authReq);
+    }
+   /* @Override
+    public void login(String username, String password, Set<Role> roles) {
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(username, password, roles);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(authReq);
+    }*/
 }

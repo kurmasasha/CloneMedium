@@ -25,15 +25,15 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public boolean addTopic(String title, String content) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<User> users = new HashSet<>();
-        users.add(currentUser);
-//        Topic topic = new Topic(title, content, users, LocalDateTime.now(ZoneId.of("UTC")));
-        Topic topic = new Topic(title, content, users, LocalDateTime.now(), false);
-        topicDAO.addTopic(topic);
-        log.info("IN addTopic - topic: {} successfully added", topic);
-        return true;
+    public Topic addTopic(String title, String content, Set<User> users) {
+        try {
+            Topic topic = new Topic(title, content, users, LocalDateTime.now(), false);
+            topicDAO.addTopic(topic);
+            log.info("IN addTopic - topic: {} successfully added", topic);
+            return topic;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
@@ -104,15 +104,6 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
-    @Transactional
-    @Override
-    public List<Topic> getAllTopicsOfAuthenticatedUser() {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Topic> result = topicDAO.getAllTopicsByUserId(currentUser.getId());
-        log.info("IN getAllTopicsOFAuthenticatedUser - {} topics found", result.size());
-        return result;
-    }
-
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      * @param value - строковое представление хэштега
@@ -135,6 +126,17 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
         log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
+        return result;
+    }
+
+    /**
+     * Поиск модерированных топиков
+     * @return список топиков
+     */
+    @Override
+    public List<Topic> getModeratedTopics() {
+        List<Topic> result = topicDAO.getModeratedTopics();
+        log.info("IN getModeratedTopics - {} topics found", result.size());
         return result;
     }
 

@@ -11,18 +11,24 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.UserValidator;
+import ru.javamentor.util.validation.ValidatorFormAddUser;
+
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
-    @Autowired
-    RoleService roleService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserValidator userValidator;
+
+    private UserService userService;
+    private RoleService roleService;
+    private ValidatorFormAddUser userValidator;
+
+    public RegistrationController(UserService userService, RoleService roleService, ValidatorFormAddUser userValidator) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.userValidator = userValidator;
+    }
 
     @GetMapping
     public String showFormRegistration(User user) {
@@ -30,8 +36,12 @@ public class RegistrationController {
     }
 
     @GetMapping("/info")
-    public String activationInfoPage(@ModelAttribute("regUser") User user, Model model, @ModelAttribute("resend") String resend) {
-        if (user.getUsername() == null) {
+    public String activationInfoPage(@ModelAttribute("regUser") User user,
+                                     Model model,
+                                     @ModelAttribute("resend") String resend,
+                                     RedirectAttributes redirectAttributes) {
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("warning", resend);
             return "redirect:/login";
         }
 
@@ -73,12 +83,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/resend")
-    public String resend(@RequestParam("username") String username, RedirectAttributes redirectAttributes) {
-        if (username == null && username.equals("")) {
-            return "redirect:/login";
+    public String resend(@RequestParam("code") String code, RedirectAttributes redirectAttributes) {
+        if (code == null && code.equals("")) {
+            //return "redirect:/login";
+            redirectAttributes.addFlashAttribute("resend", "Email уже подтвержден!");
         }
-
-        User user = userService.getUserByUsername(username);
+        User user = userService.findByActivationCode(code);
         if((user != null) && !(user.getActivationCode() == null)) {
             userService.sendCode(user);
             redirectAttributes.addFlashAttribute("resend", "Вам повторно отправлено на почту письмо. Проверьте почту чтобы подтвердить свой Email.");

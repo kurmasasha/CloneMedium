@@ -4,10 +4,11 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TopicService {
 
-    boolean addTopic(String title, String content);
+    Topic addTopic(String title, String content, Set<User> users);
 
     Topic getTopicById(Long id);
 
@@ -23,8 +24,6 @@ public interface TopicService {
 
     List<User> getAllUsersByTopicId(Long topicId);
 
-    List<Topic> getAllTopicsOfAuthenticatedUser();
-
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      * @param value - строковое представление хэштега
@@ -39,6 +38,12 @@ public interface TopicService {
      * @return список топиков
      */
     List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value);
+
+    /**
+     * Поиск модерированных топиков
+     * @return список топиков
+     */
+    List<Topic> getModeratedTopics();
 
     /**
      * Поиск не модерированных топиков
