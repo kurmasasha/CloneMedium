@@ -6,3 +6,27 @@ body {
     border-radius: 0px;
 }
 
+.social a {
+    text-align: center;
+    width: 48px;
+    height: 48px;
+    float: left;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15), inset 0 0 50px rgba(0,0,0,0.1);
+    /*border-radius: 24px;*/
+    border-radius: 6px;
+    /*margin: 10px 10px 10px 0;*/
+    margin: 20px;
+    padding: 6px;
+    color: #000;
+    display: block;
+}
+
+.google-plus-g a:hover {background: #DD4B39; color: #fff;}
+.facebook-f a:hover {background: #3b5998; color: #fff;}
+.vk a:hover {background: #5d84ae; color: #fff;}
+
+.social-buttons {
+    display: inline-flex;
+}
