@@ -11,17 +11,23 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.UserValidator;
+import ru.javamentor.util.validation.ValidatorFormAddUser;
+
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
-    @Autowired
-    RoleService roleService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserValidator userValidator;
+
+    private UserService userService;
+    private RoleService roleService;
+    private ValidatorFormAddUser userValidator;
+
+    public RegistrationController(UserService userService, RoleService roleService, ValidatorFormAddUser userValidator) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.userValidator = userValidator;
+    }
 
     @GetMapping
     public String showFormRegistration(User user) {
