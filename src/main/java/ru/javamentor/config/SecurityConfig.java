@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         "/js/getAndPrintModeratedTopics.js").permitAll()
 
                 .antMatchers("/login", "/").anonymous()
-                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();
     }

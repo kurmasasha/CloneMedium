@@ -46,10 +46,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        User user = (User) userService.loadUserByUsername(currentUser.getUsername());
-        model.addAttribute("user", user);
-        model.addAttribute("userId", user.getId());
+    public String homePage() {
         return "home";
     }
 

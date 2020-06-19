@@ -50,14 +50,9 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getNotModeratedTopicsCount(), HttpStatus.OK);
     }
 
-    @GetMapping("/admin/TopicsByUser/{id}")
-    public ResponseEntity<List<Topic>> getAllTopicsByUserId(@PathVariable(value = "id") Long userId) {
-        return new ResponseEntity<>(topicService.getAllTopicsByUserId(userId), HttpStatus.OK);
-    }
-
     @GetMapping("/user/MyTopics")
-    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser() {
-        return new ResponseEntity<>(topicService.getAllTopicsOfAuthenticatedUser(), HttpStatus.OK);
+    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/user/allUsersByTopicId/{id}")

@@ -24,8 +24,6 @@ public interface TopicService {
 
     List<User> getAllUsersByTopicId(Long topicId);
 
-    List<Topic> getAllTopicsOfAuthenticatedUser();
-
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      * @param value - строковое представление хэштега

@@ -3,8 +3,7 @@
  */
 $(document).ready(function(){
     $('#main_page_link').addClass('active');
-    let uid = $('#userId').val();
-    getAndPrintAllTopicsOfUser(uid, $('#topics_container'))
+    getAndPrintAllTopicsOfUser($('#topics_container'))
         .then();
 
     /**
@@ -22,7 +21,7 @@ $(document).ready(function(){
         } else {
             let contentContainer = $('#topics_container');
             contentContainer.empty();
-            getAndPrintAllTopicsOfUser(uid, contentContainer)
+            getAndPrintAllTopicsOfUser(contentContainer)
                 .then();
         }
     });
