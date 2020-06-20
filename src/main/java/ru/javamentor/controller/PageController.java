@@ -12,8 +12,10 @@ import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
-import java.security.Principal;
+import ru.javamentor.util.validation.ValidatorFormEditUser;
 
+import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class PageController {
@@ -22,17 +24,12 @@ public class PageController {
     public final TopicService topicService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
-
-    @Autowired
-    private UserService userService;
-
     @Autowired
     public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
         this.topicService = topicService;
         this.validatorFormEditUser = validatorFormEditUser;
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
