@@ -14,7 +14,6 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
-
 import javax.validation.Valid;
 
 
@@ -94,7 +93,9 @@ public class PageController {
         User userFromBD = userService.getUserById(user.getId());
         userFromBD.setFirstName(user.getFirstName());
         userFromBD.setLastName(user.getLastName());
-        userFromBD.setPassword(user.getPassword());
+        if (!user.getPassword().equals("")) {
+            userFromBD.setPassword(user.getPassword());
+        }
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
     }
