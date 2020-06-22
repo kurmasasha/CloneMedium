@@ -22,17 +22,11 @@
 
         <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------------------------------------------>
         <ul class="navbar-nav mr-auto d-flex">
-
             <li sec:authorize="isAuthenticated()" id="notification_bell" class="nav-item">
-
                 <a class="navbar-brand col-2 p-0" href="/notifications">
-
                     <i  id="notif_bell" class="fa fa-bell" style="font-size:24px;color:green"> </i>
-
                     <span id="notif_counter" class="badge"> </span>
-
                 </a>
-
             </li>
         </ul>
         <!------------------------------------------------------------------------------------------------------------------------------------------------>
@@ -40,16 +34,14 @@
 
         <ul class="navbar-nav mr-auto">
             <!--------------------------------- Форма поиска топиков по хэштегу --------------------------------------->
-            <div id="finderByHashtag">
-                <li class="nav-item px-2 d-flex align-items-center">
-                    <form class="form-inline">
-                        <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search"
-                               placeholder="#Поиск" aria-label="Search">
-                        <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать
-                        </button>
-                    </form>
-                </li>
-            </div>
+            <li id="finderByHashtag" class="nav-item px-2 d-flex align-items-center">
+                <form class="form-inline">
+                    <input id="hashtag_input" class="test form-control form-control-sm rounded-left" type="search"
+                           placeholder="#Поиск" aria-label="Search">
+                    <button id="hashtag_home_button" class="btn btn-light btn-sm rounded-right" type="button">Искать
+                    </button>
+                </form>
+            </li>
             <!--------------------------------------------------------------------------------------------------------->
             <li sec:authorize="isAuthenticated()" class="nav-item">
                 <a class="nav-link" href="/logout">Выход</a>
