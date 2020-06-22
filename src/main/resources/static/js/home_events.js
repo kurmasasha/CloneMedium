@@ -23,7 +23,7 @@ $(document).ready(function(){
             hashtag = hashtag.slice(1);
         }
         if (hashtag !== '') {
-            getAllTopicsByHashtag(uid, hashtag, $('#topics_container'))
+            getTopicsOfUserByHashtag(hashtag, $('#topics_container'))
                 .then();
         } else {
             let contentContainer = $('#topics_container');

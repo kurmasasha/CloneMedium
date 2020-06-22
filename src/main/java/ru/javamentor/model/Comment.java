@@ -4,6 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Класс представляющий модель комментария
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

@@ -21,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Transactional
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User currentUser = userDAO.getUserByUsername(userName);
         if (currentUser == null) {
             throw new UsernameNotFoundException("Invalid username or password.");

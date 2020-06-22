@@ -6,6 +6,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Класс представляющий модель уведомления
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

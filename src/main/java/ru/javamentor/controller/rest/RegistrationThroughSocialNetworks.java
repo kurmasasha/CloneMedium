@@ -1,6 +1,5 @@
 package ru.javamentor.controller.rest;
 
-import com.github.scribejava.apis.facebook.FacebookAccessTokenJsonExtractor;
 import com.github.scribejava.apis.vk.VKOAuth2AccessToken;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Rest контроллер для авторизации с помощью соцсетей
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @RestController
 @RequestMapping("/authorization")
 public class RegistrationThroughSocialNetworks {
@@ -37,6 +42,12 @@ public class RegistrationThroughSocialNetworks {
         this.userService = userService;
     }
 
+    /**
+     * метод для ВК-авторизации
+     *
+     * @param code - параметр запроса
+     * @return ResponseEntity, который перенаправляет на страницу Home
+     */
     @GetMapping("/returnCodeVK")
     public ResponseEntity<Object> getCodeThird(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
         OAuth2AccessToken token = vKontakte.toGetTokenVK(code);
@@ -51,6 +62,12 @@ public class RegistrationThroughSocialNetworks {
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
+    /**
+     * метод для FB-авторизации
+     *
+     * @param code - параметр запроса
+     * @return ResponseEntity, который перенаправляет на страницу Home
+     */
     @GetMapping("/returnCodeFacebook")
     public ResponseEntity<Object> getCodeSecond(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
         OAuth2AccessToken token = facebook.toGetTokenFacebook(code);
