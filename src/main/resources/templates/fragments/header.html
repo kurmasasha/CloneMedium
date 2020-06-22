@@ -19,6 +19,25 @@
                 <a class="nav-link" href="/">Все статьи</a>
             </li>
         </ul>
+
+        <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------------------------------------------>
+        <ul class="navbar-nav mr-auto d-flex">
+
+            <li sec:authorize="isAuthenticated()" id="notification_bell" class="nav-item">
+
+                <a class="navbar-brand col-2 p-0" href="/notifications">
+
+                    <i  id="notif_bell" class="fa fa-bell" style="font-size:24px;color:green"> </i>
+
+                    <span id="notif_counter" class="badge"> </span>
+
+                </a>
+
+            </li>
+        </ul>
+        <!------------------------------------------------------------------------------------------------------------------------------------------------>
+
+
         <ul class="navbar-nav mr-auto">
             <!--------------------------------- Форма поиска топиков по хэштегу --------------------------------------->
             <div id="finderByHashtag">

@@ -62,7 +62,7 @@ public class PageController {
     public String homePage() {
         return "home";
     }
-  
+
     /**
      * метод для страницы всех топиков
      * @return страницу для показа всех топиков
