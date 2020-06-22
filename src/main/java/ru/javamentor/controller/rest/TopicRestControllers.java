@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
+import ru.javamentor.service.UserService;
 
 import java.security.Principal;
 import java.util.HashSet;
@@ -111,7 +112,7 @@ public class TopicRestControllers {
      * метод для добавления топика
      *
      * @param topicData - содержимое топика
-     * @param user      - авторизованный юзер который добавляет топик
+     * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
     @PostMapping("/user/topic/add")
