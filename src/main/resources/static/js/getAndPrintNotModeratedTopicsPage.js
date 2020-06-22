@@ -34,7 +34,7 @@ async function getAndPrintNotModeratedTopicsPage(page, container) {
                     '<h6 class="card-title">' + tags + '</h6>' +
                     '<p class="card-text" id="text">' + linkify(topic.content) + '</p>' +
                     '<a href="#" class="btn btn-dark">Модерация</a>' +
-                    '<a  class="btn btn-danger" id="adminDeleteButton" data-toggle="modal"' +
+                    '<a style="left:10px; position:relative;"  class="btn btn-danger" id="adminDeleteButton" data-toggle="modal"' +
                     ' data-target="#deleteModal" data-id="' + topic.id + '">Удалить</a>' +
                     '</div>' +
                     '</div>';

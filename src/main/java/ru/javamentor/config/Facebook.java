@@ -1,7 +1,6 @@
 package ru.javamentor.config;
 
 import com.github.scribejava.apis.FacebookApi;
-import com.github.scribejava.apis.VkontakteApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -10,7 +9,6 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +18,13 @@ import ru.javamentor.service.RoleService;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+
+/**
+ * Класс отвечающий за Facebook- авторизацию
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 
 @Component
 public class Facebook {
@@ -36,9 +41,9 @@ public class Facebook {
 
     public final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email";
 
-   final String clientId = "307372773616495";
-   final String clientSecret = "b8687788f300561bb70131728272e269";
-   final String customScope = "email";
+    final String clientId = "307372773616495";
+    final String clientSecret = "b8687788f300561bb70131728272e269";
+    final String customScope = "email";
 
     @Getter
     final OAuth20Service service = new ServiceBuilder(clientId)
@@ -52,10 +57,22 @@ public class Facebook {
             .scope(customScope)
             .build();
 
+    /**
+     * Метод для получения OAuth2AccessToken от FB
+     *
+     * @param code -параметр , с которым возвращается пользователь с FB
+     * @return OAuth2AccessToken
+     */
     public OAuth2AccessToken toGetTokenFacebook(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
+    /**
+     * Метод для создания нового пользователя с помошью OAuth2AccessToken
+     *
+     * @param token - токен
+     * @return User - пользователь в системе
+     */
     public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(token, request);

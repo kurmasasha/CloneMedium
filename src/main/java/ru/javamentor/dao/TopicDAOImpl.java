@@ -10,32 +10,67 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Класс для доступа к топикам из базы с помощью Hibernate
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Repository
 public class TopicDAOImpl implements TopicDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * метод для добавления топика в базу
+     *
+     * @param topic - объект представляющий топик
+     */
     @Override
     public void addTopic(Topic topic) {
         entityManager.persist(topic);
     }
 
+    /**
+     * метод для получения топика по id
+     *
+     * @param id - уникальный id топика
+     * @return Topic - объект представляющий топик
+     */
     @Override
     public Topic getTopicById(Long id) {
         return entityManager.find(Topic.class, id);
     }
 
+    /**
+     * метод для получения роли по заголовку/наименованию
+     *
+     * @param title - наименование топика
+     * @return Topic - объект представляющий топик
+     */
     @Override
     public Topic getTopicByTitle(String title) {
         return entityManager.find(Topic.class, title);
     }
 
+    /**
+     * метод для обновления топика
+     *
+     * @param topic - объект обновленного топика
+     * @return void
+     */
     @Override
     public void updateTopic(Topic topic) {
         entityManager.merge(topic);
     }
 
+    /**
+     * метод для удаления топика
+     *
+     * @param id - уникальный id топика
+     * @return void
+     */
     @Override
     public void removeTopicById(Long id) {
         Topic topic = getTopicById(id);
@@ -50,12 +85,23 @@ public class TopicDAOImpl implements TopicDAO {
         }
     }
 
+    /**
+     * метод для получения всех топиков конкретного пользователя
+     *
+     * @param userId - уникальный id пользователя
+     * @return List топиков принадлежащих данному пользователю
+     */
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
         return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r  WHERE a.id = :userId GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class).setParameter("userId", userId).getResultList();
     }
-    @Override
 
+    /**
+     * метод для получения всех топиков из базы
+     *
+     * @return List топиков
+     */
+    @Override
     public List<Topic> getTotalListOfTopics() {
         return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH t.authors a LEFT JOIN FETCH a.role r GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class).getResultList();
     }
@@ -74,8 +120,8 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getAllTopicsByHashtag(String value) {
         return entityManager
                 .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
-                        .setParameter("value", value)
-                        .getResultList();
+                .setParameter("value", value)
+                .getResultList();
     }
 
     /**
@@ -89,13 +135,14 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         return entityManager
                 .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
-                        .setParameter("value", value)
-                        .setParameter("userId", userId)
-                        .getResultList();
+                .setParameter("value", value)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     /**
      * Поиск модерированных топиков.
+     *
      * @return список топиков
      */
     @Override
@@ -129,7 +176,7 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
         return entityManager
                 .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false GROUP BY t.id ORDER BY t.dateCreated DESC", Topic.class)
-                .setFirstResult(pageSize * (page-1))
+                .setFirstResult(pageSize * (page - 1))
                 .setMaxResults(pageSize)
                 .getResultList();
     }

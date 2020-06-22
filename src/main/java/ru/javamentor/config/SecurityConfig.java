@@ -11,11 +11,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.javamentor.config.handler.LoginSuccessHandler;
 
+/**
+ * Класс отвечающий за конфигурацию секьюрности
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Configuration
 @ComponentScan("ru.javamentor")
 @EnableWebSecurity
@@ -31,11 +36,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * метод устанавливает userDetailsService и passwordEncoder
+     *
+     * @param auth - объект с помощью которого конфигурируем аутентификацию
+     * @return void
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    /**
+     * метод для установки секьюрности разным URL
+     *
+     * @param http - объект для конфигурации секьюрности
+     * @return void
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -53,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/registration/**", "/activate/*", "/api/free-user/**",
+                .antMatchers("/registration/**", "/activate/*", "/api/free-user/**", "/",
                                         "/js/util/topic-in-card.js",
                                         "/webjars/bootstrap/4.3.1/css/bootstrap.min.css",
                                         "/css/style.css", "/img/logo.svg",
@@ -62,14 +79,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         "/js/all_topics_events.js",
                                         "/js/getAllTopicsByHashtag.js",
                                         "/js/getAndPrintModeratedTopics.js").permitAll()
-
                 .antMatchers("/authorization/**").permitAll()
-                .antMatchers("/login", "/").anonymous()
+                .antMatchers("/login").anonymous()
                 .antMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();
     }
 
+    /**
+     * метод конфигурирующий бин для шифрования пароля
+     *
+     * @return BCryptPasswordEncoder
+     */
     @Bean
     public PasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

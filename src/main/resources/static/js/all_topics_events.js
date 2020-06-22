@@ -17,7 +17,7 @@ $(document).ready(function() {
             hashtag = hashtag.slice(1);
         }
         if (hashtag !== '') {
-            getAllTopicsByHashtag('all', hashtag, $('#topics_container'))
+            getAllTopicsByHashtag(hashtag, $('#topics_container'))
                 .then();
         } else {
             let contentContainer = $('#topics_container');

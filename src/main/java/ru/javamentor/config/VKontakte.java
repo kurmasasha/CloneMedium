@@ -20,6 +20,12 @@ import ru.javamentor.service.RoleService;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Класс отвечающий за VK- авторизацию
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Component
 public class VKontakte {
 
@@ -51,10 +57,19 @@ public class VKontakte {
             .scope(customScope)
             .build();
 
+    /**
+     * Метод для получения OAuth2AccessToken от VK
+     * @param code -параметр , с которым возвращается пользователь с FB
+     * @return OAuth2AccessToken
+     */
     public OAuth2AccessToken toGetTokenVK(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
-
+    /**
+     * Метод для создания нового пользователя с помошью OAuth2AccessToken
+     * @param token - токен
+     * @return User - пользователь в системе
+     */
     public User toCreateUser(OAuth2AccessToken token, String email) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(token, request);
