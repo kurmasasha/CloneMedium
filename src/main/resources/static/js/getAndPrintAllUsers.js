@@ -14,7 +14,6 @@ async function getAndPrintAllUsers(container) {
                         '<td>' + user.lastName + '</td>' +
                         '<td>' + user.username + '</td>' +
                         '<td>' + user.role.name + '</td>' +
-                        '<td>' + user.email + '</td>' +
                         `<td><a href="form_edit_user/${user.id}" class="btn btn-info text-white">редактировать</a></td>` +
                     '</tr>';
                 container.append(row);
