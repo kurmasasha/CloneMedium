@@ -9,9 +9,16 @@ import ru.javamentor.dao.TopicDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
+/**
+ * Реализация интерфейса TopicService
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Service
 @Slf4j
 public class TopicServiceImpl implements TopicService {
@@ -23,6 +30,14 @@ public class TopicServiceImpl implements TopicService {
         this.topicDAO = topicDAO;
     }
 
+    /**
+     * метод для добавления топика
+     *
+     * @param title   - название топика
+     * @param content - содержимое топика
+     * @param users   - множество пользователей связанных с добавляемым топиком
+     * @return Topic - объект представляющий модель топика
+     */
     @Transactional
     @Override
     public Topic addTopic(String title, String content, Set<User> users) {
@@ -36,6 +51,12 @@ public class TopicServiceImpl implements TopicService {
         }
     }
 
+    /**
+     * метод для получения топика по id
+     *
+     * @param id - уникальный id топика
+     * @return Topic - объект представляющий модель топика
+     */
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicById(Long id) {
@@ -44,6 +65,11 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
+    /**
+     * метод для получения всего списка топиков
+     *
+     * @return List топиков
+     */
     @Transactional(readOnly = true)
     @Override
     public List<Topic> getTotalListOfTopics() {
@@ -52,6 +78,12 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
+    /**
+     * метод для получения топика по названию
+     *
+     * @param title - название топика
+     * @return Topic - объект представляющий модель топика
+     */
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicByTitle(String title) {
@@ -60,6 +92,12 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
+    /**
+     * метод для обновления топика
+     *
+     * @param topic - обновленный топик
+     * @return boolean - удалость обновить топик или нет
+     */
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
@@ -74,20 +112,32 @@ public class TopicServiceImpl implements TopicService {
         return false;
     }
 
+    /**
+     * метод для удаления топика
+     *
+     * @param id - уникальный id топика
+     * @return boolean - удалость удалить топик или нет
+     */
     @Transactional
     @Override
     public boolean removeTopicById(Long id) {
         /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(id);
         if (userList.contains(currentUser)) {*/
-            topicDAO.removeTopicById(id);
-            log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
-            return true;
+        topicDAO.removeTopicById(id);
+        log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
+        return true;
         /*}
         log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
         return false;*/
     }
 
+    /**
+     * метод для получения списка топиков конкретного пользователя
+     *
+     * @param userId -  уникальный id пользователя топики которого нужно получить
+     * @return List топиков этого пользователя
+     */
     @Transactional
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
@@ -96,6 +146,12 @@ public class TopicServiceImpl implements TopicService {
         return result;
     }
 
+    /**
+     * метод для получения списка пользователей связанных с данным топиком
+     *
+     * @param topicId -  уникальный id топика
+     * @return List пользователей связанных с этим топиком
+     */
     @Transactional
     @Override
     public List<User> getAllUsersByTopicId(Long topicId) {
@@ -106,6 +162,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Поиск топиков по значению связанного с ними хэштега.
+     *
      * @param value - строковое представление хэштега
      * @return список топиков
      */
@@ -118,8 +175,9 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Поиск топиков пользователя по значению связанного с ними хэштега.
+     *
      * @param userId - id пользователя
-     * @param value - строковое представление хэштега
+     * @param value  - строковое представление хэштега
      * @return список топиков
      */
     @Override
@@ -131,6 +189,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Поиск модерированных топиков
+     *
      * @return список топиков
      */
     @Override
@@ -142,6 +201,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Поиск не модерированных топиков
+     *
      * @return список топиков
      */
     @Override
@@ -154,7 +214,8 @@ public class TopicServiceImpl implements TopicService {
     /**
      * Поиск не модерированных топиков.
      * Добавлена пагинация.
-     * @param page - номер страницы
+     *
+     * @param page     - номер страницы
      * @param pageSize - размер страницы
      * @return список топиков
      */
@@ -167,6 +228,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Определение числа не модерированных топиков
+     *
      * @return
      */
     @Override

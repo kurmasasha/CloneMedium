@@ -8,7 +8,7 @@ function topicInCard(topic) {
     })
     let authors = '';
     $.each(topic.authors, function (index, author) {
-        authors += '<a href="#">' + author.username + '</a>';
+        authors += '<a href="#">' + author.firstName + " " + author.lastName + '</a>';
         if (index < (topic.authors.length - 1)) {
             authors += ' / ';
         }
@@ -29,7 +29,7 @@ function topicInCard(topic) {
             '<div class="card-body">' +
                 '<h6 class="card-title">' + author_label + authors + '</h6>' +
                 '<h6 class="card-title">' + tags + '</h6>' +
-                '<p class="card-text">' + topic.content + '</p>' +
+                '<p class="card-text">' + linkify(topic.content) + '</p>' +
             '</div>' +
         '</div>';
     return card;

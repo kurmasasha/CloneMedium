@@ -8,13 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
-import ru.javamentor.service.UserService;
 
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Rest контроллер для топиков
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @RestController
 @RequestMapping("/api")
 public class TopicRestControllers {
@@ -28,42 +33,87 @@ public class TopicRestControllers {
         this.userService = userService;
     }
 
+    /**
+     * метод получения всех отмодерированных топиков
+     *
+     * @return ResponseEntity, который содержит List топиков
+     */
     @GetMapping("/free-user/moderatedTopicsList")
-    public ResponseEntity<List<Topic>> getTotalTopics( ) {
+    public ResponseEntity<List<Topic>> getTotalTopics() {
         return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
     }
 
+    /**
+     * метод получения всех неотмодерированных топиков
+     *
+     * @return ResponseEntity, который содержит List топиков
+     */
     @GetMapping("/admin/notModeratedTopics")
-    public ResponseEntity<List<Topic>> getNotModeratedTopics( ) {
+    public ResponseEntity<List<Topic>> getNotModeratedTopics() {
         return new ResponseEntity<>(topicService.getNotModeratedTopics(), HttpStatus.OK);
     }
 
+    /**
+     * метод для получения одной страницы неотмодерированных топиков
+     *
+     * @return ResponseEntity, который содержит List неотмодерированных топиков
+     */
     //TODO пока жестко задаю количество записей на странице
     @GetMapping("/admin/notModeratedTopicsPage/{page}")
     public ResponseEntity<List<Topic>> getNotModeratedTopicsPage(@PathVariable(value = "page") Integer page) {
         return new ResponseEntity<>(topicService.getNotModeratedTopicsPage(page, 5), HttpStatus.OK);
     }
 
+    /**
+     * метод для подсчета неотмодерированных топиков
+     *
+     * @return ResponseEntity, который содержит количество неотмодерированных топиков и статус ОК
+     */
     @GetMapping("/admin/notModeratedTopicsCount")
     public ResponseEntity<Long> getNotModeratedTopicsCount() {
         return new ResponseEntity<>(topicService.getNotModeratedTopicsCount(), HttpStatus.OK);
     }
 
+    /**
+     * метод для получения топиков конкретного пользователя
+     *
+     * @param user - объект авторизованого пользователя
+     * @return ResponseEntity, который содержит List топиков этого юзера
+     */
     @GetMapping("/user/MyTopics")
     public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
     }
 
+    /**
+     * метод для получения юзеров связанного с данным топиком
+     *
+     * @param topicId - уникальный id топика
+     * @return ResponseEntity, который содержит List пользователей
+     */
     @GetMapping("/user/allUsersByTopicId/{id}")
     public ResponseEntity<List<User>> getAllUsersByTopicId(@PathVariable(value = "id") Long topicId) {
         return new ResponseEntity<>(topicService.getAllUsersByTopicId(topicId), HttpStatus.OK);
     }
 
+    /**
+     * метод для получения топика по  id
+     *
+     * @param id - уникальный id топика
+     * @return ResponseEntity, который содержит топик и статус ответа ОК
+     */
     @GetMapping("/user/topic/{id}")
     public ResponseEntity<Topic> getTopicById(@PathVariable Long id) {
         return new ResponseEntity<>(topicService.getTopicById(id), HttpStatus.OK);
     }
 
+    /**
+     * метод для добавления топика
+     *
+     * @param topicData - содержимое топика
+     * @param user      - авторизованный юзер который добавляет топик
+     * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
+     */
     @PostMapping("/user/topic/add")
     public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
         Set<User> users = new HashSet<>();
@@ -76,6 +126,12 @@ public class TopicRestControllers {
         }
     }
 
+    /**
+     * метод для обновления топика
+     *
+     * @param topic - обновленный топик
+     * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
+     */
     @PostMapping("/user/topic/update")
     public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
         if (topicService.updateTopic(topic)) {
@@ -85,6 +141,12 @@ public class TopicRestControllers {
         }
     }
 
+    /**
+     * метод для уадления топика
+     *
+     * @param id - id топика который необходимо удалить
+     * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
+     */
     @DeleteMapping("/user/topic/delete/{id}")
     public ResponseEntity<String> deleteTopic(@PathVariable Long id) {
         if (topicService.removeTopicById(id)) {
@@ -96,6 +158,7 @@ public class TopicRestControllers {
 
     /**
      * Поиск топиков по значению связанного с ними хэштега.
+     *
      * @param tag - строковое представление хэштега
      * @param user - данные пользователя, отправившего запрос
      * @return список топиков
@@ -119,6 +182,12 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 
+    /**
+     * метод для уадления топика
+     *
+     * @param - id топика который необходимо удалить
+     * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
+     */
     @DeleteMapping("/admin/topic/delete/{id}")
     public ResponseEntity<String> deleteTopicByAdmin(@PathVariable Long id) {
         if (topicService.removeTopicById(id)) {
@@ -128,6 +197,12 @@ public class TopicRestControllers {
         }
     }
 
+    /**
+     * метод для получения неотмодерированного топика по id админом
+     *
+     * @param - id топика который необходимо получитьв ответе
+     * @return ResponseEntity с необходимым топиком и ОК статус
+     */
     @GetMapping("/admin/topic/{id}")
     public ResponseEntity<Topic> getNomoderatedTopicById(@PathVariable Long id) {
         return new ResponseEntity<>(topicService.getTopicById(id), HttpStatus.OK);
