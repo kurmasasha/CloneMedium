@@ -4,8 +4,8 @@
  * @param container - контейнер на странице, в который будут выведены результаты
  */
 
-async function getAllTopicsByHashtag(hashtag, container) {
-    fetch(`http://localhost:5050/api/free-user/get-all-topics-by-hashtag/${hashtag}`, {
+async function getTopicsOfUserByHashtag(hashtag, container) {
+    fetch(`http://localhost:5050/api/free-user/get-topics-of-user-by-hashtag/${hashtag}`, {
     })
         .then(result => result.json())
         .then(arrayTopics => {

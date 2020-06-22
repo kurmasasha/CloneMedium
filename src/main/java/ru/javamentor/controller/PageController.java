@@ -24,7 +24,6 @@ public class PageController {
     public final TopicService topicService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
-
     @Autowired
     public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
@@ -62,22 +61,15 @@ public class PageController {
     public String homePage() {
         return "home";
     }
+  
     /**
      * метод для страницы всех топиков
      * @return страницу для показа всех топиков
      */
-    @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage() {
         return "all_topics_page";
-    }
-
-    /**
-     * метод для корневой страницы
-     * @return корневуб страницу
-     */
-    @GetMapping("/")
-    public String indexPage() {
-        return "root";
     }
 
     /**
@@ -136,7 +128,9 @@ public class PageController {
         User userFromBD = userService.getUserById(user.getId());
         userFromBD.setFirstName(user.getFirstName());
         userFromBD.setLastName(user.getLastName());
-        userFromBD.setPassword(user.getPassword());
+        if (!user.getPassword().equals("")) {
+            userFromBD.setPassword(user.getPassword());
+        }
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
     }

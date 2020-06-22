@@ -137,7 +137,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        boolean isBCryptPassword = user.getPassword().length() < 45;
+        if (isBCryptPassword) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDAO.updateUser(user);
         return true;
     }
