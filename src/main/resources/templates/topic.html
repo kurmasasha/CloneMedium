@@ -1,22 +1,33 @@
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Topic page</title>
 </head>
 <body>
-<div class="card p-3" th:id="topicId" th:data-topic-id="${topicId}">
-    <h5 class="card-header" id="topicAuthor"></h5>
-    <div class="card-body">
-        <h5 class="card-title" id="topicTitle"></h5>
-        <div id="hashtags" class="d-flex flex-wrap">
+<!------------------------------------------------------- Шапка ------------------------------------------------------->
+<nav th:replace="fragments/header :: home_header"></nav>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Топики ------------------------------------------------------>
+<div class="container">
+    <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
+        <h5 class="card-header" id="topicAuthor"></h5>
+        <div class="card-body">
+            <h5 class="card-title" id="topicTitle"></h5>
+            <div id="hashtags" class="d-flex flex-wrap">
+            </div>
+            <p class="card-text" id="topicContent"></p>
         </div>
-        <p class="card-text" id="topicContent"></p>
     </div>
 </div>
+<!--------------------------------------------------------------------------------------------------------------------->
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/getTopicById.js"></script>
+<script src="/js/getAllTopicsByHashtag.js"></script>
+<script>$('#finderByHashtag').hide();</script>
 </body>
 </html>
