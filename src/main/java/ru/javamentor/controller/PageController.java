@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
+import ru.javamentor.util.validation.ValidatorFormEditUser;
+
+import javax.validation.Valid;
 import java.security.Principal;
 
 
@@ -23,8 +26,8 @@ public class PageController {
     private final ValidatorFormEditUser validatorFormEditUser;
 
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     @Autowired
     public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {

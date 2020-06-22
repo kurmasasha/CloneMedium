@@ -61,4 +61,5 @@ public class NotificationsController {
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
 }
