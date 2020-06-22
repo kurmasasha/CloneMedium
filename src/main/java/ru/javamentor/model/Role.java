@@ -1,12 +1,21 @@
 package ru.javamentor.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
 
+//import org.springframework.security.core.GrantedAuthority;
+
+/**
+ * Класс представляющий модель пользовательских ролей
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

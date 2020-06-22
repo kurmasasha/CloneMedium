@@ -8,7 +8,7 @@ function topicInCard(topic) {
     })
     let authors = '';
     $.each(topic.authors, function (index, author) {
-        authors += '<a href="#">' + author.username + '</a>';
+        authors += '<a href="#">' + author.firstName + " " + author.lastName + '</a>';
         if (index < (topic.authors.length - 1)) {
             authors += ' / ';
         }
@@ -20,17 +20,17 @@ function topicInCard(topic) {
     let date = new Date(Date.parse(topic.dateCreated));
     let card =
         '<div class="card mb-2">' +
-            '<div class="card-header d-flex justify-content-between">' +
-                '<a href="/topic/' + topic.id + '">' +
-                    '<h5>' + topic.title + '</h5>' +
-                '</a>' +
-                '<h6>' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + '</h6>' +
-            '</div>' +
-            '<div class="card-body">' +
-                '<h6 class="card-title">' + author_label + authors + '</h6>' +
-                '<h6 class="card-title">' + tags + '</h6>' +
-                '<p class="card-text">' + topic.content + '</p>' +
-            '</div>' +
+        '<div class="card-header d-flex justify-content-between">' +
+        '<a href="/topic/' + topic.id + '">' +
+        '<h5>' + topic.title + '</h5>' +
+        '</a>' +
+        '<h6>' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + '</h6>' +
+        '</div>' +
+        '<div class="card-body">' +
+        '<h6 class="card-title">' + author_label + authors + '</h6>' +
+        '<h6 class="card-title">' + tags + '</h6>' +
+        '<p class="card-text">' + linkify(topic.content) + '</p>' +
+        '</div>' +
         '</div>';
     return card;
 }

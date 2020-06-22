@@ -6,6 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Класс представляющий модель хэштэга
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

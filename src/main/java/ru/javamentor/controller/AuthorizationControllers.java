@@ -12,6 +12,12 @@ import ru.javamentor.config.VKontakte;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Контроллер для перенаправления на соцсети при авторизации
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Controller
 public class AuthorizationControllers {
 
@@ -24,6 +30,10 @@ public class AuthorizationControllers {
         this.facebook = facebook;
     }
 
+    /**
+     * метод для перенаправления на страницу авторизации Вконтакте
+     * @return ResponseEntity, который содержит заголовок с URI
+     */
     @GetMapping("/authorization/vkAuthorization")
     public ResponseEntity<Object> redirectToVK() throws URISyntaxException {
         URI vk = new URI(vKontakte.getAuthorizationUrl());
@@ -31,7 +41,10 @@ public class AuthorizationControllers {
         httpHeaders.setLocation(vk);
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
-
+    /**
+     * метод для перенаправления на страницу авторизации Facebook
+     * @return ResponseEntity, который содержит заголовок с URI
+     */
     @GetMapping("/authorization/facebookAuthorization")
     public ResponseEntity<Object> redirectFacebook() throws URISyntaxException {
         URI vk = new URI(facebook.getAuthorizationUrl());
