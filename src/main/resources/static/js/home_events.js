@@ -7,6 +7,13 @@ $(document).ready(function(){
         .then();
 
     /**
+     *  обновляем "колокольчик" - счётчик уведомлений
+     */
+    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
+
+
+
+    /**
      * Нажатие на кнопку поиска по хэштегу
      */
     $('#hashtag_home_button').on('click', function() {

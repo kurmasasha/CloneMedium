@@ -30,3 +30,18 @@ body {
 .social-buttons {
     display: inline-flex;
 }
+
+/* Уведомления, число над колокольчиком */
+.badge {
+    position: absolute;
+    top: -15px;
+    right: -30px;
+    padding: 5px 10px;
+    border-radius: 25%;
+    background: gray(0);
+    color: white;
+    font-size: small;
+    size: 15px;
+}
+
+

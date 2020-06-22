@@ -11,6 +11,7 @@ import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * Контроллер возвращающий для показа html страниц
@@ -61,7 +62,7 @@ public class PageController {
     public String homePage() {
         return "home";
     }
-  
+
     /**
      * метод для страницы всех топиков
      * @return страницу для показа всех топиков

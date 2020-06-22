@@ -116,6 +116,7 @@ public class UserDAOImpl implements UserDAO {
      * @param email - электронная почта пользователя
      * @return User - объект представляющий пользователя
      */
+
     public User getUserByEmail(String email) {
         try {
             return entityManager.createQuery("FROM User WHERE username = :username", User.class)
