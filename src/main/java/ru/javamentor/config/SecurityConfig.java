@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/registration/**", "/activate/*", "/api/free-user/**",
+                .antMatchers("/registration/**", "/activate/*", "/api/free-user/**", "/",
                                         "/js/util/topic-in-card.js",
                                         "/webjars/bootstrap/4.3.1/css/bootstrap.min.css",
                                         "/css/style.css", "/img/logo.svg",
@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         "/js/getAndPrintModeratedTopics.js").permitAll()
 
                 .antMatchers("/authorization/**").permitAll()
-                .antMatchers("/login", "/").anonymous()
+                .antMatchers("/login").anonymous()
                 .antMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();

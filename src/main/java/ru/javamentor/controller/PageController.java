@@ -51,14 +51,9 @@ public class PageController {
         return "home";
     }
 
-    @RequestMapping(value = "/allTopics", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage() {
         return "all_topics_page";
-    }
-
-    @GetMapping("/")
-    public String indexPage() {
-        return "root";
     }
 
     @GetMapping("/topic/{id}")

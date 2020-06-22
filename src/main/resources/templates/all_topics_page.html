@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +19,7 @@
     <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
   </div>
   <!-- Кнопка добавления топика -->
-  <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
+  <div sec:authorize="isAuthenticated()" th:replace="fragments/add-topic-modal :: add-topic_button"></div>
 </div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -32,8 +33,8 @@
 <script src="/js/all_topics_events.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/getAndPrintModeratedTopics.js"></script>
-<script src="/js/addTopic.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
-<script src="/js/add-topic_events.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
 </body>
 </html>
