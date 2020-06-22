@@ -4,15 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -23,10 +20,12 @@ import java.util.Set;
 public class TopicRestControllers {
 
     private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService) {
+    public TopicRestControllers(TopicService topicService, UserService userService) {
         this.topicService = topicService;
+        this.userService = userService;
     }
 
     @GetMapping("/free-user/moderatedTopicsList")
@@ -66,9 +65,9 @@ public class TopicRestControllers {
     }
 
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
         Set<User> users = new HashSet<>();
-        users.add(user);
+        users.add(userService.getUserByUsername(principal.getName()));
         Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), users);
         if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);

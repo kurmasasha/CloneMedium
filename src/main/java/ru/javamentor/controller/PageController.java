@@ -1,10 +1,15 @@
 package ru.javamentor.controller;
 
-import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
@@ -25,7 +30,6 @@ public class PageController {
         this.topicService = topicService;
         this.validatorFormEditUser = validatorFormEditUser;
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
