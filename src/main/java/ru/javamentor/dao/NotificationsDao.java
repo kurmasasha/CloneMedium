@@ -5,19 +5,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.javamentor.model.Notification;
 
+import java.util.List;
+
 /**
  * Интерфейс для доступа к нотификациям из базы
  *
  * @version 1.0
  * @autor Java Mentor
  */
-public interface NotificationsDao extends JpaRepository<Notification, Long> {
+public interface NotificationsDao {
     /**
-     * метод для получения уведомления по имени
-     *
-     * @param title - наименование уведомления
-     * @return объект уведомления
+     * получение уведомлений для пользователя по его id
+     * @param userId - id пользователя
+     * @return - список уведомлений
      */
-    @Query("SELECT notification from Notification notification WHERE notification.title=:title")
-    Notification findByTitle(@Param("title") String title);
+    List<Notification> getNotificationsOfUser(Long userId);
+
+    /**
+     * получение числа уведомлений пользователя по его id
+     * @param userId - id пользователя
+     * @return - список уведомлений
+     */
+    int getNotificationsOfUserCount(Long userId);
 }

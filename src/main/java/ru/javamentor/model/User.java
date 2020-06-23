@@ -69,6 +69,10 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    @ManyToMany
+    @JoinTable(name = "notifications_users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "notification_id"))
+    private Set<Notification> notifications;
+
     public User(String firstName, String lastName, String username, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;

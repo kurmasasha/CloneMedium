@@ -1,10 +1,12 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Класс представляющий модель уведомления
@@ -34,4 +36,9 @@ public class Notification {
     @NotEmpty
     @NotNull
     private String text;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "notifications_users", joinColumns = @JoinColumn(name = "notification_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    Set<User> users;
 }

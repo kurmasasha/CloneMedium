@@ -1,0 +1,22 @@
+.notification {
+    color: #999999;
+    position: relative;
+    display: inline-block;
+}
+
+.notification:hover {
+    color: white;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
+
+#bell_picture {
+    font-size: 24px;
+}

@@ -9,9 +9,9 @@ $(document).ready(function(){
     /**
      *  обновляем "колокольчик" - счётчик уведомлений
      */
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
-
-
+    let notification_container = $('#notifications_counter');
+    getNumberOfNotificationsOfUser(notification_container);
+    setInterval(getNumberOfNotificationsOfUser, 5000, notification_container);
 
     /**
      * Нажатие на кнопку поиска по хэштегу
