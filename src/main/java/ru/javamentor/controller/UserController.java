@@ -2,7 +2,7 @@ package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,8 @@ public class UserController {
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
         User user = (User) ((Authentication) principal).getPrincipal();
-        model.addAttribute("user", user);
+        User  userDB = userService.getUserById(user.getId());
+        model.addAttribute("user", userDB);
         return "userPage";
     }
 
@@ -39,11 +40,11 @@ public class UserController {
         userDB.setRole(roleService.getRoleById(2L));
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
-      //  userDB.setUsername(user.getUsername());
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
         if (userService.updateUser(userDB)) {
+           // SecurityContextHolder.getContext().setAuthentication((Authentication) user);
             return "redirect:/user";
         } else {
             model.addAttribute("message", "invalidData");
