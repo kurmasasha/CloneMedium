@@ -26,12 +26,12 @@ function topicInCard(topic) {
     let like = '<a class="text-info" id="likes" data-id= ' + topic.id+ '>' + topic.likes + '</a>';
     let card =
         '<div class="card mb-2">' +
+
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
-        '<h6>' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + '</h6>' +
-        '</div>' +
+        '<h6>' + timeConverter(date) + '</h6>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
         '<h6 class="card-title">' + tags + '</h6>' +
@@ -42,3 +42,4 @@ function topicInCard(topic) {
         '</div>';
     return card;
 }
+

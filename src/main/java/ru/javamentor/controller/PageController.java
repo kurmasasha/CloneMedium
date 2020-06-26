@@ -4,14 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
+import ru.javamentor.service.CommentService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
 
 /**
  * Контроллер возвращающий для показа html страниц
@@ -23,12 +25,14 @@ public class PageController {
 
     private final UserService userService;
     public final TopicService topicService;
+    private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
     @Autowired
-    public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
         this.topicService = topicService;
+        this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
     }
 
@@ -54,6 +58,7 @@ public class PageController {
         model.addAttribute("flagWar", flagWarning);
         return "login";
     }
+  
     /**
      * метод для вида главной страницы
      * @return главную страницу
@@ -82,6 +87,8 @@ public class PageController {
     @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
+        List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+        model.addAttribute("comments", comments);
         return "topic";
     }
     /**

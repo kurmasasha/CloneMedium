@@ -3,7 +3,9 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -85,7 +87,13 @@ public class TopicRestControllers {
      */
     @GetMapping("/user/MyTopics")
     public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(currentUser.getId()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        }
     }
 
     /**
