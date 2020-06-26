@@ -48,10 +48,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public boolean updateComment(Comment comment) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public boolean updateComment(Comment comment, User user) {
         User author = getAuthorByCommentId(comment.getId());
-        if (author.equals(currentUser)) {
+        if (author.equals(user)) {
             commentDAO.updateComment(comment);
             log.info("IN updateComment - comment with Id: {} successfully updated", comment.getId());
             return true;
