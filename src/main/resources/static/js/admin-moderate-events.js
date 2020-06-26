@@ -75,5 +75,14 @@ $(document).ready(function () {
     $('#closeModalButton').on('click', function () {
         $('#modalBody').empty();
         $('#modalTitle').empty();
-    })
+    });
+
+    // имитация нотификации
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
+    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+
+    // сокрытие элемента поиска по хэштэгам: он здесь не нужен
+    let divFinderByHashtag = document.getElementById('finderByHashtag');
+    divFinderByHashtag.style.visibility = 'hidden';
+
 });

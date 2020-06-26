@@ -6,9 +6,12 @@ $(document).ready(function(){
     getAndPrintAllTopicsOfUser($('#topics_container'))
         .then();
 
+
     /**
      *  обновляем "колокольчик" - счётчик уведомлений
+     *  имитация нотификации
      */
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
     setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
 
 
