@@ -100,6 +100,20 @@ public class TopicRestControllers {
     }
 
     /**
+     * метод модерации топиков
+     *
+     * @param id - уникальный id топика
+     * @return ResponseEntity, который содержит статус Ok
+     */
+    @PostMapping("/admin/topic/moderate/{id}")
+    public ResponseEntity<Topic> isModerate(@PathVariable Long id) {
+        Topic topic = topicService.getTopicById(id);
+        topic.setModerate(true);
+        topicService.updateTopic(topic);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
      * метод для получения топика по  id
      *
      * @param id - уникальный id топика

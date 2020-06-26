@@ -18,10 +18,15 @@ function topicInCard(topic) {
         author_label = 'Авторы: ';
     }
     let date = new Date(topic.dateCreated);
+
+        let moderated = 'notmoderated';
+      if (topic.moderate) {
+          moderated = 'moderated';
+      }
     let like = '<a class="text-info" id="likes" data-id= ' + topic.id+ '>' + topic.likes + '</a>';
     let card =
         '<div class="card mb-2">' +
-        '<div class="card-header d-flex justify-content-between">' +
+        '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
