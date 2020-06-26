@@ -8,6 +8,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * Класс конфигурирующий отправку письма с помощью Spring Framework
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Configuration
 public class MailConfig {
     @Value("${spring.mail.host}")
@@ -28,6 +34,11 @@ public class MailConfig {
     @Value("${mail.debug}")
     private String debug;
 
+    /**
+     * Создаем бин JavaMailSender
+     *
+     * @return JavaMailSender - объект отвечающий за отправку письма
+     */
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

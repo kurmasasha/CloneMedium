@@ -1,9 +1,11 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <title>Home</title>
 </head>
@@ -18,7 +20,7 @@
     <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
   </div>
   <!-- Кнопка добавления топика -->
-  <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
+  <div sec:authorize="isAuthenticated()" th:replace="fragments/add-topic-modal :: add-topic_button"></div>
 </div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -32,10 +34,14 @@
 <script src="/js/all_topics_events.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/getAndPrintModeratedTopics.js"></script>
-<script src="/js/addTopic.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/add-topic_events.js"></script>
 
 <script src="/js/util/timeConverter.js"></script>
+<script src="/js/parseText.js"></script>
+<script src="/js/util/likes.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getNotifCounterByPrincipal.js"></script>
 </body>
 </html>

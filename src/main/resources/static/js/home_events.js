@@ -6,6 +6,23 @@ $(document).ready(function(){
     getAndPrintAllTopicsOfUser($('#topics_container'))
         .then();
 
+
+    $('#topics_container').delegate('.fa-thumbs-o-up', 'click', function () {
+        let id = $(this).attr('data-id');
+        let addLike = $(this).siblings(".text-info");
+        increaseLike(id, addLike);
+
+    });
+
+    /**
+     *  обновляем "колокольчик" - счётчик уведомлений
+     *  имитация нотификации
+     */
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
+    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
+
+
+
     /**
      * Нажатие на кнопку поиска по хэштегу
      */
@@ -16,7 +33,7 @@ $(document).ready(function(){
             hashtag = hashtag.slice(1);
         }
         if (hashtag !== '') {
-            getAllTopicsByHashtag(uid, hashtag, $('#topics_container'))
+            getTopicsOfUserByHashtag(hashtag, $('#topics_container'))
                 .then();
         } else {
             let contentContainer = $('#topics_container');
@@ -25,4 +42,5 @@ $(document).ready(function(){
                 .then();
         }
     });
+
 });

@@ -5,6 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Класс представляющий модель комментария
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
 @Getter
 @Setter

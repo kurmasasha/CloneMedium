@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Admin</title>
 </head>
 <body>
+
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 m-0 p-0" href="/home">
-        <img src="/img/logo.svg" width="32" height="32" class="d-inline-block align-top m-1" alt="...">
-        <h2 class="d-inline-block m-0">Clone medium</h2>
-    </a>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/logout">Выход</a>
-        </li>
-    </ul>
-</nav>
+<nav th:replace="fragments/header :: home_header"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <div class="container-fluid">
@@ -38,9 +30,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Фамилия</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Role</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Role</th>
                 </tr>
                 </thead>
                 <tbody id="users_table"></tbody>
@@ -55,6 +46,7 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/getAndPrintAllUsers.js"></script>
 <script src="/js/admin-all_users-events.js"></script>
+<script src="/js/getNotifCounterByPrincipal.js"></script>
 
 </body>
 </html>

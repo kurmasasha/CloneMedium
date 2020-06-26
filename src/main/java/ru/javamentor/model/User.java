@@ -1,14 +1,24 @@
 package ru.javamentor.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Класс представляющий модель пользователя в системе
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Entity
 @NoArgsConstructor
 @Getter
@@ -36,7 +46,6 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull
-    @NotEmpty
     @Column
     private String password;
 
