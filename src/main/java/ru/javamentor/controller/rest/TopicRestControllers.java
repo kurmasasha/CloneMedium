@@ -3,13 +3,17 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
+import ru.javamentor.util.buffer.LikeBuffer;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -83,7 +87,13 @@ public class TopicRestControllers {
      */
     @GetMapping("/user/MyTopics")
     public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(currentUser.getId()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        }
     }
 
     /**
@@ -95,6 +105,20 @@ public class TopicRestControllers {
     @GetMapping("/user/allUsersByTopicId/{id}")
     public ResponseEntity<List<User>> getAllUsersByTopicId(@PathVariable(value = "id") Long topicId) {
         return new ResponseEntity<>(topicService.getAllUsersByTopicId(topicId), HttpStatus.OK);
+    }
+
+    /**
+     * метод модерации топиков
+     *
+     * @param id - уникальный id топика
+     * @return ResponseEntity, который содержит статус Ok
+     */
+    @PostMapping("/admin/topic/moderate/{id}")
+    public ResponseEntity<Topic> isModerate(@PathVariable Long id) {
+        Topic topic = topicService.getTopicById(id);
+        topic.setModerate(true);
+        topicService.updateTopic(topic);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -160,7 +184,7 @@ public class TopicRestControllers {
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      *
-     * @param tag - строковое представление хэштега
+     * @param tag  - строковое представление хэштега
      * @param user - данные пользователя, отправившего запрос
      * @return список топиков
      */
@@ -173,6 +197,7 @@ public class TopicRestControllers {
 
     /**
      * Поиск топиков по значению связанного с ними хэштега.
+     *
      * @param tag - строковое представление хэштега
      * @return список топиков
      */
@@ -207,5 +232,20 @@ public class TopicRestControllers {
     @GetMapping("/admin/topic/{id}")
     public ResponseEntity<Topic> getNomoderatedTopicById(@PathVariable Long id) {
         return new ResponseEntity<>(topicService.getTopicById(id), HttpStatus.OK);
+    }
+
+    /**
+     * метод для лайка топика
+     *
+     * @param topicId - id  топика который нужно лайкнуть
+     * @param session - текущая сессия клиента
+     * @return Увеличенное количество топиков либо ответ что лайк с текущей сессии запрещен
+     */
+    @GetMapping("/admin/topic/addLike/{topicId}")
+    public ResponseEntity<Integer> increaseLikeOfTopic(@PathVariable Long topicId, HttpSession session) {
+        if (LikeBuffer.getInstance().canLikeInThisSession(session.getId(), topicId)) {
+            LikeBuffer.getInstance().addLikeToCurrentSession(session.getId(), topicId);
+            return new ResponseEntity<>(topicService.increaseTopicLikes(topicId), HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }

@@ -125,4 +125,6 @@ public interface TopicService {
      * @return
      */
     Long getNotModeratedTopicsCount();
+
+    Integer increaseTopicLikes(Long topicId);
 }
