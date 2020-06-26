@@ -31,6 +31,9 @@ body {
 .social-buttons {
     display: inline-flex;
 }
+.card {
+    margin-top: 30px;
+}
 
 /* Уведомления, число над колокольчиком */
 .badge {
