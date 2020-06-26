@@ -101,15 +101,15 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(topic.getId());
-        if (userList.contains(currentUser)) {
+        if (userList.contains(currentUser)) {*/
             topicDAO.updateTopic(topic);
             log.info("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
             return true;
-        }
+        /*}
         log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
-        return false;
+        return false;*/
     }
 
     /**
