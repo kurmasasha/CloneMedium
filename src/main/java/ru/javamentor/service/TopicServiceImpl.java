@@ -9,6 +9,7 @@ import ru.javamentor.dao.TopicDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -234,5 +235,16 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Long getNotModeratedTopicsCount() {
         return topicDAO.getNotModeratedTopicsCount();
+    }
+
+    @Transactional
+    @Override
+    public Integer increaseTopicLikes(Long topicId) {
+        Topic currentTopic = topicDAO.getTopicById(topicId);
+        Integer likes = currentTopic.getLikes();
+        likes++;
+        currentTopic.setLikes(likes);
+        topicDAO.updateTopic(currentTopic);
+        return likes;
     }
 }
