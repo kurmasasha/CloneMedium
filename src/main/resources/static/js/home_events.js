@@ -6,6 +6,7 @@ $(document).ready(function(){
     getAndPrintAllTopicsOfUser($('#topics_container'))
         .then();
 
+
     $('#topics_container').delegate('.fa-thumbs-o-up', 'click', function () {
         let id = $(this).attr('data-id');
         let addLike = $(this).siblings(".text-info");
@@ -15,7 +16,9 @@ $(document).ready(function(){
 
     /**
      *  обновляем "колокольчик" - счётчик уведомлений
+     *  имитация нотификации
      */
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
     setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
 
 
