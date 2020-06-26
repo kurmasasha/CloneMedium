@@ -2,32 +2,32 @@ package ru.javamentor.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import ru.javamentor.model.Comment;
 import ru.javamentor.model.User;
+import ru.javamentor.service.CommentService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class PageController {
 
     private final UserService userService;
     public final TopicService topicService;
+    private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
     @Autowired
-    public PageController(UserService userService, TopicService topicService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
         this.topicService = topicService;
+        this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
     }
 
@@ -45,7 +45,6 @@ public class PageController {
         model.addAttribute("flagWar", flagWarning);
         return "login";
     }
-
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage() {
         return "home";
@@ -64,6 +63,8 @@ public class PageController {
     @GetMapping("/topic/{id}")
     public String topicPage(@PathVariable Long id, Model model) {
         model.addAttribute("topicId", id);
+        List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+        model.addAttribute("comments", comments);
         return "topic";
     }
 

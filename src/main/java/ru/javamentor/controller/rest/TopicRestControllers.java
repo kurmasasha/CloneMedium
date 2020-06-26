@@ -3,17 +3,15 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 
-import javax.validation.Valid;
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +21,12 @@ import java.util.Set;
 public class TopicRestControllers {
 
     private final TopicService topicService;
+    private final UserService userService;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService) {
+    public TopicRestControllers(TopicService topicService, UserService userService) {
         this.topicService = topicService;
+        this.userService = userService;
     }
 
     @GetMapping("/free-user/moderatedTopicsList")
@@ -52,7 +52,13 @@ public class TopicRestControllers {
 
     @GetMapping("/user/MyTopics")
     public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(currentUser.getId()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/user/allUsersByTopicId/{id}")

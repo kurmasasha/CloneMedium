@@ -24,7 +24,8 @@ function topicInCard(topic) {
                 '<a href="/topic/' + topic.id + '">' +
                     '<h5>' + topic.title + '</h5>' +
                 '</a>' +
-                '<h6>' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + '</h6>' +
+                // '<h6>' + date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + '</h6>' +
+                '<h6>' + timeConverter(date) + '</h6>' +
             '</div>' +
             '<div class="card-body">' +
                 '<h6 class="card-title">' + author_label + authors + '</h6>' +
@@ -34,3 +35,4 @@ function topicInCard(topic) {
         '</div>';
     return card;
 }
+
