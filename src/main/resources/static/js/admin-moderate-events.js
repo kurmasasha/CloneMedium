@@ -51,6 +51,24 @@ $(document).ready(function () {
         })
     });
 
+    /**
+     * обработчик кнопки moderate
+     */
+
+    const modModal = $("#moderateModal");
+
+    modModal.on('show.bs.modal', function (event) {
+        let id = $(event.relatedTarget).data('id');
+        $("#Msubmit").on('click', function () {
+            fetch('/api/admin/topic/moderate/' + id, {
+                method: 'POST',
+            })
+                .then(function () {
+                    location.replace("http://localhost:5050/admin/moderate");
+                })
+        })
+    });
+
 
     const showModal = $("#showModal");
     /**
