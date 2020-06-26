@@ -7,6 +7,13 @@ $(document).ready(function(){
         .then();
 
 
+    $('#topics_container').delegate('.fa-thumbs-o-up', 'click', function () {
+        let id = $(this).attr('data-id');
+        let addLike = $(this).siblings(".text-info");
+        increaseLike(id, addLike);
+
+    });
+
     /**
      *  обновляем "колокольчик" - счётчик уведомлений
      *  имитация нотификации
@@ -35,4 +42,5 @@ $(document).ready(function(){
                 .then();
         }
     });
+
 });

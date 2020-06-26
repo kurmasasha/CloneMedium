@@ -71,19 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/registration/**", "/activate/*", "/api/free-user/**", "/",
-                                        "/js/util/topic-in-card.js",
-                                        "/webjars/bootstrap/4.3.1/css/bootstrap.min.css",
-                                        "/css/style.css", "/img/logo.svg",
-                                        "/webjars/jquery/3.4.1/jquery.min.js",
-                                        "/webjars/bootstrap/4.3.1/js/bootstrap.min.js",
-                                        "/js/all_topics_events.js",
-                                        "/js/getAllTopicsByHashtag.js",
-                                        "/js/parseText.js",
-                                        "/js/getAndPrintModeratedTopics.js").permitAll()
+                                        "/js/**", "/webjars/**", "/css/**", "/img/**").permitAll()
                 .antMatchers("/authorization/**").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/api/user/**", "/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated();
     }
 

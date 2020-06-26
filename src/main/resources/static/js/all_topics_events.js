@@ -3,9 +3,20 @@
  */
 
 $(document).ready(function() {
+    let topicContainer = $('#topics_container');
     $('#all_page_link').addClass('active');
-    getAndPrintModeratedTopics($('#topics_container'))
+    getAndPrintModeratedTopics(topicContainer)
         .then();
+
+    /**
+     * Нажатие на кнопку увеличения лайка
+     */
+    topicContainer.delegate('.fa-thumbs-o-up', 'click', function () {
+        let id = $(this).attr('data-id');
+        let addLike = $(this).siblings(".text-info");
+        increaseLike(id, addLike);
+
+    });
 
     /**
      * Нажатие на кнопку поиска по хэштегу
@@ -27,8 +38,10 @@ $(document).ready(function() {
         }
     });
 
+
     // имитация нотификации
     window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
     setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
 
 })
+

@@ -9,6 +9,7 @@ import ru.javamentor.dao.TopicDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -101,15 +102,15 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(topic.getId());
-        if (userList.contains(currentUser)) {
+        if (userList.contains(currentUser)) {*/
             topicDAO.updateTopic(topic);
             log.info("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
             return true;
-        }
+        /*}
         log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
-        return false;
+        return false;*/
     }
 
     /**
@@ -234,5 +235,16 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Long getNotModeratedTopicsCount() {
         return topicDAO.getNotModeratedTopicsCount();
+    }
+
+    @Transactional
+    @Override
+    public Integer increaseTopicLikes(Long topicId) {
+        Topic currentTopic = topicDAO.getTopicById(topicId);
+        Integer likes = currentTopic.getLikes();
+        likes++;
+        currentTopic.setLikes(likes);
+        topicDAO.updateTopic(currentTopic);
+        return likes;
     }
 }

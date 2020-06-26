@@ -39,7 +39,8 @@ public class RegistrationController {
      * @return страницу регистраии
      */
     @GetMapping
-    public String showFormRegistration() {
+    public String showFormRegistration(@ModelAttribute("user") User user) {
+        user = new User();
         return "registration_form";
     }
 
