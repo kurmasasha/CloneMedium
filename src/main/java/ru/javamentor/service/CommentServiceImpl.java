@@ -41,9 +41,13 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public Comment getCommentById(Long id) {
-        Comment comment = commentDAO.getCommentById(id);
-        log.info("IN getCommentById - comment: {} found by id: {}", comment, id);
-        return comment;
+        try {
+            Comment comment = commentDAO.getCommentById(id);
+            log.info("IN getCommentById - comment: {} found by id: {}", comment, id);
+            return comment;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Transactional
@@ -62,25 +66,37 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public User getAuthorByCommentId(Long commentId) {
-        User author = commentDAO.getAuthorByCommentId(commentId);
-        log.info("IN getAuthorByCommentId - {} author found", commentId);
-        return author;
+        try {
+            User author = commentDAO.getAuthorByCommentId(commentId);
+            log.info("IN getAuthorByCommentId - {} author found", commentId);
+            return author;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public boolean removeCommentById(Long id) {
-        commentDAO.removeCommentById(id);
-        log.info("IN removeCommentById - comment with Id: {} successfully deleted", id);
-        return true;
+        try {
+            commentDAO.removeCommentById(id);
+            log.info("IN removeCommentById - comment with Id: {} successfully deleted", id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Transactional
     @Override
     public List<Comment> getAllCommentsByTopicId(Long topicId) {
-        List<Comment> comments = commentDAO.getAllCommentsByTopicId(topicId);
-        log.info("IN getAllCommentsByTopicId - {} comments found", comments.size());
-        return comments;
+        try {
+            List<Comment> comments = commentDAO.getAllCommentsByTopicId(topicId);
+            log.info("IN getAllCommentsByTopicId - {} comments found", comments.size());
+            return comments;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

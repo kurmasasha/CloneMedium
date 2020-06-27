@@ -1,17 +1,15 @@
 package ru.javamentor.service;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javamentor.dao.CommentDAOImpl;
+import ru.javamentor.dao.CommentDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
@@ -19,17 +17,20 @@ import ru.javamentor.model.User;
 
 import javax.persistence.TransactionRequiredException;
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.util.ArrayList;
 
+/**
+ * Тесты для класса CommentServiceImpl
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CommentServiceImplTest {
 
     @Autowired
-    CommentServiceImpl commentService;
+    CommentService commentService;
 
     @MockBean
-    CommentDAOImpl commentDAO;
+    CommentDAO commentDAO;
 
     /**
      * Проверка добавления комментария
@@ -71,33 +72,18 @@ class CommentServiceImplTest {
      */
     @Test
     void getCommentById() {
-        Mockito.doReturn(new Comment("testText", new User(), new Topic(),
-                                     LocalDateTime.of(2020, Month.JUNE, 26, 0, 0)))
+        Mockito.doReturn(new Comment())
                 .when(commentDAO)
                 .getCommentById(ArgumentMatchers.anyLong());
 
         Comment comment = commentService.getCommentById(ArgumentMatchers.anyLong());
-
         Assert.assertNotNull("Проверка наличия возвращаемого объекта комментария", comment);
-        Assert.assertEquals("Проверка текста возвращаемого объекта комментария",
-                            "testText", comment.getText());
-        Assert.assertNotNull("Проверка автора возвращаемого объекта комментария",comment.getAuthor());
-        Assert.assertNotNull("Проверка связанного топика возвращаемого объекта комментария",comment.getTopic());
-        Assert.assertEquals("Проверка времени создания возвращаемого объекта комментария",
-                            2020, comment.getDateCreated().getYear());
-        Assert.assertEquals("Проверка времени создания возвращаемого объекта комментария",
-                                    Month.JUNE, comment.getDateCreated().getMonth());
-        Assert.assertEquals("Проверка времени создания возвращаемого объекта комментария",
-                            0, comment.getDateCreated().getHour());
-        Assert.assertEquals("Проверка времени создания возвращаемого объекта комментария",
-                            0, comment.getDateCreated().getMinute());
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(ArgumentMatchers.anyLong());
     }
 
     /**
      * Проверка обработки ошибки при получении комментария по id
      */
-    /* Не пройдет, т.к. в методе не прописана обработка исключений */
     @Test
     void failGetCommentById() {
         Mockito.doThrow(new TransactionRequiredException())
@@ -112,8 +98,6 @@ class CommentServiceImplTest {
     /**
      * Проверка обновления комментария
      */
-    /* Не пройдет, т.к. в методе используется метод equals для сравнения юзеров.
-       А у класса User не переопределен метод equals */
     @Test
     void updateComment() {
         User authorFromDAO = new User("firstName", "lastName", "username",
@@ -133,58 +117,101 @@ class CommentServiceImplTest {
         Mockito.verify(commentDAO, Mockito.times(1)).updateComment(ArgumentMatchers.any(Comment.class));
     }
 
+    /**
+     * Проверка обновления комментария в случае, если это пытаеся сделать не связанный с комментарием пользователь.
+     */
     @Test
     void failUpdateComment() {
-        User authorFromDAO = new User("firstName", "lastName", "username",
-                "password", new Role("ADMIN"));
+        User authorFromDAO = new User();
         authorFromDAO.setId(1L);
         Mockito.doReturn(authorFromDAO)
                 .when(commentDAO)
                 .getAuthorByCommentId(1L);
         Comment comment = new Comment();
         comment.setId(1L);
-        User user = new User("anotherFirstName", "anotherLastName", "anotherUsername",
-                "password", new Role("ADMIN"));
-        user.setId(1L);
+        User user = new User();
+        user.setId(2L);
         boolean result = commentService.updateComment(comment, user);
 
         Assert.assertFalse("Проверка ответа метода updateComment()", result);
         Mockito.verify(commentDAO, Mockito.times(0)).updateComment(ArgumentMatchers.any(Comment.class));
     }
 
+    /**
+     * Проверка получения автора комментария по его id
+     */
     @Test
     void getAuthorByCommentId() {
-        Mockito.doReturn(new User("firstName", "lastName", "username",
-                                "password", new Role("ADMIN")))
+        Mockito.doReturn(new User())
                 .when(commentDAO)
-                .getAuthorByCommentId(1L);
-        User user = commentService.getAuthorByCommentId(1L);
+                .getAuthorByCommentId(ArgumentMatchers.anyLong());
+        User user = commentService.getAuthorByCommentId(ArgumentMatchers.anyLong());
         Assert.assertNotNull("Проверка возвращаемого объекта", user);
-        Assert.assertEquals("Проверка имени возвращаемого пользователя", "firstName", user.getFirstName());
-        Assert.assertEquals("Проверка фамилии возвращаемого пользователя", "lastName", user.getLastName());
-        Assert.assertEquals("Проверка username возвращаемого пользователя", "username", user.getUsername());
-        Assert.assertEquals("Проверка пароля возвращаемого пользователя", "password", user.getPassword());
-        Assert.assertEquals("Проверка роли возвращаемого пользователя", "ADMIN", user.getRole().getName());
         Mockito.verify(commentDAO, Mockito.times(1)).getAuthorByCommentId(ArgumentMatchers.anyLong());
     }
 
-    /* Не пройдет, т.к. в методе не прописана обработка исключений */
+    /**
+     * Проверка обработки ошибки при получении автора комментария по его id
+     */
     @Test
     void failGetAuthorByCommentId() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getAuthorByCommentId(ArgumentMatchers.anyLong());
 
-        Assert.assertNull("Проверка возвращаемого объекта", commentService.getAuthorByCommentId(1L));
+        Assert.assertNull("Проверка возвращаемого объекта", commentService.getAuthorByCommentId(ArgumentMatchers.anyLong()));
         Mockito.verify(commentDAO, Mockito.times(1)).getAuthorByCommentId(ArgumentMatchers.anyLong());
     }
 
+    /**
+     * Проверка удаления комментария по его id
+     */
     @Test
     void removeCommentById() {
-
+        Assert.assertTrue("Проверка возвращаемого объекта",
+                                commentService.removeCommentById(ArgumentMatchers.anyLong()));
+        Mockito.verify(commentDAO, Mockito.times(1)).removeCommentById(ArgumentMatchers.anyLong());
     }
 
+    /**
+     * Проверка обработки ошибок при удалении комментария по его id
+     */
+    @Test
+    void failRemoveCommentById() {
+        Mockito.doThrow(new TransactionRequiredException())
+                .when(commentDAO)
+                .removeCommentById(ArgumentMatchers.anyLong());
+
+        Assert.assertFalse("Проверка возвращаемого объекта",
+                commentService.removeCommentById(ArgumentMatchers.anyLong()));
+        Mockito.verify(commentDAO, Mockito.times(1)).removeCommentById(ArgumentMatchers.anyLong());
+    }
+
+    /**
+     * Проверка получения списка комментариев к топику по его id
+     */
     @Test
     void getAllCommentsByTopicId() {
+        Mockito.doReturn(new ArrayList<Comment>())
+                .when(commentDAO)
+                .getAllCommentsByTopicId(ArgumentMatchers.anyLong());
+
+        Assert.assertNotNull("Проверка возвращаемого объекта",
+                commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong()));
+        Mockito.verify(commentDAO, Mockito.times(1)).getAllCommentsByTopicId(ArgumentMatchers.anyLong());
+    }
+
+    /**
+     * Проверка обработки ошибок при получении списка комментариев к топику по его id
+     */
+    @Test
+    void failGetAllCommentsByTopicId() {
+        Mockito.doThrow(new TransactionRequiredException())
+                .when(commentDAO)
+                .getAllCommentsByTopicId(ArgumentMatchers.anyLong());
+
+        Assert.assertNull("Проверка возвращаемого объекта",
+                commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong()));
+        Mockito.verify(commentDAO, Mockito.times(1)).getAllCommentsByTopicId(ArgumentMatchers.anyLong());
     }
 }
