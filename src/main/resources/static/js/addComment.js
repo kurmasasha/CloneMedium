@@ -1,6 +1,6 @@
 document.getElementById('add_comment_button').onclick = function () {
     let commentBody = document.getElementById('textareaResize');
-    let comment = commentBody.value;
+    let comment = commentBody.value.replace(/\n/g, '<br />');
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
 

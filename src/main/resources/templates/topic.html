@@ -29,21 +29,23 @@
         <div class="comment-box">
             <form>
                 <div class="form-group" style="margin: 0">
-                    <textarea class="form-control" id="textareaResize" rows="1" style="resize:none"
+                    <textarea class="form-control" id="textareaResize" rows="1" style="resize:none; overflow: hidden;"
                               placeholder="Добавьте Ваш комментарий" type="name" name="comment"></textarea>
                 </div>
                 <!-- Кнопка добавления коммента через скрипт addComment-->
-                <div class="form-group text-left">
-                    <button id="add_comment_button" class="btn btn-sm btn-primary" type="button"><i
+                <div class="form-group">
+                    <button id="add_comment_button" class="btn btn-sm btn-primary float-left" type="button"><i
                             class="fas fa-pencil-alt"></i>
                         Добавить
                     </button>
+                    <div class="counter form-group float-right">Осталось символов: <b><span id="counter"></span></b>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
     <!--------------------------------------- Комментарии ----------------------------------------------------------------->
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" style="clear: both">
         <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
             <th:block th:each="comment: ${comments}">
@@ -51,10 +53,10 @@
                     <div class="card-header d-flex justify-content-between">
                         <h6 class="card-title"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
-                        <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd.MM.yyyy HH:mm')}" > </h6>
+                        <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd.MM.yyyy HH:mm')}"></h6>
                     </div>
                     <div class="card-body">
-                        <p class="card-text" th:text="${comment.getText()}"> </p>
+                        <p class="card-text" th:utext="${comment.getText()}"></p>
                     </div>
                 </div>
             </th:block>
@@ -71,6 +73,7 @@
 <script src="/js/addComment.js"></script>
 <script src="/js/util/comment-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
+<script src="/js/util/counterForSymbols.js"></script>
 
 </body>
 </html>
