@@ -48,4 +48,18 @@ body {
     size: 15px;
 }
 
+i.fa.fa-heart {
+    color: lightskyblue;
+    font-size: 1.4em;
+    padding: 3px;
+}
+i.fa.fa-heart:hover {
+    cursor: pointer;
+}
+i.fa.fa-heart.red {
+    color: lightcoral;
+    font-size: 1.4em;
+    padding: 3px;
+}
+
 

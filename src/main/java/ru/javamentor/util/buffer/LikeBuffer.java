@@ -1,28 +1,25 @@
 package ru.javamentor.util.buffer;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class LikeBuffer {
-    private static final LikeBuffer LIKEBUFFER = new LikeBuffer();
-    private Map<String, Set<Long>> data;
 
-    private LikeBuffer() {
-        data = new ConcurrentHashMap<>();
+    private Map<String, Set<Long>> data = new ConcurrentHashMap<>();
+
+    public boolean isLikedTopic(String sessionId, Long topicId) {
+        if (data.get(sessionId) != null) {
+            return data.get(sessionId).contains(topicId);
+        }
+        return false;
     }
 
-    public static LikeBuffer getInstance() {
-        return LIKEBUFFER;
-    }
-
-    public boolean canLikeInThisSession(String sessionId, Long topicId) {
-        return (data.get(sessionId) == null) || (!data.get(sessionId).contains(topicId));
-    }
-
-    public void addLikeToCurrentSession(String sessionId, Long topicId) {
-        if (canLikeInThisSession(sessionId, topicId)) {
+    public void addLike(String sessionId, Long topicId) {
             if (data.containsKey(sessionId)) {
                 data.get(sessionId).add(topicId);
             } else {
@@ -30,6 +27,9 @@ public class LikeBuffer {
                 set.add(topicId);
                 data.put(sessionId, set);
             }
-        }
+
+    }
+    public void deleteLike(String sessionId, Long topicId) {
+        data.get(sessionId).remove(topicId);
     }
 }

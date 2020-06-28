@@ -126,5 +126,6 @@ public interface TopicService {
      */
     Long getNotModeratedTopicsCount();
 
-    Integer increaseTopicLikes(Long topicId);
+    Topic increaseTopicLikes(Long topicId);
+    Topic decreaseTopicLikes(Long topicId);
 }
