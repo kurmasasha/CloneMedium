@@ -9,6 +9,10 @@ document.getElementById('add_comment_button').onclick = function () {
         topicId: topicId
     }
 
+    document.getElementById('textareaResize').value = '';
+    document.getElementById('textareaResize').style.height = "auto";
+    $('#counter').html(2000);
+
     return fetch('/api/user/comment/add', {
         method: 'POST',
         headers: {
