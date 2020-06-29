@@ -7,8 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.buffer.LikeBuffer;
@@ -17,7 +19,9 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Rest контроллер для топиков
@@ -26,16 +30,20 @@ import java.util.Set;
  * @autor Java Mentor
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = {"/api"}, produces = "application/json")
 public class TopicRestControllers {
 
     private final TopicService topicService;
     private final UserService userService;
+    private final LikeBuffer likeBuffer;
+    private final NotificationService notificationService;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService) {
         this.topicService = topicService;
         this.userService = userService;
+        this.likeBuffer = likeBuffer;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -118,6 +126,15 @@ public class TopicRestControllers {
         Topic topic = topicService.getTopicById(id);
         topic.setModerate(true);
         topicService.updateTopic(topic);
+        //добавление оповещения авторов что топик одобрен
+        for (User user:
+                topic.getAuthors()) {
+            Notification notification = new Notification();
+            notification.setTitle("Модерация");
+            notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
+            notification.setUser(user);
+            notificationService.addNotification(notification);
+        };
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -209,14 +226,25 @@ public class TopicRestControllers {
     }
 
     /**
-     * метод для уадления топика
+     * метод для удаления топика
      *
      * @param - id топика который необходимо удалить
      * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
      */
     @DeleteMapping("/admin/topic/delete/{id}")
     public ResponseEntity<String> deleteTopicByAdmin(@PathVariable Long id) {
+        Topic topic = topicService.getTopicById(id);
+        Set<User> users = topic.getAuthors();
+
         if (topicService.removeTopicById(id)) {
+            for (User user:
+                    users) {
+                Notification notification = new Notification();
+                notification.setTitle("Модерация");
+                notification.setText("Ваша статья \"" + topic.getTitle() + "\" не прошла модерацию и удалена");
+                notification.setUser(user);
+                notificationService.addNotification(notification);
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Cannot delete this topic, try again", HttpStatus.BAD_REQUEST);
@@ -241,11 +269,17 @@ public class TopicRestControllers {
      * @param session - текущая сессия клиента
      * @return Увеличенное количество топиков либо ответ что лайк с текущей сессии запрещен
      */
-    @GetMapping("/admin/topic/addLike/{topicId}")
-    public ResponseEntity<Integer> increaseLikeOfTopic(@PathVariable Long topicId, HttpSession session) {
-        if (LikeBuffer.getInstance().canLikeInThisSession(session.getId(), topicId)) {
-            LikeBuffer.getInstance().addLikeToCurrentSession(session.getId(), topicId);
-            return new ResponseEntity<>(topicService.increaseTopicLikes(topicId), HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    @GetMapping("/topic/addLike/{topicId}")
+    public ResponseEntity<Topic> increaseLikeOfTopic(@PathVariable Long topicId, HttpSession session) {
+        if (!likeBuffer.isLikedTopic(session.getId(), topicId)) {
+            likeBuffer.addLike(session.getId(), topicId);
+            Topic topic = topicService.increaseTopicLikes(topicId);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        } else if(likeBuffer.isLikedTopic(session.getId(), topicId)) {
+            likeBuffer.deleteLike(session.getId(), topicId);
+            Topic topic = topicService.decreaseTopicLikes(topicId);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }

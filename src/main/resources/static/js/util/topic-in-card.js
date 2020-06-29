@@ -19,26 +19,26 @@ function topicInCard(topic) {
     }
     let date = new Date(topic.dateCreated);
 
-        let moderated = 'notmoderated';
-      if (topic.moderate) {
-          moderated = 'moderated';
-      }
-    let like = '<a class="text-info" id="likes" data-id= ' + topic.id+ '>' + topic.likes + '</a>';
+    let moderated = 'notmoderated';
+    if (topic.moderate) {
+        moderated = 'moderated';
+    }
+    let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
     let card =
         '<div class="card mb-2">' +
-
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
         '<h6>' + timeConverter(date) + '</h6>' +
+        '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
         '<h6 class="card-title">' + tags + '</h6>' +
         '<p class="card-text">' + linkify(topic.content) + '</p>' +
-        "<a href='#' class='fa fa-thumbs-o-up'  data-id="+topic.id+">   </a> "+
-        like +
-        '</div>' +
+        `<i class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></i>` +
+        `<span class="text-info" id="likeCounter" data-id="${topic.id}">${topic.likes}</span>` +
+    '</div>' +
         '</div>';
     return card;
 }
