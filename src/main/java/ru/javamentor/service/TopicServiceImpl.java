@@ -239,12 +239,23 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public Integer increaseTopicLikes(Long topicId) {
+    public Topic increaseTopicLikes(Long topicId) {
         Topic currentTopic = topicDAO.getTopicById(topicId);
         Integer likes = currentTopic.getLikes();
         likes++;
         currentTopic.setLikes(likes);
         topicDAO.updateTopic(currentTopic);
-        return likes;
+        return currentTopic;
+    }
+
+    @Transactional
+    @Override
+    public Topic decreaseTopicLikes(Long topicId) {
+        Topic currentTopic = topicDAO.getTopicById(topicId);
+        Integer likes = currentTopic.getLikes();
+        likes--;
+        currentTopic.setLikes(likes);
+        topicDAO.updateTopic(currentTopic);
+        return currentTopic;
     }
 }

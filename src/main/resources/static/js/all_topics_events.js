@@ -9,16 +9,6 @@ $(document).ready(function() {
         .then();
 
     /**
-     * Нажатие на кнопку увеличения лайка
-     */
-    topicContainer.delegate('.fa-thumbs-o-up', 'click', function () {
-        let id = $(this).attr('data-id');
-        let addLike = $(this).siblings(".text-info");
-        increaseLike(id, addLike);
-
-    });
-
-    /**
      * Нажатие на кнопку поиска по хэштегу
      */
     $('#hashtag_home_button').on('click', function () {

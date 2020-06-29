@@ -34,4 +34,8 @@ public class Notification {
     @NotEmpty
     @NotNull
     private String text;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
 }

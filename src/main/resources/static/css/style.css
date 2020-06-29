@@ -48,4 +48,17 @@ body {
     size: 15px;
 }
 
+#topics_container i.fa {
+    color: dodgerblue;
+    font-size: 1.4em;
+    padding: 5px;
+}
+#topics_container i.fa:hover {
+    cursor: pointer;
+}
+
+#likeCounter {
+    font-size: 1.5em;
+}
+
 
