@@ -83,10 +83,8 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean addNotification(Notification notification) {
-        //if (!isExistNotes(notification)) {
             notificationsDao.save(notification);
             return true;
-        //} else return false;
     }
     /**
      * метод для удаления уведомления
