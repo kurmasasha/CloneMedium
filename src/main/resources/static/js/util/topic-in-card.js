@@ -23,7 +23,7 @@ function topicInCard(topic) {
     if (topic.moderate) {
         moderated = 'moderated';
     }
-
+    let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
     let card =
         '<div class="card mb-2">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
@@ -31,6 +31,7 @@ function topicInCard(topic) {
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
         '<h6>' + timeConverter(date) + '</h6>' +
+        '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
         '<h6 class="card-title">' + tags + '</h6>' +
