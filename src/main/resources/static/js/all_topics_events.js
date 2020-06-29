@@ -38,10 +38,5 @@ $(document).ready(function() {
         }
     });
 
-
-    // имитация нотификации
-    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
-
 })
 

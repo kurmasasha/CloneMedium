@@ -15,15 +15,6 @@ $(document).ready(function(){
     });
 
     /**
-     *  обновляем "колокольчик" - счётчик уведомлений
-     *  имитация нотификации
-     */
-    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
-
-
-
-    /**
      * Нажатие на кнопку поиска по хэштегу
      */
     $('#hashtag_home_button').on('click', function() {
