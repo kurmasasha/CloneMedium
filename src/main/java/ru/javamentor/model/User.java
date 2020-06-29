@@ -171,4 +171,20 @@ public class User implements UserDetails {
         return true;
     }
 
+    /**
+     * Переопределенный метод сравнения двух пользователей.
+     * В данном случае сравнение производится только по id, т.к. его значение уникально для каждого пользователя.
+     * @param obj - пользователь для сравнения с текущим
+     * @return - true - если это один и тот же пользователь, иначе - false
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        User user = (User) obj;
+        return (id == user.getId());
+    }
 }
