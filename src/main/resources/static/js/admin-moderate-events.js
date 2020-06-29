@@ -51,6 +51,24 @@ $(document).ready(function () {
         })
     });
 
+    /**
+     * обработчик кнопки moderate
+     */
+
+    const modModal = $("#moderateModal");
+
+    modModal.on('show.bs.modal', function (event) {
+        let id = $(event.relatedTarget).data('id');
+        $("#Msubmit").on('click', function () {
+            fetch('/api/admin/topic/moderate/' + id, {
+                method: 'POST',
+            })
+                .then(function () {
+                    location.replace("http://localhost:5050/admin/moderate");
+                })
+        })
+    });
+
 
     const showModal = $("#showModal");
     /**
@@ -75,5 +93,14 @@ $(document).ready(function () {
     $('#closeModalButton').on('click', function () {
         $('#modalBody').empty();
         $('#modalTitle').empty();
-    })
+    });
+
+    // имитация нотификации
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
+    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+
+    // сокрытие элемента поиска по хэштэгам: он здесь не нужен
+    let divFinderByHashtag = document.getElementById('finderByHashtag');
+    divFinderByHashtag.style.visibility = 'hidden';
+
 });

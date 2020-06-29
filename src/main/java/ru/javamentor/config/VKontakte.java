@@ -45,12 +45,14 @@ public class VKontakte {
     final String clientSecret = "yTAv4wjNeGubFJExIO72";
     final String customScope = "email";
 
+
     @Getter
     final OAuth20Service service = new ServiceBuilder(clientId)
             .apiSecret(clientSecret)
             .defaultScope(customScope) // replace with desired scope
             .callback("http://localhost:5050/authorization/returnCodeVK")
             .build(VkontakteApi.instance());
+
 
     @Getter
     final String authorizationUrl = service.createAuthorizationUrlBuilder()
