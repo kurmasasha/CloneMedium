@@ -1,6 +1,8 @@
 package ru.javamentor.model;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -42,6 +44,7 @@ public class Topic {
     private boolean isModerate = false;
 
     @Column
+    @NotNull
     private Integer likes = 0;
 
     @ManyToMany(fetch = FetchType.EAGER)
