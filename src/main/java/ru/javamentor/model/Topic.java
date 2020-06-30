@@ -41,7 +41,12 @@ public class Topic {
     private LocalDateTime dateCreated;
 
     @Column
+    @NotNull
     private boolean isModerate = false;
+
+    @Column
+    @NotNull
+    private boolean completed;
 
     @Column
     @NotNull
@@ -63,12 +68,13 @@ public class Topic {
         }
     }
 
-    public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
+    public Topic(String title, String content, boolean completed, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
+        this.completed = completed;
     }
 
     public Topic(String title, String content) {
