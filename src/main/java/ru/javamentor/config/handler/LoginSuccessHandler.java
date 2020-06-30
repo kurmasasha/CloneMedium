@@ -13,9 +13,19 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Component
-//Тестовый комментарий
+/**
+ * Класс отвечающий за логику после аутентификации пользователя в системе
+ * @autor Java Mentor
+ * @version 1.0
+ */
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-
+    /**
+     * Метод вызывается после успешной аутентификации
+     * @param httpServletRequest - объект запроса
+     * @param httpServletResponse - объект ответа
+     * @param authentication - представляет пользователя с точки зрения Spring Security
+     * @return void
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,

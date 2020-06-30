@@ -6,9 +6,16 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.javamentor.dao.UserDAOImpl;
 import ru.javamentor.model.User;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Класс отвечающий за проверку на валидность даных пользователя в системе
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Component
 public class UserValidator implements Validator {
 
@@ -42,6 +49,7 @@ public class UserValidator implements Validator {
             }
         }
     }
+
     protected void validPassword(User user, Errors errors) {
         if (!user.getPassword().equals("")) {
             if (!user.getPassword().equals(user.getMatchingPassword())) {
@@ -49,6 +57,7 @@ public class UserValidator implements Validator {
             }
         }
     }
+
     protected void validFirstName(User user, Errors errors, Pattern pattern) {
         matcher = pattern.matcher(user.getFirstName());
         if (!user.getFirstName().equals("")) {
@@ -57,6 +66,7 @@ public class UserValidator implements Validator {
             }
         }
     }
+
     protected void validLastName(User user, Errors errors, Pattern pattern) {
         matcher = pattern.matcher(user.getLastName());
         if (!user.getLastName().equals("")) {

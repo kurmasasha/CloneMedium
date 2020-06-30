@@ -1,6 +1,5 @@
 package ru.javamentor.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,12 +9,16 @@ import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
-import ru.javamentor.util.validation.UserValidator;
 import ru.javamentor.util.validation.ValidatorFormAddUser;
-
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер возвращающий для показа html страниц
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
@@ -30,11 +33,25 @@ public class RegistrationController {
         this.userValidator = userValidator;
     }
 
+    /**
+     * метод для страницы регистрации
+     *
+     * @return страницу регистраии
+     */
     @GetMapping
-    public String showFormRegistration(User user) {
+    public String showFormRegistration(@ModelAttribute("user") User user) {
+        user = new User();
         return "registration_form";
     }
 
+    /**
+     * метод для страницы активации
+     *
+     * @param user               - юзер которого необходимо активировать
+     * @param resend             - атрибут для повторной отправки email
+     * @param redirectAttributes - атрибут для информирования пользователя о успешной/неуспешной отправки формы
+     * @return страницу информации об активации либо страниу логина
+     */
     @GetMapping("/info")
     public String activationInfoPage(@ModelAttribute("regUser") User user,
                                      Model model,
@@ -52,10 +69,18 @@ public class RegistrationController {
         } else {
             flag = false;
         }
-        model.addAttribute("flag",flag);
+        model.addAttribute("flag", flag);
         return "activationInfo";
     }
 
+    /**
+     * метод для приема данных пользователя при регистрации
+     *
+     * @param user               - пользователь с заполненными данными
+     * @param bindingResult      - объект для информации о валидации
+     * @param redirectAttributes - атрибут для информирования пользователя о успешной/неуспешной отправки формы
+     * @return страницу информации о регистрации либо на форму регистрации если есть ошибки в валидации
+     */
     @PostMapping
     public String registrationUser(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         userValidator.validate(user, bindingResult);
@@ -69,11 +94,18 @@ public class RegistrationController {
         return "redirect:/registration/info";
     }
 
+    /**
+     * метод для приема кода акцивации
+     *
+     * @param code               - ключ с почты для активации пользователя
+     * @param redirectAttributes - атрибут для информирования пользователя о успешной/неуспешной отправки формы
+     * @return перенаправляет на странцу логина
+     */
     @GetMapping("/activate/{code}")
     public String activate(RedirectAttributes redirectAttributes, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
 
-        if(isActivated) {
+        if (isActivated) {
             redirectAttributes.addFlashAttribute("message", "User successfully activated");
         } else {
             redirectAttributes.addFlashAttribute("warning", "Activation code not found!");
@@ -82,6 +114,13 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    /**
+     * метод для переотправки активационного письма
+     *
+     * @param code               - ключ с почты для активации пользователя
+     * @param redirectAttributes - атрибут для информирования пользователя о успешной/неуспешной отправки формы
+     * @return перенаправляет на странцу информации о регистрации
+     */
     @PostMapping("/resend")
     public String resend(@RequestParam("code") String code, RedirectAttributes redirectAttributes) {
         if (code == null && code.equals("")) {
@@ -89,7 +128,7 @@ public class RegistrationController {
             redirectAttributes.addFlashAttribute("resend", "Email уже подтвержден!");
         }
         User user = userService.findByActivationCode(code);
-        if((user != null) && !(user.getActivationCode() == null)) {
+        if ((user != null) && !(user.getActivationCode() == null)) {
             userService.sendCode(user);
             redirectAttributes.addFlashAttribute("resend", "Вам повторно отправлено на почту письмо. Проверьте почту чтобы подтвердить свой Email.");
             //model.addAttribute("message", "Письмо отправлено");

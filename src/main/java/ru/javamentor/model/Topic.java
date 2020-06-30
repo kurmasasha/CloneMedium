@@ -1,17 +1,21 @@
 package ru.javamentor.model;
 
 import lombok.*;
-import org.hibernate.annotations.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Класс представляющий модель топика
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -39,7 +43,11 @@ public class Topic {
     @Column
     private boolean isModerate = false;
 
-    @ManyToMany
+    @Column
+    @NotNull
+    private Integer likes = 0;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
@@ -63,7 +71,7 @@ public class Topic {
         this.isModerate = isModerate;
     }
 
-    public Topic(String  title, String content) {
+    public Topic(String title, String content) {
         this.title = title;
         this.content = content;
     }

@@ -3,8 +3,9 @@
  */
 
 $(document).ready(function() {
+    let topicContainer = $('#topics_container');
     $('#all_page_link').addClass('active');
-    getAndPrintModeratedTopics($('#topics_container'))
+    getAndPrintModeratedTopics(topicContainer)
         .then();
 
     /**
@@ -17,7 +18,7 @@ $(document).ready(function() {
             hashtag = hashtag.slice(1);
         }
         if (hashtag !== '') {
-            getAllTopicsByHashtag('all', hashtag, $('#topics_container'))
+            getAllTopicsByHashtag(hashtag, $('#topics_container'))
                 .then();
         } else {
             let contentContainer = $('#topics_container');
@@ -26,4 +27,11 @@ $(document).ready(function() {
                 .then();
         }
     });
+
+
+    // имитация нотификации
+    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
+    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+
 })
+

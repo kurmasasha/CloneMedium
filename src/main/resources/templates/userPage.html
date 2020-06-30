@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> User Info Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Форма регистрации</title>
+</head>
+
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 m-0 p-0" href="/home">
+        <img src="/img/logo.svg" width="32" height="32" class="d-inline-block align-top m-1" alt="...">
+        <h2 class="d-inline-block m-0">Clone medium</h2></a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/logout">Выход</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container col-md-5">
+    <div class="editForm-header">
+        <h4 class="modal-title">Edit user [${user.username}]</h4>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
+            <form action="/user/edit_profile" th:object="${user}" method="post">
+
+                <div class="modal-body">
+                    <!-- скрытые поля. начало -->
+                    <div hidden="true">
+                        <input th:field="*{id}" id="id-for-edit"/>
+                        <input th:field="*{username}" username="username-for-edit"/>
+                    </div>
+                    <!-- скрытые поля. конец -->
+<!--                    <div class="form-group">-->
+<!--                        <label for="id-for-view">ID</label>-->
+<!--                        <input class="form-control" id="id-for-view" disabled/>-->
+<!--                    </div>-->
+<!--                    <br>-->
+                    <div class="form-group">
+                        <label for="username-for-view">Логин</label>
+                        <input class="form-control" id="username-for-view" th:field="*{username}" readonly>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                        <span class="text-danger" th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="matchingPassword">Подтверждение пароля</label>
+                        <input type="password" class="form-control" id="matchingPassword" name="matchingPassword">
+                        <span class="text-danger" th:if="${#fields.hasErrors('matchingPassword')}"
+                              th:errors="*{matchingPassword}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName-for-edit">Имя</label>
+                        <input th:field="*{firstName}" class="form-control" id="firstName-for-edit">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="lastName-for-edit">Фамилия</label>
+                        <input th:field="*{lastName}" class="form-control" id="lastName-for-edit">
+                    </div>
+                    <br>
+                </div>
+                <div class="editForm-footer">
+                    <!--                        <button type="button" class="btn" data-dismiss="modal">Закрыть</button>-->
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

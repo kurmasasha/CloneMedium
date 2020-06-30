@@ -3,12 +3,17 @@ package ru.javamentor.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
+/**
+ * Класс представляющий модель комментария
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -20,14 +25,26 @@ public class Comment {
     @Column
     String text;
 
+    @Column(updatable = false)
+    private LocalDateTime dateCreated;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
 
     public Comment(String text) {
         this.text = text;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    User authorOfComment;
+    public Comment(String text, User author, Topic topic, LocalDateTime dateCreated) {
+        this.text = text;
+        this.author = author;
+        this.topic = topic;
+        this.dateCreated = dateCreated;
+    }
+
 }

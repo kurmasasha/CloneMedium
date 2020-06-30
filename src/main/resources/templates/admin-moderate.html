@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Admin</title>
 </head>
 <body>
+
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 m-0 p-0" href="/home">
-        <img src="/img/logo.svg" width="32" height="32" class="d-inline-block align-top m-1" alt="...">
-        <h2 class="d-inline-block m-0">Clone medium</h2>
-    </a>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/logout">Выход</a>
-        </li>
-    </ul>
-</nav>
+<nav th:replace="fragments/header :: home_header"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <div class="container-fluid">
@@ -48,7 +40,30 @@
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-danger"
                                     id="Dsubmit"
-                            >Delete
+                            >Удалить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!------------------------------------ Модальное окно для модерации топика ------------------------------------>
+            <div class="modal fade" id="moderateModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Модерация</h3>
+                            <button class="close" data-dismiss="modal">x</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <a>Вы действительно хотите одобрить топик?</a>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success"
+                                    id="Msubmit"
+                            >Подтвердить
                             </button>
                         </div>
                     </div>
@@ -89,5 +104,7 @@
 <script src="/js/getAndPrintNotModeratedTopicsPage.js"></script>
 <script src="/js/admin-moderate-events.js"></script>
 <script src="/js/parseText.js"></script>
+<script src="/js/getNotifCounterByPrincipal.js"></script>
+
 </body>
 </html>

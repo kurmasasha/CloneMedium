@@ -1,14 +1,24 @@
 package ru.javamentor.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Класс представляющий модель пользователя в системе
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Entity
 @NoArgsConstructor
 @Getter
@@ -36,7 +46,6 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull
-    @NotEmpty
     @Column
     private String password;
 
@@ -162,4 +171,20 @@ public class User implements UserDetails {
         return true;
     }
 
+    /**
+     * Переопределенный метод сравнения двух пользователей.
+     * В данном случае сравнение производится только по id, т.к. его значение уникально для каждого пользователя.
+     * @param obj - пользователь для сравнения с текущим
+     * @return - true - если это один и тот же пользователь, иначе - false
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        User user = (User) obj;
+        return (id == user.getId());
+    }
 }
