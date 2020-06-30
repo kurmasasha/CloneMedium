@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javamentor.dao.NotificationsDao;
+import ru.javamentor.dao.NotificationsDaoImpl;
 import ru.javamentor.model.Notification;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public List<Notification> getAllNotes() {
-        List<Notification> notifications = notificationsDao.findAll();
+        List<Notification> notifications = notificationsDao.getAllNotes();
         log.info("findAll: {} notifications", notifications.size());
         return notifications;
     }
@@ -54,7 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getByTitle(String title) {
-        Notification notification = notificationsDao.findByTitle(title);
+        Notification notification = notificationsDao.getByTitle(title);
         log.info("getById: return notification by title");
         return notification;
     }
@@ -66,8 +67,8 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean updateNotification(Notification notification) {
-        if (isExistNotes(notification)) {
-            notificationsDao.saveAndFlush(notification);
+        if (notification != null) {
+            notificationsDao.updateNotification(notification);
             log.info("updateNotification: notification {title} was updated", notification.getTitle());
             return true;
         } else
@@ -83,8 +84,8 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean addNotification(Notification notification) {
-        if (!isExistNotes(notification)) {
-            notificationsDao.save(notification);
+        if (notification != null) {
+            notificationsDao.addNotification(notification);
             return true;
         } else return false;
     }
@@ -96,18 +97,18 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean deleteNotification(Notification notification) {
-        notificationsDao.delete(notification);
+        notificationsDao.deleteNotification(notification);
         log.info("deleteNotification: notification {title} was deleted", notification.getTitle());
         return true;
     }
 
-    /**
-     * метод для проверки существования уведомления
-     *
-     * @param notification - объект уведомления
-     * @return boolean - существует такое уведомление или нет
-     */
-    private boolean isExistNotes(Notification notification) {
-        return notificationsDao.findByTitle(notification.getTitle()) != null;
-    }
+//    /**
+//     * метод для проверки существования уведомления
+//     *
+//     * @param notification - объект уведомления
+//     * @return boolean - существует такое уведомление или нет
+//     */
+//    private boolean isExistNotes(Notification notification) {
+//        return notificationsDao.findByTitle(notification.getTitle()) != null;
+//    }
 }
