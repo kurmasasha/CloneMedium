@@ -7,7 +7,7 @@
   <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <title>Home</title>
+  <title>All topics page</title>
 </head>
 <body>
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
@@ -34,13 +34,12 @@
 <script src="/js/all_topics_events.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/getAndPrintModeratedTopics.js"></script>
-<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/add-topic_events.js"></script>
-
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
-<script src="/js/util/likes.js"></script>
+<script src="/js/likedTopic.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/getNotifCounterByPrincipal.js"></script>
 </body>

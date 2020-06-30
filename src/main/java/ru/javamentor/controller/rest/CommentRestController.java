@@ -62,8 +62,8 @@ public class CommentRestController {
     }
 
     @PostMapping("/user/comment/update")
-    public ResponseEntity<String> updateComment(@RequestBody Comment comment) {
-        if (commentService.updateComment(comment)) {
+    public ResponseEntity<String> updateComment(@RequestBody Comment comment, @AuthenticationPrincipal User user) {
+        if (commentService.updateComment(comment, user)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You can't update the comment because it doesn't belong to you.", HttpStatus.BAD_REQUEST);

@@ -12,7 +12,7 @@ public interface CommentService {
 
     Comment getCommentById(Long id);
 
-    boolean updateComment(Comment comment);
+    boolean updateComment(Comment comment, User user);
 
     boolean removeCommentById(Long id);
 
