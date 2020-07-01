@@ -23,9 +23,10 @@ function topicInCard(topic) {
     if (topic.moderate) {
         moderated = 'moderated';
     }
+    // TODO Зачем здесь переменная like, если она нигде далее не используется?
     let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
     let card =
-        '<div class="card mb-2">' +
+        '<div class="card mb-2 mt-0">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +

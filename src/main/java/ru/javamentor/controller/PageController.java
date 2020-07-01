@@ -8,6 +8,7 @@ import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
 import ru.javamentor.service.CommentService;
+import ru.javamentor.service.ThemeService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
@@ -24,13 +25,15 @@ import java.util.List;
 public class PageController {
 
     private final UserService userService;
+    private final ThemeService themeService;
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
     @Autowired
-    public PageController(UserService userService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
+        this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
@@ -74,7 +77,8 @@ public class PageController {
      */
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allTopicsPage() {
+    public String allTopicsPage(Model model) {
+        model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
 

@@ -128,10 +128,10 @@ public interface TopicService {
 
     /**
      * Поиск топиков по теме.
-     * @param theme - тема топика
+     * @param themesIds - id тем, по которым будем происходить поиск
      * @return список топиков
      */
-    List<Topic> getTopicsByTheme(String theme);
+    List<Topic> getModeratedTopicsByThemes(Set<Long> themesIds);
 
     Topic increaseTopicLikes(Long topicId);
     Topic decreaseTopicLikes(Long topicId);

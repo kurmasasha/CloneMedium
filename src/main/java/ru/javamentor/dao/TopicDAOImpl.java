@@ -261,11 +261,11 @@ public class TopicDAOImpl implements TopicDAO {
 
     /**
      * Поиск топиков по теме.
-     * @param theme - тема топика.
+     * @param themesIds - id тем, по которым будем происходить поиск
      * @return - список топиков
      */
     @Override
-    public List<Topic> getTopicsByTheme(String theme) {
+    public List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds) {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
@@ -273,11 +273,12 @@ public class TopicDAOImpl implements TopicDAO {
                                 "LEFT JOIN FETCH t.hashtags h " +
                                 "LEFT JOIN FETCH a.role r " +
                                 "LEFT JOIN FETCH t.themes th " +
-                                "WHERE th.name = :value " +
+                                "WHERE th.id IN :value " +
+                                "AND t.isModerate = true " +
                                 "GROUP BY t.id " +
                                 "ORDER BY t.dateCreated  DESC",
                         Topic.class)
-                .setParameter("value", theme)
+                .setParameter("value", themesIds)
                 .getResultList();
     }
 }

@@ -19,8 +19,25 @@
   <div id="topics_container" class="container mx-0 py-3">
     <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
   </div>
-  <!-- Кнопка добавления топика -->
-  <div sec:authorize="isAuthenticated()" th:replace="fragments/add-topic-modal :: add-topic_button"></div>
+  <div class="my-3">
+    <div class="position-fixed">
+      <!-- Кнопка добавления топика -->
+      <div sec:authorize="isAuthenticated()" class="mb-3">
+        <button th:replace="fragments/add-topic-modal :: add-topic_button"></button>
+      </div>
+
+      <form id="themes_form">
+        <select name="themes" id="themes_select" class="custom-select" size="3" multiple>
+          <th:block th:each="theme : ${themes}">
+            <option th:value="${theme.getId()}" th:text="${theme.getName()}"></option>
+          </th:block>
+        </select>
+        <button id="theme_button" type="button" class="btn btn-dark mt-2">
+          Найти по теме
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -29,6 +46,7 @@
 <nav th:replace="fragments/add-topic-modal :: add-topic_modal"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/all_topics_events.js"></script>

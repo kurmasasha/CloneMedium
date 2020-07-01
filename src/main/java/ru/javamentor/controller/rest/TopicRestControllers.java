@@ -19,9 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Rest контроллер для топиков
@@ -61,9 +59,13 @@ public class TopicRestControllers {
      *
      * @return ResponseEntity, который содержит List топиков
      */
-    @GetMapping("/free-user/getTopicsByTheme")
-    public ResponseEntity<List<Topic>> getTopicsByTheme(@RequestParam(name = "theme") String theme) {
-        return new ResponseEntity<>(topicService.getTopicsByTheme(theme), HttpStatus.OK);
+    @PostMapping("/free-user/getTopicsByThemes")
+    public ResponseEntity<List<Topic>> getTopicsByTheme(@RequestParam(name = "themes", required = false) Set<Long> themesIds) {
+        if (themesIds == null || themesIds.isEmpty()) {
+            return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(topicService.getModeratedTopicsByThemes(themesIds), HttpStatus.OK);
+        }
     }
 
     /**

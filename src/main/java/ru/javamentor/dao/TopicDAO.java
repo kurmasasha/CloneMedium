@@ -4,6 +4,7 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Интерфейс для доступа к топикам из базы
@@ -122,8 +123,8 @@ public interface TopicDAO {
 
     /**
      * Поиск топиков по теме.
-     * @param theme - тема топика
+     * @param themesIds - id тем, по которым будем происходить поиск
      * @return список топиков
      */
-    List<Topic> getTopicsByTheme(String theme);
+    List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds);
 }
