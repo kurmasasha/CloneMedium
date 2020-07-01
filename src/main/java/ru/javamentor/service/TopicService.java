@@ -10,7 +10,7 @@ import java.util.Set;
  * Интерфейс для работы с топиками
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface TopicService {
     /**
@@ -122,9 +122,16 @@ public interface TopicService {
     /**
      * Определение числа  не модерированных топиков
      *
-     * @return
+     * @return - число не модерированных топиков
      */
     Long getNotModeratedTopicsCount();
+
+    /**
+     * Поиск топиков по теме.
+     * @param theme - тема топика
+     * @return список топиков
+     */
+    List<Topic> getTopicsByTheme(String theme);
 
     Topic increaseTopicLikes(Long topicId);
     Topic decreaseTopicLikes(Long topicId);

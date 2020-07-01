@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Rest контроллер для топиков
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
@@ -54,6 +54,16 @@ public class TopicRestControllers {
     @GetMapping("/free-user/moderatedTopicsList")
     public ResponseEntity<List<Topic>> getTotalTopics() {
         return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
+    }
+
+    /**
+     * метод получения топиков по теме
+     *
+     * @return ResponseEntity, который содержит List топиков
+     */
+    @GetMapping("/free-user/getTopicsByTheme")
+    public ResponseEntity<List<Topic>> getTopicsByTheme(@RequestParam(name = "theme") String theme) {
+        return new ResponseEntity<>(topicService.getTopicsByTheme(theme), HttpStatus.OK);
     }
 
     /**
@@ -134,7 +144,7 @@ public class TopicRestControllers {
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
             notification.setUser(user);
             notificationService.addNotification(notification);
-        };
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -228,7 +238,7 @@ public class TopicRestControllers {
     /**
      * метод для удаления топика
      *
-     * @param - id топика который необходимо удалить
+     * @param id  - id топика который необходимо удалить
      * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
      */
     @DeleteMapping("/admin/topic/delete/{id}")
@@ -254,7 +264,7 @@ public class TopicRestControllers {
     /**
      * метод для получения неотмодерированного топика по id админом
      *
-     * @param - id топика который необходимо получитьв ответе
+     * @param id  - id топика который необходимо получитьв ответе
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/admin/topic/{id}")

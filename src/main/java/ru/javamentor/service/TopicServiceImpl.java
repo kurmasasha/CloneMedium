@@ -18,7 +18,7 @@ import java.util.Set;
  * Реализация интерфейса TopicService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Service
 @Slf4j
@@ -230,11 +230,22 @@ public class TopicServiceImpl implements TopicService {
     /**
      * Определение числа не модерированных топиков
      *
-     * @return
+     * @return - число не модерированных топиков
      */
     @Override
     public Long getNotModeratedTopicsCount() {
         return topicDAO.getNotModeratedTopicsCount();
+    }
+
+    /**
+     * Поиск топиков по теме.
+     * @param theme - тема топика
+     * @return список топиков
+     */
+    @Transactional
+    @Override
+    public List<Topic> getTopicsByTheme(String theme) {
+        return topicDAO.getTopicsByTheme(theme);
     }
 
     @Transactional
