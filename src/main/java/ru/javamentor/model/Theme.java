@@ -1,6 +1,5 @@
 package ru.javamentor.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,8 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Set;
+
 
 /**
  * Класс представляющий модель темы топика
@@ -21,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "theme")
+@Table(name = "themes")
 public class Theme {
 
     @Id

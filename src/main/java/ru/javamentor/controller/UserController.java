@@ -9,12 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.javamentor.model.Comment;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
