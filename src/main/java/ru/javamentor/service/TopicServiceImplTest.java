@@ -389,7 +389,16 @@ public class TopicServiceImplTest extends Mockito {
 
     @Test
     public void increaseTopicLikes() {
+            Mockito.doReturn(new Topic())
+                .when(topicDAO)
+                .getTopicById(ArgumentMatchers.anyLong());
 
+        Long id = Mockito.anyLong();
+        Topic topic = topicService.getTopicById(id);
+        //Проверка кол-ва лайков
+        Assert.assertEquals(topicService.increaseTopicLikes(id), topic.getLikes() );
+        //Проверка обращения к дао
+        Mockito.verify(topicDAO, Mockito.times(2)).updateTopic(topicDAO.getTopicById(Mockito.anyLong()));
     }
 
     @Test(expected = Exception.class)
