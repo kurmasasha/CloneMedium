@@ -1,5 +1,7 @@
 package ru.javamentor.service;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.javamentor.model.Notification;
 
 import java.util.List;
@@ -57,4 +59,24 @@ public interface NotificationService {
      */
     boolean deleteNotification(Notification notification);
 
+
+    /**
+     * метод для получения списка уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return список нотификаций для залогиненого автора / пользователя
+     */
+    List<Notification> getAllNotificationsByUserId(Long userId);
+
+    /**
+     * метод для получения числа уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return число уведомлений нотификаций для залогиненого автора / пользователя
+     */
+    int getNumberOfNotificationsByUserId(Long userId);
+
 }
+
+
+

@@ -3,7 +3,7 @@ package ru.javamentor.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.javamentor.dao.NotificationsDao;
+import ru.javamentor.dao.NotificationDAO;
 import ru.javamentor.model.Notification;
 
 import java.util.List;
@@ -17,12 +17,13 @@ import java.util.List;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    private NotificationsDao notificationsDao;
+    private NotificationDAO notificationDAO;
 
     @Autowired
-    public NotificationServiceImpl(NotificationsDao notificationsDao) {
-        this.notificationsDao = notificationsDao;
+    public NotificationServiceImpl(NotificationDAO notificationDAO) {
+        this.notificationDAO = notificationDAO;
     }
+
     /**
      * метод для получения всех уведомлений
      *
@@ -30,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public List<Notification> getAllNotes() {
-        List<Notification> notifications = notificationsDao.findAll();
+        List<Notification> notifications = notificationDAO.getAllNotes();
         log.info("findAll: {} notifications", notifications.size());
         return notifications;
     }
@@ -42,10 +43,11 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getById(Long id) {
-        Notification notification = notificationsDao.getOne(id);
+        Notification notification = notificationDAO.getOne(id);
         log.info("getById: return notification by Id");
         return notification;
     }
+
     /**
      * метод для получения уведомления по названию
      *
@@ -54,10 +56,11 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getByTitle(String title) {
-        Notification notification = notificationsDao.findByTitle(title);
+        Notification notification = notificationDAO.getByTitle(title);
         log.info("getById: return notification by title");
         return notification;
     }
+
     /**
      * метод для обновления уведомления
      *
@@ -66,8 +69,8 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean updateNotification(Notification notification) {
-        if (isExistNotes(notification)) {
-            notificationsDao.saveAndFlush(notification);
+        if (notification != null) {
+            notificationDAO.updateNotification(notification);
             log.info("updateNotification: notification {title} was updated", notification.getTitle());
             return true;
         } else
@@ -83,29 +86,50 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean addNotification(Notification notification) {
-            notificationsDao.save(notification);
-            return true;
+
+        if (notification != null) {
+            notificationDAO.addNotification(notification);
+        }
+        return true;
     }
+
     /**
      * метод для удаления уведомления
      *
      * @param notification - объект удаляемого уведомления
      * @return boolean - удалось удалить уведомление или нет
      */
-    @Override
-    public boolean deleteNotification(Notification notification) {
-        notificationsDao.delete(notification);
+     @Override
+     public boolean deleteNotification(Notification notification) {
+        notificationDAO.deleteNotification(notification);
         log.info("deleteNotification: notification {title} was deleted", notification.getTitle());
         return true;
+     }
+
+    /**
+     * метод для получения списка уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return список нотификаций для залогиненого автора / пользователя
+     */
+    @Override
+    public List<Notification> getAllNotificationsByUserId(Long userId) {
+        List<Notification> ntfLst = notificationDAO.getAllNotificationsByUserId(userId);
+        log.info("for user ID  = {userId} derived {ntfSize} notifications", userId, ntfLst.size());
+        return ntfLst;
     }
 
     /**
-     * метод для проверки существования уведомления
+     * метод для получения числа уведомлений для залогиненого автора / пользователя ( по user.id )
      *
-     * @param notification - объект уведомления
-     * @return boolean - существует такое уведомление или нет
+     * @param userId - id автора / пользователя
+     * @return число уведомлений нотификаций для залогиненого автора / пользователя
      */
-    private boolean isExistNotes(Notification notification) {
-        return notificationsDao.findByTitle(notification.getTitle()) != null;
+    @Override
+    public int getNumberOfNotificationsByUserId(Long userId) {
+        int nbrNtfs = notificationDAO.getNumberOfNotificationsByUserId(userId);
+        log.info("for user ID  = {userId} derived {ntfSize} notifications", userId, nbrNtfs);
+        return nbrNtfs;
     }
+
 }
