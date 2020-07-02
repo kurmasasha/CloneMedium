@@ -40,6 +40,7 @@ public class UserController {
         return "userPage";
     }
 
+    // TODO Ошибки в изменении пароля и присвоении роли
     @PostMapping("/user/edit_profile")
     public String upgrade(@ModelAttribute("user") User user, Model model, BindingResult bindingResult) {
         validatorFormEditUser.validate(user, bindingResult);
@@ -60,6 +61,4 @@ public class UserController {
         }
         return "redirect:/user";
     }
-
-
 }
