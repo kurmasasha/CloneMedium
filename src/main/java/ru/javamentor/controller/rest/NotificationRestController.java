@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.User;
 import ru.javamentor.service.NotificationService;
@@ -98,20 +96,18 @@ public class NotificationRestController {
     }
 
     /**
-     * метод для получения топиков конкретного пользователя
+     * метод для уадления уведомления
      *
-     * @param user - объект авторизованого пользователя
-     * @return ResponseEntity, который содержит List топиков этого юзера
+     * @param id - id уведомления который необходимо удалить
+     * @return ResponseEntity, который содержит удалённое уведомление и статус ОК либо BAD REQUEST в случае неудачи
      */
-//    @GetMapping("/user/MyTopics")
-//    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
-//        if (user == null) {
-//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//            User currentUser = userService.getUserByEmail(auth.getName());
-//            return new ResponseEntity<>(topicService.getAllTopicsByUserId(currentUser.getId()), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
-//        }
-//    }
+    @DeleteMapping("/user/notification/delete/{id}")
+    public ResponseEntity<String> deleteNotification(@PathVariable Long id) {
+        if (notificationService.removeNotificationById(id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("You can't delete the notification because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

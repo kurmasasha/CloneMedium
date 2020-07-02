@@ -19,9 +19,6 @@
             </li>
         </ul>
 
-
-        <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------------------------------------------>
-
         <!--------------------------------- Кнопка панели администратора --------------------------------------->
         <div sec:authorize="hasAuthority('ADMIN')" class="mr-4">
             <a th:href="@{admin/allUsers}" class="btn btn-warning">Панель администратора</a>
@@ -32,10 +29,14 @@
 
         <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto d-flex">
             <li id="notification_bell" class="nav-item">
-                <a class="navbar-brand col-2 p-0" href="/notifications">
+<!--                <a class="navbar-brand col-2 p-0" href="/api/user/MyNotifs">-->
+                <a class="navbar-brand col-2 p-0" href="#" id="showTheBell" data-toggle="modal" data-target="#showNotifModal">
                     <i  id="notif_bell" class="fa fa-bell" style="font-size:24px;color:green"> </i>
                     <span id="notif_counter" class="badge"> </span>
                 </a>
+
+<!--                <a href="#" id="showHeader"' + 'data-toggle="modal" data-target="#showModal" data-text="' + topic.id + '">' + topic.title + '</a>-->
+
             </li>
         </ul>
         <!------------------------------------------------------------------------------------------------------------------------------------------------>

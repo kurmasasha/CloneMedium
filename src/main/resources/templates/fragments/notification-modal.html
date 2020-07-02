@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!---------------------------------------------- Модальное окно уведомлений ------------------------------------------->
+<div th:fragment="notification_modal">
+<div class="modal fade" id="showNotifModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title">Уведомления</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body" id="modalNotifBody">
+
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" id="modalNotifCloseButton" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+</body>
+</html>

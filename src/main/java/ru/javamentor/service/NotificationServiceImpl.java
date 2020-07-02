@@ -3,6 +3,7 @@ package ru.javamentor.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.NotificationDAO;
 import ru.javamentor.model.Notification;
 
@@ -128,8 +129,22 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public int getNumberOfNotificationsByUserId(Long userId) {
         int nbrNtfs = notificationDAO.getNumberOfNotificationsByUserId(userId);
-        log.info("for user ID  = {userId} derived {ntfSize} notifications", userId, nbrNtfs);
+        log.info("for user ID  = " + userId + " derived " + nbrNtfs + " notifications");
         return nbrNtfs;
+    }
+
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return boolean - удалость удалить уведомление или нет
+     */
+    @Transactional
+    @Override
+    public boolean removeNotificationById(Long id) {
+        notificationDAO.removeNotificationById(id);
+        log.info("IN removeNotificationById - notification with Id: {} successfully deleted", id);
+        return true;
     }
 
 }

@@ -76,6 +76,14 @@ public interface NotificationService {
      */
     int getNumberOfNotificationsByUserId(Long userId);
 
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return boolean - удалость удалить уведомление или нет
+     */
+    boolean removeNotificationById(Long id);
+
 }
 
 

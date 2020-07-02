@@ -45,4 +45,12 @@ public interface NotificationDAO {
      */
     int getNumberOfNotificationsByUserId(Long userId);
 
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return void
+     */
+    void removeNotificationById(Long id);
+
 }

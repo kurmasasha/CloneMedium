@@ -1,7 +1,8 @@
 /**
  * Обработчики событий на странице home.html (/home)
  */
-$(document).ready(function(){
+$(document).ready(function() {
+
     $('#main_page_link').addClass('active');
     getAndPrintAllTopicsOfUser($('#topics_container'))
         .then();
@@ -26,4 +27,36 @@ $(document).ready(function(){
                 .then();
         }
     });
+
+    const showNotifModal = $("#showNotifModal");
+    let notifBbody = $('#modalNotifBody');
+
+    showNotifModal.on('show.bs.modal', function (event) {
+
+         //let notifBbody = $('#modalNotifBody');
+
+         getAndPrintAllNotificationsOfUser(notifBbody).then();
+
+    });
+
+    $('#modalNotifCloseButton').on('click', function () {
+        console.log("close-modal")
+        $('#modalNotifBody').empty();
+    });
+
+
+
+    // $('.btn-sm btn-warning').on('click', function () {
+    //     console.log("re-picturing")
+    //     getAndPrintAllNotificationsOfUser(notifBbody).then();
+    // });
+
+
+
+
+
+
+
+
+
 });

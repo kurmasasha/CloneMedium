@@ -1,12 +1,14 @@
 package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
+import ru.javamentor.model.Hashtag;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class NotificationDAOImpl implements NotificationDAO{
@@ -62,6 +64,18 @@ public class NotificationDAOImpl implements NotificationDAO{
         return entityManager.createQuery("SELECT n FROM Notification n LEFT JOIN FETCH n.user u WHERE u.id = :userId", Notification.class).setParameter("userId", userId).getResultList().size();
     }
 
-    //SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r  WHERE a.id = :userId GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class).setParameter("userId", userId).getResultList();
+    /**
+     * метод для удаления топика
+     *
+     * @param id - уникальный id топика
+     * @return void
+     */
+    @Override
+    public void removeNotificationById(Long id) {
+        Notification notification = getOne(id);
+        if (notification != null) {
+            entityManager.remove(notification);
+        }
+    }
 
 }
