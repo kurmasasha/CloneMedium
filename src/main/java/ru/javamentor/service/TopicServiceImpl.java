@@ -39,9 +39,9 @@ public class TopicServiceImpl implements TopicService {
      */
     @Transactional
     @Override
-    public Topic addTopic(String title, String content, Set<User> users) {
+    public Topic addTopic(String title, String content, boolean completed, Set<User> users) {
         try {
-            Topic topic = new Topic(title, content, users, LocalDateTime.now(), false);
+            Topic topic = new Topic(title, content, completed, users, LocalDateTime.now(), false);
             topicDAO.addTopic(topic);
             log.info("IN addTopic - topic: {} successfully added", topic);
             return topic;
@@ -247,7 +247,12 @@ public class TopicServiceImpl implements TopicService {
         log.info("IN getModeratedTopicsByThemes - {} topics found", result.size());
         return result;
     }
-
+  
+    /**
+     *Увеличение количества лайков топика на 1, в рамках одной сессии
+     *
+     * @return Topic
+     */
     @Transactional
     @Override
     public Topic increaseTopicLikes(Long topicId) {
@@ -259,6 +264,11 @@ public class TopicServiceImpl implements TopicService {
         return currentTopic;
     }
 
+    /**
+     *Уменьшение количества лайков топика на 1, в рамках одной сессии
+     *
+     * @return Topic
+     */
     @Transactional
     @Override
     public Topic decreaseTopicLikes(Long topicId) {

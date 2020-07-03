@@ -172,7 +172,7 @@ public class TopicRestControllers {
     public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
         Set<User> users = new HashSet<>();
         users.add(userService.getUserByUsername(principal.getName()));
-        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), users);
+        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), topicData.isCompleted(), users);
         if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {

@@ -35,11 +35,15 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">
-                    Закрыть
-                </button>
-                <button type="button" class="btn btn-primary" id="add_topic_button">Сохранить</button>
+            <div class="modal-footer justify-content-between">
+                <div class="form-check">
+                    <input name="completed" style="transform:scale(2);" class="form-check-input" type="checkbox" id="checkboxCompletedTopic">
+                    <label class="form-check-label ml-1" for="checkboxCompletedTopic">Отправить на модерацию</label>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCloseFormCreateTopic">Закрыть</button>
+                    <button type="button" class="btn btn-primary" id="add_topic_button">Сохранить</button>
+                </div>
             </div>
         </div>
     </div>
