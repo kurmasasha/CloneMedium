@@ -1,7 +1,5 @@
 package ru.javamentor.service;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import ru.javamentor.model.Notification;
 
 import java.util.List;

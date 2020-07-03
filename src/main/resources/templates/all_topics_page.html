@@ -29,6 +29,10 @@
 <nav th:replace="fragments/add-topic-modal :: add-topic_modal"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<!--------------------------------------------- Модальное окно уведомлений -------------------------------------------->
+<div th:replace="fragments/notification-modal :: notification_modal"></div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/all_topics_events.js"></script>
@@ -42,5 +46,7 @@
 <script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/getNotifCounterByPrincipal.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getAndPrintAllNotificationsOfUser.js"></script>
+
 </body>
 </html>

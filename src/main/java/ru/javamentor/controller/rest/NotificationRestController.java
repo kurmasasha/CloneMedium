@@ -12,8 +12,6 @@ import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.UserService;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 
 /**
  * Rest контроллер для уведомлений
@@ -28,9 +26,6 @@ public class NotificationRestController {
 
     private final UserService userService;
     private final NotificationService notificationService;
-
-    private static int counter = 0;
-    private static int randomNbr = 0;
 
     public NotificationRestController(UserService userService, NotificationService notificationService) {
         this.userService = userService;
@@ -52,30 +47,6 @@ public class NotificationRestController {
         } else {
             return new ResponseEntity<>(notificationService.getNumberOfNotificationsByUserId(user.getId()), HttpStatus.OK);
         }
-
-//        switch (counter) {
-//            case 0:
-//                counter++;
-//                randomNbr = ThreadLocalRandom.current().nextInt(1, 12 + 1);
-//                Thread.sleep(5000);
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//            case  1:
-//                counter++;
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//            case 2:
-//                counter++;
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//            case 3:
-//                counter++;
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//            case 4:
-//                counter++;
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//            default:
-//                counter = 0;
-//                randomNbr = ThreadLocalRandom.current().nextInt(1, 12 + 1);
-//                return new ResponseEntity<>( randomNbr, HttpStatus.OK);
-//        }
     }
 
     /**

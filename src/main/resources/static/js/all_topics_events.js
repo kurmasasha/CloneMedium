@@ -28,5 +28,38 @@ $(document).ready(function() {
         }
     });
 
-})
+    //--------------------------------------------------------------------------------
+    /**
+     *   Работа с модальным окном уведомлений
+     */
+    const showNotifModal = $("#showNotifModal");
+    let notifBbody = $('#modalNotifBody');
+
+    showNotifModal.on('show.bs.modal', function (event) {
+        getAndPrintAllNotificationsOfUser(notifBbody).then();
+    });
+
+    $(document).on('click', '.delete-notif', function (event) {
+
+        let ntfId = $(this).attr('id');
+        let id = ntfId.replace('notifDelBtnSubmit', '');
+
+        fetch(`/api/user/notification/delete/${id}`, {
+            method: 'DELETE',
+        }).then( response => {
+            if (response.ok) {
+                $('#notifId' + id).detach();
+                window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
+
+            }
+        })
+    })
+
+    $('#modalNotifCloseButton').on('click', function () {
+        $('#modalNotifBody').empty();
+    });
+    // ------------------- Работа с модальным окном уведомлений -----------------------
+
+
+});
 

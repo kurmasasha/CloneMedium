@@ -1,14 +1,11 @@
 package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.javamentor.model.Hashtag;
 import ru.javamentor.model.Notification;
-import ru.javamentor.model.Topic;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Set;
+
 
 @Repository
 public class NotificationDAOImpl implements NotificationDAO{
