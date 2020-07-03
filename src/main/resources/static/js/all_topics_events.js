@@ -28,6 +28,26 @@ $(document).ready(function() {
         }
     });
 
+    /**
+     * Нажатие на кнопку поиска по теме
+     */
+    $('#theme_button').on('click', function () {
+        fetch(`http://localhost:5050/api/free-user/getTopicsByThemes`, {
+            method: 'post',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: $('#themes_form').serialize()
+        })
+            .then(result => result.json())
+            .then(arrayTopics => {
+                topicContainer.empty();
+                arrayTopics.forEach(function (topic) {
+                    let card = topicInCard(topic);
+                    topicContainer.append(card);
+                })
+            })
+    });
 
     // имитация нотификации
     window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));

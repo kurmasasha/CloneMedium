@@ -4,12 +4,13 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Интерфейс для доступа к топикам из базы
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface TopicDAO {
     /**
@@ -39,7 +40,6 @@ public interface TopicDAO {
      * метод для обновления топика
      *
      * @param topic - объект обновленного топика
-     * @return void
      */
     void updateTopic(Topic topic);
 
@@ -47,7 +47,6 @@ public interface TopicDAO {
      * метод для удаления топика
      *
      * @param id - уникальный id топика
-     * @return void
      */
     void removeTopicById(Long id);
 
@@ -118,7 +117,14 @@ public interface TopicDAO {
     /**
      * Определение числа  не модерированных топиков
      *
-     * @return
+     * @return - число не модерированных топиков
      */
     Long getNotModeratedTopicsCount();
+
+    /**
+     * Поиск топиков по теме.
+     * @param themesIds - id тем, по которым будем происходить поиск
+     * @return список топиков
+     */
+    List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds);
 }

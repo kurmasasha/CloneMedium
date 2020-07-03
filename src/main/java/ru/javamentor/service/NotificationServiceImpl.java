@@ -12,7 +12,7 @@ import java.util.List;
  * Реализация интерфейса NotificationService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Slf4j
 @Service
@@ -84,11 +84,11 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean addNotification(Notification notification) {
-
         if (notification != null) {
             notificationsDao.addNotification(notification);
-
             return true;
+        }
+        return false;
     }
     /**
      * метод для удаления уведомления
