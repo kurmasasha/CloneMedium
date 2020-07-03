@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javamentor.dao.NotificationsDaoImpl;
+import ru.javamentor.dao.NotificationDaoImpl;
 import ru.javamentor.model.Notification;
 
 import javax.persistence.TransactionRequiredException;
@@ -23,7 +23,7 @@ public class NotificationServiceImplTest extends Mockito {
     private NotificationServiceImpl notificationService;
 
     @MockBean
-    NotificationsDaoImpl notificationsDao;
+    NotificationDaoImpl notificationsDao;
 
     @Test
     public void getAllNotes() {

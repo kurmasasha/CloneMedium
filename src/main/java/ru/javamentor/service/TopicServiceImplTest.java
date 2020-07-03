@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,6 +80,7 @@ public class TopicServiceImplTest extends Mockito {
 
         //Проверка на наличие получаемого объекта
         Assert.assertNotNull(topicService.getTopicById(ArgumentMatchers.anyLong()));
+
         //Проверка обращения к дао
         Mockito.verify(topicDAO).getTopicById(Mockito.anyLong());
     }
@@ -389,7 +391,16 @@ public class TopicServiceImplTest extends Mockito {
 
     @Test
     public void increaseTopicLikes() {
+        Mockito.doReturn(new Topic())
+                .when(topicDAO)
+                .getTopicById(ArgumentMatchers.anyLong());
 
+        Long id = Mockito.anyLong();
+        Topic topic = topicService.getTopicById(id);
+        //Проверка кол-ва лайков
+        Assert.assertEquals(topicService.increaseTopicLikes(id), topic.getLikes() );
+        //Проверка обращения к дао
+        Mockito.verify(topicDAO, Mockito.times(2)).updateTopic(topicDAO.getTopicById(Mockito.anyLong()));
     }
 
     @Test(expected = Exception.class)
