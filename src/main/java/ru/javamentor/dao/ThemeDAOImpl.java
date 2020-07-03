@@ -1,6 +1,7 @@
 package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.model.Theme;
 import ru.javamentor.model.Topic;
 
@@ -20,5 +21,29 @@ public class ThemeDAOImpl implements ThemeDAO {
                         "ORDER BY t.name  asc",
                 Theme.class)
                 .getResultList();
+    }
+
+    @Override
+    public boolean addTheme(Theme theme) {
+        try {
+            entityManager.persist(theme);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteTheme(Long id) {
+        try {
+            Theme theme = entityManager.find(Theme.class, id);
+            if (theme != null) {
+                entityManager.remove(theme);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

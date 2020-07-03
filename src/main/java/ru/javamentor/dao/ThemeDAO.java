@@ -7,4 +7,8 @@ import java.util.List;
 public interface ThemeDAO {
 
     List<Theme> getAllThemes();
+
+    boolean addTheme(Theme theme);
+
+    boolean deleteTheme(Long id);
 }

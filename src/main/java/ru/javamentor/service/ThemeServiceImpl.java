@@ -43,4 +43,23 @@ public class ThemeServiceImpl implements ThemeService {
         log.info("IN getAllThemes - {} themes found", result.size());
         return result;
     }
+
+    /**
+     * Метод добавления темы
+     * @param theme - класс темы для добавления в базу
+     * @return - true, если тема была успешно добавлена
+     *           false, в случае ошибки
+     */
+    @Transactional
+    @Override
+    public boolean addTheme(Theme theme) {
+        return themeDAO.addTheme(theme);
+    }
+
+
+    @Transactional
+    @Override
+    public boolean deleteTheme(Long id) {
+        return themeDAO.deleteTheme(id);
+    }
 }

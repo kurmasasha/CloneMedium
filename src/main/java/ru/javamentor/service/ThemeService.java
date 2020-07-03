@@ -19,4 +19,20 @@ public interface ThemeService {
      * @return - список тем
      */
     List<Theme> getAllThemes();
+
+    /**
+     * Метод добавления темы
+     * @param theme - класс темы для добавления в базу
+     * @return - true, если тема была успешно добавлена
+     *           false, в случае ошибки
+     */
+    boolean addTheme(Theme theme);
+
+    /**
+     * Метод удаления темы
+     * @param id - id темы в базе
+     * @return - true, если тема была успешно удалена
+     *           false, в случае ошибки
+     */
+    boolean deleteTheme(Long id);
 }

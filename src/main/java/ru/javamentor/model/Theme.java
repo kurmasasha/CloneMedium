@@ -1,12 +1,15 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.thymeleaf.spring5.expression.Themes;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 
 /**
@@ -30,6 +33,19 @@ public class Theme {
     @NotEmpty
     @NotNull
     private String name;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "topics_themes", joinColumns = @JoinColumn(name = "theme_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
+    private Set<Topic> topics;
+
+    @PreRemove
+    public void preRemove() {
+        for (Topic topic : topics) {
+            Set<Theme> themes = topic.getThemes();
+            themes.remove(this);
+        }
+    }
 
     public Theme(String name) {
         this.name = name;

@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Контроллер возвращающий для показа html страниц
- * @autor Java Mentor
+ * @author Java Mentor
  * @version 1.0
  */
 @Controller
@@ -95,6 +95,7 @@ public class PageController {
         model.addAttribute("comments", comments);
         return "topic";
     }
+
     /**
      * метод для страницы всех юзеров для админа
      * @return админскую страницу для отображения всех юзеров
@@ -103,6 +104,17 @@ public class PageController {
     public String adminAllUsersPage() {
         return "admin-all_users";
     }
+
+    /**
+     * метод для страницы тем для админа
+     * @return админскую страницу для отображения всех тем
+     */
+    @GetMapping("/admin/themes")
+    public String adminAllThemesPage(Model model) {
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "admin-themes";
+    }
+
     /**
      * метод для страницы неотмодерированных топиков для админа
      * @return страницу для отображения неотмодерированных топиков для админа
