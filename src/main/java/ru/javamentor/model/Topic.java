@@ -1,20 +1,22 @@
 package ru.javamentor.model;
 
-import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Класс представляющий модель топика
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @NoArgsConstructor
 @Getter
@@ -60,6 +62,10 @@ public class Topic {
     @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "hashtag_id"))
     private Set<Hashtag> hashtags;
 
+    @ManyToMany
+    @JoinTable(name = "topics_themes", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
+    private Set<Theme> themes;
+
     @PreRemove
     public void preRemove() {
         for (Hashtag tag : hashtags) {
@@ -81,5 +87,4 @@ public class Topic {
         this.title = title;
         this.content = content;
     }
-
 }

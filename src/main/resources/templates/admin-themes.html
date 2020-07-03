@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Admin</title>
+</head>
+<body>
+
+<!------------------------------------------------------- Шапка ------------------------------------------------------->
+<nav th:replace="fragments/header :: home_header"></nav>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<div class="container-fluid">
+    <div class="row">
+        <!------------------------------------------ Боковая панель ------------------------------------------>
+        <nav th:replace="fragments/side-bar :: admin-left_side_bar"></nav>
+        <!---------------------------------------------------------------------------------------------------->
+
+        <!------------------------------------ Область отображения данных ------------------------------------>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>Section title</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Название</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="themes_table">
+                <th:block th:each="theme : ${themes}">
+                    <tr th:id="${'theme_row_' + theme.getId()}">
+                        <th th:text="${theme.getId()}"></th>
+                        <th th:text="${theme.getName()}"></th>
+                        <th>
+                            <button th:id="${'theme_delete_' + theme.getId()}" type="button" class="btn btn-dark theme_delete_button">
+                                Удалить
+                            </button>
+                        </th>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <form id="add_theme_form" class="form-inline">
+                <input id="theme_input" class="form-control form-control-sm" type="text"
+                       placeholder="Тема" aria-label="Theme">
+                <button id="admin_theme_add_button" class="btn btn-dark btn-sm ml-2" type="button">Добавить
+                </button>
+            </form>
+        </main>
+        <!---------------------------------------------------------------------------------------------------->
+    </div>
+</div>
+
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/admin-themes-events.js"></script>
+<script src="/js/getNotifCounterByPrincipal.js"></script>
+
+</body>
+</html>

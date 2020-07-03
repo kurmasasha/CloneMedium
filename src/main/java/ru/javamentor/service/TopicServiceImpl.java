@@ -2,14 +2,12 @@ package ru.javamentor.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +16,7 @@ import java.util.Set;
  * Реализация интерфейса TopicService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Service
 @Slf4j
@@ -230,13 +228,26 @@ public class TopicServiceImpl implements TopicService {
     /**
      * Определение числа не модерированных топиков
      *
-     * @return
+     * @return - число не модерированных топиков
      */
     @Override
     public Long getNotModeratedTopicsCount() {
         return topicDAO.getNotModeratedTopicsCount();
     }
 
+    /**
+     * Поиск топиков по теме.
+     * @param themesIds - id тем, по которым будем происходить поиск
+     * @return список топиков
+     */
+    @Transactional
+    @Override
+    public List<Topic> getModeratedTopicsByThemes(Set<Long> themesIds) {
+        List<Topic> result = topicDAO.getModeratedTopicsByTheme(themesIds);
+        log.info("IN getModeratedTopicsByThemes - {} topics found", result.size());
+        return result;
+    }
+  
     /**
      *Увеличение количества лайков топика на 1, в рамках одной сессии
      *

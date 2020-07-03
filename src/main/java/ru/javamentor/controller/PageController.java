@@ -8,6 +8,7 @@ import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
 import ru.javamentor.service.CommentService;
+import ru.javamentor.service.ThemeService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
@@ -17,20 +18,22 @@ import java.util.List;
 
 /**
  * Контроллер возвращающий для показа html страниц
- * @autor Java Mentor
+ * @author Java Mentor
  * @version 1.0
  */
 @Controller
 public class PageController {
 
     private final UserService userService;
+    private final ThemeService themeService;
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
     @Autowired
-    public PageController(UserService userService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
         this.userService = userService;
+        this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
@@ -74,7 +77,8 @@ public class PageController {
      */
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allTopicsPage() {
+    public String allTopicsPage(Model model) {
+        model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
 
@@ -91,6 +95,7 @@ public class PageController {
         model.addAttribute("comments", comments);
         return "topic";
     }
+
     /**
      * метод для страницы всех юзеров для админа
      * @return админскую страницу для отображения всех юзеров
@@ -99,6 +104,17 @@ public class PageController {
     public String adminAllUsersPage() {
         return "admin-all_users";
     }
+
+    /**
+     * метод для страницы тем для админа
+     * @return админскую страницу для отображения всех тем
+     */
+    @GetMapping("/admin/themes")
+    public String adminAllThemesPage(Model model) {
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "admin-themes";
+    }
+
     /**
      * метод для страницы неотмодерированных топиков для админа
      * @return страницу для отображения неотмодерированных топиков для админа
