@@ -30,7 +30,7 @@ public class TopicServiceImplTest extends Mockito {
     @Test
     public void addTopic() {
         Set<User>users = new HashSet<>();
-        Topic topic = topicService.addTopic("title", "content", users);
+        Topic topic = topicService.addTopic("title", "content", true, users);
 
         //Проверка обращения к репозиторию
         Mockito.verify(topicDAO, Mockito.times(1)).addTopic(topic);
@@ -64,7 +64,7 @@ public class TopicServiceImplTest extends Mockito {
         topic.setAuthors(null);
 
         //проверка возвращаемого значения при добавлении пустого топика
-        Assert.assertNull(topicService.addTopic(topic.getTitle(), topic.getContent(), topic.getAuthors()));
+        Assert.assertNull(topicService.addTopic(topic.getTitle(), topic.getContent(), true, topic.getAuthors()));
 
       //  Mockito.verify(topicDAO, Mockito.times(0)).addTopic(topic);
     }
