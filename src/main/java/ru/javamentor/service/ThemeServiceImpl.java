@@ -11,6 +11,11 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.time.LocalDateTime;
+import org.springframework.ui.Model;
+import ru.javamentor.dao.ThemeDAO;
+import ru.javamentor.model.Theme;
+import ru.javamentor.model.User;
+
 import java.util.List;
 import java.util.Set;
 
@@ -62,4 +67,42 @@ public class ThemeServiceImpl implements ThemeService {
     public boolean deleteTheme(Long id) {
         return themeDAO.deleteTheme(id);
     }
+
+    @Transactional
+    @Override
+    public List<Theme> getThemesByIds(Set<Long> idThemes) {
+            List<Theme> result = themeDAO.getThemesByIds(idThemes);
+            log.info("IN getThemesByIds - {} themes found", result.size());
+            return result;
+    }
+
+    @Override
+    public void changeThemes(Set<Long> themesIds, User userDB) {
+        Set<Theme> themesOfUser = userDB.getThemes();
+        List<Theme> themeList = getThemesByIds(themesIds);
+        if (themesOfUser.size() != themeList.size() || !themesOfUser.containsAll(themeList)) {
+            if (themesIds != null) {
+                if (themesOfUser.size() != 0) {
+                    themesOfUser.clear();
+                }
+                themesOfUser.addAll(themeList);
+            } else {
+                themesOfUser.clear();
+            }
+        }
+    }
+
+    @Override
+    public void showThemes(Model model, User userDB) {
+        List<Theme> allThemes = getAllThemes();
+        if (userDB.getThemes().size() != 0) {
+            Set<Theme> themesOfUser = userDB.getThemes();
+            for (Theme themeOfUser : themesOfUser) {
+                allThemes.remove(themeOfUser);
+            }
+            model.addAttribute("themesOfUser", themesOfUser);
+        }
+        model.addAttribute("themes", allThemes);
+    }
+
 }

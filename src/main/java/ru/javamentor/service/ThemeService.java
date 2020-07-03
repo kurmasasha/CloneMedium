@@ -1,7 +1,7 @@
 package ru.javamentor.service;
 
 import ru.javamentor.model.Theme;
-import ru.javamentor.model.Topic;
+import org.springframework.ui.Model;
 import ru.javamentor.model.User;
 
 import java.util.List;
@@ -35,4 +35,10 @@ public interface ThemeService {
      *           false, в случае ошибки
      */
     boolean deleteTheme(Long id);
+
+    List<Theme> getThemesByIds(Set<Long> idThemes);
+
+    void changeThemes(Set<Long> themesIds, User userDB);
+
+    void showThemes(Model model, User userDB);
 }
