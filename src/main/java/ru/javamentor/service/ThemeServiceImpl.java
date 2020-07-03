@@ -4,13 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javamentor.dao.ThemeDAO;
-import ru.javamentor.dao.TopicDAO;
-import ru.javamentor.model.Theme;
-import ru.javamentor.model.Topic;
-import ru.javamentor.model.User;
-
-import java.time.LocalDateTime;
 import org.springframework.ui.Model;
 import ru.javamentor.dao.ThemeDAO;
 import ru.javamentor.model.Theme;
