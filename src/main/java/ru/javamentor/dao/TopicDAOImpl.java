@@ -224,8 +224,16 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false AND t.completed = true GROUP BY t.id ORDER BY t.dateCreated DESC", Topic.class)
-
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "WHERE t.isModerate = false " +
+                                "AND t.completed = true " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated DESC",
+                        Topic.class)
                 .setFirstResult(pageSize * (page - 1))
                 .setMaxResults(pageSize)
                 .getResultList();
