@@ -247,7 +247,12 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public Long getNotModeratedTopicsCount() {
         return entityManager
-                .createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.isModerate = false", Long.class)
+                .createQuery(
+                        "SELECT COUNT(t.id) " +
+                                "FROM Topic t " +
+                                "WHERE t.isModerate = false " +
+                                "AND t.completed = true",
+                        Long.class)
                 .getSingleResult();
     }
 
