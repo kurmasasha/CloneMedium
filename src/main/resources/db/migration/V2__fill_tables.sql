@@ -1,8 +1,10 @@
+/* Заполнение таблицы ролей */
 insert into roles(id, name)
     values
         (1,'ADMIN'),
         (2,'USER');
 
+/* Заполнение таблицы пользователей */
 insert into users(id, first_name, last_name, password, username, role_id, activation_code, is_activated)
     values
        (1,'Admin','Adminov','$2y$12$BuFhOIoesnUDalLvZGKPj.oQYczb72MIZ6jv1Z3kPSinNCte2ICsa','admin@mail.ru',1,NULL, true),
@@ -16,6 +18,7 @@ insert into users(id, first_name, last_name, password, username, role_id, activa
        (9,'Semen','Buhlov','$2y$12$gvPFh4SsTBHjiDPvtRrC7.thATRCemb3xYMS8QbOYUbbqIfsvdqqW','test7@mail.ru',2,NULL, true),
        (10,'Covid','Karantinych','$2y$12$fLMtXnItPARgmIiNC/JayeYSLRuE6c1MyVH9jGqF43H.hTVIkg4qC','test8@mail.ru',2,NULL, true);
 
+/* Заполнение таблицы уведомлений */
 insert into notifications(id, text, title, user_id)
     values
         (1,'Уведомление 1','Уведомление',1),
@@ -28,6 +31,7 @@ insert into notifications(id, text, title, user_id)
         (8,'Уведомление 8','Уведомление',3),
         (9,'Уведомление 9','Уведомление',3);
 
+/* Заполнение таблицы тем */
 insert into themes(id, name)
     values
        (1,'Тема_1'),
@@ -41,6 +45,7 @@ insert into themes(id, name)
        (9,'Тема_9'),
        (10,'Тема_10');
 
+/* Заполнение таблиц хэштегов */
 insert into hashtags(id, name)
     values
        (1, 'Хэштег_1'),
@@ -54,6 +59,7 @@ insert into hashtags(id, name)
        (9, 'Хэштег_9'),
        (10, 'Хэштег_10');
 
+/* Заполнение таблицы топиков */
 insert into topics(id, content, title, date_created, is_moderate, likes, completed)
     values
        (1,'Бегемоту в грязной луже Никакой курорт не нужен. Он в грязи купаться может. Грязь ему смягчает кожу, Заменяет крем и мазь. Замечательная грязь!','Бегемот','2020-06-02 17:44:32', true,1, true),
@@ -108,8 +114,9 @@ insert into topics(id, content, title, date_created, is_moderate, likes, complet
        (50,'Юбочку юла надела, Долго в зеркало глядела, Так вертелась, так крутилась, Даже на бочок свалилась.','Про юлу','2020-06-02 17:45:37', true,2, true),
        (51,'Ягуар увидел яхту И воскликнул: «Ух ты! Ах ты! Если б яхту я купил, Вот бы рыбы наловил!»','Ягуар увидел яхту','2020-06-02 17:45:38', true,2, true);
 
+/* Заполнение таблицы связи пользователей с топиками */
 insert into users_topics(user_id, topic_id)
-values
+    values
        (1,1), (1,2), (1,12), (1,35),
        (2,1), (2,2),
        (3,3), (3,13), (3,20), (3,21), (3,22), (3,31), (3,32), (3,33), (3,34),
@@ -121,6 +128,7 @@ values
        (9,10), (9,19), (9,42), (9,43), (9,44), (9,45), (9,46), (9,47),
        (10,11), (10,25), (10,26), (10,27), (10,48), (10,49), (10,50), (10,51);
 
+/* Заполнение таблицы свзяи хэштегов с топиками */
 insert into hashtags_topics(topic_id, hashtag_id)
     values
        (1,1), (1,2), (1,3),
@@ -133,6 +141,7 @@ insert into hashtags_topics(topic_id, hashtag_id)
        (8,8),
        (9,9);
 
+/* Заполнение таблицы связи топиков с темами */
 insert into topics_themes(topic_id, theme_id)
     values
        (1,1), (1,2), (1,3),
@@ -144,6 +153,7 @@ insert into topics_themes(topic_id, theme_id)
        (7,2),
        (8,3);
 
+/* Заполнение таблицы связи пользователей с темами */
 insert into users_themes(user_id, theme_id)
     values
        (1,1), (1,2), (1,3),
