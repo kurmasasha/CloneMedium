@@ -1,6 +1,9 @@
 package ru.javamentor.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,7 +16,7 @@ import java.util.Set;
  * Класс представляющий модель топика
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @NoArgsConstructor
 @Getter
@@ -40,18 +43,28 @@ public class Topic {
     private LocalDateTime dateCreated;
 
     @Column
+    @NotNull
     private boolean isModerate = false;
 
     @Column
+    @NotNull
+    private boolean completed;
+
+    @Column
+    @NotNull
     private Integer likes = 0;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
 
     @ManyToMany
     @JoinTable(name = "hashtags_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "hashtag_id"))
     private Set<Hashtag> hashtags;
+
+    @ManyToMany
+    @JoinTable(name = "topics_themes", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
+    private Set<Theme> themes;
 
     @PreRemove
     public void preRemove() {
@@ -61,12 +74,13 @@ public class Topic {
         }
     }
 
-    public Topic(String title, String content, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
+    public Topic(String title, String content, boolean completed, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
+        this.completed = completed;
     }
 
     public Topic(String title, String content) {

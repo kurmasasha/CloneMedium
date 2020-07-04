@@ -99,8 +99,6 @@ $(document).ready(function () {
     window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
     setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
 
-    // сокрытие элемента поиска по хэштэгам: он здесь не нужен
-    let divFinderByHashtag = document.getElementById('finderByHashtag');
-    divFinderByHashtag.style.visibility = 'hidden';
-
+    // удаление формы поиска по хэштегу
+    $('#finderByHashtag').detach();
 });

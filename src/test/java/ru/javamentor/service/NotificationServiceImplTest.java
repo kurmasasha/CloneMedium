@@ -15,6 +15,10 @@ import ru.javamentor.model.Notification;
 import javax.persistence.TransactionRequiredException;
 import java.util.ArrayList;
 
+/**
+ * JUnit-тестирование методов класса NotificationServiceImpl
+ */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class NotificationServiceImplTest extends Mockito {
@@ -25,13 +29,16 @@ public class NotificationServiceImplTest extends Mockito {
     @MockBean
     NotificationDaoImpl notificationsDao;
 
+    /**
+     * Тест метода получения всех уведомлений
+     */
     @Test
     public void getAllNotes() {
         Mockito.doReturn(new ArrayList<Notification>())
                 .when(notificationsDao)
                 .getAllNotes();
 
-        Assert.assertNotNull(notificationService.getAllNotes());
+        Assert.assertNotNull("проверка на null", notificationService.getAllNotes());
 
         Mockito.verify(notificationsDao, Mockito.times(1)).getAllNotes();
     }
@@ -42,19 +49,21 @@ public class NotificationServiceImplTest extends Mockito {
                 .when(notificationsDao)
                 .getAllNotes();
 
-        Assert.assertNull(notificationService.getAllNotes());
+        Assert.assertNull("проверка на null", notificationService.getAllNotes());
 
         Mockito.verify(notificationsDao).getAllNotes();
     }
 
-
+    /**
+     * Тетс метода получения уведомления по id
+     */
     @Test
     public void getById() {
         Mockito.doReturn(new Notification())
                 .when(notificationsDao)
                 .getOne(ArgumentMatchers.anyLong());
 
-        Assert.assertNotNull(notificationService.getById(ArgumentMatchers.anyLong()));
+        Assert.assertNotNull("проверка на null", notificationService.getById(ArgumentMatchers.anyLong()));
 
         Mockito.verify(notificationsDao, Mockito.times(1)).getOne(ArgumentMatchers.anyLong());
     }
@@ -65,18 +74,21 @@ public class NotificationServiceImplTest extends Mockito {
                 .when(notificationsDao)
                 .getOne(ArgumentMatchers.anyLong());
 
-        Assert.assertNull(notificationService.getById(ArgumentMatchers.anyLong()));
+        Assert.assertNull("проверка на null", notificationService.getById(ArgumentMatchers.anyLong()));
 
         Mockito.verify(notificationsDao).getOne(ArgumentMatchers.anyLong());
     }
 
+    /**
+     * Тест метода получения уведомления по  названию
+     */
     @Test
     public void getByTitle() {
         Mockito.doReturn(new Notification())
                 .when(notificationsDao)
                 .getByTitle(ArgumentMatchers.anyString());
 
-        Assert.assertNotNull(notificationService.getByTitle(ArgumentMatchers.anyString()));
+        Assert.assertNotNull("проверка на null", notificationService.getByTitle(ArgumentMatchers.anyString()));
 
         Mockito.verify(notificationsDao, Mockito.times(1)).getByTitle(ArgumentMatchers.anyString());
     }
@@ -92,10 +104,14 @@ public class NotificationServiceImplTest extends Mockito {
         Mockito.verify(notificationsDao).getByTitle(ArgumentMatchers.anyString());
     }
 
+    /**
+     * Тест метода обновления уведомления
+     */
     @Test
     public void updateNotification() {
         Notification notification = new Notification();
-        Assert.assertTrue(notificationService.updateNotification(notification));
+
+        Assert.assertTrue("проверка на состояние выполнения метода",  notificationService.updateNotification(notification));
 
         Mockito.verify(notificationsDao, Mockito.times(1)).updateNotification(notification);
     }
@@ -110,10 +126,14 @@ public class NotificationServiceImplTest extends Mockito {
         Mockito.verify(notificationsDao, Mockito.times(0)).updateNotification(notification);
     }
 
+    /**
+     * тест метода добавления нового уведомления
+     */
     @Test
     public void addNotification() {
         Notification notification = new Notification();
-        Assert.assertTrue(notificationService.addNotification(notification));
+
+        Assert.assertTrue("проверка на состояние выполнения метода", notificationService.addNotification(notification));
 
         Mockito.verify(notificationsDao, Mockito.times(1)).addNotification(notification);
     }
@@ -128,10 +148,14 @@ public class NotificationServiceImplTest extends Mockito {
         Mockito.verify(notificationsDao, Mockito.times(0)).addNotification(notification);
     }
 
+    /**
+     * Тест метода удаления уведомления
+     */
     @Test
     public void deleteNotification() {
         Notification notification = new Notification();
-        Assert.assertTrue(notificationService.deleteNotification(notification));
+
+        Assert.assertTrue("проверка на состояние выполнения метода", notificationService.deleteNotification(notification));
 
         Mockito.verify(notificationsDao, Mockito.times(1)).deleteNotification(notification);
     }

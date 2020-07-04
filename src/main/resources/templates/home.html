@@ -19,8 +19,13 @@
     <div id="topics_container" class="container mx-0 py-3">
         <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
     </div>
-    <!-- Кнопка добавления топика -->
-    <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
+
+    <div class="my-3">
+        <div class="position-fixed">
+            <!-- Кнопка добавления топика -->
+            <button th:replace="fragments/add-topic-modal :: add-topic_button"></button>
+        </div>
+    </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------->
 
@@ -30,7 +35,6 @@
 
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/home_events.js"></script>
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
 <script src="/js/getAndPrintAllTopicsOfUser.js"></script>
 <script src="/js/getNotifCounterByPrincipal.js"></script>
@@ -39,6 +43,7 @@
 <script src="/js/add-topic_events.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
-<script src="/js/util/likes.js"></script>
+<script src="/js/home_events.js"></script>
+<script src="/js/likedTopic.js"></script>
 </body>
 </html>

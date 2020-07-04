@@ -1,7 +1,8 @@
-async function addTopic(title, content) {
+async function addTopic(title, content, completed) {
     let topic_object = {
         title: title,
         content: content,
+        completed: completed
     }
     return  fetch('/api/user/topic/add', {
         method: 'POST',

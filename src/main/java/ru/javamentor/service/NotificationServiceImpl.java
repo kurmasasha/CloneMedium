@@ -11,7 +11,7 @@ import java.util.List;
  * Реализация интерфейса NotificationService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Slf4j
 @Service
@@ -86,7 +86,8 @@ public class NotificationServiceImpl implements NotificationService {
         if (notification != null) {
             notificationDao.addNotification(notification);
             return true;
-        } else return false;
+        }
+        return false;
     }
     /**
      * метод для удаления уведомления
@@ -101,13 +102,4 @@ public class NotificationServiceImpl implements NotificationService {
         return true;
     }
 
-//    /**
-//     * метод для проверки существования уведомления
-//     *
-//     * @param notification - объект уведомления
-//     * @return boolean - существует такое уведомление или нет
-//     */
-//    private boolean isExistNotes(Notification notification) {
-//        return notificationsDao.findByTitle(notification.getTitle()) != null;
-//    }
 }
