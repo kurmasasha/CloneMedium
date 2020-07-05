@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * Класс представляющий модель топика
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @NoArgsConstructor
 @Getter
@@ -54,6 +54,9 @@ public class Topic {
     @NotNull
     private Integer likes = 0;
 
+    @Column
+    private String img;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> authors;
@@ -74,13 +77,14 @@ public class Topic {
         }
     }
 
-    public Topic(String title, String content, boolean completed, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
+    public Topic(String title, String content, boolean completed, String img, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
         this.completed = completed;
+        this.img = img;
     }
 
     public Topic(String title, String content) {

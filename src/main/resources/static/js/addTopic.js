@@ -1,15 +1,14 @@
-async function addTopic(title, content, completed) {
-    let topic_object = {
-        title: title,
-        content: content,
-        completed: completed
-    }
-    return  fetch('/api/user/topic/add', {
+async function addTopic(title, content, completed, img) {
+    const formData = new FormData();
+    formData.append('title', title)
+    formData.append('content', content)
+    formData.append('completed', completed)
+    formData.append('file', img)
+
+    return await fetch('/api/user/topic/add', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(topic_object)
+        enctype: 'multipart/form-data',
+        body: formData
     });
 }
 

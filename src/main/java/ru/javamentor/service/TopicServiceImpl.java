@@ -2,6 +2,7 @@ package ru.javamentor.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
@@ -35,13 +36,14 @@ public class TopicServiceImpl implements TopicService {
      * @param title   - название топика
      * @param content - содержимое топика
      * @param users   - множество пользователей связанных с добавляемым топиком
+     * @param img - название картинки
      * @return Topic - объект представляющий модель топика
      */
     @Transactional
     @Override
-    public Topic addTopic(String title, String content, boolean completed, Set<User> users) {
+    public Topic addTopic(String title, String content, boolean completed, String img, Set<User> users) {
         try {
-            Topic topic = new Topic(title, content, completed, users, LocalDateTime.now(), false);
+            Topic topic = new Topic(title, content, completed, img, users, LocalDateTime.now(), false);
             topicDAO.addTopic(topic);
             log.info("IN addTopic - topic: {} successfully added", topic);
             return topic;

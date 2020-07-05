@@ -1,12 +1,14 @@
 package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -16,10 +18,16 @@ import ru.javamentor.service.UserService;
 import ru.javamentor.util.buffer.LikeBuffer;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Rest контроллер для топиков
@@ -35,6 +43,9 @@ public class TopicRestControllers {
     private final UserService userService;
     private final LikeBuffer likeBuffer;
     private final NotificationService notificationService;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
     public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService) {
@@ -163,16 +174,42 @@ public class TopicRestControllers {
 
     /**
      * метод для добавления топика
-     *
-     * @param topicData - содержимое топика
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
+    public ResponseEntity<Topic> addTopic(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("completed") boolean completed,
+            @RequestParam("file") MultipartFile file,
+            Principal principal
+    ) throws IOException {
         Set<User> users = new HashSet<>();
         users.add(userService.getUserByUsername(principal.getName()));
-        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), topicData.isCompleted(), users);
+
+        // загрузка кантинки (если картинка не загружена то путь до картинки по умолчанию)
+        String resultFileName = "no-image.png";
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            resultFileName = uuidFile + "." + file.getOriginalFilename();
+            // загружаем файл
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(uploadPath + "/" + resultFileName);
+            Files.write(path, bytes);
+        }
+
+        Topic topic = topicService.addTopic(
+                title,
+                content,
+                completed,
+                resultFileName,
+                users
+        );
         if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {
