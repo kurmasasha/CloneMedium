@@ -182,7 +182,7 @@ public class TopicRestControllers {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("completed") boolean completed,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam(required = false) MultipartFile file,
             Principal principal
     ) throws IOException {
         Set<User> users = new HashSet<>();
