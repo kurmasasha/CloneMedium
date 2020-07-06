@@ -19,6 +19,28 @@
 <div class="d-flex justify-content-center py-5">
   <div id="topics_container" class="container mx-0 py-3">
     <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
+    <th:block th:each="topic : ${topics}">
+      <div class="card mb-2">
+        <div th:class="${topic.isModerate() ? 'card-header d-flex justify-content-between moderated' : 'card-header d-flex justify-content-between notmoderated'}">
+          <a th:href="${'/topic/' + topic.getId()}">
+            <h5 th:id="${'title_'+ topic.getId()}" th:text="${topic.getTitle()}"></h5>
+          </a>
+          <h6 th:text="${topic.getDateCreated()}"></h6>
+          <button sec:authorize="isAuthenticated()" th:id="${'modal_edit-topic_button_' + topic.getId()}"
+                  class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" th:attr="data-topic-id=${topic.getId()}"
+                  data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit">
+            <i class="fa fa-edit text-white"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <h6 class="card-title" th:text="${topic.getAuthors()}"></h6>
+          <h6 class="card-title" th:text="${topic.getHashtags()}"></h6>
+          <p class="card-text" th:id="${'text_'+ topic.getId()}" th:text="${topic.getContent()}"></p>
+          <i class="fa fa-thumbs-o-up" th:id="${'iconLikeOfTopic-' + topic.getId()}"  th:attr="data-id=${topic.getId()}"></i>
+          <span class="text-info" id="likeCounter" th:attr="data-id=${topic.getId()}" th:text="${topic.getLikes()}"></span>
+        </div>
+      </div>
+    </th:block>
   </div>
   <!-- Кнопка добавления топика -->
   <div sec:authorize="isAuthenticated()" th:replace="fragments/add-topic-modal :: add-topic_button"></div>

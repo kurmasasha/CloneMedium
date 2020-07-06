@@ -5,8 +5,8 @@
 $(document).ready(function() {
     let topicContainer = $('#topics_container');
     $('#all_page_link').addClass('active');
-    getAndPrintModeratedTopics(topicContainer)
-        .then();
+/*    getAndPrintModeratedTopics(topicContainer)
+        .then();*/
 
     /**
      * Нажатие на кнопку поиска по хэштегу

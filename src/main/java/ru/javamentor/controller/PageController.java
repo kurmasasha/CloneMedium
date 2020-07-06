@@ -76,9 +76,7 @@ public class PageController {
      */
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allTopicsPage(Model model, Principal principal) {
-/*        if(principal == null)
-            model.addAttribute("login", "true");*/
+    public String allTopicsPage(Model model) {
         List<Topic> topics = topicService.getModeratedTopics();
         model.addAttribute("topics", topics);
         return "all_topics_page";

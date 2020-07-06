@@ -24,8 +24,7 @@ function topicInCard(topic) {
         moderated = 'moderated';
     }
     let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
-    let btnEdit = '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>';
-    /*$("#topics_container[data-login != '']")*/
+
     let card =
         '<div class="card mb-2">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
@@ -33,7 +32,7 @@ function topicInCard(topic) {
         '<h5 id="title_'+ topic.id +'">' + topic.title + '</h5>' +
         '</a>' +
         '<h6>' + timeConverter(date) + '</h6>' +
-        btnEdit +
+        '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>' +
         '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
