@@ -24,22 +24,26 @@ function topicInCard(topic) {
         moderated = 'moderated';
     }
     let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
+    let btnEdit = '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>';
+    /*$("#topics_container[data-login != '']")*/
     let card =
         '<div class="card mb-2">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
-        '<h5>' + topic.title + '</h5>' +
+        '<h5 id="title_'+ topic.id +'">' + topic.title + '</h5>' +
         '</a>' +
         '<h6>' + timeConverter(date) + '</h6>' +
+        btnEdit +
         '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
         '<h6 class="card-title">' + tags + '</h6>' +
-        '<p class="card-text">' + linkify(topic.content) + '</p>' +
+        '<p class="card-text" id="text_'+ topic.id +'">' + linkify(topic.content) + '</p>' +
         `<i class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></i>` +
         `<span class="text-info" id="likeCounter" data-id="${topic.id}">${topic.likes}</span>` +
     '</div>' +
         '</div>';
     return card;
 }
+
 

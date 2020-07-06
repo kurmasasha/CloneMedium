@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.CommentService;
 import ru.javamentor.service.TopicService;
@@ -13,6 +14,7 @@ import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -74,7 +76,11 @@ public class PageController {
      */
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allTopicsPage() {
+    public String allTopicsPage(Model model, Principal principal) {
+/*        if(principal == null)
+            model.addAttribute("login", "true");*/
+        List<Topic> topics = topicService.getModeratedTopics();
+        model.addAttribute("topics", topics);
         return "all_topics_page";
     }
 

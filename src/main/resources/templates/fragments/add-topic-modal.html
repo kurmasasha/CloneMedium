@@ -25,6 +25,7 @@
             </div>
             <div class="modal-body">
                 <form name="formAddTopic">
+                    <input type="hidden" name="topic_id" id="topic_id">
                     <div class="form-group">
                         <label for="topic_title">Заголовок</label>
                         <input type="text" class="form-control" id="topic_title" name="title">
@@ -32,6 +33,11 @@
                     <div class="form-group">
                         <label for="topic_content">Содержание</label>
                         <textarea class="form-control" id="topic_content" rows="10" name="content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic_coauthor">Добавить соавтора:</label>
+                        <select class="form-control select2" id="topic_coauthor" data-placeholder="Авторы статьи" style="width:100%;" multiple></select>
+
                     </div>
                 </form>
             </div>

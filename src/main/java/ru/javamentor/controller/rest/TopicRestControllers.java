@@ -160,6 +160,10 @@ public class TopicRestControllers {
     public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
         Set<User> users = new HashSet<>();
         users.add(userService.getUserByUsername(principal.getName()));
+        for (User user :
+                topicData.getAuthors()) {
+            users.add(userService.getUserById(user.getId()));
+        }
         Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), topicData.isCompleted(), users);
         if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
@@ -175,11 +179,20 @@ public class TopicRestControllers {
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
     @PostMapping("/user/topic/update")
-    public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
+    public ResponseEntity<Topic> updateTopic(@RequestBody Topic topic) {
+        Topic topicById = topicService.getTopicById(topic.getId());
+        Set<User> authors = topicById.getAuthors();
+        for (User user :
+                topic.getAuthors()) {
+            authors.add(userService.getUserById(user.getId()));
+        }
+        topic.setAuthors(authors);
+        topic.setDateCreated(topicById.getDateCreated());
+        topic.setHashtags(topicById.getHashtags());
         if (topicService.updateTopic(topic)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -1,10 +1,41 @@
-async function addTopic(title, content, completed) {
+async function addTopic(title, content, completed, author) {
+    let authors = [];
+    $.each(author, function (index, value) {
+        authors.push({
+            id: value
+        })
+    })
     let topic_object = {
         title: title,
         content: content,
-        completed: completed
+        completed: completed,
+        authors: authors
     }
     return  fetch('/api/user/topic/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(topic_object)
+    });
+}
+
+async function updateTopic(topic_id, title, content, completed, author) {
+    let authors = [];
+    $.each(author, function (index, value) {
+        authors.push({
+            id: value
+        })
+    })
+
+    let topic_object = {
+        id: topic_id,
+        title: title,
+        content: content,
+        completed: completed,
+        authors: authors
+    }
+    return  fetch('/api/user/topic/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

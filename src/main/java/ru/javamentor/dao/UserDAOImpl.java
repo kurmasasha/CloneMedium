@@ -1,7 +1,9 @@
 package ru.javamentor.dao;
 
+import org.hibernate.criterion.MatchMode;
 import org.springframework.stereotype.Repository;
 import ru.javamentor.model.User;
+import ru.javamentor.dto.UserDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -92,6 +94,26 @@ public class UserDAOImpl implements UserDAO {
             return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.role WHERE u.username =:username", User.class)
                     .setParameter("username", userName)
                     .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * метод для получения всех пользователей у которых имя пользователя начинается с @param pattern
+     *
+     * @param pattern - email пользователя
+     * @return List<User> - объект представляющий список пользователей
+     */
+    @Override
+    public List<UserDTO> getUsersLikeUsername(String pattern) {
+        try {
+            return entityManager.createQuery("select new ru.javamentor.dto.UserDTO(u.id, u.username) from User u WHERE u.username LIKE :username", UserDTO.class)
+                    .setParameter("username", MatchMode.START.toMatchString(pattern))
+                    .getResultList();
+/*            return entityManager.createQuery("SELECT u FROM User u WHERE u.username LIKE :username", User.class)
+                    .setParameter("username", MatchMode.START.toMatchString(pattern))
+                    .getResultList();*/
         } catch (Exception e) {
             return null;
         }

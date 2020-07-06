@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.User;
+import ru.javamentor.dto.UserDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -200,6 +201,19 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         return userDAO.getUserByUsername(username);
     }
+
+    /**
+     * метод для получения всех пользователей у которых имя пользователя начинается с @param pattern
+     *
+     * @param pattern - email пользователя
+     * @return List<User> - объект представляющий список пользователей
+     */
+    @Transactional
+    @Override
+    public List<UserDTO> getUsersLikeUsername(String pattern) {
+        return userDAO.getUsersLikeUsername(pattern);
+    }
+
     /**
      * метод для входа пользователя в систему by Spring Security
      *
