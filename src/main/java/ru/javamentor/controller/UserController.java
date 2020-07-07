@@ -2,16 +2,13 @@ package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javamentor.model.Theme;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.ThemeService;
@@ -19,8 +16,6 @@ import ru.javamentor.service.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,18 +35,27 @@ public class UserController {
         this.themeService = themeService;
     }
 
+    //TODO Как это прошло ревью? ><
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
         User user = (User) ((Authentication) principal).getPrincipal();
         User userDB = userService.getUserById(user.getId());
         model.addAttribute("user", userDB);
         themeService.showThemes(model, userDB);
+        List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
+        model.addAttribute("notSubscribedAuthors", notSubscribed);
+        List<String> subscribes = userService.getAllSubscribesOfUser(user.getUsername());
+        model.addAttribute("subscribes", subscribes);
         return "userPage";
     }
 
     // TODO Ошибки в изменении пароля и присвоении роли
     @PostMapping("/user/edit_profile")
-    public String upgrade(@ModelAttribute("user") User user, @RequestParam(name = "themes", required = false) Set<Long> themesIds, Model model, BindingResult bindingResult) {
+    public String upgrade(@ModelAttribute("user") User user,
+                          @RequestParam(name = "themes", required = false) Set<Long> themesIds,
+                          @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
+                          Model model,
+                          BindingResult bindingResult) {
         validatorFormEditUser.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "userPage";

@@ -69,4 +69,18 @@ public interface UserDAO {
      * @return User - объект представляющий пользователя
      */
     User findByActivationCode(String code);
+
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    List<String> getAllSubscribesNotOfUser(String username);
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    List<String> getAllSubscribesOfUser(String username);
 }

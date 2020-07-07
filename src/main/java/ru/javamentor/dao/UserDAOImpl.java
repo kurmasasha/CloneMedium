@@ -126,4 +126,36 @@ public class UserDAOImpl implements UserDAO {
             return null;
         }
     }
+
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    @Override
+    public List<String> getAllSubscribesNotOfUser(String username) {
+        return entityManager.createQuery(
+                "SELECT u.username FROM User u " +
+                        "WHERE u.username NOT IN " +
+                        "(SELECT s.author.username FROM Subscribes s " +
+                        "WHERE s.subscriber.username = :username)",
+                String.class)
+                .setParameter("username", username)
+                .getResultList();
+    }
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    @Override
+    public List<String> getAllSubscribesOfUser(String username) {
+        return entityManager.createQuery(
+                "SELECT s.author.username FROM Subscribes s " +
+                        "WHERE s.subscriber.username = :username",
+                String.class)
+                .setParameter("username", username)
+                .getResultList();
+    }
 }

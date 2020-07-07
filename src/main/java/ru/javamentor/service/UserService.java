@@ -109,6 +109,18 @@ public interface UserService {
      * @return void
      */
     void login(String username, String password, Collection<? extends GrantedAuthority> authorities);
-//    void login(String username, String password, Set<Role> roles);
 
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    List<String> getAllSubscribesNotOfUser(String username);
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    List<String> getAllSubscribesOfUser(String username);
 }

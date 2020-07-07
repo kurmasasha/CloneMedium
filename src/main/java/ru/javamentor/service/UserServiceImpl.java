@@ -215,4 +215,37 @@ public class UserServiceImpl implements UserService {
         sc.setAuthentication(authReq);
     }
 
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    @Override
+    public List<String> getAllSubscribesNotOfUser(String username) {
+        List<String> authors;
+        try {
+            authors =  userDAO.getAllSubscribesNotOfUser(username);
+            log.info("IN getAllSubscribesNotOfUser - {} authors found", authors.size());
+        } catch (Exception e) {
+            return null;
+        }
+        return authors;
+    }
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    @Override
+    public List<String> getAllSubscribesOfUser(String username) {
+        List<String> subcribes;
+        try {
+            subcribes =  userDAO.getAllSubscribesOfUser(username);
+            log.info("IN getAllSubscribesOfUser - {} authors found", subcribes.size());
+        } catch (Exception e) {
+            return null;
+        }
+        return subcribes;
+    }
 }
