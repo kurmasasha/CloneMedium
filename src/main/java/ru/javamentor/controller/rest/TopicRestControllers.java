@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.MailSender;
 import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
@@ -38,13 +39,15 @@ public class TopicRestControllers {
     private final TopicService topicService;
     private final UserService userService;
     private final LikeBuffer likeBuffer;
+    private final MailSender mailSender;
     private final NotificationService notificationService;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, MailSender mailSender, NotificationService notificationService) {
         this.topicService = topicService;
         this.userService = userService;
         this.likeBuffer = likeBuffer;
+        this.mailSender = mailSender;
         this.notificationService = notificationService;
     }
 
@@ -151,7 +154,8 @@ public class TopicRestControllers {
             notification.setUser(user);
             notificationService.addNotification(notification);
             userService.notifyAllSubscribersOfAuthor(user.getUsername(), "Новая статья",
-                    "Автор " + user.getUsername() + " опубликовал новую статью  <a href=\"" + link + "topic/" + id + "\">" + topic.getTitle()+ "</a>");
+                    "Автор " + user.getUsername() + " опубликовал новую статью " + topic.getTitle() + " " + link + "topic/" + id);
+            mailSender.send(user.getUsername(), "Новая статья", "Автор " + user.getUsername() + " опубликовал новую статью " + topic.getTitle() + " " + link + "topic/" + id);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
