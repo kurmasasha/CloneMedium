@@ -20,8 +20,13 @@
     <div id="topics_container" class="container mx-0 py-3">
         <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
     </div>
-    <!-- Кнопка добавления топика -->
-    <div th:replace="fragments/add-topic-modal :: add-topic_button"></div>
+
+    <div class="my-3">
+        <div class="position-fixed">
+            <!-- Кнопка добавления топика -->
+            <button th:replace="fragments/add-topic-modal :: add-topic_button"></button>
+        </div>
+    </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------->
 

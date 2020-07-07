@@ -228,10 +228,5 @@ public class UserServiceImpl implements UserService {
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(authReq);
     }
-   /* @Override
-    public void login(String username, String password, Set<Role> roles) {
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(username, password, roles);
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(authReq);
-    }*/
+
 }

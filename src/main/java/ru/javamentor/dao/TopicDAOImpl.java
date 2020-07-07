@@ -14,7 +14,7 @@ import java.util.Set;
  * Класс для доступа к топикам из базы с помощью Hibernate
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Repository
 public class TopicDAOImpl implements TopicDAO {
@@ -43,6 +43,7 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager.find(Topic.class, id);
     }
 
+    // TODO Не рабочий метод!
     /**
      * метод для получения роли по заголовку/наименованию
      *
@@ -58,7 +59,6 @@ public class TopicDAOImpl implements TopicDAO {
      * метод для обновления топика
      *
      * @param topic - объект обновленного топика
-     * @return void
      */
     @Override
     public void updateTopic(Topic topic) {
@@ -69,7 +69,6 @@ public class TopicDAOImpl implements TopicDAO {
      * метод для удаления топика
      *
      * @param id - уникальный id топика
-     * @return void
      */
     @Override
     public void removeTopicById(Long id) {
@@ -93,7 +92,18 @@ public class TopicDAOImpl implements TopicDAO {
      */
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
-        return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r  WHERE a.id = :userId GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class).setParameter("userId", userId).getResultList();
+        return entityManager.createQuery(
+                "SELECT t FROM Topic t " +
+                        "LEFT JOIN FETCH t.authors a " +
+                        "LEFT JOIN FETCH t.hashtags h " +
+                        "LEFT JOIN FETCH a.role r  " +
+                        "LEFT JOIN FETCH t.themes th " +
+                        "WHERE a.id = :userId " +
+                        "GROUP BY t.id " +
+                        "ORDER BY t.dateCreated  DESC",
+                Topic.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     /**
@@ -103,9 +113,19 @@ public class TopicDAOImpl implements TopicDAO {
      */
     @Override
     public List<Topic> getTotalListOfTopics() {
-        return entityManager.createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH t.authors a LEFT JOIN FETCH a.role r GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class).getResultList();
+        return entityManager.createQuery(
+                "SELECT t FROM Topic t " +
+                        "LEFT JOIN FETCH t.hashtags h " +
+                        "LEFT JOIN FETCH t.authors a " +
+                        "LEFT JOIN FETCH a.role r " +
+                        "LEFT JOIN FETCH t.themes th " +
+                        "GROUP BY t.id " +
+                        "ORDER BY t.dateCreated  DESC",
+                Topic.class)
+                .getResultList();
     }
 
+    // TODO Не рабочий метод!
     public List<User> getAllUsersByTopicId(Long topicId) {
         return entityManager.createQuery("SELECT u FROM Topic t LEFT JOIN FETCH t.authors u WHERE t.id = :topicId GROUP BY u.id", User.class).setParameter("topicId", topicId).getResultList();
     }
@@ -119,7 +139,16 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "LEFT JOIN FETCH t.themes th " +
+                                "WHERE h.name = :value " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated  DESC",
+                        Topic.class)
                 .setParameter("value", value)
                 .getResultList();
     }
@@ -134,7 +163,17 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE h.name = :value AND a.id = :userId GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "LEFT JOIN FETCH t.themes th " +
+                                "WHERE h.name = :value " +
+                                "AND a.id = :userId " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated  DESC",
+                        Topic.class)
                 .setParameter("value", value)
                 .setParameter("userId", userId)
                 .getResultList();
@@ -148,7 +187,16 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getModeratedTopics() {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = true GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "LEFT JOIN FETCH t.themes th " +
+                                "WHERE t.isModerate = true " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated  DESC",
+                        Topic.class)
                 .getResultList();
     }
 
@@ -161,6 +209,7 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getNotModeratedTopics() {
         return entityManager
                 .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false AND t.completed = true GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+
                 .getResultList();
     }
 
@@ -175,7 +224,16 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false AND t.completed = true GROUP BY t.id ORDER BY t.dateCreated DESC", Topic.class)
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "WHERE t.isModerate = false " +
+                                "AND t.completed = true " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated DESC",
+                        Topic.class)
                 .setFirstResult(pageSize * (page - 1))
                 .setMaxResults(pageSize)
                 .getResultList();
@@ -184,12 +242,40 @@ public class TopicDAOImpl implements TopicDAO {
     /**
      * Определение числа  не модерированных топиков
      *
-     * @return
+     * @return список топиков
      */
     @Override
     public Long getNotModeratedTopicsCount() {
         return entityManager
-                .createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.isModerate = false", Long.class)
+                .createQuery(
+                        "SELECT COUNT(t.id) " +
+                                "FROM Topic t " +
+                                "WHERE t.isModerate = false " +
+                                "AND t.completed = true",
+                        Long.class)
                 .getSingleResult();
+    }
+
+    /**
+     * Поиск топиков по теме.
+     * @param themesIds - id тем, по которым будем происходить поиск
+     * @return - список топиков
+     */
+    @Override
+    public List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds) {
+        return entityManager
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "LEFT JOIN FETCH t.authors a " +
+                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN FETCH a.role r " +
+                                "LEFT JOIN FETCH t.themes th " +
+                                "WHERE th.id IN :value " +
+                                "AND t.isModerate = true " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.dateCreated  DESC",
+                        Topic.class)
+                .setParameter("value", themesIds)
+                .getResultList();
     }
 }
