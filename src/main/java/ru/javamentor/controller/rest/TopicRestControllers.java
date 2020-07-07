@@ -1,6 +1,7 @@
 package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,9 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
 public class TopicRestControllers {
+
+    @Value("${site.link}")
+    private String link;
 
     private final TopicService topicService;
     private final UserService userService;
@@ -147,7 +151,7 @@ public class TopicRestControllers {
             notification.setUser(user);
             notificationService.addNotification(notification);
             userService.notifyAllSubscribersOfAuthor(user.getUsername(), "Новая статья",
-                    "Автор " + user.getUsername() + " опубликовал новую статью " + topic.getTitle());
+                    "Автор " + user.getUsername() + " опубликовал новую статью  <a href=\"" + link + "topic/" + id + "\">" + topic.getTitle()+ "</a>");
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
