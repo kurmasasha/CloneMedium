@@ -25,12 +25,12 @@
           <a th:href="${'/topic/' + topic.getId()}">
             <h5 th:id="${'title_'+ topic.getId()}" th:text="${topic.getTitle()}"></h5>
           </a>
-          <h6 th:text="${topic.getDateCreated()}"></h6>
-          <button sec:authorize="isAuthenticated()" th:id="${'modal_edit-topic_button_' + topic.getId()}"
+          <h6 th:text="${{topic.getDateCreated()}}"></h6>
+<!--          <button sec:authorize="isAuthenticated()" th:id="${'modal_edit-topic_button_' + topic.getId()}"
                   class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" th:attr="data-topic-id=${topic.getId()}"
                   data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit">
             <i class="fa fa-edit text-white"></i>
-          </button>
+          </button>-->
         </div>
         <div class="card-body">
           <h6 class="card-title" th:text="${topic.getAuthors()}"></h6>
