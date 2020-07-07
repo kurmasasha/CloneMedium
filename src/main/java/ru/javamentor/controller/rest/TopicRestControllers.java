@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
@@ -32,8 +33,8 @@ import java.util.UUID;
 /**
  * Rest контроллер для топиков
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
@@ -150,7 +151,7 @@ public class TopicRestControllers {
         topic.setModerate(true);
         topicService.updateTopic(topic);
         //добавление оповещения авторов что топик одобрен
-        for (User user:
+        for (User user :
                 topic.getAuthors()) {
             Notification notification = new Notification();
             notification.setTitle("Модерация");
@@ -174,46 +175,69 @@ public class TopicRestControllers {
 
     /**
      * метод для добавления топика
+     *
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(
+    public ResponseEntity<Object> addTopic(
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
             Principal principal
-    ) throws IOException {
-        Set<User> users = new HashSet<>();
-        users.add(userService.getUserByUsername(principal.getName()));
-
-        // загрузка кантинки (если картинка не загружена то путь до картинки по умолчанию)
-        String resultFileName = "no-image.png";
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
+    ) {
+        String message = "Что то пошло не так! Попробуйте снова";
+        try {
+            // проверка на пустоту title and content
+            if(title.equals("") || content.equals("")) {
+                return new ResponseEntity<>("поля 'Заголок' и 'Содержание' должны быть заполнены", HttpStatus.BAD_REQUEST);
             }
-            String uuidFile = UUID.randomUUID().toString();
-            resultFileName = uuidFile + "." + file.getOriginalFilename();
-            // загружаем файл
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadPath + "/" + resultFileName);
-            Files.write(path, bytes);
-        }
+            Set<User> users = new HashSet<>();
+            users.add(userService.getUserByUsername(principal.getName()));
+            String resultFileName = "no-image.png";
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
 
-        Topic topic = topicService.addTopic(
-                title,
-                content,
-                completed,
-                resultFileName,
-                users
-        );
-        if (topic != null) {
-            return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                // проветка на тип картинки (img, png, bmp)
+                String[] splitFileName = file.getOriginalFilename().split("\\.");
+                String typeImg = splitFileName[splitFileName.length - 1];
+                if (!typeImg.equals("png") & !typeImg.equals("jpg") & !typeImg.equals("bmp")) {
+                    message = "формат картинки должен быть 'jpg', 'png', 'bmp'";
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
+
+                // проверка на размер файла
+                Long size = file.getSize();
+                if (size > 524288) {
+                    message = "размер картинки не должен превышать 512 KB";
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
+
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+                String uuidFile = UUID.randomUUID().toString();
+                resultFileName = uuidFile + "." + file.getOriginalFilename();
+                // загружаем файл
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(uploadPath + "/" + resultFileName);
+                Files.write(path, bytes);
+            }
+            Topic topic = topicService.addTopic(
+                    title,
+                    content,
+                    completed,
+                    resultFileName,
+                    users
+            );
+            if (topic != null) {
+                return new ResponseEntity<>(topic, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // тут мы задогируем, а пользователю кинем сообщение
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -277,7 +301,7 @@ public class TopicRestControllers {
     /**
      * метод для удаления топика
      *
-     * @param id  - id топика который необходимо удалить
+     * @param id - id топика который необходимо удалить
      * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
      */
     @DeleteMapping("/admin/topic/delete/{id}")
@@ -286,7 +310,7 @@ public class TopicRestControllers {
         Set<User> users = topic.getAuthors();
 
         if (topicService.removeTopicById(id)) {
-            for (User user:
+            for (User user :
                     users) {
                 Notification notification = new Notification();
                 notification.setTitle("Модерация");
@@ -303,7 +327,7 @@ public class TopicRestControllers {
     /**
      * метод для получения неотмодерированного топика по id админом
      *
-     * @param id  - id топика который необходимо получитьв ответе
+     * @param id - id топика который необходимо получитьв ответе
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/admin/topic/{id}")
@@ -324,7 +348,7 @@ public class TopicRestControllers {
             likeBuffer.addLike(session.getId(), topicId);
             Topic topic = topicService.increaseTopicLikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else if(likeBuffer.isLikedTopic(session.getId(), topicId)) {
+        } else if (likeBuffer.isLikedTopic(session.getId(), topicId)) {
             likeBuffer.deleteLike(session.getId(), topicId);
             Topic topic = topicService.decreaseTopicLikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);

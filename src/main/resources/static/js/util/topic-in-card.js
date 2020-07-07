@@ -34,7 +34,7 @@ function topicInCard(topic) {
         '</div>' +
         '<div class="card-body row">' +
         '<div class="col-md-4">' +
-        `<img src="/img/${topic.img}" class="card-img topic-img">` +
+        `<img src="/topic-img/${topic.img}" class="card-img topic-img">` +
         '</div>' +
         '<div class="col-md-6">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
