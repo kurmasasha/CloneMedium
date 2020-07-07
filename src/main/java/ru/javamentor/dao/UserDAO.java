@@ -9,7 +9,7 @@ import java.util.Set;
  * Интерфейс для доступа к пользователям из базы
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface UserDAO {
     /**
@@ -43,7 +43,6 @@ public interface UserDAO {
      * метод для обновления пользователя
      *
      * @param user - объект обновленного пользователя
-     * @return void
      */
     void updateUser(User user);
 
@@ -51,7 +50,6 @@ public interface UserDAO {
      * метод для удаления пользователя из базы
      *
      * @param id - уникальный id пользователя
-     * @return void
      */
     void removeUser(Long id);
 
@@ -84,6 +82,13 @@ public interface UserDAO {
      * @return - список подписок
      */
     List<String> getAllSubscribesOfUser(String username);
+
+    /**
+     * Метод получения всех подписчиков автора
+     * @param author - автор
+     * @return - список подписчиков
+     */
+    List<User> getAllSubscribersOfAuthor(String author);
 
     /**
      * Метод добавления подписки

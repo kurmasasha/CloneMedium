@@ -11,7 +11,7 @@ import java.util.Set;
  * Интерфейс для работы с пользователями в системе
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface UserService {
     /**
@@ -20,7 +20,7 @@ public interface UserService {
      * @param user - пользователь которого необходимо добавить
      * @return boolean удалось добавить или нет
      */
-    public boolean addUser(User user);
+    boolean addUser(User user);
 
     /**
      * метод для добавления пользователя из социальной сети
@@ -28,14 +28,14 @@ public interface UserService {
      * @param user - пользователь которого необходимо добавить
      * @return boolean удалось добавить или нет
      */
-    public boolean addUserThroughSocialNetworks(User user);
+    boolean addUserThroughSocialNetworks(User user);
 
     /**
      * метод для получения всего списка пользователей
      *
      * @return List пользоватей
      */
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
     /**
      * метод для получения пользователя по уникальному id
@@ -43,7 +43,7 @@ public interface UserService {
      * @param id - уникальный id пользователя
      * @return User - пользователь
      */
-    public User getUserById(Long id);
+    User getUserById(Long id);
 
     /**
      * метод для обновления пользовательских данных
@@ -51,15 +51,14 @@ public interface UserService {
      * @param user - пользователь с обновленными данными
      * @return boolean - удалось обновить данные или нет
      */
-    public boolean updateUser(User user);
+    boolean updateUser(User user);
 
     /**
      * метод для удаления пользователя
      *
      * @param id - уникальный id пользователя в системе
-     * @return void
      */
-    public void removeUser(Long id);
+    void removeUser(Long id);
 
     /**
      * метод для активации пользователя в системе
@@ -75,12 +74,12 @@ public interface UserService {
      * @param email -  электронная почта пользователя
      * @return User пользователь
      */
-    public User getUserByEmail(String email);
+    User getUserByEmail(String email);
 
     /**
      * метод для получения пользователя по его username
      *
-     * @param username
+     * @param username - имя пользователя
      * @return User пользователь
      */
     User getUserByUsername(String username);
@@ -89,7 +88,6 @@ public interface UserService {
      * метод для отправки письма подтверждения на почту
      *
      * @param user - пользователь которому нужно отправить письмо
-     * @return void
      */
     void sendCode(User user);
 
@@ -107,7 +105,6 @@ public interface UserService {
      * @param username    - логие
      * @param password    - пароль
      * @param authorities - роли by Spring Security
-     * @return void
      */
     void login(String username, String password, Collection<? extends GrantedAuthority> authorities);
 
@@ -129,6 +126,14 @@ public interface UserService {
      * Метод добавления подписки
      * @param authors - автор
      * @param subscriber - подписчик
+     * @return - успех операции добавления
      */
     boolean changeSubscribe(Set<String> authors, String subscriber);
+
+    /**
+     * Метод создания уведомлений для всех подписчиков автора
+     * @param author - автор
+     * @return - успех операции создания уведомлений
+     */
+    boolean notifyAllSubscribersOfAuthor(String author, String title, String text);
 }

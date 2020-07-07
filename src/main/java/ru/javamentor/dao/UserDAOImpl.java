@@ -12,7 +12,7 @@ import java.util.Set;
  * Реализация интерфейса UserDaо с помощью Hibernate
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -63,7 +63,6 @@ public class UserDAOImpl implements UserDAO {
      * метод для обновления пользователя
      *
      * @param user - объект обновленного пользователя
-     * @return void
      */
     @Override
     public void updateUser(User user) {
@@ -74,7 +73,6 @@ public class UserDAOImpl implements UserDAO {
      * метод для удаления пользователя из базы
      *
      * @param id - уникальный id пользователя
-     * @return void
      */
     @Override
     public void removeUser(Long id) {
@@ -158,6 +156,21 @@ public class UserDAOImpl implements UserDAO {
                         "WHERE s.subscriber.username = :username",
                 String.class)
                 .setParameter("username", username)
+                .getResultList();
+    }
+
+    /**
+     * Метод получения всех подписчиков автора
+     * @param author - автор
+     * @return - список подписчиков
+     */
+    @Override
+    public List<User> getAllSubscribersOfAuthor(String author) {
+        return entityManager.createQuery(
+                "SELECT s.subscriber FROM Subscribes s " +
+                        "WHERE s.author.username = :author",
+                User.class)
+                .setParameter("author", author)
                 .getResultList();
     }
 

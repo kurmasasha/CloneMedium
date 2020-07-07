@@ -146,6 +146,8 @@ public class TopicRestControllers {
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
             notification.setUser(user);
             notificationService.addNotification(notification);
+            userService.notifyAllSubscribersOfAuthor(user.getUsername(), "Новая статья",
+                    "Автор " + user.getUsername() + " опубликовал новую статью " + topic.getTitle());
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -171,7 +173,8 @@ public class TopicRestControllers {
     @PostMapping("/user/topic/add")
     public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
         Set<User> users = new HashSet<>();
-        users.add(userService.getUserByUsername(principal.getName()));
+        User user = userService.getUserByUsername(principal.getName());
+        users.add(user);
         Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), topicData.isCompleted(), users);
         if (topic != null) {
             return new ResponseEntity<>(topic, HttpStatus.OK);
