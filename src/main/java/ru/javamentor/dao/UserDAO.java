@@ -3,6 +3,7 @@ package ru.javamentor.dao;
 import ru.javamentor.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Интерфейс для доступа к пользователям из базы
@@ -83,4 +84,17 @@ public interface UserDAO {
      * @return - список подписок
      */
     List<String> getAllSubscribesOfUser(String username);
+
+    /**
+     * Метод добавления подписки
+     * @param author - автор
+     * @param subscriber - подписчик
+     */
+    void addSubscribe(String author, String subscriber);
+
+    /**
+     * Метод удаления подписи
+     * @param subscriber - подписчик
+     */
+    void deleteSubscribesOfUser(String subscriber);
 }

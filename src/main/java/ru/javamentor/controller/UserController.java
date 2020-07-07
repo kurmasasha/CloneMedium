@@ -1,5 +1,6 @@
 package ru.javamentor.controller;
 
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,6 @@ public class UserController {
         this.themeService = themeService;
     }
 
-    //TODO Как это прошло ревью? ><
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
         User user = (User) ((Authentication) principal).getPrincipal();
@@ -49,7 +49,7 @@ public class UserController {
         return "userPage";
     }
 
-    // TODO Ошибки в изменении пароля и присвоении роли
+    //TODO при неудачной валидации перенаправляет на адрес запроса
     @PostMapping("/user/edit_profile")
     public String upgrade(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,
@@ -61,14 +61,13 @@ public class UserController {
             return "userPage";
         }
         User userDB = userService.getUserById(user.getId());
-        userDB.setRole(roleService.getRoleById(2L));
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
         themeService.changeThemes(themesIds, userDB);
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
-        if (userService.updateUser(userDB)) {
+        if (userService.updateUser(userDB) && userService.changeSubscribe(subscribes, userDB.getUsername())) {
             return "redirect:/user";
         } else {
             model.addAttribute("message", "invalidData");

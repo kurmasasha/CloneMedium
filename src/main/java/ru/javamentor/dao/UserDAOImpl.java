@@ -6,6 +6,7 @@ import ru.javamentor.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Реализация интерфейса UserDaо с помощью Hibernate
@@ -136,7 +137,8 @@ public class UserDAOImpl implements UserDAO {
     public List<String> getAllSubscribesNotOfUser(String username) {
         return entityManager.createQuery(
                 "SELECT u.username FROM User u " +
-                        "WHERE u.username NOT IN " +
+                        "WHERE u.username != :username " +
+                        "AND u.username NOT IN " +
                         "(SELECT s.author.username FROM Subscribes s " +
                         "WHERE s.subscriber.username = :username)",
                 String.class)
@@ -157,5 +159,39 @@ public class UserDAOImpl implements UserDAO {
                 String.class)
                 .setParameter("username", username)
                 .getResultList();
+    }
+
+    /**
+     * Метод добавления подписки
+     * @param author - автор
+     * @param subscriber - подписчик
+     */
+    @Override
+    public void addSubscribe(String author, String subscriber) {
+        entityManager.createNativeQuery(
+                "INSERT INTO subscribes(author_id, subscriber_id) " +
+                        "VALUES (" +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :author), " +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :subscriber))")
+                .setParameter("author", author)
+                .setParameter("subscriber", subscriber)
+                .executeUpdate();
+    }
+
+    /**
+     * Метод удаления подписок пользователя
+     * @param subscriber - подписчик
+     */
+    @Override
+    public void deleteSubscribesOfUser(String subscriber) {
+        entityManager.createNativeQuery(
+                "DELETE FROM Subscribes " +
+                        "WHERE subscriber_id = " +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :subscriber)")
+                .setParameter("subscriber", subscriber)
+                .executeUpdate();
     }
 }

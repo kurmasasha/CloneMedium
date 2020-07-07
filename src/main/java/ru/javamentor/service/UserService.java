@@ -5,6 +5,7 @@ import ru.javamentor.model.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Интерфейс для работы с пользователями в системе
@@ -123,4 +124,11 @@ public interface UserService {
      * @return - список подписок
      */
     List<String> getAllSubscribesOfUser(String username);
+
+    /**
+     * Метод добавления подписки
+     * @param authors - автор
+     * @param subscriber - подписчик
+     */
+    boolean changeSubscribe(Set<String> authors, String subscriber);
 }

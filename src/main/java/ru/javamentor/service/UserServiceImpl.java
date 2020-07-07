@@ -17,6 +17,7 @@ import ru.javamentor.model.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -247,5 +248,25 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return subcribes;
+    }
+
+    /**
+     * Метод добавления подписок
+     * @param authors - авторы
+     * @param subscriber - подписчик
+     */
+    @Transactional
+    @Override
+    public boolean changeSubscribe(Set<String> authors, String subscriber) {
+        try {
+            userDAO.deleteSubscribesOfUser(subscriber);
+            for (String author : authors) {
+                userDAO.addSubscribe(author, subscriber);
+                log.info("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
