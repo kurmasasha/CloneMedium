@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
@@ -17,18 +16,12 @@ import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.buffer.LikeBuffer;
+import ru.javamentor.util.img.LoaderImages;
+import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Rest контроллер для топиков
@@ -44,16 +37,20 @@ public class TopicRestControllers {
     private final UserService userService;
     private final LikeBuffer likeBuffer;
     private final NotificationService notificationService;
+    private final LoaderImages loaderImages;
+    private final TopicValidator topicValidator;
 
     @Value("${upload.path}")
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.topicService = topicService;
         this.userService = userService;
         this.likeBuffer = likeBuffer;
         this.notificationService = notificationService;
+        this.loaderImages = loaderImages;
+        this.topicValidator = topicValidator;
     }
 
     /**
@@ -175,7 +172,6 @@ public class TopicRestControllers {
 
     /**
      * метод для добавления топика
-     *
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
@@ -186,57 +182,33 @@ public class TopicRestControllers {
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
             Principal principal
-    ) {
+            ) {
         String message = "Что то пошло не так! Попробуйте снова";
+        String resultFileName = "no-image.png";
         try {
             // проверка на пустоту title and content
-            if(title.equals("") || content.equals("")) {
-                return new ResponseEntity<>("поля 'Заголок' и 'Содержание' должны быть заполнены", HttpStatus.BAD_REQUEST);
+            topicValidator.checkTitleAndContent(title, content);
+            // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                topicValidator.checkFile(file);
+                if (topicValidator.getError() == null) {
+                    resultFileName = loaderImages.upload(file);
+                }
             }
+            if (topicValidator.getError() != null) {
+                return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
+            }
+
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
-            String resultFileName = "no-image.png";
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
+            Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
-                // проветка на тип картинки (img, png, bmp)
-                String[] splitFileName = file.getOriginalFilename().split("\\.");
-                String typeImg = splitFileName[splitFileName.length - 1];
-                if (!typeImg.equals("png") & !typeImg.equals("jpg") & !typeImg.equals("bmp")) {
-                    message = "формат картинки должен быть 'jpg', 'png', 'bmp'";
-                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-                }
-
-                // проверка на размер файла
-                Long size = file.getSize();
-                if (size > 524288) {
-                    message = "размер картинки не должен превышать 512 KB";
-                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-                }
-
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-                String uuidFile = UUID.randomUUID().toString();
-                resultFileName = uuidFile + "." + file.getOriginalFilename();
-                // загружаем файл
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(uploadPath + "/" + resultFileName);
-                Files.write(path, bytes);
-            }
-            Topic topic = topicService.addTopic(
-                    title,
-                    content,
-                    completed,
-                    resultFileName,
-                    users
-            );
             if (topic != null) {
                 return new ResponseEntity<>(topic, HttpStatus.OK);
             }
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // тут мы задогируем, а пользователю кинем сообщение
+            // тут мы логируем исключение, а пользователю кинем сообщение
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
