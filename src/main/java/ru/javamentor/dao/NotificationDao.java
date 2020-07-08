@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0
  * @autor Java Mentor
  */
-public interface NotificationsDao  {
+public interface NotificationDao {
 
     List<Notification> getAllNotes();
 

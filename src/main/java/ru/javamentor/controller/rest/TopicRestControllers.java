@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.MailSender;
 import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
@@ -21,21 +22,27 @@ import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Rest контроллер для топиков
  *
- * @author Java Mentor
  * @version 1.0
+ * @author Java Mentor
  */
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
 public class TopicRestControllers {
 
+    @Value("${site.link}")
+    private String link;
+
     private final TopicService topicService;
     private final UserService userService;
     private final LikeBuffer likeBuffer;
+    private final MailSender mailSender;
     private final NotificationService notificationService;
     private final LoaderImages loaderImages;
     private final TopicValidator topicValidator;
@@ -44,10 +51,11 @@ public class TopicRestControllers {
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.topicService = topicService;
         this.userService = userService;
         this.likeBuffer = likeBuffer;
+        this.mailSender = mailSender;
         this.notificationService = notificationService;
         this.loaderImages = loaderImages;
         this.topicValidator = topicValidator;
@@ -172,6 +180,8 @@ public class TopicRestControllers {
 
     /**
      * метод для добавления топика
+     *
+     * @param topicData - содержимое топика
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
@@ -299,7 +309,7 @@ public class TopicRestControllers {
     /**
      * метод для получения неотмодерированного топика по id админом
      *
-     * @param id - id топика который необходимо получитьв ответе
+     * @param id  - id топика который необходимо получитьв ответе
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/admin/topic/{id}")

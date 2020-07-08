@@ -3,8 +3,8 @@ package ru.javamentor.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.javamentor.dao.NotificationsDao;
-import ru.javamentor.dao.NotificationsDaoImpl;
+import org.springframework.transaction.annotation.Transactional;
+import ru.javamentor.dao.NotificationDao;
 import ru.javamentor.model.Notification;
 
 import java.util.List;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    private NotificationsDao notificationsDao;
+    private NotificationDao notificationDao;
 
     @Autowired
-    public NotificationServiceImpl(NotificationsDao notificationsDao) {
-        this.notificationsDao = notificationsDao;
+    public NotificationServiceImpl(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
     }
     /**
      * метод для получения всех уведомлений
@@ -31,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public List<Notification> getAllNotes() {
-        List<Notification> notifications = notificationsDao.getAllNotes();
+        List<Notification> notifications = notificationDao.getAllNotes();
         log.info("findAll: {} notifications", notifications.size());
         return notifications;
     }
@@ -43,7 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getById(Long id) {
-        Notification notification = notificationsDao.getOne(id);
+        Notification notification = notificationDao.getOne(id);
         log.info("getById: return notification by Id");
         return notification;
     }
@@ -55,7 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getByTitle(String title) {
-        Notification notification = notificationsDao.getByTitle(title);
+        Notification notification = notificationDao.getByTitle(title);
         log.info("getById: return notification by title");
         return notification;
     }
@@ -68,11 +68,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean updateNotification(Notification notification) {
         if (notification != null) {
-            notificationsDao.updateNotification(notification);
-            log.info("updateNotification: notification {title} was updated", notification.getTitle());
+            notificationDao.updateNotification(notification);
+            log.info("updateNotification: notification {} was updated", notification.getTitle());
             return true;
-        } else
-            log.info("updateNotification: notification {title} not found", notification.getTitle());
+        } else {
+            log.info("updateNotification: notification {} not found", notification.getTitle());
+        }
         return false;
     }
 
@@ -82,10 +83,11 @@ public class NotificationServiceImpl implements NotificationService {
      * @param notification - объект добавляемого уведомления
      * @return boolean - удалось добавить уведомление или нет
      */
+    @Transactional
     @Override
     public boolean addNotification(Notification notification) {
         if (notification != null) {
-            notificationsDao.addNotification(notification);
+            notificationDao.addNotification(notification);
             return true;
         }
         return false;
@@ -98,8 +100,8 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean deleteNotification(Notification notification) {
-        notificationsDao.deleteNotification(notification);
-        log.info("deleteNotification: notification {title} was deleted", notification.getTitle());
+        notificationDao.deleteNotification(notification);
+        log.info("deleteNotification: notification {} was deleted", notification.getTitle());
         return true;
     }
 

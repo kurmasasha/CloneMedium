@@ -30,7 +30,7 @@ function topicInCard(topic) {
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
-        '<h6>' + timeConverter(date) + '</h6>' +
+        '<h6>' + topic.dateCreated + '</h6>' +
         '</div>' +
         '<div class="card-body row">' +
         '<div class="col-md-4">' +
