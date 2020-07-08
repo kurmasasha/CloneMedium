@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
@@ -74,6 +76,4 @@ public class UserController {
         }
         return "redirect:/user";
     }
-
-
 }

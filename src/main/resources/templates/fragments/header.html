@@ -11,11 +11,11 @@
                     <h2 class="d-inline-block m-0">Clone medium</h2>
                 </a>
             </div>
-            <li sec:authorize="isAuthenticated()" id="main_page_link" class="nav-item ml-5">
-                <a class="nav-link" href="/home">Мои топики</a>
-            </li>
-            <li sec:authorize="isAuthenticated()" id="all_page_link" class="nav-item">
+            <li sec:authorize="isAuthenticated()" id="all_page_link" class="nav-item ml-5">
                 <a class="nav-link" href="/">Все статьи</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" id="main_page_link" class="nav-item">
+                <a class="nav-link" href="/home">Мои статьи</a>
             </li>
             <li sec:authorize="isAuthenticated()" id="user_page_link" class="nav-item">
                 <a class="nav-link" href="/user">Мои данные</a>

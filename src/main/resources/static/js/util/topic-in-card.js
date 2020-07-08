@@ -31,7 +31,7 @@ function topicInCard(topic) {
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
-        '<h6>' + timeConverter(date) + '</h6>' +
+        '<h6>' + topic.dateCreated + '</h6>' +
         '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
