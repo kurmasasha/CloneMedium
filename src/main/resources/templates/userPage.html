@@ -31,7 +31,6 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
             <form action="/user/edit_profile" th:object="${user}" method="post">
 
                 <div class="modal-body">
@@ -40,12 +39,6 @@
                         <input th:field="*{id}" id="id-for-edit"/>
                         <input th:field="*{username}" username="username-for-edit"/>
                     </div>
-                    <!-- скрытые поля. конец -->
-                    <!--                    <div class="form-group">-->
-                    <!--                        <label for="id-for-view">ID</label>-->
-                    <!--                        <input class="form-control" id="id-for-view" disabled/>-->
-                    <!--                    </div>-->
-                    <!--                    <br>-->
                     <div class="form-group">
                         <label for="username-for-view">Логин</label>
                         <input class="form-control" id="username-for-view" th:field="*{username}" readonly>
@@ -74,9 +67,10 @@
                         <input th:field="*{lastName}" class="form-control" id="lastName-for-edit">
                     </div>
                     <br>
-                    <!-----------------------------------------------Блок выбора предпочитаемой темы---------------------------------------------------->
+
+                    <!--------------------------------Блок выбора предпочитаемой темы---------------------------------->
                     <div class="form-group" id="all_themes" style="border:1px solid lightgrey; border-radius: 5px">
-                        <label for="themesFromDB" style="padding: 0 12px; font-size: initial">Выбери предпочитаемые темы:</label>
+                        <label for="themesFromDB" style="padding: 0 12px; font-size: initial">Выбери предпочитаемые темы: </label>
                         <select name="themes" id="themesFromDB" multiple="multiple">
                             <option th:each="theme : ${themes}" th:value="${theme.getId()}" th:text="${theme.getName()}"
                                     th:selected="${false}"></option>
@@ -84,10 +78,20 @@
                                     th:text="${themeOfUser.getName()}" th:selected="${true}"></option>
                         </select>
                     </div>
-                    <!----------------------------------------------------------------------------------------------------------------------------------->
+                    <!------------------------------------------------------------------------------------------------->
+                    <!---------------------------------Блок выбора авторов для подписки-------------------------------->
+                    <div class="form-group" id="all_subscribes" style="border:1px solid lightgrey; border-radius: 5px">
+                        <label for="subscribesFromDB" style="padding: 0 12px; font-size: initial">Мои подписки: </label>
+                        <select name="subscribes" id="subscribesFromDB" multiple="multiple">
+                            <option th:each="notSubscribed : ${notSubscribedAuthors}" th:value="${notSubscribed}"
+                                    th:text="${notSubscribed}" th:selected="${false}"></option>
+                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"
+                                    th:text="${subscribe}" th:selected="${true}"></option>
+                        </select>
+                    </div>
+                    <!------------------------------------------------------------------------------------------------->
                 </div>
                 <div class="editForm-footer">
-                    <!--                        <button type="button" class="btn" data-dismiss="modal">Закрыть</button>-->
                     <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                 </div>
             </form>
