@@ -1,5 +1,7 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,10 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Класс представляющий модель топика
@@ -40,6 +41,7 @@ public class Topic {
     private String content;
 
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM в yyyy HH:mm")
     private LocalDateTime dateCreated;
 
     @Column

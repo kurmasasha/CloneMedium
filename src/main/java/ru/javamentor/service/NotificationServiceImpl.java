@@ -3,6 +3,7 @@ package ru.javamentor.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.NotificationDao;
 import ru.javamentor.model.Notification;
 
@@ -68,10 +69,11 @@ public class NotificationServiceImpl implements NotificationService {
     public boolean updateNotification(Notification notification) {
         if (notification != null) {
             notificationDao.updateNotification(notification);
-            log.info("updateNotification: notification {title} was updated", notification.getTitle());
+            log.info("updateNotification: notification {} was updated", notification.getTitle());
             return true;
-        } else
-            log.info("updateNotification: notification {title} not found", notification.getTitle());
+        } else {
+            log.info("updateNotification: notification {} not found", notification.getTitle());
+        }
         return false;
     }
 
@@ -81,6 +83,7 @@ public class NotificationServiceImpl implements NotificationService {
      * @param notification - объект добавляемого уведомления
      * @return boolean - удалось добавить уведомление или нет
      */
+    @Transactional
     @Override
     public boolean addNotification(Notification notification) {
         if (notification != null) {
@@ -98,7 +101,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean deleteNotification(Notification notification) {
         notificationDao.deleteNotification(notification);
-        log.info("deleteNotification: notification {title} was deleted", notification.getTitle());
+        log.info("deleteNotification: notification {} was deleted", notification.getTitle());
         return true;
     }
 

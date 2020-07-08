@@ -8,12 +8,13 @@ import ru.javamentor.dto.UserDTO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Реализация интерфейса UserDaо с помощью Hibernate
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -64,7 +65,6 @@ public class UserDAOImpl implements UserDAO {
      * метод для обновления пользователя
      *
      * @param user - объект обновленного пользователя
-     * @return void
      */
     @Override
     public void updateUser(User user) {
@@ -75,7 +75,6 @@ public class UserDAOImpl implements UserDAO {
      * метод для удаления пользователя из базы
      *
      * @param id - уникальный id пользователя
-     * @return void
      */
     @Override
     public void removeUser(Long id) {
@@ -147,5 +146,87 @@ public class UserDAOImpl implements UserDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    @Override
+    public List<String> getAllSubscribesNotOfUser(String username) {
+        return entityManager.createQuery(
+                "SELECT u.username FROM User u " +
+                        "WHERE u.username != :username " +
+                        "AND u.username NOT IN " +
+                        "(SELECT s.author.username FROM Subscribes s " +
+                        "WHERE s.subscriber.username = :username)",
+                String.class)
+                .setParameter("username", username)
+                .getResultList();
+    }
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    @Override
+    public List<String> getAllSubscribesOfUser(String username) {
+        return entityManager.createQuery(
+                "SELECT s.author.username FROM Subscribes s " +
+                        "WHERE s.subscriber.username = :username",
+                String.class)
+                .setParameter("username", username)
+                .getResultList();
+    }
+
+    /**
+     * Метод получения всех подписчиков автора
+     * @param author - автор
+     * @return - список подписчиков
+     */
+    @Override
+    public List<User> getAllSubscribersOfAuthor(String author) {
+        return entityManager.createQuery(
+                "SELECT s.subscriber FROM Subscribes s " +
+                        "WHERE s.author.username = :author",
+                User.class)
+                .setParameter("author", author)
+                .getResultList();
+    }
+
+    /**
+     * Метод добавления подписки
+     * @param author - автор
+     * @param subscriber - подписчик
+     */
+    @Override
+    public void addSubscribe(String author, String subscriber) {
+        entityManager.createNativeQuery(
+                "INSERT INTO subscribes(author_id, subscriber_id) " +
+                        "VALUES (" +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :author), " +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :subscriber))")
+                .setParameter("author", author)
+                .setParameter("subscriber", subscriber)
+                .executeUpdate();
+    }
+
+    /**
+     * Метод удаления подписок пользователя
+     * @param subscriber - подписчик
+     */
+    @Override
+    public void deleteSubscribesOfUser(String subscriber) {
+        entityManager.createNativeQuery(
+                "DELETE FROM Subscribes " +
+                        "WHERE subscriber_id = " +
+                            "(SELECT id FROM users " +
+                             "WHERE users.username = :subscriber)")
+                .setParameter("subscriber", subscriber)
+                .executeUpdate();
     }
 }

@@ -12,19 +12,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import ru.javamentor.dao.NotificationDao;
 import ru.javamentor.dao.UserDAO;
+import ru.javamentor.model.Notification;
 import ru.javamentor.model.User;
 import ru.javamentor.dto.UserDTO;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Реализация интерфейса UserService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Service
 @Slf4j
@@ -32,16 +32,18 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private MailSender mailSender;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private NotificationDao notificationDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${site.link}")
     private String link;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, MailSender mailSender) {
+    public UserServiceImpl(UserDAO userDAO, MailSender mailSender, NotificationDao notificationDao, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.mailSender = mailSender;
+        this.notificationDao = notificationDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -82,7 +84,6 @@ public class UserServiceImpl implements UserService {
      * метод для отправки письма подтверждения на почту
      *
      * @param user - пользователь которому нужно отправить письмо
-     * @return void
      */
     @Transactional
     @Override
@@ -150,7 +151,6 @@ public class UserServiceImpl implements UserService {
      * метод для удаления пользователя
      *
      * @param id - уникальный id пользователя в системе
-     * @return void
      */
     @Transactional
     @Override
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
     /**
      * метод для получения пользователя по его username
      *
-     * @param username
+     * @param username - имя пользователя
      * @return User пользователь
      */
     @Override
@@ -220,7 +220,6 @@ public class UserServiceImpl implements UserService {
      * @param username - логие
      * @param password - пароль
      * @param authorities - роли by Spring Security
-     * @return void
      */
     @Override
     public void login(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -229,4 +228,76 @@ public class UserServiceImpl implements UserService {
         sc.setAuthentication(authReq);
     }
 
+    /**
+     * Метод получения списка всех имен авторов не связанных с пользователем (ников)
+     * @param username - имя пользователя
+     * @return - список имен авторов (ников)
+     */
+    @Override
+    public List<String> getAllSubscribesNotOfUser(String username) {
+        List<String> authors;
+        try {
+            authors =  userDAO.getAllSubscribesNotOfUser(username);
+            log.info("IN getAllSubscribesNotOfUser - {} authors found", authors.size());
+        } catch (Exception e) {
+            return null;
+        }
+        return authors;
+    }
+
+    /**
+     * Метод получения списка подписок пользователя
+     * @param username - имя пользователя
+     * @return - список подписок
+     */
+    @Override
+    public List<String> getAllSubscribesOfUser(String username) {
+        List<String> subcribes;
+        try {
+            subcribes =  userDAO.getAllSubscribesOfUser(username);
+            log.info("IN getAllSubscribesOfUser - {} authors found", subcribes.size());
+        } catch (Exception e) {
+            return null;
+        }
+        return subcribes;
+    }
+
+    /**
+     * Метод добавления подписок
+     * @param authors - авторы
+     * @param subscriber - подписчик
+     */
+    @Transactional
+    @Override
+    public boolean changeSubscribe(Set<String> authors, String subscriber) {
+        try {
+            userDAO.deleteSubscribesOfUser(subscriber);
+            for (String author : authors) {
+                userDAO.addSubscribe(author, subscriber);
+                log.info("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Метод создания уведомлений для всех подписчиков автора
+     * @param author - автор
+     */
+    @Transactional
+    @Override
+    public boolean notifyAllSubscribersOfAuthor(String author, String title, String text) {
+        try {
+            List<User> subscribers = userDAO.getAllSubscribersOfAuthor(author);
+            for (User subscriber : subscribers) {
+                notificationDao.addNotification(new Notification(title, text, subscriber));
+                log.info("Notification for {} is added", subscriber.getUsername());
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
