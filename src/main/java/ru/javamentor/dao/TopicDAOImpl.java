@@ -188,13 +188,12 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getModeratedTopics() {
         return entityManager
                 .createQuery(
-                        "SELECT t FROM Topic t " +
+                        "SELECT DISTINCT t FROM Topic t " +
                                 "LEFT JOIN FETCH t.authors a " +
                                 "LEFT JOIN FETCH t.hashtags h " +
                                 "LEFT JOIN FETCH a.role r " +
                                 "LEFT JOIN FETCH t.themes th " +
                                 "WHERE t.isModerate = true " +
-                                "GROUP BY t.id " +
                                 "ORDER BY t.dateCreated  DESC",
                         Topic.class)
                 .getResultList();
