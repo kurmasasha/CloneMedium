@@ -36,14 +36,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 //                .anyMatch(role -> "ADMIN".equals(role.getAuthority()) || "ROLE_ADMIN".equals(role.getAuthority()))
                 .anyMatch(role -> "ADMIN".equals(role.getAuthority()))
         ) {
-            httpServletResponse.sendRedirect("/home");
+            httpServletResponse.sendRedirect("/");
         } else if (user.getAuthorities()
                 .stream()
                 .anyMatch(role -> "USER".equals(role.getAuthority()) || "ROLE_USER".equals(role.getAuthority()))
         ) {
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("user", user);
-            httpServletResponse.sendRedirect("/home");
+            httpServletResponse.sendRedirect("/");
         }
     }
 }
