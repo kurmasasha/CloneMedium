@@ -17,7 +17,7 @@ import java.util.List;
  * Контроллер для уведомлений
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Controller
 @RequestMapping(value = "/notifications")

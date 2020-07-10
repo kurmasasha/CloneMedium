@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Класс отвечающий за конфигурацию секьюрности
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Configuration
 @ComponentScan("ru.javamentor")

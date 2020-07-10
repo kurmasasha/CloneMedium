@@ -4,13 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.javamentor.model.Role;
 import ru.javamentor.model.Theme;
-import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
 import ru.javamentor.service.ThemeService;
-
-import java.util.List;
 
 /**
  * Rest контроллер для тем

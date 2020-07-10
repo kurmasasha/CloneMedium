@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Класс отвечающий за проверку на валидность даных пользователя в системе
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Component
 public class UserValidator implements Validator {

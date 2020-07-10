@@ -8,7 +8,7 @@ import java.util.List;
  * Интерфейс для работы с уведомлениями
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface NotificationService {
     /**
