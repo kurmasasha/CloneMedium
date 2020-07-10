@@ -14,7 +14,7 @@ import javax.persistence.*;
  * Класс представляющий модель пользовательских ролей
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @NoArgsConstructor
 @AllArgsConstructor

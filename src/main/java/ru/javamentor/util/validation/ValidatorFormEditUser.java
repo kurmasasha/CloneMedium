@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Класс отвечающий за валидацию формы редактирования пользователя
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Component
 public class ValidatorFormEditUser extends UserValidator {

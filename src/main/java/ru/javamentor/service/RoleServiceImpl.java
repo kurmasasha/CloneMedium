@@ -12,7 +12,7 @@ import java.util.List;
  * Реализация интерфейса RoleService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Service
 public class RoleServiceImpl implements RoleService {

@@ -10,7 +10,7 @@ import java.util.Set;
  * Класс представляющий модель хэштэга
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @NoArgsConstructor
 @AllArgsConstructor

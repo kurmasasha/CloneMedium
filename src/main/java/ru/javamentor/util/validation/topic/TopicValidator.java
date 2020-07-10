@@ -3,7 +3,6 @@ package ru.javamentor.util.validation.topic;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
 
 /**
  * Проверяет модальное окно добавления статьи

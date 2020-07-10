@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
  * Контроллер для перенаправления на соцсети при авторизации
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Controller
 public class AuthorizationControllers {
