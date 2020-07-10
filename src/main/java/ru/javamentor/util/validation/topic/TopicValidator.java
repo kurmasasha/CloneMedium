@@ -30,10 +30,12 @@ public class TopicValidator {
     public void checkFile(MultipartFile file) {
         error = null;
         // проверка что файл
-        if (!file.getContentType().split("/")[0].equals("image")) {
-            error = "Загруженный файл не является картинкой";
-        } else if (file.getSize() > 524288) {
+        if (file.getSize() > 524288) {
             error = "размер картинки не должен превышать 512 KB";
         }
+        if (!file.getContentType().split("/")[0].equals("image")) {
+            error = "Загруженный файл не является картинкой";
+        }
+
     }
 }

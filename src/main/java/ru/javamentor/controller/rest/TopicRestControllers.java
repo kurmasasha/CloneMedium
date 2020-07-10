@@ -192,7 +192,7 @@ public class TopicRestControllers {
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
             Principal principal
-            ) {
+            ) throws Exception {
         String message = "Что то пошло не так! Попробуйте снова";
         String resultFileName = "no-image.png";
         try {
