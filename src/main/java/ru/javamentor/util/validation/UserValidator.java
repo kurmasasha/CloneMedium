@@ -32,9 +32,7 @@ public class UserValidator implements Validator {
     }
 
     @Override
-    public void validate(Object o, Errors errors) {
-
-    }
+    public void validate(Object o, Errors errors) {}
 
     protected void validEmail(User user, Errors errors) {
         if (!user.getUsername().equals("")) {
@@ -45,7 +43,7 @@ public class UserValidator implements Validator {
             }
             User userFromBD = userDAO.getUserByEmail(user.getUsername());
             if (userFromBD != null) {
-                errors.rejectValue("username", "", "Адрес электронной почты уже зарегистророван");
+                errors.rejectValue("username", "", "Адрес электронной почты уже зарегистрирован");
             }
         }
     }

@@ -32,7 +32,7 @@ $(document).ready(function() {
      * Нажатие на кнопку поиска по теме
      */
     $('#theme_button').on('click', function () {
-        fetch(`http://localhost:5050/api/free-user/getTopicsByThemes`, {
+        fetch(`/api/free-user/getTopicsByThemes`, {
             method: 'post',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"

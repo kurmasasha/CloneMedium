@@ -5,7 +5,7 @@
  */
 
 async function getAllTopicsByHashtag(hashtag, container) {
-    fetch(`http://localhost:5050/api/free-user/get-all-topics-by-hashtag/${hashtag}`, {
+    fetch(`/api/free-user/get-all-topics-by-hashtag/${hashtag}`, {
     })
         .then(result => result.json())
         .then(arrayTopics => {
