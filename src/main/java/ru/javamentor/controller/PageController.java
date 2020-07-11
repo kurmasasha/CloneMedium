@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.CommentService;
 import ru.javamentor.service.ThemeService;
@@ -157,6 +158,15 @@ public class PageController {
         }
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
+    }
+
+    @GetMapping("/topic/find/tag/{tag}")
+    public String getPageWithTopicsByHashTag(@PathVariable String tag,
+                                             Model model){
+       // List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
+        model.addAttribute("themes", themeService.getAllThemes());
+       // model.addAttribute(topics);
+        return "all_topics_page";
     }
 }
 

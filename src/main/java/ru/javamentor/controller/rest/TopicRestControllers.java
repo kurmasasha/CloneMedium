@@ -232,7 +232,7 @@ public class TopicRestControllers {
      */
     @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag) {
-        tag = "#" + tag;
+       // tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
@@ -294,4 +294,6 @@ public class TopicRestControllers {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+
+
 }

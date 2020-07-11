@@ -51,14 +51,15 @@ public class UserController {
     }
 
     // TODO Ошибки в изменении пароля и присвоении роли
-    @PostMapping("/user/edit_profile")
+    @PostMapping("/user")
     public String upgrade(@ModelAttribute("user") User user, @RequestParam(name = "themes", required = false) Set<Long> themesIds, Model model, BindingResult bindingResult) {
         validatorFormEditUser.validate(user, bindingResult);
+        User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
+            themeService.showThemes(model, userDB);
             return "userPage";
         }
-        User userDB = userService.getUserById(user.getId());
-        userDB.setRole(roleService.getRoleById(2L));
+
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
         themeService.changeThemes(themesIds, userDB);

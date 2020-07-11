@@ -1,7 +1,8 @@
+
 function topicInCard(topic) {
     let tags = '';
     $.each(topic.hashtags, function (index, tag) {
-        tags += '<a href="#">' + tag.name + '</a>';
+        tags += '<a  href ="/topic/find/tag/'+ tag.name + '"> '+ tag.name +' </a>';
         if (index < (topic.hashtags.length - 1)) {
             tags += ' / ';
         }
@@ -17,7 +18,6 @@ function topicInCard(topic) {
     if (topic.authors.length > 1) {
         author_label = 'Авторы: ';
     }
-    let date = new Date(topic.dateCreated);
 
     let moderated = 'notmoderated';
     if (topic.moderate) {
@@ -31,7 +31,9 @@ function topicInCard(topic) {
         '<a href="/topic/' + topic.id + '">' +
         '<h5>' + topic.title + '</h5>' +
         '</a>' +
-        '<h6>' + topic.dateCreated + '</h6>' +
+        '<div id="datecreated">'+
+        '<h6{color: red}>' + topic.dateCreated + '</h6>' +
+        '</div>' +
         '</div>' +
         '<div class="card-body">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +

@@ -41,7 +41,7 @@ public class Topic {
     private String content;
 
     @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM в yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM yyyy в HH:mm")
     private LocalDateTime dateCreated;
 
     @Column
