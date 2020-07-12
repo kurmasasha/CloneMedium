@@ -72,6 +72,11 @@ public class UserRestControllers {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * метод для живого поиска пользователей, метод для получения всех пользователей у которых имя пользователя начинается с @param pattern
+     * @param pattern - последовательность символов с которой должны начинаться имена пользоватлей
+     * @return ResponseEntity, который содержит List все найденных пользователей у которых либо первые символы в имени пользователя совпали либо полностью и статус ОК
+     */
     @GetMapping("/user/userslike")
     public ResponseEntity<List<UserDTO>> getUsersLikeUsername(/*@RequestParam("pattern") String pattern*/ @RequestParam(value = "term", required = false) String term,
                                                                                                           @RequestParam(value = "_type", required = false) String _type,

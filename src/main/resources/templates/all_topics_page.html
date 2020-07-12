@@ -34,17 +34,12 @@
         </div>
         <div class="card-body">
           <th:block th:if="${topic.getAuthors().size() > 1}">
-            <th:block th:each="user : ${topic.getAuthors()}">
-              <a href="#"><h6 class="card-title" th:text="${'Автор: ' + user.getFirstName() + ' ' + user.getLastName()}"></h6></a>
-            </th:block>
+              <h6 class="card-title"><i>Авторы: </i><a href="#" th:each="user, stat : ${topic.getAuthors()}" th:text="${stat.last} ? ${user.getFirstName() + ' ' + user.getLastName()} : ${user.getFirstName() + ' ' + user.getLastName()} + '/'"></a></h6>
           </th:block>
-          <th:block th:unless="${topic.getAuthors().size() == 1}">
-            <i>Автор: </i>
-            <h6 class="card-title" th:text="${topic.getAuthors()}"></h6>
+          <th:block th:unless="${topic.getAuthors().size() > 1}">
+              <h6 class="card-title"><i>Автор: </i> <a href="#" th:each="user : ${topic.getAuthors()}" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></a></h6>
           </th:block>
-          <th:block th:each="tag : ${topic.getHashtags()}">
-          <h6 class="card-title" th:text="${tag.getName()}"></h6>
-          </th:block>
+          <h6 class="card-title"><a href="#" th:each="tag, stat : ${topic.getHashtags()}" th:text="${stat.last} ? ${tag.getName()} : ${tag.getName()} + '/'"></a></h6>
           <p class="card-text" th:id="${'text_'+ topic.getId()}" th:text="${topic.getContent()}"></p>
           <i class="fa fa-thumbs-o-up" th:id="${'iconLikeOfTopic-' + topic.getId()}"  th:attr="data-id=${topic.getId()}"></i>
           <span class="text-info" id="likeCounter" th:attr="data-id=${topic.getId()}" th:text="${topic.getLikes()}"></span>
