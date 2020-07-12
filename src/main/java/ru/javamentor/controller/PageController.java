@@ -158,5 +158,16 @@ public class PageController {
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
     }
+
+    /**
+     * метод для страницы всех топиков автора
+     * @return страницу для показа всех топиков
+     */
+
+    @GetMapping("/find/author/{authorId}")
+    public String allTopicsByAuthorPage(@PathVariable Long authorId, Model model) {
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
 }
 
