@@ -23,8 +23,7 @@ function topicInCard(topic) {
     if (topic.moderate) {
         moderated = 'moderated';
     }
-    // TODO Зачем здесь переменная like, если она нигде далее не используется?
-    let like = '<a class="text-info" id="likes" data-id= ' + topic.id + '>' + topic.likes + '</a>';
+
     let card =
         '<div class="card mb-2 mt-0">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
@@ -34,13 +33,18 @@ function topicInCard(topic) {
         '<h6>' + timeConverter(date) + '</h6>' +
         '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>' +
         '</div>' +
-        '<div class="card-body">' +
+        '<div class="card-body row">' +
+        '<div class="col-md-4">' +
+        `<img src="/topic-img/${topic.img}" class="card-img topic-img">` +
+        '</div>' +
+        '<div class="col-md-6">' +
         '<h6 class="card-title">' + author_label + authors + '</h6>' +
         '<h6 class="card-title">' + tags + '</h6>' +
         '<p class="card-text" id="text_'+ topic.id +'">' + linkify(topic.content) + '</p>' +
         `<i class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></i>` +
         `<span class="text-info" id="likeCounter" data-id="${topic.id}">${topic.likes}</span>` +
-    '</div>' +
+        '</div>' +
+        '</div>' +
         '</div>';
     return card;
 }

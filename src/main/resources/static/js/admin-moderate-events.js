@@ -78,7 +78,7 @@ $(document).ready(function () {
         let buttonId = $(event.relatedTarget).data('text');
         let body = $('#modalBody');
         let title = $('#modalTitle');
-        fetch(`http://localhost:5050/api/admin/topic/` + buttonId)
+        fetch(`/api/admin/topic/` + buttonId)
 
             .then(result => result.json())
             .then(result => {

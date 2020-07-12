@@ -3,7 +3,7 @@
  *
  */
 async function getAndPrintAllUsers(container) {
-    fetch(`http://localhost:5050/api/admin/allUsers`)
+    fetch(`/api/admin/allUsers`)
         .then(result => result.json())
         .then(response => {
             response.forEach(function (user, index) {
