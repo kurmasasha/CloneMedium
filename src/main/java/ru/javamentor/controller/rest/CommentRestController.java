@@ -43,22 +43,26 @@ public class CommentRestController {
         Long topicId = Long.parseLong(jsonObj.getString("topicId"));
         String comment = jsonObj.getString("comment");
         Topic topic = topicService.getTopicById(topicId);
-        if (user == null) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
-            if (newComment != null) {
-                return new ResponseEntity<>(newComment, HttpStatus.OK);
+
+        if(!comment.equals("")) {
+            if (user == null) {
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
+                if (newComment != null) {
+                    return new ResponseEntity<>(newComment, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        } else {
-            Comment newComment = commentService.addComment(comment, user, topic);
-            if (newComment != null) {
-                return new ResponseEntity<>(newComment, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                Comment newComment = commentService.addComment(comment, user, topic);
+                if (newComment != null) {
+                    return new ResponseEntity<>(newComment, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             }
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/user/comment/update")
