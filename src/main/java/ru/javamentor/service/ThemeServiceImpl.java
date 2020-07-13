@@ -85,6 +85,7 @@ public class ThemeServiceImpl implements ThemeService {
         }
     }
 
+    //TODO что это за жесть?!
     @Override
     public void showThemes(Model model, User userDB) {
         List<Theme> allThemes = getAllThemes();

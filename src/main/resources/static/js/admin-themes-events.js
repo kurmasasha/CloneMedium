@@ -6,7 +6,7 @@ $(document).ready(function(){
      */
     $(document).on('click', '.theme_delete_button', async function () {
         let id = $(this).attr('id').replace('theme_delete_', '');
-        let response = await fetch(`http://localhost:5050/api/admin/deleteTheme`, {
+        let response = await fetch(`/api/admin/deleteTheme`, {
             method: 'delete',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
