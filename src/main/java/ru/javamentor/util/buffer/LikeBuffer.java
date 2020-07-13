@@ -16,6 +16,7 @@ public class LikeBuffer {
         if (data.get(sessionId) != null) {
             return data.get(sessionId).contains(topicId);
         }
+        //Тестовв
         return false;
     }
 
