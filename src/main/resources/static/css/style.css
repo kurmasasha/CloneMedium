@@ -61,12 +61,13 @@ body {
     font-size: 1.5em;
 }
 
-h6 {
+#datecreated {
     font-size: 70%;
     color: #777777;
 }
 .topic-img {
     width: 225px;
 }
+
 
 

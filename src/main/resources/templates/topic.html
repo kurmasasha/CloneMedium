@@ -53,7 +53,9 @@
                     <div class="card-header d-flex justify-content-between">
                         <h6 class="card-title"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
-                        <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM в yyyy HH:mm')}"></h6>
+                        <div id="datecreated">
+                        <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
+                        </div>
                     </div>
                     <div class="card-body">
                         <p class="card-text" th:utext="${comment.getText()}"></p>

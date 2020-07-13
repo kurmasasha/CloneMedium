@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="webjars/bootstrap-multiselect/0.9.15/dist/css/bootstrap-multiselect.css">
     <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    <title>Форма регистрации</title>
+    <title>Форма редактирования пользователя</title>
 </head>
 
 <body>
@@ -31,14 +31,17 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <form action="/user/edit_profile" th:object="${user}" method="post">
+          
+            <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
+            <form action="/user" th:object="${user}" method="post">
+
 
                 <div class="modal-body">
                     <!-- скрытые поля. начало -->
                     <div hidden="true">
                         <input th:field="*{id}" id="id-for-edit"/>
-                        <input th:field="*{username}" username="username-for-edit"/>
                     </div>
+
                     <div class="form-group">
                         <label for="username-for-view">Логин</label>
                         <input class="form-control" id="username-for-view" th:field="*{username}" readonly>

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.CommentService;
 import ru.javamentor.service.ThemeService;
@@ -160,12 +161,11 @@ public class PageController {
     }
 
     /**
-     * метод для страницы всех топиков автора
+     * метод для страницы всех топиков по хэштегу
      * @return страницу для показа всех топиков
      */
-
-    @GetMapping("/find/author/{authorId}")
-    public String allTopicsByAuthorPage(@PathVariable Long authorId, Model model) {
+    @GetMapping("/topic/find/tag/{tag}")
+    public String getPageWithTopicsByHashTag(Model model){
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
