@@ -22,6 +22,6 @@ public class MvcConfig implements WebMvcConfigurer {
         Path path = Paths.get(uploadPath);
         String filePath = path.toAbsolutePath().toString();
         registry.addResourceHandler("/topic-img/**")
-                .addResourceLocations("file:/" + filePath + "/");
+                .addResourceLocations("file://" + filePath + "/");
     }
 }
