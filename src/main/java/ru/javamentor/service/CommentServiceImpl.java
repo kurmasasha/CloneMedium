@@ -27,6 +27,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment addComment(String text, User author, Topic topic) {
         try {
+            if(text.equals("")) {
+                throw new NoSuchFieldException();
+            }
+
             Comment comment = new Comment(text, author, topic, LocalDateTime.now());
             commentDAO.addComment(comment);
             log.info("IN addComment - comment: {} successfully added", comment);
