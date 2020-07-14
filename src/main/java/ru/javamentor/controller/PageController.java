@@ -161,5 +161,15 @@ public class PageController {
         userService.updateUser(userFromBD);
         return "redirect:/admin/allUsers";
     }
+
+    /**
+     * метод для страницы всех топиков по хэштегу
+     * @return страницу для показа всех топиков
+     */
+    @GetMapping("/topic/find/tag/{tag}")
+    public String getPageWithTopicsByHashTag(Model model){
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
 }
 

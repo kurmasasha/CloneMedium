@@ -319,8 +319,20 @@ public class TopicRestControllers {
      */
     @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag) {
-        tag = "#" + tag;
+       // tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
+        return new ResponseEntity<>(topics, HttpStatus.OK);
+    }
+
+    /**
+     * Поиск топиков по автору.
+     *
+     * @param authorId - id автора топиков
+     * @return список топиков данного автора
+     */
+    @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
+    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable Long authorId) {
+        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 
@@ -381,4 +393,6 @@ public class TopicRestControllers {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+
+
 }

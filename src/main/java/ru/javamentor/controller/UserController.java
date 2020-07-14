@@ -49,17 +49,21 @@ public class UserController {
     }
 
     //TODO при неудачной валидации перенаправляет на адрес запроса
-    @PostMapping("/user/edit_profile")
+      @PostMapping("/user")
     public String upgrade(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,
                           @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
                           Model model,
                           BindingResult bindingResult) {
+
         validatorFormEditUser.validate(user, bindingResult);
+        User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
+            themeService.showThemes(model, userDB);
+            List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
+            model.addAttribute("notSubscribedAuthors", notSubscribed);
             return "userPage";
         }
-        User userDB = userService.getUserById(user.getId());
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
         themeService.changeThemes(themesIds, userDB);

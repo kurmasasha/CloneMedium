@@ -1,14 +1,14 @@
 function topicInCard(topic) {
     let tags = '';
     $.each(topic.hashtags, function (index, tag) {
-        tags += '<a href="#">' + tag.name + '</a>';
+        tags += '<a  href ="/topic/find/tag/'+ tag.name + '"> '+ tag.name +' </a>';
         if (index < (topic.hashtags.length - 1)) {
             tags += ' / ';
         }
     })
     let authors = '';
     $.each(topic.authors, function (index, author) {
-        authors += '<a href="#">' + author.firstName + " " + author.lastName + '</a>';
+        authors += '<a href="/find/author/' + author.id + '">' + author.firstName + " " + author.lastName + '</a>';
         if (index < (topic.authors.length - 1)) {
             authors += ' / ';
         }
@@ -17,7 +17,6 @@ function topicInCard(topic) {
     if (topic.authors.length > 1) {
         author_label = 'Авторы: ';
     }
-    let date = new Date(topic.dateCreated);
 
     let moderated = 'notmoderated';
     if (topic.moderate) {
@@ -30,6 +29,9 @@ function topicInCard(topic) {
         '<a href="/topic/' + topic.id + '">' +
         '<h5 id="title_'+ topic.id +'">' + topic.title + '</h5>' +
         '</a>' +
+        '<div id="datecreated">'+
+        '<h6{color: red}>' + topic.dateCreated + '</h6>' +
+        '</div>' +
         '<h6>' + timeConverter(date) + '</h6>' +
         '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>' +
         '</div>' +
