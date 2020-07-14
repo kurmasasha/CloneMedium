@@ -13,6 +13,7 @@ import java.util.Set;
  * @author Java Mentor
  */
 public interface TopicService {
+
     /**
      * метод для добавления топика
      *
@@ -129,11 +130,25 @@ public interface TopicService {
 
     /**
      * Поиск топиков по теме.
+     *
      * @param themesIds - id тем, по которым будем происходить поиск
      * @return список топиков
      */
     List<Topic> getModeratedTopicsByThemes(Set<Long> themesIds);
 
+    /**
+     * Метод для увеличения лайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством лайков
+     */
     Topic increaseTopicLikes(Long topicId);
+
+    /**
+     * Метод для уменьшения лайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством лайков
+     */
     Topic decreaseTopicLikes(Long topicId);
 }

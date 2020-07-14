@@ -34,6 +34,7 @@ public class TopicServiceImpl implements TopicService {
      *
      * @param title   - название топика
      * @param content - содержимое топика
+     * @param completed - статус завершения написния статьи
      * @param users   - множество пользователей связанных с добавляемым топиком
      * @return Topic - объект представляющий модель топика
      */
@@ -41,12 +42,13 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic addTopic(String title, String content, boolean completed, Set<User> users) {
         try {
-            Topic topic = new Topic(title, content, completed, users, LocalDateTime.now(), false);
+            var topic = new Topic(title, content, completed, users, LocalDateTime.now(), false);
             topicDAO.addTopic(topic);
-            log.info("IN addTopic - topic: {} successfully added", topic);
+            log.debug("IN addTopic - topic.id: {} and topic.title: {} successfully added", topic.getId(), topic.getTitle());
             return topic;
         } catch (Exception e) {
-            return null;
+            log.error("IN addTopic - topic not added with exception {}", e.getMessage());
+            throw new RuntimeException();
         }
     }
 
@@ -59,9 +61,14 @@ public class TopicServiceImpl implements TopicService {
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicById(Long id) {
-        Topic result = topicDAO.getTopicById(id);
-        log.info("IN getTopicById - topic: {} found by id: {}", result, id);
-        return result;
+        try {
+            var result = topicDAO.getTopicById(id);
+            log.debug("IN getTopicById - topic.title: {} found by id: {}", result.getTitle(), id);
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getTopicById in service with topic.id is {}", id);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -72,9 +79,14 @@ public class TopicServiceImpl implements TopicService {
     @Transactional(readOnly = true)
     @Override
     public List<Topic> getTotalListOfTopics() {
-        List<Topic> result = topicDAO.getTotalListOfTopics();
-        log.info("IN getTotalListOfTopics - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getTotalListOfTopics();
+            log.debug("IN getTotalListOfTopics - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getTotalListOfTopics in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -86,9 +98,14 @@ public class TopicServiceImpl implements TopicService {
     @Transactional(readOnly = true)
     @Override
     public Topic getTopicByTitle(String title) {
-        Topic result = topicDAO.getTopicByTitle(title);
-        log.info("IN getTopicByTitle - topic: {} found by title: {}", result, title);
-        return result;
+        try {
+            var result = topicDAO.getTopicByTitle(title);
+            log.debug("IN getTopicByTitle - topic.id: {} found by title: {}", result.getId(), title);
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getTopicByTitle in service with title {}", title);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -103,9 +120,14 @@ public class TopicServiceImpl implements TopicService {
         /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(topic.getId());
         if (userList.contains(currentUser)) {*/
+        try {
             topicDAO.updateTopic(topic);
-            log.info("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
+            log.debug("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
             return true;
+        } catch (Exception e) {
+            log.error("Exception while updateTopic in service with topic.id is {}", topic.getId());
+            throw new RuntimeException();
+        }
         /*}
         log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
         return false;*/
@@ -123,9 +145,14 @@ public class TopicServiceImpl implements TopicService {
         /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<User> userList = getAllUsersByTopicId(id);
         if (userList.contains(currentUser)) {*/
-        topicDAO.removeTopicById(id);
-        log.info("IN removeTopicById - topic with Id: {} successfully deleted", id);
-        return true;
+        try {
+            topicDAO.removeTopicById(id);
+            log.debug("IN removeTopicById - topic with Id: {} successfully deleted", id);
+            return true;
+        } catch (Exception e) {
+            log.error("Exception while removeTopicById in service with topic.id is {}", id);
+            throw new RuntimeException();
+        }
         /*}
         log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
         return false;*/
@@ -140,9 +167,14 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public List<Topic> getAllTopicsByUserId(Long userId) {
-        List<Topic> result = topicDAO.getAllTopicsByUserId(userId);
-        log.info("IN getAllTopicsByUserId - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getAllTopicsByUserId(userId);
+            log.debug("IN getAllTopicsByUserId - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllTopicsByUserId in service with user.id is {}", userId);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -154,9 +186,14 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public List<User> getAllUsersByTopicId(Long topicId) {
-        List<User> result = topicDAO.getAllUsersByTopicId(topicId);
-        log.info("IN getAllUsersByTopicId - {} authors found", result.size());
-        return result;
+        try {
+            List<User> result = topicDAO.getAllUsersByTopicId(topicId);
+            log.debug("IN getAllUsersByTopicId - {} authors found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllUsersByTopicId in service with topic.id is {}", topicId);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -167,9 +204,14 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public List<Topic> getAllTopicsByHashtag(String value) {
-        List<Topic> result = topicDAO.getAllTopicsByHashtag(value);
-        log.info("IN getAllTopicsByHashtag - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getAllTopicsByHashtag(value);
+            log.debug("IN getAllTopicsByHashtag - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllTopicsByHashtag in service with hashtag is {}", value);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -181,9 +223,15 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public List<Topic> getAllTopicsOfUserByHashtag(Long userId, String value) {
-        List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
-        log.info("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getAllTopicsOfUserByHashtag(userId, value);
+            log.debug("IN getAllTopicsOfUserByHashtag - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllTopicsOfUserByHashtag in service with user.id is {}, with hashtag is {}",
+                    userId, value);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -193,9 +241,14 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public List<Topic> getModeratedTopics() {
-        List<Topic> result = topicDAO.getModeratedTopics();
-        log.info("IN getModeratedTopics - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getModeratedTopics();
+            log.debug("IN getModeratedTopics - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getModeratedTopics in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -205,9 +258,14 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public List<Topic> getNotModeratedTopics() {
-        List<Topic> result = topicDAO.getNotModeratedTopics();
-        log.info("IN getNotModeratedTopics - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getNotModeratedTopics();
+            log.debug("IN getNotModeratedTopics - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getNotModeratedTopics in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -220,9 +278,15 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public List<Topic> getNotModeratedTopicsPage(int page, int pageSize) {
-        List<Topic> result = topicDAO.getNotModeratedTopicsPage(page, pageSize);
-        log.info("IN getNotModeratedTopicsPage - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getNotModeratedTopicsPage(page, pageSize);
+            log.debug("IN getNotModeratedTopicsPage - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getNotModeratedTopicsPage in service with page is {}, with pageSize is {}",
+                    page, pageSize);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -232,7 +296,14 @@ public class TopicServiceImpl implements TopicService {
      */
     @Override
     public Long getNotModeratedTopicsCount() {
-        return topicDAO.getNotModeratedTopicsCount();
+        try {
+            Long result = topicDAO.getNotModeratedTopicsCount();
+            log.debug("IN getNotModeratedTopicsCount - {} topics count", result);
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getNotModeratedTopicsCount in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -243,40 +314,51 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public List<Topic> getModeratedTopicsByThemes(Set<Long> themesIds) {
-        List<Topic> result = topicDAO.getModeratedTopicsByTheme(themesIds);
-        log.info("IN getModeratedTopicsByThemes - {} topics found", result.size());
-        return result;
+        try {
+            List<Topic> result = topicDAO.getModeratedTopicsByTheme(themesIds);
+            log.debug("IN getModeratedTopicsByThemes - {} topics found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getModeratedTopicsByThemes in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
-  
+
     /**
-     *Увеличение количества лайков топика на 1, в рамках одной сессии
+     * Метод для увеличения лайков конкретного топика на 1, в рамках одной сессии
      *
-     * @return Topic
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством лайков
      */
     @Transactional
     @Override
     public Topic increaseTopicLikes(Long topicId) {
+        log.debug("IN increaseTopicLikes in service");
         Topic currentTopic = topicDAO.getTopicById(topicId);
         Integer likes = currentTopic.getLikes();
         likes++;
         currentTopic.setLikes(likes);
         topicDAO.updateTopic(currentTopic);
+        log.debug("IN increaseTopicLikes - topic.id: {} increase like", topicId);
         return currentTopic;
     }
 
     /**
-     *Уменьшение количества лайков топика на 1, в рамках одной сессии
+     * Метод для уменьшения лайков конкретного топика на 1, в рамках одной сессии
      *
-     * @return Topic
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством лайков
      */
     @Transactional
     @Override
     public Topic decreaseTopicLikes(Long topicId) {
+        log.debug("IN decreaseTopicLikes in service");
         Topic currentTopic = topicDAO.getTopicById(topicId);
         Integer likes = currentTopic.getLikes();
         likes--;
         currentTopic.setLikes(likes);
         topicDAO.updateTopic(currentTopic);
+        log.debug("IN increaseTopicLikes - topic.id: {} decrease like", topicId);
         return currentTopic;
     }
 }

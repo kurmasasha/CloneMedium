@@ -29,7 +29,6 @@ public class ThemeServiceImpl implements ThemeService {
         this.themeDAO = themeDAO;
     }
 
-
     /**
      * Метод получения всех тем
      * @return - список тем
@@ -37,9 +36,14 @@ public class ThemeServiceImpl implements ThemeService {
     @Transactional(readOnly = true)
     @Override
     public List<Theme> getAllThemes() {
-        List<Theme> result = themeDAO.getAllThemes();
-        log.info("IN getAllThemes - {} themes found", result.size());
-        return result;
+        try {
+            List<Theme> result = themeDAO.getAllThemes();
+            log.debug("IN getAllThemes - {} themes found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllThemes in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -51,26 +55,65 @@ public class ThemeServiceImpl implements ThemeService {
     @Transactional
     @Override
     public boolean addTheme(Theme theme) {
-        return themeDAO.addTheme(theme);
+        try {
+            log.debug("IN addTheme - theme id: {} theme name: {}", theme.getId(), theme.getName());
+            themeDAO.addTheme(theme);
+            return true;
+        } catch (Exception e) {
+            log.error("IN addTheme - theme not added with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
-
+    /**
+     * Метод удаления темы
+     * @param id - id темы в базе
+     * @return - true, если тема была успешно удалена
+     *           false, в случае ошибки
+     */
     @Transactional
     @Override
     public boolean deleteTheme(Long id) {
-        return themeDAO.deleteTheme(id);
+        try {
+            log.debug("IN deleteTheme - theme id: {} delete successful", id);
+            themeDAO.deleteTheme(id);
+            return true;
+        } catch (Exception e) {
+            log.error("Exception while deleteTheme in service with theme.id is {} not delete", id);
+            throw new RuntimeException();
+        }
     }
 
+    /**
+     * Метод для получения списка тем по их id
+     *
+     * @param idThemes - множество уникальных id разных тем
+     * @return List - список тем
+     */
     @Transactional
     @Override
     public List<Theme> getThemesByIds(Set<Long> idThemes) {
+        try {
             List<Theme> result = themeDAO.getThemesByIds(idThemes);
-            log.info("IN getThemesByIds - {} themes found", result.size());
+            log.debug("IN getThemesByIds - {} themes found", result.size());
             return result;
+        } catch (Exception e) {
+            log.error("Exception while getThemesByIds in service with themes.id is {} not found", idThemes);
+            throw new RuntimeException();
+        }
     }
 
+    /**
+     * Метод для изменения тем по их id у конкретного пользователя
+     *
+     * @param themesIds - множество уникальных id разных тем
+     * @param userDB - конкретный пользователь
+     * @return void
+     */
     @Override
     public void changeThemes(Set<Long> themesIds, User userDB) {
+        log.debug("IN changeThemes in service with userDB.id: {} and userDB.userName: {}",
+                userDB.getId(), userDB.getUsername());
         Set<Theme> themesOfUser = userDB.getThemes();
         List<Theme> themeList = getThemesByIds(themesIds);
         if (themesOfUser.size() != themeList.size() || !themesOfUser.containsAll(themeList)) {
@@ -85,14 +128,22 @@ public class ThemeServiceImpl implements ThemeService {
         }
     }
 
-    //TODO что это за жесть?!
+    /**
+     * Метод для отображения тем
+     *
+     * @param model - переменна для передачи тем на контроллер
+     * @param userDB - конкретный пользователь
+     * @return void
+     */
     @Override
     public void showThemes(Model model, User userDB) {
-        List<Theme> allThemes = getAllThemes();
+        log.debug("IN showThemes in service with userDB.id: {} and userDB.userName: {}",
+                userDB.getId(), userDB.getUsername());
+        List<Theme> allThemes = getAllThemes(); // все темы
         if (userDB.getThemes().size() != 0) {
-            Set<Theme> themesOfUser = userDB.getThemes();
+            Set<Theme> themesOfUser = userDB.getThemes(); // все темы юзера
             for (Theme themeOfUser : themesOfUser) {
-                allThemes.remove(themeOfUser);
+                allThemes.remove(themeOfUser); //удаляем из всех тем темы юзера
             }
             model.addAttribute("themesOfUser", themesOfUser);
         }
