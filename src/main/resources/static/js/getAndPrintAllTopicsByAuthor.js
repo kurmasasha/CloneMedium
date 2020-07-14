@@ -1,5 +1,5 @@
-async function getAndPrintAllTopicsOfUser(container) {
-    fetch(`/api/user/MyTopics`)
+async function getAndPrintAllTopicsByAuthor(authorId, container) {
+    fetch('/api/free-user/get-all-topics-by-author/' + authorId + '')
         .then(result => result.json())
         .then(arrayTopics => {
             arrayTopics.forEach(function (topic) {

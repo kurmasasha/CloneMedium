@@ -13,13 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.javamentor.config.handler.LoginSuccessHandler;
 
 /**
  * Класс отвечающий за конфигурацию секьюрности
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Configuration
 @ComponentScan("ru.javamentor")
@@ -57,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login")
-                .successHandler(new LoginSuccessHandler())
                 .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -71,9 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/registration/**", "/activate/*", "/api/free-user/**",
-                                        "/js/**", "/webjars/**", "/css/**", "/img/**", "/api/topic/**")
+                                        "/js/**", "/webjars/**", "/css/**", "/img/**", "/api/topic/**", "/topic-img/**")
                 .permitAll()
-                .antMatchers("/authorization/**").permitAll()
+                .antMatchers("/authorization/**", "/api/user/topic/**", "/topic/**").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/admin/**", "/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/user/**", "/user/**").hasAnyAuthority("USER", "ADMIN")

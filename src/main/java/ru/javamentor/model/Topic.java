@@ -1,7 +1,6 @@
 package ru.javamentor.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,15 +8,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Set;
 
 /**
  * Класс представляющий модель топика
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @NoArgsConstructor
 @Getter
@@ -41,7 +39,7 @@ public class Topic {
     private String content;
 
     @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM в yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM yyyy в HH:mm")
     private LocalDateTime dateCreated;
 
     @Column
@@ -55,6 +53,9 @@ public class Topic {
     @Column
     @NotNull
     private Integer likes = 0;
+
+    @Column
+    private String img;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_topics", joinColumns = @JoinColumn(name = "topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -76,13 +77,14 @@ public class Topic {
         }
     }
 
-    public Topic(String title, String content, boolean completed, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
+    public Topic(String title, String content, boolean completed, String img, Set<User> authors, LocalDateTime dateCreated, boolean isModerate) {
         this.title = title;
         this.content = content;
         this.authors = authors;
         this.dateCreated = dateCreated;
         this.isModerate = isModerate;
         this.completed = completed;
+        this.img = img;
     }
 
     public Topic(String title, String content) {

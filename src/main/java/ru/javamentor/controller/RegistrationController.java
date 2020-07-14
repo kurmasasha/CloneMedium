@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * Контроллер возвращающий для показа html страниц
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Controller
 @RequestMapping("/registration")

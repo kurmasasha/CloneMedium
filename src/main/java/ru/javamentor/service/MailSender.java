@@ -4,7 +4,7 @@ package ru.javamentor.service;
  * Интерфейс для отправки электронной почты
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 public interface MailSender {
     /**

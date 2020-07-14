@@ -12,7 +12,7 @@ import java.util.Properties;
  * Класс конфигурирующий отправку письма с помощью Spring Framework
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Configuration
 public class MailConfig {

@@ -3,7 +3,7 @@
  *
  */
 async function getAndPrintNotModeratedTopicsPage(page, container) {
-    fetch(`http://localhost:5050/api/admin/notModeratedTopicsPage/${page}`)
+    fetch(`/api/admin/notModeratedTopicsPage/${page}`)
         .then(result => result.json())
         .then(response => {
             response.forEach(function (topic) {

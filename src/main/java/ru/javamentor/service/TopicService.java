@@ -20,10 +20,11 @@ public interface TopicService {
      * @param title   - название топика
      * @param content - содержимое топика
      * @param completed - статус завершения написния статьи
+     * @param img - название картинки
      * @param users   - множество пользователей связанных с добавляемым топиком
      * @return Topic - объект представляющий модель топика
      */
-    Topic addTopic(String title, String content, boolean completed, Set<User> users);
+    Topic addTopic(String title, String content, boolean completed, String img, Set<User> users);
 
     /**
      * метод для получения топика по id

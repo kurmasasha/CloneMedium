@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
  * Класс отвечающий за VK- авторизацию
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Component
 public class VKontakte {

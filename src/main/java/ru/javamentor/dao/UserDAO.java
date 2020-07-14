@@ -3,7 +3,6 @@ package ru.javamentor.dao;
 import ru.javamentor.model.User;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Интерфейс для доступа к пользователям из базы

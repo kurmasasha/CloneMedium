@@ -1,6 +1,5 @@
 package ru.javamentor.controller;
 
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,8 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
@@ -52,17 +49,21 @@ public class UserController {
     }
 
     //TODO при неудачной валидации перенаправляет на адрес запроса
-    @PostMapping("/user/edit_profile")
+      @PostMapping("/user")
     public String upgrade(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,
                           @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
                           Model model,
                           BindingResult bindingResult) {
+
         validatorFormEditUser.validate(user, bindingResult);
+        User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
+            themeService.showThemes(model, userDB);
+            List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
+            model.addAttribute("notSubscribedAuthors", notSubscribed);
             return "userPage";
         }
-        User userDB = userService.getUserById(user.getId());
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
         themeService.changeThemes(themesIds, userDB);

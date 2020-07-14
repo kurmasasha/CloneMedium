@@ -14,7 +14,7 @@ import java.util.Objects;
  * Реализация интерфейса RoleService
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Slf4j
 @Service

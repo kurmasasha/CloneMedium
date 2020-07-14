@@ -14,7 +14,7 @@ import java.util.List;
  * Rest контроллер для топиков
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @RestController
 @RequestMapping("/api")

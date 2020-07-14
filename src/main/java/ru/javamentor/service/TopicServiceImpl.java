@@ -36,13 +36,14 @@ public class TopicServiceImpl implements TopicService {
      * @param content - содержимое топика
      * @param completed - статус завершения написния статьи
      * @param users   - множество пользователей связанных с добавляемым топиком
+     * @param img - название картинки
      * @return Topic - объект представляющий модель топика
      */
     @Transactional
     @Override
-    public Topic addTopic(String title, String content, boolean completed, Set<User> users) {
+    public Topic addTopic(String title, String content, boolean completed, String img, Set<User> users) {
         try {
-            var topic = new Topic(title, content, completed, users, LocalDateTime.now(), false);
+            Topic topic = new Topic(title, content, completed, img, users, LocalDateTime.now(), false);
             topicDAO.addTopic(topic);
             log.debug("IN addTopic - topic.id: {} and topic.title: {} successfully added", topic.getId(), topic.getTitle());
             return topic;
