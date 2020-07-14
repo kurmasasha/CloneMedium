@@ -48,10 +48,9 @@ public class UserController {
         return "userPage";
     }
 
-
-    // TODO Ошибки в изменении пароля и присвоении роли
     //TODO при неудачной валидации перенаправляет на адрес запроса
-    @PostMapping("/user")
+      @PostMapping("/user")
+
     public String upgrade(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,
                           @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
