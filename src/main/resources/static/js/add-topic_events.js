@@ -5,6 +5,7 @@ $('#modal_add-topic_button').on('click', function() {
     $('#topic_title').val('');
     $('#topic_content').val('');
     $('#checkboxCompletedTopic').prop('checked', false);
+    $('#topic_img').val('')
     $('h5.modal-title').text('Создать статью');
     $('#topic_id').val(0);
 });
@@ -27,60 +28,27 @@ $(document).on('click', '.editTopicBtn', function() {
 /**
  * Нажатие на кнопку добавления топика
  */
-$('#add_topic_button').on('click', async function() {
-
-
+$('#add_topic_button').on('click', async function(event) {
+    event.preventDefault()
     let title = $('#topic_title').val();
     let content = $('#topic_content').val();
     let completed = $('#checkboxCompletedTopic').prop('checked');
+    let img = $('#topic_img').prop('files')[0];
     let topic_id = $('#topic_id').val();
     let authors = $("#topic_coauthor").val();
-    let alert_container = $('#alerts_container');
+    console.log(authors);
+
     if($("#topic_id").val() == 0)
     {
-        await  AddTopic(title, content, completed, authors, alert_container);
+        await addTopic(title, content, completed, img, authors);
     }
     else
     {
-        await UpdateTopic(topic_id, title, content, completed, authors, alert_container);
+
+        await updateTopic(topic_id, title, content, completed, img, authors);
     }
 });
-async function AddTopic(title, content, completed, authors, alert_container) {
-    if (title === '' || content === '') {
-        noValidForm(alert_container, 2000);
-    } else {
-        let response = addTopic(title, content, completed, authors);
-        if ((await response).ok) {
-            response
-                .then(result => result.json())
-                .then(topic => {
-                    let card = topicInCard(topic);
-                    successAddTopic(alert_container, 2000)
-                    $('#topics_container').prepend(card);
-                })
-        } else {
-            failAddTopic(alert_container, 2000)
-        }
-    }
-}
-async function UpdateTopic(topic_id, title, content, completed, authors, alert_container) {
-    if (title === '' || content === '') {
-        noValidForm(alert_container, 2000);
-    } else {
-        let response = updateTopic(topic_id, title, content, completed, authors);
-        if ((await response).ok) {
-            response
-                .then(result => result.json())
-                .then(topic => {
-                    let card = topicInCard(topic);
-                    successAddTopic(alert_container, 2000)
-                    $('#topics_container').prepend(card);
-                })
-        } else {
-            failAddTopic(alert_container, 2000)
-        }
-    }
-}
+
 
 $(document).ready(function () {
     $('.select2').select2({

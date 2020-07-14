@@ -25,7 +25,7 @@ function topicInCard(topic) {
     }
 
     let card =
-        '<div class="card mb-2 mt-0">' +
+        '<div class="card mb-2 mt-0" id="topic_'+ topic.id +'">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5 id="title_'+ topic.id +'">' + topic.title + '</h5>' +

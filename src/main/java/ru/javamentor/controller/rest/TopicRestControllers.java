@@ -191,6 +191,7 @@ public class TopicRestControllers {
             @RequestParam("content") String content,
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
+            @RequestParam(value = "authors", required = false) String[] authors,
             Principal principal
             ) throws Exception {
         String message = "Что то пошло не так! Попробуйте снова";
@@ -211,6 +212,10 @@ public class TopicRestControllers {
 
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
+            for (String id :
+                    authors) {
+                users.add(userService.getUserById(Long.parseLong(id)));
+            }
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
             if (topic != null) {
@@ -230,20 +235,50 @@ public class TopicRestControllers {
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
     @PostMapping("/user/topic/update")
-    public ResponseEntity<Topic> updateTopic(@RequestBody Topic topic) {
-        Topic topicById = topicService.getTopicById(topic.getId());
-        Set<User> authors = topicById.getAuthors();
-        for (User user :
-                topic.getAuthors()) {
-            authors.add(userService.getUserById(user.getId()));
-        }
-        topic.setAuthors(authors);
-        topic.setDateCreated(topicById.getDateCreated());
-        topic.setHashtags(topicById.getHashtags());
-        if (topicService.updateTopic(topic)) {
-            return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> updateTopic( @RequestParam("topic_id") Long topic_id,
+                                              @RequestParam("title") String title,
+                                              @RequestParam("content") String content,
+                                              @RequestParam("completed") boolean completed,
+                                              @RequestParam(required = false) MultipartFile file,
+                                              @RequestParam(value = "authors", required = false) String[] authors) {
+        String message = "Что то пошло не так! Попробуйте снова";
+        Topic topicById = topicService.getTopicById(topic_id);
+        try {
+            // проверка на пустоту title and content
+            topicValidator.checkTitleAndContent(title, content);
+            // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                topicValidator.checkFile(file);
+                if (topicValidator.getError() == null) {
+                    topicById.setImg(loaderImages.upload(file));
+                }
+            }
+            if (topicValidator.getError() != null) {
+                return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
+            }
+
+            Set<User> users = topicById.getAuthors();
+            for (String id :
+                    authors) {
+                users.add(userService.getUserById(Long.parseLong(id)));
+            }
+            topicById.setId(topic_id);
+            topicById.setTitle(title);
+            topicById.setContent(content);
+            topicById.setCompleted(completed);
+            topicById.setModerate(false);
+            topicById.setAuthors(users);
+            topicById.setDateCreated(topicById.getDateCreated());
+            topicById.setHashtags(topicById.getHashtags());
+            boolean topicIsUpdate = topicService.updateTopic(topicById);
+
+            if (topicIsUpdate) {
+                return new ResponseEntity<>(topicById, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // тут мы логируем исключение, а пользователю кинем сообщение
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 
