@@ -1,5 +1,5 @@
 async function getTopicById(id) {
-    fetch(`http://localhost:5050/api/user/topic/${id}`)
+    fetch(`/api/user/topic/${id}`)
         .then(result => result.json())
         .then(topic => {
             document.getElementById("topicAuthor").append(topic.authors[0].firstName + " " + topic.authors[0].lastName);

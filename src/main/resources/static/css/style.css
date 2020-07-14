@@ -65,5 +65,14 @@ body {
     font-size: 70%;
     color: #777777;
 }
+.topic-img {
+    width: 225px;
+}
+
+.card-title-onTopic{
+    text-align: center;
+    font-size: larger;
+}
+
 
 

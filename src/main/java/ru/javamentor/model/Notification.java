@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * Класс представляющий модель уведомления
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Entity
 @NoArgsConstructor
@@ -38,4 +38,10 @@ public class Notification {
     @ManyToOne
     @JoinColumn
     private User user;
+
+    public Notification(String title, String text, User user) {
+        this.title = title;
+        this.text = text;
+        this.user = user;
+    }
 }

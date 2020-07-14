@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
  * Rest контроллер для авторизации с помощью соцсетей
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @RestController
 @RequestMapping("/authorization")

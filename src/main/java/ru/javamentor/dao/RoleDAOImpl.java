@@ -10,7 +10,7 @@ import java.util.List;
  * Класс реализующий интерфейс RoleDao для доступа к ролям из базы с помощью Hibernate
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Repository
 public class RoleDAOImpl  implements RoleDAO{

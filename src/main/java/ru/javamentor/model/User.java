@@ -17,7 +17,7 @@ import java.util.Set;
  * Класс представляющий модель пользователя в системе
  *
  * @version 1.0
- * @autor Java Mentor
+ * @author Java Mentor
  */
 @Entity
 @NoArgsConstructor
@@ -62,7 +62,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_themes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
     private Set<Theme> themes;
 

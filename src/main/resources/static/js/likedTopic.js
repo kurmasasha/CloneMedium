@@ -6,7 +6,7 @@ $(document).ready(async function () {
     });
 
     async function liked(id, likeCounter) {
-        await fetch(`http://localhost:5050/api/topic/addLike/${id}`)
+        await fetch(`/api/topic/addLike/${id}`)
             .then(function(response) {
                     if (response.ok) {
                         response.json().then(function(topic) {

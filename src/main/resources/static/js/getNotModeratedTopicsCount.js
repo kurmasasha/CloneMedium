@@ -3,6 +3,6 @@
  *
  */
 async function getNotModeratedTopicsCount() {
-    return fetch(`http://localhost:5050/api/admin/notModeratedTopicsCount`)
+    return fetch(`/api/admin/notModeratedTopicsCount`)
         .then(result => result.text());
 }

@@ -1,19 +1,24 @@
 package ru.javamentor.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.MailSender;
 import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
 import ru.javamentor.util.buffer.LikeBuffer;
+import ru.javamentor.util.img.LoaderImages;
+import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -31,17 +36,29 @@ import java.util.Set;
 @RequestMapping(value = {"/api"}, produces = "application/json")
 public class TopicRestControllers {
 
+    @Value("${site.link}")
+    private String link;
+
     private final TopicService topicService;
     private final UserService userService;
     private final LikeBuffer likeBuffer;
+    private final MailSender mailSender;
     private final NotificationService notificationService;
+    private final LoaderImages loaderImages;
+    private final TopicValidator topicValidator;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, NotificationService notificationService) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.topicService = topicService;
         this.userService = userService;
         this.likeBuffer = likeBuffer;
+        this.mailSender = mailSender;
         this.notificationService = notificationService;
+        this.loaderImages = loaderImages;
+        this.topicValidator = topicValidator;
     }
 
     /**
@@ -139,7 +156,7 @@ public class TopicRestControllers {
         topic.setModerate(true);
         topicService.updateTopic(topic);
         //добавление оповещения авторов что топик одобрен
-        for (User user:
+        for (User user :
                 topic.getAuthors()) {
             Notification notification = new Notification();
             notification.setTitle("Модерация");
@@ -169,14 +186,40 @@ public class TopicRestControllers {
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
     @PostMapping("/user/topic/add")
-    public ResponseEntity<Topic> addTopic(@RequestBody Topic topicData, Principal principal) {
-        Set<User> users = new HashSet<>();
-        users.add(userService.getUserByUsername(principal.getName()));
-        Topic topic = topicService.addTopic(topicData.getTitle(), topicData.getContent(), topicData.isCompleted(), users);
-        if (topic != null) {
-            return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> addTopic(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("completed") boolean completed,
+            @RequestParam(required = false) MultipartFile file,
+            Principal principal
+            ) throws Exception {
+        String message = "Что то пошло не так! Попробуйте снова";
+        String resultFileName = "no-image.png";
+        try {
+            // проверка на пустоту title and content
+            topicValidator.checkTitleAndContent(title, content);
+            // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                topicValidator.checkFile(file);
+                if (topicValidator.getError() == null) {
+                    resultFileName = loaderImages.upload(file);
+                }
+            }
+            if (topicValidator.getError() != null) {
+                return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
+            }
+
+            Set<User> users = new HashSet<>();
+            users.add(userService.getUserByUsername(principal.getName()));
+            Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
+
+            if (topic != null) {
+                return new ResponseEntity<>(topic, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // тут мы логируем исключение, а пользователю кинем сообщение
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -240,7 +283,7 @@ public class TopicRestControllers {
     /**
      * метод для удаления топика
      *
-     * @param id  - id топика который необходимо удалить
+     * @param id - id топика который необходимо удалить
      * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
      */
     @DeleteMapping("/admin/topic/delete/{id}")
@@ -249,7 +292,7 @@ public class TopicRestControllers {
         Set<User> users = topic.getAuthors();
 
         if (topicService.removeTopicById(id)) {
-            for (User user:
+            for (User user :
                     users) {
                 Notification notification = new Notification();
                 notification.setTitle("Модерация");
@@ -287,7 +330,7 @@ public class TopicRestControllers {
             likeBuffer.addLike(session.getId(), topicId);
             Topic topic = topicService.increaseTopicLikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else if(likeBuffer.isLikedTopic(session.getId(), topicId)) {
+        } else if (likeBuffer.isLikedTopic(session.getId(), topicId)) {
             likeBuffer.deleteLike(session.getId(), topicId);
             Topic topic = topicService.decreaseTopicLikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);

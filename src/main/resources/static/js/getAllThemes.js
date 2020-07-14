@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#themesFromDB').multiselect({
+    $('#themesFromDB, #subscribesFromDB').multiselect({
         includeSelectAllOption: true,
         enableFiltering: true
     });

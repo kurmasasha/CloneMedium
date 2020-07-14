@@ -1,16 +1,56 @@
-async function addTopic(title, content, completed) {
-    let topic_object = {
-        title: title,
-        content: content,
-        completed: completed
-    }
-    return  fetch('/api/user/topic/add', {
+/**
+ * Вызов модального окна
+ */
+$('#modal_add-topic_button').on('click', function () {
+    $('#topic_title').val('');
+    $('#topic_content').val('');
+    $('#checkboxCompletedTopic').prop('checked', false);
+    $('#topic_img').val('')
+});
+/**
+ * Нажатие на кнопку добавления топика
+ */
+$('#add_topic_button').on('click', async function (event) {
+    event.preventDefault()
+    let title = $('#topic_title').val();
+    let content = $('#topic_content').val();
+    let completed = $('#checkboxCompletedTopic').prop('checked');
+    let img = $('#topic_img').prop('files')[0];
+
+    await addTopic(title, content, completed, img)
+});
+
+async function addTopic(title, content, completed, img) {
+    const formData = new FormData();
+    formData.append('title', title)
+    formData.append('content', content)
+    formData.append('completed', completed)
+    formData.append('file', img)
+
+    let alert_container = $('#alerts_container');
+
+    let OK = false;
+    return await fetch('/api/user/topic/add', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(topic_object)
-    });
+        enctype: 'multipart/form-data',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                OK = true;
+                return response.json();
+            }
+            return response.text()
+        })
+        .then(result => {
+            if (OK) {
+                let card = topicInCard(result);
+                successAddTopic(alert_container, 2000);
+                $('#topics_container').prepend(card);
+            } else {
+                failAddTopic($('#alerts_container'), result, 4000)
+            }
+        })
 }
 
 function successAddTopic(container, time) {
@@ -20,16 +60,8 @@ function successAddTopic(container, time) {
         $('#modalWindowCreateTopic').modal('hide');
     }, time)
 }
-
-function noValidForm(container, time) {
-    container.append('<div class="alert alert-danger m-3" role="alert">Поля не должны быть пустыми</div>');
-    setTimeout(function () {
-        container.empty();
-    }, time)
-}
-
-function failAddTopic(container, time) {
-    container.append('<div class="alert alert-danger m-3" role="alert">Что то пошло не так! Попробуйте снова</div>');
+function failAddTopic(container, error, time) {
+    container.append(`<div class="alert alert-danger m-3" role="alert">${error}</div>`);
     setTimeout(function () {
         container.empty();
     }, time)
