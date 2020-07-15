@@ -24,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationServiceImpl(NotificationDao notificationDao) {
         this.notificationDao = notificationDao;
     }
+
     /**
      * метод для получения всех уведомлений
      *
@@ -31,9 +32,14 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public List<Notification> getAllNotes() {
-        List<Notification> notifications = notificationDao.getAllNotes();
-        log.info("findAll: {} notifications", notifications.size());
-        return notifications;
+        try {
+            List<Notification> notifications = notificationDao.getAllNotes();
+            log.debug("IN getAllNotes: {} notifications", notifications.size());
+            return notifications;
+        } catch (Exception e) {
+            log.error("Exception while getAllNotes in service");
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -43,10 +49,16 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getById(Long id) {
-        Notification notification = notificationDao.getOne(id);
-        log.info("getById: return notification by Id");
-        return notification;
+        try {
+            Notification notification = notificationDao.getOne(id);
+            log.debug("IN getById: return notification.id: {} and notification.title: {}", id, notification.getTitle());
+            return notification;
+        } catch (Exception e) {
+            log.error("Exception while getById in service notification.id: {}", id);
+            throw new RuntimeException();
+        }
     }
+
     /**
      * метод для получения уведомления по названию
      *
@@ -55,10 +67,16 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification getByTitle(String title) {
-        Notification notification = notificationDao.getByTitle(title);
-        log.info("getById: return notification by title");
-        return notification;
+        try {
+            Notification notification = notificationDao.getByTitle(title);
+            log.debug("IN getByTitle: return notification by title: {}", title);
+            return notification;
+        } catch (Exception e) {
+            log.error("Exception while getByTitle in service by notification.title: {}", title);
+            throw new RuntimeException();
+        }
     }
+
     /**
      * метод для обновления уведомления
      *
@@ -69,10 +87,12 @@ public class NotificationServiceImpl implements NotificationService {
     public boolean updateNotification(Notification notification) {
         if (notification != null) {
             notificationDao.updateNotification(notification);
-            log.info("updateNotification: notification {} was updated", notification.getTitle());
+            log.debug("IN updateNotification: notification.id: {} and notification.title: {} was updated",
+                    notification.getId(), notification.getTitle());
             return true;
         } else {
-            log.info("updateNotification: notification {} not found", notification.getTitle());
+            log.debug("IN updateNotification: notification.id: {} and notification.title: {} not found",
+                    notification.getId(), notification.getTitle());
         }
         return false;
     }
@@ -88,10 +108,13 @@ public class NotificationServiceImpl implements NotificationService {
     public boolean addNotification(Notification notification) {
         if (notification != null) {
             notificationDao.addNotification(notification);
+            log.debug("addNotification: notification {} was add", notification.getTitle());
             return true;
         }
+        log.debug("addNotification: notification {} was not add", notification.getTitle());
         return false;
     }
+
     /**
      * метод для удаления уведомления
      *
@@ -100,9 +123,15 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public boolean deleteNotification(Notification notification) {
-        notificationDao.deleteNotification(notification);
-        log.info("deleteNotification: notification {} was deleted", notification.getTitle());
-        return true;
+        try {
+            notificationDao.deleteNotification(notification);
+            log.debug("IN deleteNotification: notification.id: {} and notification.title: {} was deleted",
+                    notification.getId(), notification.getTitle());
+            return true;
+        } catch (Exception e) {
+            log.error("Exception while deleteNotification in service: notification.id: {} and notification.title: {}",
+                    notification.getId(), notification.getTitle());
+            throw new RuntimeException();
+        }
     }
-
 }

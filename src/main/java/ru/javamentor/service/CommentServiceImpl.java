@@ -12,6 +12,12 @@ import ru.javamentor.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Реализация интерфейса для работы с комментариями
+ *
+ * @version 1.0
+ * @autor Java Mentor
+ */
 @Service
 @Slf4j
 public class CommentServiceImpl implements CommentService {
@@ -23,78 +29,125 @@ public class CommentServiceImpl implements CommentService {
         this.commentDAO = commentDAO;
     }
 
+    /**
+     * метод для добавления комментария
+     *
+     * @param text - добавляемый текст комментария
+     * @param author - добавляемый автор комментария
+     * @param topic - добавляемая статья, которую прокомментировали
+     * @return Comment - возвращает добавленный комментарий
+     */
     @Transactional
     @Override
     public Comment addComment(String text, User author, Topic topic) {
         try {
             Comment comment = new Comment(text, author, topic, LocalDateTime.now());
             commentDAO.addComment(comment);
-            log.info("IN addComment - comment: {} successfully added", comment);
+            log.debug("IN addComment - comment: {} with author.id: {} and author.userName: {} successfully added",
+                    text, author.getId(), author.getUsername());
             return comment;
         } catch (Exception e) {
-            log.warn("IN addComment - comment not added");
-            return null;
+            log.error("IN addComment - comment not added with exception {}", e.getMessage());
+            throw new RuntimeException();
         }
     }
 
+    /**
+     * метод для получения комментария по id
+     *
+     * @param id - уникальный id комментария
+     * @return Comment - объект представляющий комментарий
+     */
     @Transactional(readOnly = true)
     @Override
     public Comment getCommentById(Long id) {
         try {
             Comment comment = commentDAO.getCommentById(id);
-            log.info("IN getCommentById - comment: {} found by id: {}", comment, id);
+            log.debug("IN getCommentById - comment text: {} found by id: {} with author.id {} and author.name {}",
+                    comment.getText(), id, comment.getAuthor().getId(), comment.getAuthor().getUsername());
             return comment;
         } catch (Exception e) {
-            return null;
+            log.error("Exception while getCommentById in service with comment.id is {}", id);
+            throw new RuntimeException();
         }
     }
 
+    /**
+     * метод для обновления комментария
+     *
+     * @param comment - обновленный комментарий
+     * @param user - пользователь обновляющий комментарий
+     * @return boolean - удалость обновить комментарий или нет
+     */
     @Transactional
     @Override
     public boolean updateComment(Comment comment, User user) {
         User author = getAuthorByCommentId(comment.getId());
         if (author.equals(user)) {
             commentDAO.updateComment(comment);
-            log.info("IN updateComment - comment with Id: {} successfully updated", comment.getId());
+            log.debug("IN updateComment - comment.id: {} with user.id: {} and user.userName: {} successfully updated",
+                    comment.getId(), user.getId(), user.getUsername());
             return true;
         }
-        log.warn("IN updateComment - comment with Id: {} not updated", comment.getId());
+        log.debug("IN updateComment - comment with Id: {} not updated", comment.getId());
         return false;
     }
 
+    /**
+     * метод для получения автора конкретного комментария
+     *
+     * @param commentId - уникальный id комментария
+     * @return User - пользователь написавший данный коментарий
+     */
     @Transactional
     @Override
     public User getAuthorByCommentId(Long commentId) {
         try {
             User author = commentDAO.getAuthorByCommentId(commentId);
-            log.info("IN getAuthorByCommentId - {} author found", commentId);
+            log.debug("IN getAuthorByCommentId - comment.id: {} found author.id: {} and author.name: {}",
+                    commentId, author.getId(), author.getUsername());
             return author;
         } catch (Exception e) {
-            return null;
+            log.error("Exception while getAuthorByCommentId in service with comment.id {}", commentId);
+            throw new RuntimeException();
         }
     }
 
+    /**
+     * метод для удаления комментария
+     *
+     * @param id - уникальный id комментария
+     * @return boolean - удалость удалить комментарий или нет
+     */
     @Transactional
     @Override
     public boolean removeCommentById(Long id) {
         try {
             commentDAO.removeCommentById(id);
-            log.info("IN removeCommentById - comment with Id: {} successfully deleted", id);
+            log.debug("IN removeCommentById - comment with Id: {} successfully deleted", id);
             return true;
         } catch (Exception e) {
+            log.error("Exception while removeCommentById in service with comment.id {}", id);
             return false;
         }
     }
 
+    /**
+     * метод для получения списка комментариев конкретной статьи
+     *
+     * @param topicId -  уникальный id статьи
+     * @return List - список коммментариев конкретной статьи
+     */
     @Transactional
     @Override
     public List<Comment> getAllCommentsByTopicId(Long topicId) {
         try {
             List<Comment> comments = commentDAO.getAllCommentsByTopicId(topicId);
-            log.info("IN getAllCommentsByTopicId - {} comments found", comments.size());
+            log.debug("IN getAllCommentsByTopicId - {} comments found with topic.id: {}", comments.size(), topicId);
             return comments;
         } catch (Exception e) {
-            return null;
+            log.error("Exception while getAllCommentsByTopicId in service with topic.id {}", topicId);
+            throw new RuntimeException();
         }
     }
 
