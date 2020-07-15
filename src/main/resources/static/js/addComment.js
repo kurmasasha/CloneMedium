@@ -1,4 +1,8 @@
 document.getElementById('add_comment_button').onclick = function () {
+
+    //Открывает модальное окно для неавторизованных пользователей
+    $('#authorizationModal').modal('show');
+
     let commentBody = document.getElementById('textareaResize');
     let comment = commentBody.value.replace(/\n/g, '<br />');
     let path = location.pathname.split('/');
