@@ -17,11 +17,16 @@
 <div class="container">
     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
         <h5 class="card-header" id="topicAuthor"></h5>
-        <div class="card-body">
-            <h5 class="card-title" id="topicTitle"></h5>
-            <div id="hashtags" class="d-flex flex-wrap">
+        <div class="card-body row">
+            <div class="col-md-3">
+                <img class="card-img topic-img" id="topicImg">
             </div>
-            <p class="card-text" id="topicContent"></p>
+            <div class="col-md-7">
+                <h5 class="card-title" id="topicTitle"></h5>
+                <div id="hashtags" class="d-flex flex-wrap">
+                </div>
+                <p class="card-text" id="topicContent"></p>
+            </div>
         </div>
     </div>
     <!-------------------------------------------- Блок добавления коммента------------------------------------------------------------>
