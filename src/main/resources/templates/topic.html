@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -63,24 +62,6 @@
                     </div>
                 </div>
             </th:block>
-        </div>
-    </div>
-</div>
-
-<!--------------------------------------------Модальное окно открывается только для неавторизованных пользователей------------------------------------------------------------>
-<div sec:authorize="!isAuthenticated()" class="modal fade" id="authorizationModal" tabindex="-1" role="dialog"
-     aria-labelledby="authorizationModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h2>Войдите, чтобы отправлять комментарии</h2>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex justify-content-around">
-                    <a type="button" class="btn btn-success" href="/login">Авторизация</a>
-                    <a type="button" class="btn btn-primary" href="/registration">Регистрация</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
