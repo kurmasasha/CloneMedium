@@ -40,7 +40,7 @@ function topicInCard(topic) {
         '</div>' +
         '<div class="col-md-6">' +
         '<h6 class="card-author">' + author_label + authors + '</h6>' +
-        '<h6 class="card-title-pageAllTopics">' + tags + '</h6>' +
+        '<h6 class="card-tag-pageAllTopics">' + tags + '</h6>' +
         '<p class="card-text">' + linkify(topic.content) + '</p>' +
         `<i class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></i>` +
         `<span class="text-info" id="likeCounter" data-id="${topic.id}">${topic.likes}</span>` +

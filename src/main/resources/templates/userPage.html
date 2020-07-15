@@ -31,13 +31,11 @@
     </div>
     <div class="card">
         <div class="card-body">
-          
             <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
             <form action="/user" th:object="${user}" method="post">
 
 
                 <div class="modal-body">
-                    <!-- скрытые поля. начало -->
                     <div hidden="true">
                         <input th:field="*{id}" id="id-for-edit"/>
                     </div>
