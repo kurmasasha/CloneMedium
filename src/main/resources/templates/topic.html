@@ -15,7 +15,7 @@
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container">
     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
-        <h5 class="card-header" id="topicAuthor"></h5>
+        <h5 class="card-author" id="topicAuthor"></h5>
         <div class="card-body">
             <h5 class="card-title" id="topicTitle"></h5>
             <div id="hashtags" class="d-flex flex-wrap">
@@ -51,7 +51,7 @@
             <th:block th:each="comment: ${comments}">
                 <div class="card mb-2">
                     <div class="card-header d-flex justify-content-between">
-                        <h6 class="card-title"
+                        <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
                         <div id="datecreated">
                         <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
