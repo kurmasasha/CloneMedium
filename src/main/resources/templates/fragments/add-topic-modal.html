@@ -26,6 +26,7 @@
             </div>
             <form name="formAddTopic">
                 <div class="modal-body">
+                    <input type="hidden" name="topic_id" id="topic_id">
                     <div class="form-group">
                         <label for="topic_title">Заголовок</label>
                         <input type="text" class="form-control" id="topic_title" name="title">
@@ -34,6 +35,7 @@
                         <label for="topic_content">Содержание</label>
                         <textarea class="form-control" id="topic_content" rows="10" name="content"></textarea>
                     </div>
+
                     <div class="form-group">
                         <div class="custom-file">
                             <input th:id="topic_img" name="file" type="file" class="custom-file-input"

@@ -2,6 +2,7 @@ package ru.javamentor.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import ru.javamentor.model.User;
+import ru.javamentor.dto.UserDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -83,6 +84,14 @@ public interface UserService {
      * @return User пользователь
      */
     User getUserByUsername(String username);
+
+    /**
+     * метод для получения всех пользователей у которых имя пользователя начинается с @param pattern
+     *
+     * @param pattern - email пользователя
+     * @return List<User> - объект представляющий список пользователей
+     */
+    List<UserDTO> getUsersLikeUsername(String pattern);
 
     /**
      * метод для отправки письма подтверждения на почту

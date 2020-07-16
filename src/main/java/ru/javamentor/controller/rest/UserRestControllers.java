@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
+import ru.javamentor.dto.UserDTO;
 import ru.javamentor.service.RoleService;
 import ru.javamentor.service.UserService;
 
@@ -69,5 +70,17 @@ public class UserRestControllers {
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * метод для живого поиска пользователей, метод для получения всех пользователей у которых имя пользователя начинается с @param pattern
+     * @param pattern - последовательность символов с которой должны начинаться имена пользоватлей
+     * @return ResponseEntity, который содержит List все найденных пользователей у которых либо первые символы в имени пользователя совпали либо полностью и статус ОК
+     */
+    @GetMapping("/user/userslike")
+    public ResponseEntity<List<UserDTO>> getUsersLikeUsername(/*@RequestParam("pattern") String pattern*/ @RequestParam(value = "term", required = false) String term,
+                                                                                                          @RequestParam(value = "_type", required = false) String _type,
+                                                                                                          @RequestParam(value = "q", required = false) String pattern) {
+        return new ResponseEntity<> (userService.getUsersLikeUsername(pattern), HttpStatus.OK);
     }
 }
