@@ -7,7 +7,6 @@
   <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="js/select2/css/select2.css">
   <title>All topics page</title>
 </head>
 <body>
@@ -26,11 +25,6 @@
             <h5 th:id="${'title_'+ topic.getId()}" th:text="${topic.getTitle()}"></h5>
           </a>
           <h6 th:text="${{topic.getDateCreated()}}"></h6>
-<!--          <button sec:authorize="isAuthenticated()" th:id="${'modal_edit-topic_button_' + topic.getId()}"
-                  class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" th:attr="data-topic-id=${topic.getId()}"
-                  data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit">
-            <i class="fa fa-edit text-white"></i>
-          </button>-->
         </div>
         <div class="card-body row">
           <div class="col-md-4">
@@ -97,7 +91,6 @@
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/likedTopic.js"></script>
-<script src="/js/select2/js/select2.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>

@@ -1,25 +1,3 @@
-/**
- * Вызов модального окна
- */
-/*$('#modal_add-topic_button').on('click', function () {
-    $('#topic_title').val('');
-    $('#topic_content').val('');
-    $('#checkboxCompletedTopic').prop('checked', false);
-    $('#topic_img').val('')
-});*/
-/**
- * Нажатие на кнопку добавления топика
- */
-/*$('#add_topic_button').on('click', async function (event) {
-    event.preventDefault()
-    let title = $('#topic_title').val();
-    let content = $('#topic_content').val();
-    let completed = $('#checkboxCompletedTopic').prop('checked');
-    let img = $('#topic_img').prop('files')[0];
-
-    await addTopic(title, content, completed, img)
-});*/
-
 async function addTopic(title, content, completed, img) {
 
     const formData = new FormData();
