@@ -42,7 +42,7 @@ create table themes (
 create table topics (
     id bigint not null auto_increment,
     completed bit not null,
-    content varchar(20470) not null,
+    content text(20470) not null,
     date_created datetime,
     is_moderate bit not null,
     likes integer not null,

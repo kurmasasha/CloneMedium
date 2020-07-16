@@ -191,7 +191,6 @@ public class TopicRestControllers {
             @RequestParam("content") String content,
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
-            @RequestParam(value = "authors", required = false) String[] authors,
             Principal principal
             ) throws Exception {
         String message = "Что то пошло не так! Попробуйте снова";
@@ -212,10 +211,6 @@ public class TopicRestControllers {
 
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
-            for (String id :
-                    authors) {
-                users.add(userService.getUserById(Long.parseLong(id)));
-            }
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
             if (topic != null) {
@@ -256,17 +251,11 @@ public class TopicRestControllers {
                 return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
             }
 
-//            Set<User> users = topicById.getAuthors();
-//            for (String id :
-//                    authors) {
-//                users.add(userService.getUserById(Long.parseLong(id)));
-//            }
             topicById.setId(Long.parseLong(topic_id));
             topicById.setTitle(title);
             topicById.setContent(content);
             topicById.setCompleted(completed);
             topicById.setModerate(false);
-//            topicById.setAuthors(users);
             topicById.setDateCreated(topicById.getDateCreated());
             topicById.setHashtags(topicById.getHashtags());
             boolean topicIsUpdate = topicService.updateTopic(topicById);
