@@ -235,14 +235,13 @@ public class TopicRestControllers {
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
     @PostMapping("/user/topic/update")
-    public ResponseEntity<Object> updateTopic( @RequestParam("topic_id") Long topic_id,
+    public ResponseEntity<Object> updateTopic( @RequestParam("topic_id") String topic_id,
                                               @RequestParam("title") String title,
                                               @RequestParam("content") String content,
                                               @RequestParam("completed") boolean completed,
-                                              @RequestParam(required = false) MultipartFile file,
-                                              @RequestParam(value = "authors", required = false) String[] authors) {
+                                              @RequestParam(required = false) MultipartFile file) {
         String message = "Что то пошло не так! Попробуйте снова";
-        Topic topicById = topicService.getTopicById(topic_id);
+        Topic topicById = topicService.getTopicById(Long.parseLong(topic_id));
         try {
             // проверка на пустоту title and content
             topicValidator.checkTitleAndContent(title, content);
@@ -257,17 +256,17 @@ public class TopicRestControllers {
                 return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
             }
 
-            Set<User> users = topicById.getAuthors();
-            for (String id :
-                    authors) {
-                users.add(userService.getUserById(Long.parseLong(id)));
-            }
-            topicById.setId(topic_id);
+//            Set<User> users = topicById.getAuthors();
+//            for (String id :
+//                    authors) {
+//                users.add(userService.getUserById(Long.parseLong(id)));
+//            }
+            topicById.setId(Long.parseLong(topic_id));
             topicById.setTitle(title);
             topicById.setContent(content);
             topicById.setCompleted(completed);
             topicById.setModerate(false);
-            topicById.setAuthors(users);
+//            topicById.setAuthors(users);
             topicById.setDateCreated(topicById.getDateCreated());
             topicById.setHashtags(topicById.getHashtags());
             boolean topicIsUpdate = topicService.updateTopic(topicById);

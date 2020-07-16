@@ -63,9 +63,9 @@ async function updateTopic(topic_id, title, content, completed, img, authors) {
     formData.append('content', content)
     formData.append('completed', completed)
     formData.append('file', img)
-    formData.append('authors', authors)
+    // formData.append('authors', authors)
 
-    console.log(authors);
+    // console.log(authors);
 
     let alert_container = $('#alerts_container');
 
