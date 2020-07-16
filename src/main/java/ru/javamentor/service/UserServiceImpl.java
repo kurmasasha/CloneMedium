@@ -232,8 +232,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         try {
             User result = userDAO.getUserByUsername(email);
-            log.debug("IN getUserByEmail - user.id is {} and user.userName is {} and user.email: {}",
-                    result.getId(), result.getUsername(), email);
+            log.debug("IN getUserByEmail - user.userName is {}", email);
             return result;
         } catch (Exception e) {
             log.error("Exception while getUserByEmail in service with user.email is {}", email);

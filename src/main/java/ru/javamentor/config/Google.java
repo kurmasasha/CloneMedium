@@ -32,8 +32,8 @@ public class Google {
     }
 
     public final String PROTECTED_RESOURCE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
-    final String clientId = "1001479406616-itqeloo269r3vflbhthcp5654oa86put.apps.googleusercontent.com";
-    final String clientSecret = "SjVPgBkyXcXKaVJmJgHeVrVq";
+    final String clientId = "483915897030-pt9gdsr0s1phvjadc7kdi1t82j1jfnvs.apps.googleusercontent.com";
+    final String clientSecret = "2lZgztTFGbD9JGOJxB8QEPvd";
     final String callbackUrl = "http://localhost:5050/authorization/returnCodeGoogle";
     final String secretState = "secret" + new Random().nextInt(999_999);
 
