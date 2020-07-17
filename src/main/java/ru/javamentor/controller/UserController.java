@@ -37,7 +37,16 @@ public class UserController {
 
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
-        User user = (User) ((Authentication) principal).getPrincipal();
+        User user;
+        if (((Authentication) principal).getPrincipal() instanceof User) {
+            user = (User) ((Authentication) principal).getPrincipal();
+        }else {
+            user = userService.getUserByEmail(principal.getName());
+            if(user==null){
+                throw new NullPointerException("User not found");
+            }
+        }
+
         User userDB = userService.getUserById(user.getId());
         model.addAttribute("user", userDB);
         themeService.showThemes(model, userDB);
