@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -64,46 +65,50 @@ public class TopicRestControllers {
     /**
      * метод получения всех отмодерированных топиков
      *
-     * @return ResponseEntity, который содержит List топиков
+     * @return ResponseEntity, который содержит List DTO топиков
      */
     @GetMapping("/free-user/moderatedTopicsList")
-    public ResponseEntity<List<Topic>> getTotalTopics() {
-        return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
+    public ResponseEntity<List<TopicDto>> getTotalTopics() {
+        TopicDto topicDto = new TopicDto();
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getModeratedTopics()), HttpStatus.OK);
     }
 
     /**
      * метод получения топиков по теме
      *
-     * @return ResponseEntity, который содержит List топиков
+     * @return ResponseEntity, который содержит List DTO топиков
      */
     @PostMapping("/free-user/getTopicsByThemes")
-    public ResponseEntity<List<Topic>> getTopicsByTheme(@RequestParam(name = "themes", required = false) Set<Long> themesIds) {
+    public ResponseEntity<List<TopicDto>> getTopicsByTheme(@RequestParam(name = "themes", required = false) Set<Long> themesIds) {
+        TopicDto topicDto = new TopicDto();
         if (themesIds == null || themesIds.isEmpty()) {
-            return new ResponseEntity<>(topicService.getModeratedTopics(), HttpStatus.OK);
+            return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getModeratedTopics()), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(topicService.getModeratedTopicsByThemes(themesIds), HttpStatus.OK);
+            return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getModeratedTopicsByThemes(themesIds)), HttpStatus.OK);
         }
     }
 
     /**
      * метод получения всех неотмодерированных топиков
      *
-     * @return ResponseEntity, который содержит List топиков
+     * @return ResponseEntity, который содержит List DTO топиков
      */
     @GetMapping("/admin/notModeratedTopics")
-    public ResponseEntity<List<Topic>> getNotModeratedTopics() {
-        return new ResponseEntity<>(topicService.getNotModeratedTopics(), HttpStatus.OK);
+    public ResponseEntity<List<TopicDto>> getNotModeratedTopics() {
+        TopicDto topicDto = new TopicDto();
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getNotModeratedTopics()), HttpStatus.OK);
     }
 
     /**
      * метод для получения одной страницы неотмодерированных топиков
      *
-     * @return ResponseEntity, который содержит List неотмодерированных топиков
+     * @return ResponseEntity, который содержит List DTO неотмодерированных топиков
      */
     //TODO пока жестко задаю количество записей на странице
     @GetMapping("/admin/notModeratedTopicsPage/{page}")
-    public ResponseEntity<List<Topic>> getNotModeratedTopicsPage(@PathVariable(value = "page") Integer page) {
-        return new ResponseEntity<>(topicService.getNotModeratedTopicsPage(page, 5), HttpStatus.OK);
+    public ResponseEntity<List<TopicDto>> getNotModeratedTopicsPage(@PathVariable(value = "page") Integer page) {
+        TopicDto topicDto = new TopicDto();
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getNotModeratedTopicsPage(page, 5)), HttpStatus.OK);
     }
 
     /**
@@ -120,16 +125,17 @@ public class TopicRestControllers {
      * метод для получения топиков конкретного пользователя
      *
      * @param user - объект авторизованого пользователя
-     * @return ResponseEntity, который содержит List топиков этого юзера
+     * @return ResponseEntity, который содержит List DTO топиков этого юзера
      */
     @GetMapping("/user/MyTopics")
-    public ResponseEntity<List<Topic>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
+    public ResponseEntity<List<TopicDto>> getAllTopicsOfAuthenticatedUser(@AuthenticationPrincipal User user) {
+        TopicDto topicDto = new TopicDto();
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userService.getUserByEmail(auth.getName());
-            return new ResponseEntity<>(topicService.getAllTopicsByUserId(currentUser.getId()), HttpStatus.OK);
+            return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getAllTopicsByUserId(currentUser.getId())), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(topicService.getAllTopicsByUserId(user.getId()), HttpStatus.OK);
+            return new ResponseEntity<>(topicDto.getTopicDtoList(topicService.getAllTopicsByUserId(user.getId())), HttpStatus.OK);
         }
     }
 
@@ -258,38 +264,41 @@ public class TopicRestControllers {
      *
      * @param tag  - строковое представление хэштега
      * @param user - данные пользователя, отправившего запрос
-     * @return список топиков
+     * @return список DTO топиков
      */
     @GetMapping("/free-user/get-topics-of-user-by-hashtag/{tag}")
-    public ResponseEntity<List<Topic>> getAllTopicsOfUserByHashtag(@PathVariable String tag, @AuthenticationPrincipal User user) {
+    public ResponseEntity<List<TopicDto>> getAllTopicsOfUserByHashtag(@PathVariable String tag, @AuthenticationPrincipal User user) {
+        TopicDto topicDto = new TopicDto();
         tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsOfUserByHashtag(user.getId(), tag);
-        return new ResponseEntity<>(topics, HttpStatus.OK);
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topics), HttpStatus.OK);
     }
 
     /**
      * Поиск топиков по значению связанного с ними хэштега.
      *
      * @param tag - строковое представление хэштега
-     * @return список топиков
+     * @return список DTO топиков
      */
     @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
-    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable String tag) {
+    public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable String tag) {
        // tag = "#" + tag;
+        TopicDto topicDto = new TopicDto();
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
-        return new ResponseEntity<>(topics, HttpStatus.OK);
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topics), HttpStatus.OK);
     }
 
     /**
      * Поиск топиков по автору.
      *
      * @param authorId - id автора топиков
-     * @return список топиков данного автора
+     * @return список DTO топиков данного автора
      */
     @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
-    public ResponseEntity<List<Topic>> getAllTopicsByHashtag(@PathVariable Long authorId) {
+    public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable Long authorId) {
+        TopicDto topicDto = new TopicDto();
         List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
-        return new ResponseEntity<>(topics, HttpStatus.OK);
+        return new ResponseEntity<>(topicDto.getTopicDtoList(topics), HttpStatus.OK);
     }
 
     /**
