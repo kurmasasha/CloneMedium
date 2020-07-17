@@ -9,7 +9,7 @@ function topicInCard(topic) {
     })
     let authors = '';
     $.each(topic.authors, function (index, author) {
-        authors += '<a href="/find/author/' + author.id + '">' + author.firstName + " " + author.lastName + '</a>';
+        authors += '<a href="/topic/find/author/' + author.id + '">' + author.firstName + " " + author.lastName + '</a>';
         if (index < (topic.authors.length - 1)) {
             authors += ' / ';
         }

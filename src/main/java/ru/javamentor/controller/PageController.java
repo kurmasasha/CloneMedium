@@ -77,7 +77,7 @@ public class PageController {
      * @return страницу для показа всех топиков
      */
 
-    @RequestMapping(value = {"/", "/find/author/{authorId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
@@ -169,5 +169,16 @@ public class PageController {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
+
+    /**
+     * метод для страницы всех топиков по автору
+     * @return страницу для показа всех топиков
+     */
+    @GetMapping("/topic/find/author/{authorId}")
+    public String getPageWithTopicsByAuthor(Model model){
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
+
 }
 
