@@ -36,9 +36,29 @@ public interface ThemeService {
      */
     boolean deleteTheme(Long id);
 
+    /**
+     * Метод для получения списка тем по их id
+     *
+     * @param idThemes - множество уникальных id разных тем
+     * @return List - список тем
+     */
     List<Theme> getThemesByIds(Set<Long> idThemes);
 
+    /**
+     * Метод для изменения тем по их id у конкретного пользователя
+     *
+     * @param themesIds - множество уникальных id разных тем
+     * @param userDB - конкретный пользователь
+     * @return void
+     */
     void changeThemes(Set<Long> themesIds, User userDB);
 
+    /**
+     * Метод для отображения тем
+     *
+     * @param model - переменна для передачи тем на контроллер
+     * @param userDB - конкретный пользователь
+     * @return void
+     */
     void showThemes(Model model, User userDB);
 }

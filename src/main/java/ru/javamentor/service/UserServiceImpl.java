@@ -58,10 +58,10 @@ public class UserServiceImpl implements UserService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.addUser(user);
-
         if (!StringUtils.isEmpty(user.getUsername())) {
             sendCode(user);
         }
+        log.debug("IN addUser - user.userName: {} successfully added", user.getUsername());
         return true;
     }
 
@@ -74,9 +74,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean addUserThroughSocialNetworks(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        userDAO.addUser(user);
-        return true;
+        try {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            userDAO.addUser(user);
+            log.debug("IN addUserThroughSocialNetworks - user.userName: {} successfully added", user.getUsername());
+            return true;
+        } catch (Exception e) {
+            log.error("IN addUserThroughSocialNetworks - user not added with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -96,6 +102,8 @@ public class UserServiceImpl implements UserService {
                 user.getActivationCode()
         );
         mailSender.send(user.getUsername(), "Activation code", message);
+        log.debug("IN sendCode - to user.id is {} and user.userName is {} activation code is {}",
+                user.getId(), user.getUsername(), user.getActivationCode());
     }
 
     /**
@@ -107,7 +115,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User findByActivationCode(String code) {
-        return userDAO.findByActivationCode(code);
+        try {
+            User user = userDAO.findByActivationCode(code);
+            log.debug("IN findByActivationCode - user.id is {} and user.userName is {}", user.getId(), user.getUsername());
+            return user;
+        } catch (Exception e) {
+            log.error("Exception while findByActivationCode in service with activate code is {}", code);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -119,15 +134,32 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getUserById(Long id) {
-        return userDAO.getUserById(id);
+        try {
+            User result = userDAO.getUserById(id);
+            log.debug("IN getUserById - user.id: {} and user.userName: {}", id, result.getUsername());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getUserById in service with user.id is {}", id);
+            throw new RuntimeException();
+        }
     }
 
+    /**
+     * метод для получения всего списка пользователей
+     *
+     * @return List пользоватей
+     */
     @Transactional
     @Override
     public List<User> getAllUsers() {
-        List<User> result = userDAO.getAllUsers();
-        log.info("IN getAllUsers - {} users found", result.size());
-        return result;
+        try {
+            List<User> result = userDAO.getAllUsers();
+            log.debug("IN getAllUsers - {} users found", result.size());
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getAllUsers in service with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -138,12 +170,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean updateUser(User user) {
-        boolean isBCryptPassword = user.getPassword().length() < 45;
-        if (isBCryptPassword) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        try {
+            boolean isBCryptPassword = user.getPassword().length() < 45;
+            if (isBCryptPassword) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            userDAO.updateUser(user);
+            log.debug("IN updateUser - user.id: {} user.name: {}", user.getId(), user.getUsername());
+            return true;
+        } catch (Exception e) {
+            log.error("Exception while updateUser in service - user.id: {} user.name: {}", user.getId(), user.getUsername());
+            throw new RuntimeException();
         }
-        userDAO.updateUser(user);
-        return true;
     }
 
     /**
@@ -154,7 +192,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void removeUser(Long id) {
-        userDAO.removeUser(id);
+        try {
+            userDAO.removeUser(id);
+            log.debug("IN removeUser - user.id: {}", id);
+        } catch (Exception e) {
+            log.error("Exception while removeUser in service with user.id is {}", id);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -167,15 +211,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean activateUser(String code) {
         User user = userDAO.findByActivationCode(code);
-
         if (user == null) {
+            log.error("Exception while activateUser in service - not activate with code is {}", code);
             return false;
         }
-
         user.setActivationCode(null);
         user.setActivated(true);
         userDAO.updateUser(user);
-
+        log.debug("IN activateUser - user.id is {} and user.userName is {}", user.getId(), user.getUsername());
         return true;
     }
 
@@ -187,7 +230,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByEmail(String email) {
-        return userDAO.getUserByUsername(email);
+        try {
+            User result = userDAO.getUserByUsername(email);
+            log.debug("IN getUserByEmail - user.userName is {}", email);
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getUserByEmail in service with user.email is {}", email);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -198,8 +248,17 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUsername(String username) {
-        return userDAO.getUserByUsername(username);
+        try {
+            User result = userDAO.getUserByUsername(username);
+            log.debug("IN getUserByUsername - user.id is {} and user.userName is {} and user.username: {}",
+                    result.getId(), result.getUsername(), username);
+            return result;
+        } catch (Exception e) {
+            log.error("Exception while getUserByUsername in service with user.username is {}", username);
+            throw new RuntimeException();
+        }
     }
+
     /**
      * метод для входа пользователя в систему by Spring Security
      *
@@ -212,6 +271,7 @@ public class UserServiceImpl implements UserService {
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(username, password, authorities);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(authReq);
+        log.debug("IN login User - username: {}", username);
     }
 
     /**
@@ -224,11 +284,12 @@ public class UserServiceImpl implements UserService {
         List<String> authors;
         try {
             authors =  userDAO.getAllSubscribesNotOfUser(username);
-            log.info("IN getAllSubscribesNotOfUser - {} authors found", authors.size());
+            log.debug("IN getAllSubscribesNotOfUser - {} authors found", authors.size());
+            return authors;
         } catch (Exception e) {
-            return null;
+            log.error("Exception while getAllSubscribesNotOfUser in service with user.username is {}", username);
+            throw new RuntimeException();
         }
-        return authors;
     }
 
     /**
@@ -241,11 +302,12 @@ public class UserServiceImpl implements UserService {
         List<String> subcribes;
         try {
             subcribes =  userDAO.getAllSubscribesOfUser(username);
-            log.info("IN getAllSubscribesOfUser - {} authors found", subcribes.size());
+            log.debug("IN getAllSubscribesOfUser - {} authors found", subcribes.size());
+            return subcribes;
         } catch (Exception e) {
-            return null;
+            log.error("Exception while getAllSubscribesOfUser in service with user.username is {}", username);
+            throw new RuntimeException();
         }
-        return subcribes;
     }
 
     /**
@@ -260,10 +322,14 @@ public class UserServiceImpl implements UserService {
             userDAO.deleteSubscribesOfUser(subscriber);
             for (String author : authors) {
                 userDAO.addSubscribe(author, subscriber);
-                log.info("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
+                log.debug("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
             }
             return true;
         } catch (Exception e) {
+            for (String author : authors) {
+                log.error("Exception while changeSubscribe in service with author: " + author
+                        + " and subscriber: " + subscriber + "successful");
+            }
             return false;
         }
     }
@@ -279,10 +345,11 @@ public class UserServiceImpl implements UserService {
             List<User> subscribers = userDAO.getAllSubscribersOfAuthor(author);
             for (User subscriber : subscribers) {
                 notificationDao.addNotification(new Notification(title, text, subscriber));
-                log.info("Notification for {} is added", subscriber.getUsername());
+                log.debug("IN notifyAllSubscribersOfAuthor notification for {} is added", subscriber.getUsername());
             }
             return true;
         } catch (Exception e) {
+            log.error("Exception while notifyAllSubscribersOfAuthor in service with author is {} and title is {}", author, title);
             return false;
         }
     }

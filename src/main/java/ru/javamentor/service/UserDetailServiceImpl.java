@@ -1,5 +1,6 @@
 package ru.javamentor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.User;
 
+@Slf4j
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
@@ -26,6 +28,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (currentUser == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         } else {
+            log.debug("IN loadUserByUsername - userName: {} authentication complete", userName);
             return currentUser;
         }
     }

@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,13 +15,17 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container">
-    <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
-        <h5 class="card-author" id="topicAuthor"></h5>
-        <div class="card-body">
-            <h5 class="card-title-onTopic" id="topicTitle"></h5>
-            <div id="hashtags" class="d-flex flex-wrap">
+     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
+        <h5 class="card-header-author" id="topicAuthor"></h5>
+        <div class="card-body row">
+            <div class="col-md-3">
+                <img class="card-img topic-img" id="topicImg">
             </div>
-            <p class="card-text" id="topicContent"></p>
+            <div class="col-md-7">
+                <h5 class="card-title" id="topicTitle"></h5>
+                <div id="hashtags" class="d-flex flex-wrap"></div>
+                <p class="card-text" id="topicContent"></p>
+            </div>
         </div>
     </div>
     <!-------------------------------------------- Блок добавления коммента------------------------------------------------------------>
@@ -62,6 +67,24 @@
                     </div>
                 </div>
             </th:block>
+        </div>
+    </div>
+</div>
+
+<!--------------------------------------------Модальное окно открывается только для неавторизованных пользователей------------------------------------------------------------>
+<div sec:authorize="!isAuthenticated()" class="modal fade" id="authorizationModal" tabindex="-1" role="dialog"
+     aria-labelledby="authorizationModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2>Войдите, чтобы отправлять комментарии</h2>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-around">
+                    <a type="button" class="btn btn-success" href="/login">Авторизация</a>
+                    <a type="button" class="btn btn-primary" href="/registration">Регистрация</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
