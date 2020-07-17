@@ -29,43 +29,29 @@ public class TopicDto {
     private String title;
     private String content;
     private LocalDateTime dateCreated;
-    private Integer likes = 0;
+    private boolean isModerate;
+    private boolean completed;
+    private Integer likes;
     private String img;
-    private Set<UserDto> authors;
+    private Set<User> authors;
     private Set<Hashtag> hashtags;
     private Set<Theme> themes;
 
-    public List<TopicDto> getTopicDtoList(List<Topic> topicList) {
-        List<TopicDto> topicDtoList = new ArrayList<>();
-        for (Topic topic :
-                topicList) {
-            authors = new HashSet<>();
-            TopicDto topicDto = new TopicDto();
-            topicDto.setId(topic.getId());
-            topicDto.setTitle(topic.getTitle());
-            if (topic.getContent().length() > 800) {
-                topicDto.setContent(topic.getContent().substring(0, 800) + "...");
-            } else {
-                topicDto.setContent(topic.getContent());
-            }
-            topicDto.setDateCreated(topic.getDateCreated());
-            topicDto.setLikes(topic.getLikes());
-            topicDto.setImg(topic.getImg());
-            for (User user :
-                    topic.getAuthors()) {
-                UserDto userDto = new UserDto();
-                userDto.setId(user.getId());
-                userDto.setFirstName(user.getFirstName());
-                userDto.setLastName(user.getLastName());
-                userDto.setUsername(user.getUsername());
-                userDto.setRole(user.getRole());
-                authors.add(userDto);
-            }
-            topicDto.setAuthors(authors);
-            topicDto.setHashtags(topic.getHashtags());
-            topicDto.setThemes(topic.getThemes());
-            topicDtoList.add(topicDto);
+    public TopicDto(Topic topic) {
+        this.id = topic.getId();
+        this.title = topic.getTitle();
+        if (topic.getContent().length() > 800) {
+            this.setContent(topic.getContent().substring(0, 800) + "...");
+        } else {
+            this.content = topic.getContent();
         }
-        return topicDtoList;
+        this.dateCreated = topic.getDateCreated();
+        this.isModerate = topic.isModerate();
+        this.completed = topic.isCompleted();
+        this.likes = topic.getLikes();
+        this.img = topic.getImg();
+        this.authors = topic.getAuthors();
+        this.hashtags = topic.getHashtags();
+        this.themes = topic.getThemes();
     }
 }
