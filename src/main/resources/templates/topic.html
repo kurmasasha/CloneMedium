@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,16 +15,15 @@
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container">
     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
-        <h5 class="card-header" id="topicAuthor"></h5>
+        <h5 class="card-header-author" id="topicAuthor"></h5>
         <div class="card-body row">
             <div class="col-md-3">
                 <img class="card-img topic-img" id="topicImg">
             </div>
             <div class="col-md-7">
-                <h5 class="card-title" id="topicTitle"></h5>
-                <div id="hashtags" class="d-flex flex-wrap">
-                </div>
-                <p class="card-text" id="topicContent"></p>
+                <h5 class="card-title-onTopic" id="topicTitle"></h5>
+                <div id="hashtags" class="d-flex flex-wrap"></div>
+                <p class="card-text-onTopic" id="topicContent"></p>
             </div>
         </div>
     </div>
@@ -36,11 +34,11 @@
             <form>
                 <div class="form-group" style="margin: 0">
                     <textarea class="form-control" id="textareaResize" rows="1" style="resize:none; overflow: hidden;"
-                              placeholder="Добавьте Ваш комментарий" name="comment" required="" ></textarea>
+                              placeholder="Добавьте Ваш комментарий" type="name" name="comment"></textarea>
                 </div>
                 <!-- Кнопка добавления коммента через скрипт addComment-->
                 <div class="form-group">
-                    <button id="add_comment_button" class="btn btn-sm btn-primary float-left" type="submit"><i
+                    <button id="add_comment_button" class="btn btn-sm btn-primary float-left" type="button"><i
                             class="fas fa-pencil-alt"></i>
                         Добавить
                     </button>
@@ -57,7 +55,7 @@
             <th:block th:each="comment: ${comments}">
                 <div class="card mb-2">
                     <div class="card-header d-flex justify-content-between">
-                        <h6 class="card-title"
+                        <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
                         <div id="datecreated">
                         <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
@@ -68,24 +66,6 @@
                     </div>
                 </div>
             </th:block>
-        </div>
-    </div>
-</div>
-
-<!--------------------------------------------Модальное окно открывается только для неавторизованных пользователей------------------------------------------------------------>
-<div sec:authorize="!isAuthenticated()" class="modal fade" id="authorizationModal" tabindex="-1" role="dialog"
-     aria-labelledby="authorizationModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h2>Войдите, чтобы отправлять комментарии</h2>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex justify-content-around">
-                    <a type="button" class="btn btn-success" href="/login">Авторизация</a>
-                    <a type="button" class="btn btn-primary" href="/registration">Регистрация</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
