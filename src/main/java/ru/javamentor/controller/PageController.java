@@ -77,7 +77,7 @@ public class PageController {
      * @return страницу для показа всех топиков
      */
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/find/author/{authorId}"}, method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
