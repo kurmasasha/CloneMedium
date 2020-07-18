@@ -226,15 +226,50 @@ public class TopicRestControllers {
     /**
      * метод для обновления топика
      *
-     * @param topic - обновленный топик
+     * @param topic_id - уникальный id бновленного топика
+     * @param title - тема обновленного топика
+     * @param content - содержание обновленного топика
+     * @param completed - готовность обновленного топика
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
     @PostMapping("/user/topic/update")
-    public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
-        if (topicService.updateTopic(topic)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> updateTopic( @RequestParam("topic_id") String topic_id,
+                                               @RequestParam("title") String title,
+                                               @RequestParam("content") String content,
+                                               @RequestParam("completed") boolean completed,
+                                               @RequestParam(required = false) MultipartFile file) {
+        String message = "Что то пошло не так! Попробуйте снова";
+        Topic topicById = topicService.getTopicById(Long.parseLong(topic_id));
+        try {
+            // проверка на пустоту title and content
+            topicValidator.checkTitleAndContent(title, content);
+            // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                topicValidator.checkFile(file);
+                if (topicValidator.getError() == null) {
+                    topicById.setImg(loaderImages.upload(file));
+                }
+            }
+            if (topicValidator.getError() != null) {
+                return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
+            }
+
+            topicById.setId(Long.parseLong(topic_id));
+            topicById.setTitle(title);
+            topicById.setContent(content);
+            topicById.setCompleted(completed);
+            topicById.setModerate(false);
+            topicById.setDateCreated(topicById.getDateCreated());
+            topicById.setHashtags(topicById.getHashtags());
+            boolean topicIsUpdate = topicService.updateTopic(topicById);
+
+            if (topicIsUpdate) {
+                return new ResponseEntity<>(topicById, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // тут мы логируем исключение, а пользователю кинем сообщение
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 

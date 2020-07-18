@@ -50,7 +50,6 @@ public class Google {
             .build();
 
     public OAuth2AccessToken toGetTokenGoogle(String code) throws InterruptedException, ExecutionException, IOException {
-        System.out.println(code);
         return service.getAccessToken(code);
     }
 
@@ -60,7 +59,6 @@ public class Google {
         try (Response response = service.execute(request)) {
             JSONObject jsonObj = new JSONObject(response.getBody());
             String password = jsonObj.getString("sub");
-            System.out.println(response);
             String firstName = jsonObj.getString("given_name");
             String lastName = jsonObj.getString("family_name");
             String email = jsonObj.getString("email");
