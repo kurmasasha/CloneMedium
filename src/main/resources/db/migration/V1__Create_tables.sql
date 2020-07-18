@@ -46,6 +46,7 @@ create table topics (
     date_created datetime,
     is_moderate bit not null,
     likes integer not null,
+    dislikes integer not null,
     title varchar(255) not null,
     primary key (id));
 

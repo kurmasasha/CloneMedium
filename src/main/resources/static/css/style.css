@@ -48,17 +48,27 @@ body {
     size: 15px;
 }
 
-#topics_container i.fa {
+#topics_container i.fa-thumbs-o-up, #single_topic_container i.fa-thumbs-o-up {
     color: dodgerblue;
     font-size: 1.4em;
     padding: 5px;
 }
-#topics_container i.fa:hover {
+#topics_container i.fa-thumbs-o-down, #single_topic_container i.fa-thumbs-o-down {
+    color: rgb(232, 73, 56);
+    font-size: 1.4em;
+    padding: 5px;
+    margin-left: 20px;
+}
+#single_topic_container i.fa:hover {
     cursor: pointer;
 }
 
-#likeCounter {
+#likeCounter, #dislikeCounter {
     font-size: 1.5em;
+}
+
+#like_block, #dislike_block {
+    display: inline-block;
 }
 
 #datecreated {

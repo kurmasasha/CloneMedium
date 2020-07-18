@@ -16,6 +16,7 @@ import ru.javamentor.service.MailSender;
 import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.TopicService;
 import ru.javamentor.service.UserService;
+import ru.javamentor.util.buffer.DislikeBuffer;
 import ru.javamentor.util.buffer.LikeBuffer;
 import ru.javamentor.util.img.LoaderImages;
 import ru.javamentor.util.validation.topic.TopicValidator;
@@ -42,6 +43,7 @@ public class TopicRestControllers {
     private final TopicService topicService;
     private final UserService userService;
     private final LikeBuffer likeBuffer;
+    private final DislikeBuffer dislikeBuffer;
     private final MailSender mailSender;
     private final NotificationService notificationService;
     private final LoaderImages loaderImages;
@@ -51,10 +53,11 @@ public class TopicRestControllers {
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
+    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, DislikeBuffer dislikeBuffer, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.topicService = topicService;
         this.userService = userService;
         this.likeBuffer = likeBuffer;
+        this.dislikeBuffer = dislikeBuffer;
         this.mailSender = mailSender;
         this.notificationService = notificationService;
         this.loaderImages = loaderImages;
@@ -339,12 +342,39 @@ public class TopicRestControllers {
     @GetMapping("/topic/addLike/{topicId}")
     public ResponseEntity<Topic> increaseLikeOfTopic(@PathVariable Long topicId, HttpSession session) {
         if (!likeBuffer.isLikedTopic(session.getId(), topicId)) {
+            if(dislikeBuffer.isDislikedTopic(session.getId(), topicId)) {
+                increaseDislikeOfTopic(topicId, session);
+            }
             likeBuffer.addLike(session.getId(), topicId);
             Topic topic = topicService.increaseTopicLikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);
         } else if (likeBuffer.isLikedTopic(session.getId(), topicId)) {
             likeBuffer.deleteLike(session.getId(), topicId);
             Topic topic = topicService.decreaseTopicLikes(topicId);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * метод для дизлайка топика
+     *
+     * @param topicId - id  топика который нужно дизлайкнуть
+     * @param session - текущая сессия клиента
+     * @return Увеличенное количество топиков либо ответ что дизлайк с текущей сессии запрещен
+     */
+    @GetMapping("/topic/addDislike/{topicId}")
+    public ResponseEntity<Topic> increaseDislikeOfTopic(@PathVariable Long topicId, HttpSession session) {
+        if (!dislikeBuffer.isDislikedTopic(session.getId(), topicId)) {
+            if(likeBuffer.isLikedTopic(session.getId(), topicId)) {
+                increaseLikeOfTopic(topicId, session);
+            }
+            dislikeBuffer.addDislike(session.getId(), topicId);
+            Topic topic = topicService.increaseTopicDislikes(topicId);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        } else if (dislikeBuffer.isDislikedTopic(session.getId(), topicId)) {
+            dislikeBuffer.deleteDislike(session.getId(), topicId);
+            Topic topic = topicService.decreaseTopicDislikes(topicId);
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

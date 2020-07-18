@@ -152,4 +152,20 @@ public interface TopicService {
      * @return Topic - топик с обновленным количеством лайков
      */
     Topic decreaseTopicLikes(Long topicId);
+
+    /**
+     * Метод для увеличения дизлайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством дизлайков
+     */
+    Topic increaseTopicDislikes(Long topicId);
+
+    /**
+     * Метод для уменьшения дизлайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством дизлайков
+     */
+    Topic decreaseTopicDislikes(Long topicId);
 }

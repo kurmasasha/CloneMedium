@@ -55,6 +55,10 @@ public class Topic {
     private Integer likes = 0;
 
     @Column
+    @NotNull
+    private Integer dislikes = 0;
+
+    @Column
     private String img;
 
     @ManyToMany(fetch = FetchType.EAGER)

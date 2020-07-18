@@ -359,7 +359,45 @@ public class TopicServiceImpl implements TopicService {
         likes--;
         currentTopic.setLikes(likes);
         topicDAO.updateTopic(currentTopic);
-        log.debug("IN increaseTopicLikes - topic.id: {} decrease like", topicId);
+        log.debug("IN decreaseTopicLikes - topic.id: {} decrease like", topicId);
+        return currentTopic;
+    }
+
+    /**
+     * Метод для увеличения дизлайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством дизлайков
+     */
+    @Transactional
+    @Override
+    public Topic increaseTopicDislikes(Long topicId) {
+        log.debug("IN increaseTopicDislikes in service");
+        Topic currentTopic = topicDAO.getTopicById(topicId);
+        Integer dislikes = currentTopic.getDislikes();
+        dislikes++;
+        currentTopic.setDislikes(dislikes);
+        topicDAO.updateTopic(currentTopic);
+        log.debug("IN increaseTopicDislikes - topic.id: {} increase dislike", topicId);
+        return currentTopic;
+    }
+
+    /**
+     * Метод для уменьшения дизлайков конкретного топика на 1, в рамках одной сессии
+     *
+     * @param topicId - уникальный id конкретного топика
+     * @return Topic - топик с обновленным количеством дизлайков
+     */
+    @Transactional
+    @Override
+    public Topic decreaseTopicDislikes(Long topicId) {
+        log.debug("IN decreaseTopicDislikes in service");
+        Topic currentTopic = topicDAO.getTopicById(topicId);
+        Integer dislikes = currentTopic.getDislikes();
+        dislikes--;
+        currentTopic.setDislikes(dislikes);
+        topicDAO.updateTopic(currentTopic);
+        log.debug("IN decreaseTopicDislikes - topic.id: {} decrease dislike", topicId);
         return currentTopic;
     }
 }
