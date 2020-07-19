@@ -9,6 +9,10 @@ function commentInCard(comment) {
             '<div class="card-body">' +
                 '<p class="card-text">' + comment.text + '</p>' +
             '</div>' +
+            '<div class="card-footer">\n' +
+                '<i class="fa fa-thumbs-o-up" data-id="'+ comment.id + '"></i>\n' +
+                '<span class="likes-num">' + comment.likes + '</span>\n' +
+            '</div>'+
         '</div>';
     return card;
 }

@@ -27,7 +27,8 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment getCommentById(Long id) {
-        return null;
+        return entityManager.createQuery("SELECT c FROM Comment c WHERE c.id = :id", Comment.class)
+                .setParameter("id",id).getResultStream().findFirst().orElse(null);
     }
 
     @Override

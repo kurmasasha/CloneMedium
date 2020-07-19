@@ -64,4 +64,16 @@ public interface CommentService {
      * @return List - список коммментариев конкретной статьи
      */
     List<Comment> getAllCommentsByTopicId(Long topicId);
+
+    /**
+     * метод для добавления или удаления лайка к комменту.
+     *
+     *
+     * @param id -  уникальный id комментария
+     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @return comment - возвращает изменённый комметарий
+     *
+     */
+
+    Comment putLikeToComment(Long id, User user);
 }

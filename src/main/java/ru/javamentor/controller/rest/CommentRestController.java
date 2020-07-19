@@ -78,6 +78,7 @@ public class CommentRestController {
             return new ResponseEntity<>("You can't delete the comment because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
     }
+
     @DeleteMapping("/admin/comment/delete/{id}")
     public ResponseEntity<String> deleteCommentByAdmin(@PathVariable Long id) {
         if (commentService.removeCommentById(id)) {
@@ -85,5 +86,11 @@ public class CommentRestController {
         } else {
             return new ResponseEntity<>("Cannot delete this comment, try again", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/comment/addLike/{commentId}")
+    public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        Comment comment = commentService.putLikeToComment(commentId, user);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 }

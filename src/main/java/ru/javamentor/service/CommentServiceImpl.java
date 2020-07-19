@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.CommentDAO;
+import ru.javamentor.dao.UserDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -22,11 +23,13 @@ import java.util.List;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
 
+    private final UserDAO userDAO;
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(CommentDAO commentDAO) {
+    public CommentServiceImpl(CommentDAO commentDAO, UserDAO userDAO) {
         this.commentDAO = commentDAO;
+        this.userDAO = userDAO;
     }
 
     /**
@@ -151,4 +154,28 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Transactional
+    @Override
+    public Comment putLikeToComment(Long commentId, User user) {
+        try {
+            Comment comment = commentDAO.getCommentById(commentId);
+            boolean isLiked = comment.getLikedUsers()
+                    .stream().filter(u -> u.getUsername().equals(user.getUsername())).count() > 0;
+            if (!isLiked) {
+                comment.getLikedUsers().add(user);
+                comment.setLikes(comment.getLikes() + 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putLikeToComment - likes in comment.id: {} was increased by user.id: {}",commentId, user.getId());
+            } else {
+                comment.getLikedUsers().remove(userDAO.getUserById(user.getId()));
+                comment.setLikes(comment.getLikes() - 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putLikeToComment - likes in comment.id: {} was decreased by user.id: {}", commentId, user.getId());
+            }
+            return comment;
+        } catch (Exception e) {
+            log.error("Exception while addOrDeleteLike in service with comment.id {}", commentId);
+            throw new RuntimeException();
+        }
+    }
 }
