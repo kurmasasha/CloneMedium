@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
-import ru.javamentor.service.CommentService;
-import ru.javamentor.service.TopicService;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.topic.TopicService;
+import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 

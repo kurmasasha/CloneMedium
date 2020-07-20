@@ -14,7 +14,7 @@ import ru.javamentor.config.Facebook;
 import ru.javamentor.config.Google;
 import ru.javamentor.config.VKontakte;
 import ru.javamentor.model.User;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.user.UserService;
 
 import java.io.IOException;
 import java.net.URI;

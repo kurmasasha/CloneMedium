@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javamentor.dao.TopicDAOImpl;
+import ru.javamentor.dao.topic.TopicDAOImpl;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.topic.TopicServiceImpl;
 
 import javax.persistence.TransactionRequiredException;
 import java.time.LocalDateTime;

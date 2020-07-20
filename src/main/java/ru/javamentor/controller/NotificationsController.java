@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javamentor.model.Notification;
-import ru.javamentor.service.NotificationServiceImpl;
+import ru.javamentor.service.notification.NotificationServiceImpl;
 
 import java.util.List;
 
