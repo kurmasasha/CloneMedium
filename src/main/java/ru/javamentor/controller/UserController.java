@@ -37,13 +37,13 @@ public class UserController {
 
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
-        User user = (User) ((Authentication) principal).getPrincipal();
-        User userDB = userService.getUserById(user.getId());
+        String username =  principal.getName();
+        User userDB = userService.getUserByUsername(username);
         model.addAttribute("user", userDB);
         themeService.showThemes(model, userDB);
-        List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
+        List<String> notSubscribed = userService.getAllSubscribesNotOfUser(username);
         model.addAttribute("notSubscribedAuthors", notSubscribed);
-        List<String> subscribes = userService.getAllSubscribesOfUser(user.getUsername());
+        List<String> subscribes = userService.getAllSubscribesOfUser(username);
         model.addAttribute("subscribes", subscribes);
         return "userPage";
     }
