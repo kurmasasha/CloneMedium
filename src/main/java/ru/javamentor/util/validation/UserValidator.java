@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.javamentor.dao.UserDAOImpl;
+import ru.javamentor.dao.user.UserDAOImpl;
 import ru.javamentor.model.User;
 
 import java.util.regex.Matcher;

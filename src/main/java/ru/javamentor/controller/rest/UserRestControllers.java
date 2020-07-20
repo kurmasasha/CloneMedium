@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.role.RoleService;
+import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 

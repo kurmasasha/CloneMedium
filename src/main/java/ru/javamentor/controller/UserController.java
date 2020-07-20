@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
-import ru.javamentor.service.ThemeService;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.role.RoleService;
+import ru.javamentor.service.theme.ThemeService;
+import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import java.security.Principal;

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
+import ru.javamentor.service.role.RoleService;
 
 import java.io.IOException;
 import java.util.Random;
