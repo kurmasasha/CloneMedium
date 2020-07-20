@@ -1,16 +1,24 @@
 $(document).ready(async function () {
     $('#single_topic_container').delegate('.fa-thumbs-o-up', 'click', function () {
-        let id = $(this).attr('data-id');
-        let likeCounter = document.getElementById('likeCounter');
-        let dislikeCounter = document.getElementById('dislikeCounter');
-        liked(id, likeCounter, dislikeCounter);
+        $('#authorizationModal').modal('show');
+
+        if(!($("#authorizationModal").data('bs.modal') || {})._isShown) {
+            let id = $(this).attr('data-id');
+            let likeCounter = document.getElementById('likeCounter');
+            let dislikeCounter = document.getElementById('dislikeCounter');
+            liked(id, likeCounter, dislikeCounter);
+        }
     });
 
     $('#single_topic_container').delegate('.fa-thumbs-o-down', 'click', function () {
-        let id = $(this).attr('data-id');
-        let likeCounter = document.getElementById('likeCounter');
-        let dislikeCounter = document.getElementById('dislikeCounter');
-        disliked(id, likeCounter, dislikeCounter);
+        $('#authorizationModal').modal('show');
+
+        if(!($("#authorizationModal").data('bs.modal') || {})._isShown) {
+            let id = $(this).attr('data-id');
+            let likeCounter = document.getElementById('likeCounter');
+            let dislikeCounter = document.getElementById('dislikeCounter');
+            disliked(id, likeCounter, dislikeCounter);
+        }
     });
 
     async function liked(id, likeCounter, dislikeCounter) {
