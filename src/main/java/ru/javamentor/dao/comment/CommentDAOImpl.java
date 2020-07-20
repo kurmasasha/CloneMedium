@@ -28,7 +28,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment getCommentById(Long id) {
-        return null;
+        return entityManager.find(Comment.class, id);
     }
 
     @Override

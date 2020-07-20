@@ -69,5 +69,16 @@ body {
     width: 225px;
 }
 
+#comments_container i.fa {
+    color: dodgerblue;
+    padding: 5px;
+}
+#comments_container i.fa:hover {
+    cursor: pointer;
+}
+
+.likes-num {
+    color: dodgerblue;
+}
 
 

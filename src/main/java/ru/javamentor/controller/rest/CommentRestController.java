@@ -86,4 +86,10 @@ public class CommentRestController {
             return new ResponseEntity<>("Cannot delete this comment, try again", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/comment/addLike/{commentId}")
+    public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        Comment comment = commentService.putLikeToComment(commentId, user);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
 }
