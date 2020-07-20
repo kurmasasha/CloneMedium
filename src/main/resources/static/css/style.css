@@ -75,6 +75,7 @@ body {
 }
 #comments_container i.fa:hover {
     cursor: pointer;
+    font-weight: 600;
 }
 
 .likes-num {
