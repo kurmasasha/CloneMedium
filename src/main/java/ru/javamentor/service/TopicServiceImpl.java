@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.TopicDAO;
+import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -361,5 +363,17 @@ public class TopicServiceImpl implements TopicService {
         topicDAO.updateTopic(currentTopic);
         log.debug("IN increaseTopicLikes - topic.id: {} decrease like", topicId);
         return currentTopic;
+    }
+
+    /**
+     * Метод получения списка TopicDto из списка Topic
+     * @param topicList - лист топиков
+     * @return - список TopicDto
+     */
+    @Override
+    public List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList) {
+        List<TopicDto> topicDtoList = new ArrayList<>();
+        topicList.forEach(topic -> topicDtoList.add(new TopicDto(topic)));
+        return topicDtoList;
     }
 }

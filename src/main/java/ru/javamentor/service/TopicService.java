@@ -1,5 +1,6 @@
 package ru.javamentor.service;
 
+import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -152,4 +153,11 @@ public interface TopicService {
      * @return Topic - топик с обновленным количеством лайков
      */
     Topic decreaseTopicLikes(Long topicId);
+
+    /**
+     * Метод получения списка TopicDto из списка Topic
+     * @param topicList - лист топиков
+     * @return - список TopicDto
+     */
+    List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList);
 }
