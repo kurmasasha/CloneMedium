@@ -2,6 +2,7 @@ package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.javamentor.model.Comment;
+import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 
 import javax.persistence.EntityManager;
@@ -27,8 +28,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment getCommentById(Long id) {
-        return entityManager.createQuery("SELECT c FROM Comment c WHERE c.id = :id", Comment.class)
-                .setParameter("id",id).getResultStream().findFirst().orElse(null);
+        return entityManager.find(Comment.class, id);
     }
 
     @Override
