@@ -89,12 +89,22 @@ public class CommentRestController {
 
     @GetMapping("/comment/addLike/{commentId}")
     public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Comment comment = commentService.putLikeToComment(commentId, userService.getUserByEmail(auth.getName()));
+            return new ResponseEntity<>(comment, HttpStatus.OK);
+        }
         Comment comment = commentService.putLikeToComment(commentId, user);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
     @GetMapping("/comment/addDislike/{commentId}")
     public ResponseEntity<Comment> putDislikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Comment comment = commentService.putDislikeToComment(commentId, userService.getUserByEmail(auth.getName()));
+            return new ResponseEntity<>(comment, HttpStatus.OK);
+        }
         Comment comment = commentService.putDislikeToComment(commentId, user);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
