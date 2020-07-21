@@ -70,14 +70,13 @@ body {
 }
 
 #comments_container i.fa {
-    color: dodgerblue;
     padding: 5px;
 }
 #comments_container i.fa:hover {
     cursor: pointer;
 }
 
-.likes-num {
+.rated {
     color: dodgerblue;
 }
 

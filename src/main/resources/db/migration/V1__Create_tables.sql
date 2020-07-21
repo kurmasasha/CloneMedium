@@ -6,6 +6,7 @@ create table comments (
     user_id bigint,
     topic_id bigint,
     likes int,
+    dislikes int,
     primary key (id));
 
 

@@ -68,8 +68,14 @@
                         <p class="card-text" th:utext="${comment.getText()}"></p>
                     </div>
                     <div class="card-footer">
-                        <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
-                        <span class="likes-num" th:text="${comment.getLikes()}"></span>
+                        <span class="like" th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
+                            <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}" th:text="${comment.getLikes()}"></span>
+                        </span>
+                        <span class="dislike" th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-down"  th:data-id="${comment.getId()}"></i>
+                            <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}" th:text="${comment.getDislikes()}"></span>
+                        </span>
                     </div>
                 </div>
             </th:block>

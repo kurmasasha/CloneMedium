@@ -92,4 +92,10 @@ public class CommentRestController {
         Comment comment = commentService.putLikeToComment(commentId, user);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
+
+    @GetMapping("/comment/addDislike/{commentId}")
+    public ResponseEntity<Comment> putDislikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
+        Comment comment = commentService.putDislikeToComment(commentId, user);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
 }

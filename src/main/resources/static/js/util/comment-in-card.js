@@ -9,10 +9,16 @@ function commentInCard(comment) {
             '<div class="card-body">' +
                 '<p class="card-text">' + comment.text + '</p>' +
             '</div>' +
-            '<div class="card-footer">\n' +
-                '<i class="fa fa-thumbs-o-up" data-id="'+ comment.id + '"></i>\n' +
-                '<span class="likes-num">' + comment.likes + '</span>\n' +
-            '</div>'+
+            '<div class="card-footer">' +
+                '<span class="like">' +
+                    '<i class="fa fa-thumbs-o-up" data-id="' + comment.id + '"></i>' +
+                    '<span class="likes-num likeCount" id="likesId-'+ comment.id +'">' + comment.likes  + '</span>' +
+                '</span>' +
+                '<span class="dislike">' +
+                    '<i class="fa fa-thumbs-o-down"  data-id="' + comment.id + '"></i>' +
+                    '<span class="dislikes-num likeCount" id="dislikesId-'+ comment.id +'">' + comment.dislikes + '</span>' +
+                '</span>' +
+            '</div>' +
         '</div>';
     return card;
 }

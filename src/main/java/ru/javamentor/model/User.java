@@ -72,6 +72,10 @@ public class User implements UserDetails {
             mappedBy = "likedUsers")
     private Set<Comment> likedComments;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy = "dislikedUsers")
+    private Set<Comment> dislikedComments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

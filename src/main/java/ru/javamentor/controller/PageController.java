@@ -1,6 +1,7 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -89,9 +90,10 @@ public class PageController {
      * @return страницу для отображения топика
      */
     @GetMapping("/topic/{id}")
-    public String topicPage(@PathVariable Long id, Model model) {
+    public String topicPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+        model.addAttribute("user", user);
         model.addAttribute("comments", comments);
         return "topic";
     }

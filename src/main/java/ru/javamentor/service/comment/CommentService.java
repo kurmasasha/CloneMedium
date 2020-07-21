@@ -69,11 +69,23 @@ public interface CommentService {
      * метод для добавления или удаления лайка к комменту.
      *
      *
-     * @param id -  уникальный id комментария
+     * @param commentId -  уникальный id комментария
      * @param user - пользователь, добавляющий или удаляющий лайк
      * @return comment - возвращает изменённый комметарий
      *
      */
 
-    Comment putLikeToComment(Long id, User user);
+    Comment putLikeToComment(Long commentId, User user);
+
+    /**
+     * метод для добавления или удаления дизлайка к комменту.
+     *
+     *
+     * @param commentId -  уникальный id комментария
+     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @return comment - возвращает изменённый комметарий
+     *
+     */
+
+    Comment putDislikeToComment(Long commentId, User user);
 }

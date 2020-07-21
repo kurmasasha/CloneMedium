@@ -32,12 +32,23 @@ public class Comment {
     @NotNull
     private Integer likes = 0;
 
+    @Column
+    @NotNull
+    private Integer dislikes = 0;
+
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinTable(name = "users_comments_likes",
             joinColumns = @JoinColumn(name = "comment_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> likedUsers;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    @JoinTable(name = "users_comments_dislikes",
+            joinColumns = @JoinColumn(name = "comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> dislikedUsers;
 
 
     @Column(updatable = false)
