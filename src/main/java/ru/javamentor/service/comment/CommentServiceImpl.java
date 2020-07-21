@@ -168,9 +168,9 @@ public class CommentServiceImpl implements CommentService {
         try {
             Comment comment = commentDAO.getCommentById(commentId);
             boolean isLiked = comment.getLikedUsers()
-                    .stream().filter(u -> u.getUsername().equals(user.getUsername())).count() > 0;
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
             boolean isDisliked = comment.getDislikedUsers()
-                    .stream().filter(u -> u.getUsername().equals(user.getUsername())).count() > 0;
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
 
             if (isLiked) {
                 comment.getLikedUsers().remove(userDAO.getUserById(user.getId()));
@@ -211,9 +211,9 @@ public class CommentServiceImpl implements CommentService {
         try {
             Comment comment = commentDAO.getCommentById(commentId);
             boolean isLiked = comment.getLikedUsers()
-                    .stream().filter(u -> u.getUsername().equals(user.getUsername())).count() > 0;
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
             boolean isDisliked = comment.getDislikedUsers()
-                    .stream().filter(u -> u.getUsername().equals(user.getUsername())).count() > 0;
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
 
             if (isLiked) {
                 comment.getLikedUsers().remove(userDAO.getUserById(user.getId()));
