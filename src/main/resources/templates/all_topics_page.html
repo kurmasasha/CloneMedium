@@ -17,41 +17,7 @@
 
 <div class="d-flex justify-content-center py-5">
   <div id="topics_container" class="container mx-0 py-3">
-    <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
-    <th:block th:each="topic : ${topics}">
-      <div class="card mb-2">
-        <div th:class="${topic.isModerate() ? 'card-header d-flex justify-content-between moderated' : 'card-header d-flex justify-content-between notmoderated'}">
-          <a th:href="${'/topic/' + topic.getId()}">
-            <h5 th:id="${'title_'+ topic.getId()}" th:text="${topic.getTitle()}"></h5>
-          </a>
-          <h6 th:text="${{topic.getDateCreated()}}"></h6>
-        </div>
-        <div class="card-body row">
-          <div class="col-md-4">
-            <img th:src="@{/topic-img/{image}(image=${topic.img})}" class="card-img topic-img">
-          </div>
-          <div class="col-md-6">
-            <th:block th:if="${topic.getAuthors().size() > 1}">
-              <h6 class="card-title"><i>Авторы: </i><a href="#" th:each="user, stat : ${topic.getAuthors()}"
-                                                       th:text="${stat.last} ? ${user.getFirstName() + ' ' + user.getLastName()} : ${user.getFirstName() + ' ' + user.getLastName()} + '/'"></a>
-              </h6>
-            </th:block>
-            <th:block th:unless="${topic.getAuthors().size() > 1}">
-              <h6 class="card-title"><i>Автор: </i> <a href="#" th:each="user : ${topic.getAuthors()}"
-                                                       th:text="${user.getFirstName() + ' ' + user.getLastName()}"></a>
-              </h6>
-            </th:block>
-            <h6 class="card-title"><a href="#" th:each="tag, stat : ${topic.getHashtags()}"
-                                      th:text="${stat.last} ? ${tag.getName()} : ${tag.getName()} + '/'"></a></h6>
-            <p class="card-text" th:id="${'text_'+ topic.getId()}" th:text="${topic.getContent()}"></p>
-            <i class="fa fa-thumbs-o-up" th:id="${'iconLikeOfTopic-' + topic.getId()}"
-               th:attr="data-id=${topic.getId()}"></i>
-            <span class="text-info" id="likeCounter" th:attr="data-id=${topic.getId()}"
-                  th:text="${topic.getLikes()}"></span>
-          </div>
-        </div>
-      </div>
-    </th:block>
+    <!-- Заполняется скриптом getAndPrintAllTopicsByAuthor -->
   </div>
   <div class="my-3">
     <div class="position-fixed">

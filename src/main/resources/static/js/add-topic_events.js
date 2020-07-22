@@ -42,7 +42,6 @@ $('#add_topic_button').on('click', async function(event) {
     }
     else
     {
-
         await updateTopic(topic_id, title, content, completed, img);
     }
 });

@@ -80,8 +80,6 @@ public class PageController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
-        List<Topic> topics = topicService.getModeratedTopics();
-        model.addAttribute("topics", topics);
         return "all_topics_page";
     }
 

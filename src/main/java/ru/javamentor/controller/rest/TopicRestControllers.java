@@ -1,5 +1,7 @@
 package ru.javamentor.controller.rest;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,12 @@ import ru.javamentor.util.img.LoaderImages;
 import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,6 +37,7 @@ import java.util.Set;
  * @version 1.0
  * @author Java Mentor
  */
+@Slf4j
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
 public class TopicRestControllers {
@@ -226,50 +232,41 @@ public class TopicRestControllers {
     /**
      * метод для обновления топика
      *
-     * @param topic_id - уникальный id бновленного топика
-     * @param title - тема обновленного топика
-     * @param content - содержание обновленного топика
-     * @param completed - готовность обновленного топика
+     * @param topic - обновленный топика
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
-    @PostMapping("/user/topic/update")
-    public ResponseEntity<Object> updateTopic( @RequestParam("topic_id") String topic_id,
-                                               @RequestParam("title") String title,
-                                               @RequestParam("content") String content,
-                                               @RequestParam("completed") boolean completed,
-                                               @RequestParam(required = false) MultipartFile file) {
+    @SneakyThrows
+    @PostMapping(value = "/user/topic/update", headers = {"content-type=multipart/mixed","content-type=multipart/form-data"})
+    public ResponseEntity<Object> updateTopic(@RequestPart("json") @Valid Topic topic,
+                                              @RequestPart(required = false) MultipartFile file,
+                                              Principal principal) {
+        log.debug("From updateTopic in Service the topic id is {} and comment is {}", topic.getId(), topic.getContent());
         String message = "Что то пошло не так! Попробуйте снова";
-        Topic topicById = topicService.getTopicById(Long.parseLong(topic_id));
-        try {
-            // проверка на пустоту title and content
-            topicValidator.checkTitleAndContent(title, content);
-            // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                topicValidator.checkFile(file);
-                if (topicValidator.getError() == null) {
-                    topicById.setImg(loaderImages.upload(file));
-                }
-            }
-            if (topicValidator.getError() != null) {
-                return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
-            }
+        String resultFileName = "no-image.png";
 
-            topicById.setId(Long.parseLong(topic_id));
-            topicById.setTitle(title);
-            topicById.setContent(content);
-            topicById.setCompleted(completed);
-            topicById.setModerate(false);
-            topicById.setDateCreated(topicById.getDateCreated());
-            topicById.setHashtags(topicById.getHashtags());
-            boolean topicIsUpdate = topicService.updateTopic(topicById);
-
-            if (topicIsUpdate) {
-                return new ResponseEntity<>(topicById, HttpStatus.OK);
+        // проверка на пустоту title and content
+        topicValidator.checkTitleAndContent(topic.getTitle(), topic.getContent());
+        // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            topicValidator.checkFile(file);
+            if (topicValidator.getError() == null) {
+                resultFileName = loaderImages.upload(file);
             }
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            // тут мы логируем исключение, а пользователю кинем сообщение
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        if (topicValidator.getError() != null) {
+            return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
+        }
+
+        Set<User> users = new HashSet<>();
+        users.add(userService.getUserByUsername(principal.getName()));
+        topic.setAuthors(users);
+        topic.setDateCreated(LocalDateTime.now());
+        topic.setImg(resultFileName);
+        if (topicService.updateTopic(topic)) {
+            var top = topicService.getTopicById(topic.getId());
+            return new ResponseEntity<>(top, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
     }
 

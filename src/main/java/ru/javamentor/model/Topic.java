@@ -33,7 +33,7 @@ public class Topic {
     @NotNull
     private String title;
 
-    @Column
+    @Column(columnDefinition="mediumtext")
     @NotEmpty
     @NotNull
     private String content;

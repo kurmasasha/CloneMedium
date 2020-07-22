@@ -1,4 +1,4 @@
-function topicInCard(topic) {
+function topicInCardMyTopic(topic) {
     let tags = '';
     $.each(topic.hashtags, function (index, tag) {
         tags += '<a  href ="/topic/find/tag/'+ tag.name + '"> '+ tag.name +' </a>';
@@ -32,6 +32,7 @@ function topicInCard(topic) {
         '<div id="datecreated">'+
         '<h6{color: red}>' + topic.dateCreated + '</h6>' +
         '</div>' +
+        '<button id="modal_edit-topic_button_' + topic.id + '"class="btn btn-success btn-sm rounded-1 editTopicBtn" type="button" data-topic-id="' + topic.id + '" data-toggle="modal" data-target="#modalWindowCreateTopic"  data-placement="top" title="Edit"><i class="fa fa-edit text-white"></i></button>' +
         '</div>' +
         '<div class="card-body row">' +
         '<div class="col-md-4">' +
