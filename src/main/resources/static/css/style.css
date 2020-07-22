@@ -76,6 +76,10 @@ body {
     padding: 5px;
 }
 
+.btn-sm btn-warning {
+    padding-right: 17px;
+}
+
 
 
 

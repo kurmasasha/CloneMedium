@@ -43,7 +43,7 @@ async function getNotificationById(id) {
                 + notification.text
                 + '</strong>' + '</p>'
                 + `<div>`
-                + `<button type="button" class="btn-sm btn-warning delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
+                + `<button type="button" class="btn-sm btn-warning pull-right delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
                 + `</div>`
                 + '</div>' + '</div>';
 
