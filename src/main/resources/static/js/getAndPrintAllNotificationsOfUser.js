@@ -28,17 +28,6 @@ async function getAndPrintAllNotificationsOfUserDropList(container) {
 
                 let notifDL = `<a id="notifIdDl${notification.id}" class="dropdown-item">` + `${notification.title}</a>`
 
-            //         `<div id="notifId${notification.id}">`
-            //         + '<div style="display: flex;">' + '<p>' + '<strong>'
-            //         + notification.text
-            //         + '</strong>' + '</p>'
-            //         + `<div>`
-            //         + `<button type="button" class="btn-sm btn-warning delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
-            //         + `</div>`
-            //         + '</div>' + '</div>';
-            //
-            // <a class="dropdown-item" href="#">Action</a>
-
                 container.append(notifDL);
             })
         })

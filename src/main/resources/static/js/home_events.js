@@ -33,41 +33,20 @@ $(document).ready(function() {
     /**
      *   Работа с модальным окном уведомлений
      */
-    const showNotifModal = $("#showNotifModal");
-    let notifBbody = $('#modalNotifBody');
 
     let notifDropList = $('#dropdownNotifList');
 
+    $('#notification_bell').click(function(e) { e.preventDefault(); return false; });
+
     getAndPrintAllNotificationsOfUserDropList(notifDropList);
 
-    // notifDropList.onclick('show', function (event) {
-    //
-    // });
-
-
-
-    showNotifModal.on('show.bs.modal', function (event) {
-
-       // console.log(notifId);
-
-        // getNotificationById(notifId);
-
-         //getAndPrintAllNotificationsOfUser(notifBbody).then();
-    });
-
     $(document).on('click', '.dropdown-item', function (event) {
-
          let ntfDrpDwnId = $(this).attr('id');
          let notifId = ntfDrpDwnId.replace('notifIdDl', '');
-
-         console.log(ntfDrpDwnId)
-         console.log(notifId)
 
         getNotificationById(notifId)
 
          $('#showNotifModal').modal('show');
-
-
     })
 
     $(document).on('click', '.delete-notif', function (event) {

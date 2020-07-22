@@ -90,7 +90,6 @@ public class NotificationRestController {
      */
     @GetMapping("/user/notification/{id}")
     public ResponseEntity<Notification> getNotificationById(@PathVariable Long id) {
-        System.out.println("Notification ID = " + id);
         return new ResponseEntity<>( notificationService.getById(id), HttpStatus.OK);
     }
 
