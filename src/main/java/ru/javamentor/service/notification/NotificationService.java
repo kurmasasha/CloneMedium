@@ -57,4 +57,28 @@ public interface NotificationService {
      */
     boolean deleteNotification(Notification notification);
 
+    /**
+     * метод для получения списка уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return список нотификаций для залогиненого автора / пользователя
+     */
+    List<Notification> getAllNotificationsByUserId(Long userId);
+
+    /**
+     * метод для получения числа уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return число уведомлений нотификаций для залогиненого автора / пользователя
+     */
+    int getNumberOfNotificationsByUserId(Long userId);
+
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return boolean - удалость удалить уведомление или нет
+     */
+    boolean removeNotificationById(Long id);
+
 }

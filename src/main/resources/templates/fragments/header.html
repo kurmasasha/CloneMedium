@@ -22,26 +22,34 @@
             </li>
         </ul>
 
-
-        <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------------------------------------------>
-
         <!--------------------------------- Кнопка панели администратора --------------------------------------->
         <div sec:authorize="hasAuthority('ADMIN')" class="mr-4">
             <a th:href="@{admin/allUsers}" class="btn btn-warning">Панель администратора</a>
         </div>
         <!--------------------------------------------------------------------------------------------------------->
-        
-        <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------->
 
-        <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto d-flex">
+        <!------------------------------------------------------- Выпадающий список уведомлений --------------------------->
+        <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Уведомления
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownNotifList">
+                </div>
+            </div>
+        </ul>
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!------------------------------------------------------- Колокольчик + счётчик уведомлений --------------------------->
+        <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto d-flex" id="ulNotifBell">
             <li id="notification_bell" class="nav-item">
-                <a class="navbar-brand col-2 p-0" href="/notifications">
+                <a class="navbar-brand col-2 p-0" href="#" id="showTheBell" data-toggle="modal" data-target="#showNotifModal">
                     <i  id="notif_bell" class="fa fa-bell" style="font-size:24px;color:green"> </i>
                     <span id="notif_counter" class="badge"> </span>
                 </a>
             </li>
         </ul>
-        <!------------------------------------------------------------------------------------------------------------------------------------------------>
+        <!--------------------------------------------------------------------------------------------------------------------->
 
         <ul class="navbar-nav mr-auto">
             <!--------------------------------- Форма поиска топиков по хэштегу --------------------------------------->

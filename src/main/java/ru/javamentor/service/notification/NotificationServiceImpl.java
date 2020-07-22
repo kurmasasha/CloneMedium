@@ -134,4 +134,44 @@ public class NotificationServiceImpl implements NotificationService {
             throw new RuntimeException();
         }
     }
+
+    /**
+     * метод для получения списка уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return список нотификаций для залогиненого автора / пользователя
+     */
+    @Override
+    public List<Notification> getAllNotificationsByUserId(Long userId) {
+        List<Notification> ntfLst = notificationDao.getAllNotificationsByUserId(userId);
+        log.info("for user ID  = {userId} derived {ntfSize} notifications", userId, ntfLst.size());
+        return ntfLst;
+    }
+
+    /**
+     * метод для получения числа уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return число уведомлений нотификаций для залогиненого автора / пользователя
+     */
+    @Override
+    public int getNumberOfNotificationsByUserId(Long userId) {
+        int nbrNtfs = notificationDao.getNumberOfNotificationsByUserId(userId);
+        log.info("for user ID  = " + userId + " derived " + nbrNtfs + " notifications");
+        return nbrNtfs;
+    }
+
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return boolean - удалость удалить уведомление или нет
+     */
+    @Transactional
+    @Override
+    public boolean removeNotificationById(Long id) {
+        notificationDao.removeNotificationById(id);
+        log.info("IN removeNotificationById - notification with Id: {} successfully deleted", id);
+        return true;
+    }
 }

@@ -24,4 +24,28 @@ public interface NotificationDao {
     void addNotification(Notification notification);
 
     void deleteNotification(Notification notification);
+
+    /**
+     * метод для получения списка уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return список нотификаций для залогиненого автора / пользователя
+     */
+    List<Notification> getAllNotificationsByUserId(Long userId);
+
+    /**
+     * метод для получения числа уведомлений для залогиненого автора / пользователя ( по user.id )
+     *
+     * @param userId - id автора / пользователя
+     * @return число нотификаций для залогиненого автора / пользователя
+     */
+    int getNumberOfNotificationsByUserId(Long userId);
+
+    /**
+     * метод для удаления уведомления
+     *
+     * @param id - уникальный id уведомления
+     * @return void
+     */
+    void removeNotificationById(Long id);
 }
