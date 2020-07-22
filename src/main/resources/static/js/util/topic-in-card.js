@@ -24,10 +24,10 @@ function topicInCard(topic) {
     }
 
     let card =
-        '<div class="card mb-2 mt-0">' +
+        '<div class="card mb-2 mt-0" id="topic_'+ topic.id +'">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
         '<a href="/topic/' + topic.id + '">' +
-        '<h5 class="card-title-onCard">' + topic.title + '</h5>' +
+        '<h5 id="title_'+ topic.id +'">' + topic.title + '</h5>' +
         '</a>' +
         '<div id="datecreated">'+
         '<h6{color: red}>' + topic.dateCreated + '</h6>' +
@@ -38,9 +38,9 @@ function topicInCard(topic) {
         `<img src="/topic-img/${topic.img}" class="card-img topic-img">` +
         '</div>' +
         '<div class="col-md-6">' +
-        '<h6 class="card-author-onCard">' + author_label + authors + '</h6>' +
-        '<h6 class="card-tag-onCard">' + tags + '</h6>' +
-        '<p class="card-text-onCard">' + linkify(topic.content) + '</p>' +
+        '<h6 class="card-title">' + author_label + authors + '</h6>' +
+        '<h6 class="card-title">' + tags + '</h6>' +
+        '<p class="card-text" id="text_'+ topic.id +'">' + linkify(topic.content) + '</p>' +
         `<i class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></i>` +
         `<span class="text-info" id="likeCounter" data-id="${topic.id}">${topic.likes}</span>` +
         '</div>' +

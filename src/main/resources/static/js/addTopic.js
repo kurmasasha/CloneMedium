@@ -33,13 +33,6 @@ async function addTopic(title, content, completed, img) {
 
 async function updateTopic(topic_id, title, content, completed, img) {
 
-    // const formData = new FormData();
-    // formData.append('topic_id', topic_id)
-    // formData.append('title', title)
-    // formData.append('content', content)
-    // formData.append('completed', completed)
-    // formData.append('file', img)
-
     let ids = $("#topic_id").val()
     let tit = $("#topic_title").val()
     let cont = $("#topic_content").val()
@@ -70,7 +63,6 @@ async function updateTopic(topic_id, title, content, completed, img) {
         enctype: 'multipart/form-data',
         headers: {
             'Accept': 'application/json',
-            //'Content-Type': 'multipart/form-data'
         },
         mode: 'cors',
         body: formDataStp
