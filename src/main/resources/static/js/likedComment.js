@@ -28,7 +28,7 @@ $(document).ready(async function () {
 
     async function liked(url, likeCounter, dislikeCounter) {
         try {
-            let response = await fetch(url)
+            let response = await fetch(url);
             if (response.ok) {
                 let comment = await response.json();
                 likeCounter.html(comment.likes);
