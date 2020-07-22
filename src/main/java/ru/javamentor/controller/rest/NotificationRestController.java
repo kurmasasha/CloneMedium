@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Notification;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.NotificationService;
 import ru.javamentor.service.UserService;
@@ -79,6 +80,18 @@ public class NotificationRestController {
         } else {
             return new ResponseEntity<>("You can't delete the notification because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * метод для получения уведомления по id
+     *
+     * @param id - уникальный id уведомления
+     * @return ResponseEntity, который содержит уведомление и статус ответа ОК
+     */
+    @GetMapping("/user/notification/{id}")
+    public ResponseEntity<Notification> getNotificationById(@PathVariable Long id) {
+        System.out.println("Notification ID = " + id);
+        return new ResponseEntity<>( notificationService.getById(id), HttpStatus.OK);
     }
 
 }

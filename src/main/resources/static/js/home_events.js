@@ -36,9 +36,39 @@ $(document).ready(function() {
     const showNotifModal = $("#showNotifModal");
     let notifBbody = $('#modalNotifBody');
 
+    let notifDropList = $('#dropdownNotifList');
+
+    getAndPrintAllNotificationsOfUserDropList(notifDropList);
+
+    // notifDropList.onclick('show', function (event) {
+    //
+    // });
+
+
+
     showNotifModal.on('show.bs.modal', function (event) {
-         getAndPrintAllNotificationsOfUser(notifBbody).then();
+
+       // console.log(notifId);
+
+        // getNotificationById(notifId);
+
+         //getAndPrintAllNotificationsOfUser(notifBbody).then();
     });
+
+    $(document).on('click', '.dropdown-item', function (event) {
+
+         let ntfDrpDwnId = $(this).attr('id');
+         let notifId = ntfDrpDwnId.replace('notifIdDl', '');
+
+         console.log(ntfDrpDwnId)
+         console.log(notifId)
+
+        getNotificationById(notifId)
+
+         $('#showNotifModal').modal('show');
+
+
+    })
 
     $(document).on('click', '.delete-notif', function (event) {
 
@@ -50,6 +80,7 @@ $(document).ready(function() {
         }).then( response => {
             if (response.ok) {
                 $('#notifId' + id).detach();
+                $('#notifIdDl' + id).detach();
                 window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
 
             }

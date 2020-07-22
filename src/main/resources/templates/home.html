@@ -32,6 +32,10 @@
 <div th:replace="fragments/notification-modal :: notification_modal"></div>
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<!--------------------------------------------- Выподающий список уведомлений ----------------------------------------->
+<div th:replace="fragments/notification-list :: notification_drop_list"></div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
@@ -45,5 +49,6 @@
 <script src="/js/parseText.js"></script>
 <script src="/js/home_events.js"></script>
 <script src="/js/likedTopic.js"></script>
+
 </body>
 </html>

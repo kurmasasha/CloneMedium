@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 <nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="collapse navbar-collapse d-flex" id="navbarCollapse">
+    <ul class="collapse navbar-collapse d-flex" id="navbarCollapse">
         <ul class="navbar-nav mr-auto d-flex flex-grow-1">
             <div style="float:left">
                 <a class="navbar-brand col-2 p-0" href="/">
@@ -19,14 +19,35 @@
             </li>
         </ul>
 
+
+        <!------------------------------------------------------- Тест объект + счётчик уведомлений --------------------------->
+        <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto">
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Уведомления
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownNotifList">
+
+<!--                    <a class="dropdown-item" href="#">Action</a>-->
+<!--                    <a class="dropdown-item" href="#">Another action</a>-->
+<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+
+                </div>
+            </div>
+
+        </ul>
+        <!--------------------------------------------------------------------------------------------------------------------->
+
+
         <!--------------------------------- Кнопка панели администратора --------------------------------------->
         <div sec:authorize="hasAuthority('ADMIN')" class="mr-4">
             <a th:href="@{admin/allUsers}" class="btn btn-warning">Панель администратора</a>
         </div>
         <!--------------------------------------------------------------------------------------------------------->
-        
-        <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------->
 
+        
+        <!------------------------------------------------------- Колокольчик + счётчик уведомлений --------------------------->
         <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto d-flex">
             <li id="notification_bell" class="nav-item">
                 <a class="navbar-brand col-2 p-0" href="#" id="showTheBell" data-toggle="modal" data-target="#showNotifModal">
@@ -35,7 +56,7 @@
                 </a>
             </li>
         </ul>
-        <!------------------------------------------------------------------------------------------------------------------------------------------------>
+        <!--------------------------------------------------------------------------------------------------------------------->
 
         <ul class="navbar-nav mr-auto">
             <!--------------------------------- Форма поиска топиков по хэштегу --------------------------------------->
@@ -55,7 +76,7 @@
                 <a class="nav-link" href="/login">Войти</a>
             </li>
         </ul>
-    </div>
+    </ul>
 </nav>
 
 </body>
