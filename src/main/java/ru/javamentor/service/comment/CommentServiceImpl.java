@@ -35,9 +35,9 @@ public class CommentServiceImpl implements CommentService {
     /**
      * метод для добавления комментария
      *
-     * @param text   - добавляемый текст комментария
+     * @param text - добавляемый текст комментария
      * @param author - добавляемый автор комментария
-     * @param topic  - добавляемая статья, которую прокомментировали
+     * @param topic - добавляемая статья, которую прокомментировали
      * @return Comment - возвращает добавленный комментарий
      */
     @Transactional
@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
      * метод для обновления комментария
      *
      * @param comment - обновленный комментарий
-     * @param user    - пользователь обновляющий комментарий
+     * @param user - пользователь обновляющий комментарий
      * @return boolean - удалость обновить комментарий или нет
      */
     @Transactional
