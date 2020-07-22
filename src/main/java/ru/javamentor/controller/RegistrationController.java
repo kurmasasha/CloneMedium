@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.role.RoleService;
+import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormAddUser;
 
 import javax.validation.Valid;

@@ -16,16 +16,15 @@
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container">
     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
-        <h5 class="card-header" id="topicAuthor"></h5>
+        <h5 class="card-header-author" id="topicAuthor"></h5>
         <div class="card-body row">
             <div class="col-md-3">
                 <img class="card-img topic-img" id="topicImg">
             </div>
             <div class="col-md-7">
-                <h5 class="card-title" id="topicTitle"></h5>
-                <div id="hashtags" class="d-flex flex-wrap">
-                </div>
-                <p class="card-text" id="topicContent"></p>
+                <h5 class="card-title-onTopic" id="topicTitle"></h5>
+                <div id="hashtags" class="d-flex flex-wrap"></div>
+                <p class="card-text-onTopic" id="topicContent"></p>
             </div>
         </div>
     </div>
@@ -36,7 +35,7 @@
             <form>
                 <div class="form-group" style="margin: 0">
                     <textarea class="form-control" id="textareaResize" rows="1" style="resize:none; overflow: hidden;"
-                              placeholder="Добавьте Ваш комментарий" name="comment" required="" ></textarea>
+                              placeholder="Добавьте Ваш комментарий" name="comment" required=""></textarea>
                 </div>
                 <!-- Кнопка добавления коммента через скрипт addComment-->
                 <div class="form-group">
@@ -57,7 +56,7 @@
             <th:block th:each="comment: ${comments}">
                 <div class="card mb-2">
                     <div class="card-header d-flex justify-content-between">
-                        <h6 class="card-title"
+                        <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
                         <div id="datecreated">
                         <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>

@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javamentor.dao.CommentDAO;
+import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
+import ru.javamentor.service.comment.CommentService;
 
 import javax.persistence.TransactionRequiredException;
 import java.time.LocalDateTime;

@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Theme;
-import ru.javamentor.service.ThemeService;
+import ru.javamentor.service.theme.ThemeService;
 
 /**
  * Rest контроллер для тем

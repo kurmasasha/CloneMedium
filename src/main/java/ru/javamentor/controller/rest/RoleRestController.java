@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
-import ru.javamentor.service.RoleService;
+import ru.javamentor.service.role.RoleService;
 
 import java.util.List;
 
