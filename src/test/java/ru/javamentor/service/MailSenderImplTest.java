@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javamentor.service.mailSender.MailSender;
 
 import java.util.Objects;
 

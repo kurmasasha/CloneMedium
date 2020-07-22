@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javamentor.dao.NotificationDaoImpl;
+import ru.javamentor.dao.notification.NotificationDaoImpl;
 import ru.javamentor.model.Notification;
+import ru.javamentor.service.notification.NotificationServiceImpl;
 
 import javax.persistence.TransactionRequiredException;
 import java.util.ArrayList;

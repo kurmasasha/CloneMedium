@@ -6,12 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
-import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
-import ru.javamentor.service.CommentService;
-import ru.javamentor.service.ThemeService;
-import ru.javamentor.service.TopicService;
-import ru.javamentor.service.UserService;
+import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.theme.ThemeService;
+import ru.javamentor.service.topic.TopicService;
+import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
