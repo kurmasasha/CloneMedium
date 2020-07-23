@@ -11,6 +11,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
@@ -27,35 +28,47 @@ import java.util.concurrent.ExecutionException;
  */
 
 @Component
-public class Facebook {
+public class FacebookConfig {
 
     RoleService roleService;
 
-    public Facebook() {
+    public FacebookConfig() {
     }
 
     @Autowired
-    public Facebook(RoleService roleService) {
+    public FacebookConfig(RoleService roleService) {
         this.roleService = roleService;
     }
 
-    public final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email";
+    private final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email";
 
-    final String clientId = "307372773616495";
-    final String clientSecret = "b8687788f300561bb70131728272e269";
-    final String customScope = "email";
+    @Value("${facebook.clientId}")
+    private String clientId;
+
+    @Value("${facebook.clientSecret}")
+    private String clientSecret;
+
+    @Value("${facebook.customScope}")
+    private String customScope;
+
+    @Value("${facebook.callbackUrl}")
+    private String callbackUrl;
 
     @Getter
-    final OAuth20Service service = new ServiceBuilder(clientId)
-            .apiSecret(clientSecret)
-            .defaultScope(customScope) // replace with desired scope
-            .callback("http://localhost:5050/authorization/returnCodeFacebook")
-            .build(FacebookApi.instance());
+    private OAuth20Service service;
 
-    @Getter
-    final String authorizationUrl = service.createAuthorizationUrlBuilder()
-            .scope(customScope)
-            .build();
+    public String getAuthorizationUrl(){
+        if(this.service == null) {
+            this.service = new ServiceBuilder(clientId)
+                    .apiSecret(clientSecret)
+                    .defaultScope(customScope) // replace with desired scope
+                    .callback(callbackUrl)
+                    .build(FacebookApi.instance());
+        }
+        return this.service.createAuthorizationUrlBuilder()
+                .scope(customScope)
+                .build();
+    }
 
     /**
      * Метод для получения OAuth2AccessToken от FB
