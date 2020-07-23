@@ -5,18 +5,21 @@
 <!---------------------------------------------- Модальное окно уведомлений ------------------------------------------->
 <div th:fragment="notification_modal">
     <div class="modal right fade" id="showNotifModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-right modal-notify modal-info" role="document">
+        <div class="modal-dialog modal-right modal-notify modal-info" role="dialog" data-backdrop="static" aria-hidden="true" data-keyboard="false">
             <div class="modal-content">
                 <!--Header-->
-                <div class="modal-header">
-                    <h4 class="modal-title">Уведомления</h4>
+                <div class="modal-header" id="notifTitleInModal">
+                    <h4 class="modal-title">Уведомление</h4>
                 </div>
                 <!--Body-->
                 <div class="modal-body" id="modalNotifBody">
 
                 </div>
                 <!--Footer-->
-                <div class="modal-footer">
+                <div class="modal-footer" id="modalNotifFooter">
+                    <div id="modNtfFtrFrstPos">
+
+                    </div>
                     <button type="button" class="btn btn-outline-primary" id="modalNotifCloseButton" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>

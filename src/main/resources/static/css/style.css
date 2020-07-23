@@ -76,10 +76,18 @@ body {
     padding: 5px;
 }
 
-.btn-sm btn-warning {
-    padding-right: 17px;
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.modal-body {
+    display: flex;
+    justify-content: left;
+    align-items: initial;
+    background: lightgoldenrodyellow;
+}
 
 
 

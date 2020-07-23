@@ -7,11 +7,17 @@ $(document).ready(function(){
     });
 
     /**
-     *  обновляем "колокольчик" - счётчик уведомлений
-     *  имитация нотификации
+     *  обновляется "колокольчик" - счётчик уведомлений
      */
     window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
     setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 5000);
+
+    /**
+     *  обновляется выпадающий список уведомлений
+     */
+    $('#dropdownMenuButton').on('click', function () {
+        getAndPrintAllNotificationsOfUserDropList($('#dropdownNotifList')).then();
+    })
 
     /**
      * Нажатие на кнопку поиска по хэштегу

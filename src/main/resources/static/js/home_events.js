@@ -11,11 +11,7 @@ $(document).ready(function(){
      *   Работа с модальным окном уведомлений
      */
 
-    let notifDropList = $('#dropdownNotifList');
-
     $('#notification_bell').click(function(e) { e.preventDefault(); return false; });
-
-    getAndPrintAllNotificationsOfUserDropList(notifDropList);
 
     $(document).on('click', '.dropdown-item', function (event) {
         let ntfDrpDwnId = $(this).attr('id');
@@ -38,14 +34,20 @@ $(document).ready(function(){
                 $('#notifId' + id).detach();
                 $('#notifIdDl' + id).detach();
                 window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-
             }
         })
     })
 
     $('#modalNotifCloseButton').on('click', function () {
         $('#modalNotifBody').empty();
+        $('.delete-notif').detach();
     });
     // ------------------- Работа с модальным окном уведомлений -----------------------
+
+    document.body.addEventListener("click", function (evt) {
+        $('#modalNotifBody').empty();
+        $('.delete-notif').detach();
+        $('#dropdownNotifList').empty();
+    });
 
 });

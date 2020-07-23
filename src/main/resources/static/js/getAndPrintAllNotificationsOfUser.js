@@ -38,18 +38,21 @@ async function getNotificationById(id) {
         .then(result => result.json())
         .then(notification => {
 
-            let notif = `<div id="notifId${notification.id}">`
+            let notifText = `<div id="notifId${notification.id}">`
                 + '<div style="display: flex;">' + '<p>' + '<strong>'
                 + notification.text
                 + '</strong>' + '</p>'
-                + `<div>`
-                + `<button type="button" class="btn-sm btn-warning pull-right delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
-                + `</div>`
                 + '</div>' + '</div>';
 
-            let notifBbody = $('#modalNotifBody');
+            let notifBtn = `<div>`
+                + `<button type="button" class="btn-sm btn-success pull-right delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
+                + `</div>`;
 
-            notifBbody.append(notif);
+            let notifBbody = $('#modalNotifBody');
+            let notifFooter = $('#modNtfFtrFrstPos');
+
+            notifBbody.append(notifText);
+            notifFooter.append(notifBtn);
 
         })
 }

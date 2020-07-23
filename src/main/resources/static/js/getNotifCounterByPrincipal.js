@@ -1,5 +1,4 @@
-
-// имитация нотификации; скрипт-заглушка
+// обоновляет колокольчик - количество уведомлений в базе для юзера
 
 async function getNumberOfNotificationsOfUser(container) {
     fetch(`/api/user/MyNotifsNbr`)
