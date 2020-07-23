@@ -1,5 +1,6 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -65,6 +66,10 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_themes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
     private Set<Theme> themes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<PasswordRecoveryToken> recoveryTokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
