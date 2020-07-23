@@ -5,9 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.User;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
@@ -26,11 +24,11 @@ public class PasswordRecoveryRestController {
         this.userService = userService;
     }
 
-    @GetMapping("/recoveryPassword/getCode")
-    public ResponseEntity<PasswordRecoveryToken> sendRecoveryToken(@AuthenticationPrincipal User user) {
+    @PostMapping("/recoveryPassword/getCode")
+    public ResponseEntity<PasswordRecoveryToken> sendRecoveryToken(@RequestParam String email) {
+        User user = userService.getUserByEmail(email);
         if (user == null) {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            user = userService.getUserByEmail(username);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         PasswordRecoveryToken passwordRecoveryToken = new PasswordRecoveryToken(user);
         passwordRecoveryTokenService.addPasswordRecoveryToken(passwordRecoveryToken);
