@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface PasswordRecoveryTokenDao {
     /**
-     * метод для получения всех токенаов
+     * метод для получения всех токенов
      */
     List<PasswordRecoveryToken> getAllPasswordRecoveryTokens();
 
