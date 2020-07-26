@@ -31,7 +31,7 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
         this.passwordEncoder = passwordEncoder;
     }
     /**
-     * метод для добавления для всего процесса добавления и отправки токена
+     * метод для всего процесса добавления и отправки токена
      *
      * @param passwordRecoveryToken - токен
      */
