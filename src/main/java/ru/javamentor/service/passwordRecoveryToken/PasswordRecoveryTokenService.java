@@ -5,7 +5,7 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import java.util.List;
 
 /**
- * Класс для сервис ключам восстанволения пароля
+ * Класс для сервиса ключей восстановления пароля
  *
  * @author Java Mentor
  * @version 1.0
