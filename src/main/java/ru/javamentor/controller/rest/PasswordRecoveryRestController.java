@@ -15,8 +15,8 @@ import ru.javamentor.service.user.UserService;
 @RequestMapping("/api")
 public class PasswordRecoveryRestController {
 
-    private PasswordRecoveryTokenService passwordRecoveryTokenService;
-    private UserService userService;
+    private final PasswordRecoveryTokenService passwordRecoveryTokenService;
+    private final UserService userService;
 
     @Autowired
     public PasswordRecoveryRestController(PasswordRecoveryTokenService passwordRecoveryTokenService, UserService userService) {
