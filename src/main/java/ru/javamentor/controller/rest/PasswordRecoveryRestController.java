@@ -24,8 +24,8 @@ public class PasswordRecoveryRestController {
         this.userService = userService;
     }
 
-    @PostMapping("/recoveryPassword/getCode")
-    public ResponseEntity<PasswordRecoveryToken> sendRecoveryToken(@RequestParam String email) {
+    @PostMapping("/free-user/recoveryPassword/getCode")
+    public ResponseEntity<PasswordRecoveryToken> sendRecoveryToken(@RequestParam("email") String email) {
         User user = userService.getUserByEmail(email);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
