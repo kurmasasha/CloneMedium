@@ -40,9 +40,46 @@
             </div>
         </div>
 
+        <p>
+            <a data-toggle="modal"
+               href="#forgotPassword">Забыли пароль?</a>
+        </p>
+
     </div>
 </form>
-<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--------------------------------------------Модальное окно для восстановления пароля------------------------------------------------------------------------------------------------->
+<div id="forgotPassword" class="modal recoverPass" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Восстановление пароля</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="Forgot-Password-Form" role="form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                            <input name="email" id="email" type="email" class="form-control input-lg" placeholder="Введите E-mail">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success btn-block btn-lg" id="recoverPassword">
+                        <span class="glyphicon glyphicon-send"></span> Отправить
+                    </button>
+                    <div class="modal-footer">
+                        <p>Если Вы не зарегистрированы, нажмите сюда <a href="/registration">Регистрация</a></p>
+                    </div>
+                    <div id="messageForUser"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------------------------Модальное окно ---------------------------------------------------------------------------------------------------------------->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="js/recoverPass.js"></script>
+
 </body>
 </html>
