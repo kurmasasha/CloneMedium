@@ -1,5 +1,5 @@
 $(document).ready(async function () {
-    $('#single_topic_container').delegate('.fa', 'click', function () {
+    $('#single_topic_container').delegate('.fa_topic', 'click', function () {
 
         $('#authorizationModal').modal('show');
 

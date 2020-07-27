@@ -27,11 +27,11 @@
                 <p class="card-text-onTopic" id="topicContent"></p>
 
                 <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
-                    <i class="fa fa-thumbs-o-up" th:data-id="${topic.getId()}"></i>
+                    <i class="fa fa-thumbs-o-up fa_topic" th:data-id="${topic.getId()}"></i>
                     <span id="likeCounter" th:text="${topic.getLikes()}"></span>
                 </div>
                 <div class="block-dislike" th:classappend="${#lists.contains(topic.dislikedUsers, user)} ? 'active' : ''">
-                    <i class="fa fa-thumbs-o-down" th:data-id="${topic.getId()}"></i>
+                    <i class="fa fa-thumbs-o-down fa_topic" th:data-id="${topic.getId()}"></i>
                     <span id="dislikeCounter" th:text="${topic.getDislikes()}"></span>
                 </div>
 
