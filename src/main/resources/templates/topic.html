@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Topic page</title>
 </head>
@@ -59,11 +60,21 @@
                         <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
                         <div id="datecreated">
-                        <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
+                            <h6 th:text="${#temporals.format(comment.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
                         </div>
                     </div>
                     <div class="card-body">
                         <p class="card-text" th:utext="${comment.getText()}"></p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="like" th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
+                            <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}" th:text="${comment.getLikes()}"></span>
+                        </span>
+                        <span class="dislike" th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-down"  th:data-id="${comment.getId()}"></i>
+                            <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}" th:text="${comment.getDislikes()}"></span>
+                        </span>
                     </div>
                 </div>
             </th:block>
@@ -77,7 +88,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h2>Войдите, чтобы отправлять комментарии</h2>
+                <h2>Войдите, чтобы отправлять и оценивать комментарии</h2>
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-around">
@@ -88,6 +99,7 @@
         </div>
     </div>
 </div>
+
 <!--------------------------------------------------------------------------------------------------------------------->
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -99,6 +111,7 @@
 <script src="/js/util/comment-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/util/counterForSymbols.js"></script>
+<script src="/js/likedComment.js"></script>
 
 </body>
 </html>
