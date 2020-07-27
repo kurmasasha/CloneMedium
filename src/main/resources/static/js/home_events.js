@@ -13,10 +13,6 @@ $(document).ready(function(){
 
     $('#notification_bell').click(function(e) { e.preventDefault(); return false; });
 
-    // $('#dropdownMenuButton').click(function (e) {
-    //
-    // })
-
     $(document).on('click', '.dropdown-item', function (event) {
         let ntfDrpDwnId = $(this).attr('id');
         let notifId = ntfDrpDwnId.replace('notifIdDl', '');
