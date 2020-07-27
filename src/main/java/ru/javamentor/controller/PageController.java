@@ -1,11 +1,15 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
 import ru.javamentor.service.theme.ThemeService;
@@ -89,7 +93,15 @@ public class PageController {
      * @return страницу для отображения топика
      */
     @GetMapping("/topic/{id}")
-    public String topicPage(@PathVariable Long id, Model model) {
+    public String topicPage(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
+        if(user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            model.addAttribute("user", userService.getUserByEmail(auth.getName()));
+        }else{
+            model.addAttribute("user", user);
+        }
+        Topic topic = topicService.getTopicById(id);
+        model.addAttribute("topic", topic);
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
         model.addAttribute("comments", comments);

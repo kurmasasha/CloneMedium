@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Topic page</title>
 </head>
@@ -14,7 +14,7 @@
 <nav th:replace="fragments/header :: home_header"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Топики ------------------------------------------------------>
-<div class="container">
+<div class="container" id="single_topic_container">
     <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
         <h5 class="card-header-author" id="topicAuthor"></h5>
         <div class="card-body row">
@@ -25,6 +25,16 @@
                 <h5 class="card-title-onTopic" id="topicTitle"></h5>
                 <div id="hashtags" class="d-flex flex-wrap"></div>
                 <p class="card-text-onTopic" id="topicContent"></p>
+
+                <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
+                    <i class="fa fa-thumbs-o-up" th:data-id="${topic.getId()}"></i>
+                    <span id="likeCounter" th:text="${topic.getLikes()}"></span>
+                </div>
+                <div class="block-dislike" th:classappend="${#lists.contains(topic.dislikedUsers, user)} ? 'active' : ''">
+                    <i class="fa fa-thumbs-o-down" th:data-id="${topic.getId()}"></i>
+                    <span id="dislikeCounter" th:text="${topic.getDislikes()}"></span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -99,6 +109,6 @@
 <script src="/js/util/comment-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/util/counterForSymbols.js"></script>
-
+<script src="/js/likedTopic.js"></script>
 </body>
 </html>

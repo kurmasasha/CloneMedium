@@ -55,6 +55,22 @@ public class Topic {
     private Integer likes = 0;
 
     @Column
+    @NotNull
+    private Integer dislikes = 0;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_topics_likes",
+            joinColumns = @JoinColumn(name = "topic_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> likedUsers;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_topics_dislikes",
+            joinColumns = @JoinColumn(name = "topic_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> dislikedUsers;
+
+    @Column
     private String img;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -1,5 +1,6 @@
 package ru.javamentor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -57,6 +58,14 @@ public class User implements UserDetails {
 
     @Column
     private boolean isActivated;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "likedUsers")
+    private Set<Topic> likedTopics;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "dislikedUsers")
+    private Set<Topic> dislikedTopics;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
