@@ -13,6 +13,10 @@ $(document).ready(function(){
 
     $('#notification_bell').click(function(e) { e.preventDefault(); return false; });
 
+    // $('#dropdownMenuButton').click(function (e) {
+    //
+    // })
+
     $(document).on('click', '.dropdown-item', function (event) {
         let ntfDrpDwnId = $(this).attr('id');
         let notifId = ntfDrpDwnId.replace('notifIdDl', '');
@@ -36,7 +40,21 @@ $(document).ready(function(){
                 window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
             }
         })
+
+        $('#showNotifModal').modal('hide');
+
     })
+
+    let dropdownBtnCounter = 0;
+    let drpDwnBtn = document.querySelector(`#dropdownMenuButton`);
+    drpDwnBtn.addEventListener('click', evt => {
+        dropdownBtnCounter++;
+        if (dropdownBtnCounter === 1) {
+            dropdownBtnCounter = 0;
+            $('#dropdownNotifList').empty();
+        }
+    });
+
 
     $('#modalNotifCloseButton').on('click', function () {
         $('#modalNotifBody').empty();
