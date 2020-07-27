@@ -84,4 +84,9 @@ body {
     color: dodgerblue;
 }
 
+#add_comment_button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 
