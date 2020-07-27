@@ -10,7 +10,8 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 import ru.javamentor.service.role.RoleService;
@@ -19,35 +20,47 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-@Component
-public class Google {
 
-    RoleService roleService;
+@Configuration
+@Getter
+public class GoogleConfig {
 
-    public Google() {}
+    private final String PROTECTED_RESOURCE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
-    @Autowired
-    public Google(RoleService roleService) {
-        this.roleService = roleService;
+    @Value("${google.clientId}")
+    private String clientId;
+
+    @Value("${google.clientSecret}")
+    private String clientSecret;
+
+    @Value("${google.callbackUrl}")
+    private String callbackUrl;
+
+    private final RoleService roleService;
+
+    private OAuth20Service service;
+
+    public String getAuthorizationUrl() {
+        if (this.service == null) {
+            this.service = new ServiceBuilder(clientId)
+                    .apiSecret(clientSecret)
+                    .defaultScope("openid profile email") // replace with desired scope
+                    .callback(callbackUrl)
+                    .build(GoogleApi20.instance());
+        }
+        return service.createAuthorizationUrlBuilder()
+                .state(secretState)
+                .build();
     }
 
-    public final String PROTECTED_RESOURCE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
-    final String clientId = "483915897030-pt9gdsr0s1phvjadc7kdi1t82j1jfnvs.apps.googleusercontent.com";
-    final String clientSecret = "2lZgztTFGbD9JGOJxB8QEPvd";
-    final String callbackUrl = "http://localhost:5050/authorization/returnCodeGoogle";
+
     final String secretState = "secret" + new Random().nextInt(999_999);
 
-    @Getter
-    final OAuth20Service service = new ServiceBuilder(clientId)
-            .apiSecret(clientSecret)
-            .defaultScope("openid profile email") // replace with desired scope
-            .callback(callbackUrl)
-            .build(GoogleApi20.instance());
+    @Autowired
+    public GoogleConfig(RoleService roleService) {
+        this.roleService = roleService;
 
-    @Getter
-    final String authorizationUrl = service.createAuthorizationUrlBuilder()
-            .state(secretState)
-            .build();
+    }
 
     public OAuth2AccessToken toGetTokenGoogle(String code) throws InterruptedException, ExecutionException, IOException {
         System.out.println(code);

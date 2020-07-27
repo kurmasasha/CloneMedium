@@ -93,17 +93,18 @@ public class PageController {
      * @return страницу для отображения топика
      */
     @GetMapping("/topic/{id}")
-    public String topicPage(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
-        if(user == null) {
+    public String topicPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
+        if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             model.addAttribute("user", userService.getUserByEmail(auth.getName()));
-        }else{
+        } else {
             model.addAttribute("user", user);
         }
         Topic topic = topicService.getTopicById(id);
         model.addAttribute("topic", topic);
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+
         model.addAttribute("comments", comments);
         return "topic";
     }
