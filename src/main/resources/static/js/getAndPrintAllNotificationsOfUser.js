@@ -44,9 +44,9 @@ async function getNotificationById(id) {
                 + '</strong>' + '</p>'
                 + '</div>' + '</div>';
 
-            let notifBtn = `<div>`
-                + `<button type="button" class="btn-sm btn-success pull-right delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
-                + `</div>`;
+            let notifBtn = `<div id="seenButton">`
+                 + `<button type="button" class="btn-sm btn-success pull-right delete-notif" id='notifDelBtnSubmit${notification.id}'>Просмотрено</button>`
+                 + `</div>`;
 
             let notifBbody = $('#modalNotifBody');
             let notifFooter = $('#modNtfFtrFrstPos');
