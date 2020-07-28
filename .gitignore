@@ -14,8 +14,6 @@ logs/
 src/main/resources/hibernate.properties
 # if you remove the above rule, at least ignore the following:
 
-src/main/resources/db.migration/V1_Create_tables.sql
-
 # User-specific stuff:
 # .idea/workspace.xml
 # .idea/tasks.xml

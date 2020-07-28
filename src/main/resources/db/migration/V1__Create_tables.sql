@@ -5,38 +5,38 @@ create table comments (
     text varchar(2047),
     user_id bigint,
     topic_id bigint,
-    primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (id));
 
 /* Таблица хэштегов */
 create table hashtags (
     id bigint not null auto_increment,
     name varchar(255),
-    primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (id));
 
 /* Таблица связи хэштегов с топиками */
 create table hashtags_topics (
     topic_id bigint not null,
     hashtag_id bigint not null,
-    primary key (hashtag_id, topic_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (hashtag_id, topic_id));
 
 /* Таблица уведомлений */
 create table notifications (
     id bigint not null auto_increment,
     text varchar(2047) not null,
     title varchar(255) not null,
-    user_id bigint, primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    user_id bigint, primary key (id));
 
 /* Таблица ролей */
 create table roles (
     id bigint not null auto_increment,
     name varchar(255),
-    primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (id));
 
 /* Таблица тем */
 create table themes (
     id bigint not null auto_increment,
     name varchar(255) not null,
-    primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (id));
 
 /* Таблица топиков */
 create table topics (
@@ -47,13 +47,13 @@ create table topics (
     is_moderate bit not null,
     likes integer not null,
     title varchar(255) not null,
-    primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (id));
 
 /* Таблица связи топиков с темами */
 create table topics_themes (
     topic_id bigint not null,
     theme_id bigint not null,
-    primary key (theme_id, topic_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (theme_id, topic_id));
 
 /* Таблица пользователей */
 create table users (
@@ -64,19 +64,19 @@ create table users (
     last_name varchar(255) not null,
     password varchar(255) not null,
     username varchar(255) not null,
-    role_id bigint, primary key (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    role_id bigint, primary key (id));
 
 /* Таблица связи пользователей с темами (предпочтения) */
 create table users_themes (
     user_id bigint not null,
     theme_id bigint not null,
-    primary key (user_id, theme_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (user_id, theme_id));
 
 /* Таблица связи пользователей с топиками (авторство) */
 create table users_topics (
     topic_id bigint not null,
     user_id bigint not null,
-    primary key (topic_id, user_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    primary key (topic_id, user_id));
 
 /* Указание уникальности значений колонки 'username' таблицы пользователей */
 alter table users
