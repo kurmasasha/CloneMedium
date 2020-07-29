@@ -180,5 +180,15 @@ public class PageController {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
+
+    /**
+     * метод для страницы всех топиков по теме
+     * @return страницу для показа всех топиков
+     */
+    @GetMapping("/topic/find/theme/{themeId}")
+    public String getPageWithTopicsByTheme(Model model){
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
 }
 

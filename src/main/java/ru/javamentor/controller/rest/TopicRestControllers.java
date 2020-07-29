@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.dto.TopicDto;
+import ru.javamentor.model.Comment;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -290,6 +291,18 @@ public class TopicRestControllers {
     @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
     public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable Long authorId) {
         List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
+        return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
+    }
+
+    /**
+     * Поиск топиков по теме.
+     *
+     * @param themeId - id темы
+     * @return список TopicDto по данной теме
+     */
+    @GetMapping("/free-user/get-all-topics-by-theme/{themeId}")
+    public ResponseEntity<List<TopicDto>> getAllTopicsByThemeId(@PathVariable Set<Long> themeId) {
+        List<Topic> topics = topicService.getModeratedTopicsByThemes(themeId);
         return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
     }
 

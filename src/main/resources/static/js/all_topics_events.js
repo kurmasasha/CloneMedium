@@ -11,6 +11,11 @@ $(document).ready(function() {
         const authorId = arr[3];
         getAndPrintAllTopicsByAuthor(authorId, topicContainer)
             .then();
+    } else if (url.includes("/topic/find/theme/")) {
+        const arr = url.split("/");
+        const themeId = arr[4];
+        getAndPrintAllTopicsByTheme(themeId, topicContainer)
+            .then();
     } else {
         $('#all_page_link').addClass('active');
         getAndPrintModeratedTopics(topicContainer)
