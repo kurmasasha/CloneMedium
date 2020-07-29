@@ -108,25 +108,16 @@ public class PageController {
         Topic topic = topicService.getTopicById(id);
 
         if (topic == null) {
-            model.addAttribute("error", "Такой статьи не существует.");
+            model.addAttribute("error", "Статья не существует.");
             return "topic_error";
 
         } else if (!topic.isModerate()) {
-            if (user != null && user.getRole().getName().equals("ADMIN")) {
-                model.addAttribute("user", user);
-                model.addAttribute("topicId", id);
-                List<Comment> comments = commentService.getAllCommentsByTopicId(id);
-                model.addAttribute("comments", comments);
-                return "topic";
-            }
-
             Long userId = (user != null) ? user.getId() : null;
             if (topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId))) {
-                model.addAttribute("error", "Вы не можете просматривать данную статью.");
+                model.addAttribute("error", "Доступ к статье ограничен.");
                 return "topic_error";
             }
         }
-
 
         model.addAttribute("user", user);
         model.addAttribute("topicId", id);
