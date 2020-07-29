@@ -105,13 +105,13 @@ public class PageController {
         Topic topic = topicService.getTopicById(id);
 
         if (topic == null) {
-            model.addAttribute("error", "Статья не существует.");
+            model.addAttribute("error", "Такой статьи не существует.");
             return "topic_error";
 
         } else if (!topic.isModerate()) {
             Long userId = (user != null) ? user.getId() : null;
             if (topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId))) {
-                model.addAttribute("error", "Доступ к статье ограничен.");
+                model.addAttribute("error", "Вы не можете просматривать данную статью.");
                 return "topic_error";
             }
         }
