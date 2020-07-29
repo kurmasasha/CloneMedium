@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
@@ -31,17 +32,19 @@ public class PageController {
 
     private final UserService userService;
     private final ThemeService themeService;
+    private final RoleService roleService;
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
+        this.roleService = roleService;
     }
 
     /**
@@ -109,12 +112,21 @@ public class PageController {
             return "topic_error";
 
         } else if (!topic.isModerate()) {
+            if (user != null && user.getRole().getName().equals("ADMIN")) {
+                model.addAttribute("user", user);
+                model.addAttribute("topicId", id);
+                List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+                model.addAttribute("comments", comments);
+                return "topic";
+            }
+
             Long userId = (user != null) ? user.getId() : null;
             if (topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId))) {
                 model.addAttribute("error", "Вы не можете просматривать данную статью.");
                 return "topic_error";
             }
         }
+
 
         model.addAttribute("user", user);
         model.addAttribute("topicId", id);
