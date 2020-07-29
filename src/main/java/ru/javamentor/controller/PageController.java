@@ -1,6 +1,11 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -89,9 +94,16 @@ public class PageController {
      * @return страницу для отображения топика
      */
     @GetMapping("/topic/{id}")
-    public String topicPage(@PathVariable Long id, Model model) {
+    public String topicPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            model.addAttribute("user", userService.getUserByEmail(auth.getName()));
+        } else {
+            model.addAttribute("user", user);
+        }
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
+
         model.addAttribute("comments", comments);
         return "topic";
     }
@@ -165,6 +177,16 @@ public class PageController {
      */
     @GetMapping("/topic/find/tag/{tag}")
     public String getPageWithTopicsByHashTag(Model model){
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
+
+    /**
+     * метод для страницы всех топиков по автору
+     * @return страницу для показа всех топиков
+     */
+    @GetMapping("/topic/find/author/{authorId}")
+    public String getPageWithTopicsByAuthor(Model model){
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }

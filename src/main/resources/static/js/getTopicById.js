@@ -4,7 +4,7 @@ async function getTopicById(id) {
         .then(topic => {
             document.getElementById("topicAuthor").append(topic.authors[0].firstName + " " + topic.authors[0].lastName);
             document.getElementById("topicTitle").append(topic.title);
-            document.getElementById("topicContent").append(topic.content);
+           $(document.getElementById("topicContent")).append(linkify(topic.content));
             document.getElementById("topicImg").setAttribute("src",'/topic-img/' + topic.img);
             let hastags = $('#hashtags');
             $.each(topic.hashtags, function (index, value) {

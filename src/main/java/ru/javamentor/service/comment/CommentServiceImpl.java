@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
+import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -22,11 +23,13 @@ import java.util.List;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
 
+    private final UserDAO userDAO;
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(CommentDAO commentDAO) {
+    public CommentServiceImpl(CommentDAO commentDAO, UserDAO userDAO) {
         this.commentDAO = commentDAO;
+        this.userDAO = userDAO;
     }
 
     /**
@@ -151,4 +154,89 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    /**
+     * метод для добавления или удаления лайка к комменту.
+     *
+     * @param commentId -  уникальный id комментария
+     * @param user      - пользователь, добавляющий или удаляющий лайк
+     * @return comment - возвращает изменённый комметарий
+     */
+
+    @Transactional
+    @Override
+    public Comment putLikeToComment(Long commentId, User user) {
+        try {
+            Comment comment = commentDAO.getCommentById(commentId);
+            boolean isLiked = comment.getLikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+            boolean isDisliked = comment.getDislikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+
+            if (isLiked) {
+                comment.getLikedUsers().remove(userDAO.getUserById(user.getId()));
+                comment.setLikes(comment.getLikes() - 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putLikeToComment - likes in comment.id: {} was decreased by user.id: {}", commentId, user.getId());
+            } else if (isDisliked) {
+                comment.getDislikedUsers().remove(userDAO.getUserById(user.getId()));
+                comment.setDislikes(comment.getDislikes() - 1);
+                comment.getLikedUsers().add(user);
+                comment.setLikes(comment.getLikes() + 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putLikeToComment - likes in comment.id: {} was increased by user.id: {}", commentId, user.getId());
+            } else {
+                comment.getLikedUsers().add(user);
+                comment.setLikes(comment.getLikes() + 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putLikeToComment - likes in comment.id: {} was increased by user.id: {}", commentId, user.getId());
+            }
+            return comment;
+        } catch (Exception e) {
+            log.error("Exception while addOrDeleteLike in service with comment.id {}", commentId);
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * метод для добавления или удаления дизлайка к комменту.
+     *
+     * @param commentId -  уникальный id комментария
+     * @param user      - пользователь, добавляющий или удаляющий лайк
+     * @return comment - возвращает изменённый комметарий
+     */
+    @Transactional
+    @Override
+    public Comment putDislikeToComment(Long commentId, User user) {
+
+        try {
+            Comment comment = commentDAO.getCommentById(commentId);
+            boolean isLiked = comment.getLikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+            boolean isDisliked = comment.getDislikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+
+            if (isLiked) {
+                comment.getLikedUsers().remove(userDAO.getUserById(user.getId()));
+                comment.setLikes(comment.getLikes() - 1);
+                comment.getDislikedUsers().add(user);
+                comment.setDislikes(comment.getDislikes() + 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putDislikeToComment - dislikes in comment.id: {} was increased by user.id: {}", commentId, user.getId());
+            } else if (isDisliked) {
+                comment.getDislikedUsers().remove(userDAO.getUserById(user.getId()));
+                comment.setDislikes(comment.getDislikes() - 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putDislikeToComment - dislikes in comment.id: {} was decreased by user.id: {}", commentId, user.getId());
+            } else {
+                comment.getDislikedUsers().add(user);
+                comment.setDislikes(comment.getDislikes() + 1);
+                commentDAO.updateComment(comment);
+                log.debug("IN putDislikeToComment - dislikes in comment.id: {} was increased by user.id: {}", commentId, user.getId());
+            }
+            return comment;
+        } catch (Exception e) {
+            log.error("Exception while addOrDeleteLike in service with comment.id {}", commentId);
+            throw new RuntimeException();
+        }
+    }
 }

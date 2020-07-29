@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.javamentor.config.Facebook;
-import ru.javamentor.config.Google;
-import ru.javamentor.config.VKontakte;
+import ru.javamentor.config.FacebookConfig;
+import ru.javamentor.config.GoogleConfig;
+import ru.javamentor.config.VKontakteConfig;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,15 +22,15 @@ import java.net.URISyntaxException;
 @Controller
 public class AuthorizationControllers {
 
-    private final VKontakte vKontakte;
-    private final Facebook facebook;
-    private final Google google;
+    private final VKontakteConfig vKontakteConfig;
+    private final FacebookConfig facebookConfig;
+    private final GoogleConfig googleConfig;
 
     @Autowired
-    public AuthorizationControllers(VKontakte vKontakte, Facebook facebook, Google google) {
-        this.vKontakte = vKontakte;
-        this.facebook = facebook;
-        this.google = google;
+    public AuthorizationControllers(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, GoogleConfig googleConfig) {
+        this.vKontakteConfig = vKontakteConfig;
+        this.facebookConfig = facebookConfig;
+        this.googleConfig = googleConfig;
     }
 
     /**
@@ -39,7 +39,7 @@ public class AuthorizationControllers {
      */
     @GetMapping("/authorization/vkAuthorization")
     public ResponseEntity<Object> redirectToVK() throws URISyntaxException {
-        URI vk = new URI(vKontakte.getAuthorizationUrl());
+        URI vk = new URI(vKontakteConfig.getAuthorizationUrl());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(vk);
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
@@ -50,7 +50,7 @@ public class AuthorizationControllers {
      */
     @GetMapping("/authorization/facebookAuthorization")
     public ResponseEntity<Object> redirectFacebook() throws URISyntaxException {
-        URI vk = new URI(facebook.getAuthorizationUrl());
+        URI vk = new URI(facebookConfig.getAuthorizationUrl());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(vk);
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
@@ -58,7 +58,7 @@ public class AuthorizationControllers {
 
     @GetMapping("/authorization/googleAuthorization")
     public ResponseEntity<Object> redirectToGoogle() throws URISyntaxException {
-        URI vk = new URI(google.getAuthorizationUrl());
+        URI vk = new URI(googleConfig.getAuthorizationUrl());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(vk);
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);

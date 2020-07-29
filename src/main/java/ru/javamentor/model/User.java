@@ -67,9 +67,18 @@ public class User implements UserDetails {
     @JoinTable(name = "users_themes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
     private Set<Theme> themes;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<PasswordRecoveryToken> recoveryTokens;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy = "likedUsers")
+    private Set<Comment> likedComments;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy = "dislikedUsers")
+    private Set<Comment> dislikedComments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

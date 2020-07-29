@@ -73,5 +73,15 @@ body {
 }
 
 
+#comments_container i.fa {
+    padding: 5px;
+}
+#comments_container i.fa:hover {
+    cursor: pointer;
+}
+
+.rated {
+    color: dodgerblue;
+}
 
 
