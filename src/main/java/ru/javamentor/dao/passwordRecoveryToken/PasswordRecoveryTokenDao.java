@@ -37,7 +37,7 @@ public interface PasswordRecoveryTokenDao {
 
     /**
      * получение токена по хэшу
-     * @param hashMail - хэш, по которому ищем
+     * @param token - хэш, по которому ищем
      */
-    PasswordRecoveryToken getPasswordRecoveryTokenByHash(String hashMail);
+    PasswordRecoveryToken getPasswordRecoveryTokenByToken(String token);
 }

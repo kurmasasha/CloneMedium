@@ -34,8 +34,8 @@ public class PasswordRecoveryTokenDaoImpl implements PasswordRecoveryTokenDao {
     }
 
     @Override
-    public PasswordRecoveryToken getPasswordRecoveryTokenByHash(String hashMail) {
-        return entityManager.createQuery("SELECT p FROM PasswordRecoveryToken p WHERE p.hashEmail = :hashMail", PasswordRecoveryToken.class)
-                .setParameter("hashMail", hashMail).getResultStream().findFirst().orElse(null);
+    public PasswordRecoveryToken getPasswordRecoveryTokenByToken(String token) {
+        return entityManager.createQuery("SELECT p FROM PasswordRecoveryToken p WHERE p.hashEmail = :token", PasswordRecoveryToken.class)
+                .setParameter("token", token).getResultStream().findFirst().orElse(null);
     }
 }

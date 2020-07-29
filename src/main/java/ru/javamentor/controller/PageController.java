@@ -9,19 +9,24 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * Контроллер возвращающий для показа html страниц
+ *
  * @author Java Mentor
  * @version 1.0
  */
@@ -33,14 +38,16 @@ public class PageController {
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
+    private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
+        this.passwordRecoveryTokenService = passwordRecoveryTokenService;
     }
 
     /**
@@ -65,9 +72,10 @@ public class PageController {
         model.addAttribute("flagWar", flagWarning);
         return "login";
     }
-  
+
     /**
      * метод для вида главной страницы
+     *
      * @return главную страницу
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -77,6 +85,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков
+     *
      * @return страницу для показа всех топиков
      */
 
@@ -88,7 +97,8 @@ public class PageController {
 
     /**
      * метод для страницы определенного топика
-     * @param id - id топика
+     *
+     * @param id    - id топика
      * @param model - объект для взаимодействия с видом
      * @return страницу для отображения топика
      */
@@ -111,6 +121,7 @@ public class PageController {
 
     /**
      * метод для страницы всех юзеров для админа
+     *
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
@@ -120,6 +131,7 @@ public class PageController {
 
     /**
      * метод для страницы тем для админа
+     *
      * @return админскую страницу для отображения всех тем
      */
     @GetMapping("/admin/themes")
@@ -130,6 +142,7 @@ public class PageController {
 
     /**
      * метод для страницы неотмодерированных топиков для админа
+     *
      * @return страницу для отображения неотмодерированных топиков для админа
      */
     @GetMapping("/admin/moderate")
@@ -139,7 +152,8 @@ public class PageController {
 
     /**
      * метод для админской странцы редактировани пользователя
-     * @param id - id пользователя которого необходимо редактировать
+     *
+     * @param id    - id пользователя которого необходимо редактировать
      * @param model - объект для взаимодействия с видом
      * @return страницу для отображения формы редактирования юзера
      */
@@ -151,8 +165,32 @@ public class PageController {
     }
 
     /**
+     * метод для страницы восстановления пароля
+     *
+     * @param token - токен восстановления пароля
+     * @return страница опопвещения об отправке временного пароля
+     */
+    @GetMapping("/recoveryPass/{token}")
+    public String recoveryPassPage(@PathVariable String token, Model model) {
+        PasswordRecoveryToken passwordRecoveryToken = passwordRecoveryTokenService.getPasswordRecoveryTokenByToken(token);
+        if (passwordRecoveryToken != null && passwordRecoveryTokenService.isValid(passwordRecoveryToken)) {
+            User user = passwordRecoveryToken.getUser();
+            user.setPassword(passwordRecoveryTokenService.generateTempPass());
+            userService.updateUser(user);
+            passwordRecoveryTokenService.sendTempPass(user);
+
+            model.addAttribute("message", "Временный пароль отправлен на почту");
+            return "password_recovery_result";
+        }
+
+        model.addAttribute("message", "Не удалось сбросить пароль");
+        return "password_recovery_result";
+    }
+
+    /**
      * метод для применения операции обновления пользователя админом
-     * @param user - валидный пользователь которого необходимо обновить
+     *
+     * @param user          - валидный пользователь которого необходимо обновить
      * @param bindingResult - объект для распознования ошибок валидации
      * @return страницу для отображения формы редактирования юзера либо на страницу всех юзеров в случае успешного обеновления
      */
@@ -174,20 +212,22 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по хэштегу
+     *
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/tag/{tag}")
-    public String getPageWithTopicsByHashTag(Model model){
+    public String getPageWithTopicsByHashTag(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/author/{authorId}")
-    public String getPageWithTopicsByAuthor(Model model){
+    public String getPageWithTopicsByAuthor(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
