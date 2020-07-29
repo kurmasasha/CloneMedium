@@ -11,6 +11,7 @@ import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,6 +86,8 @@ public class VKontakteConfig implements SocialConfig  {
             String email =((VKOAuth2AccessToken) token).getEmail();
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
+        }catch (JSONException e){
+            return null;
         }
     }
 }

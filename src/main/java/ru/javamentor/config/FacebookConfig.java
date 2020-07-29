@@ -9,6 +9,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,6 +82,8 @@ public class FacebookConfig implements SocialConfig {
             String lastName = jsonObj.getString("last_name");
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
+        }catch (JSONException e){
+            return null;
         }
     }
 }
