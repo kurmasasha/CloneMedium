@@ -2,6 +2,7 @@ package ru.javamentor.controller.rest;
 
 import com.github.scribejava.apis.vk.VKOAuth2AccessToken;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,11 @@ public class RegistrationThroughSocialNetworks {
     public ResponseEntity<Object> getCodeThird(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
         OAuth2AccessToken token = vKontakteConfig.toGetTokenVK(code);
         String email = ((VKOAuth2AccessToken) token).getEmail();
+        if  (email == null){
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(new URI("/login?errorEmail"));
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        }
         User currentUser = vKontakteConfig.toCreateUser(token, email);
         if (userService.getUserByEmail(email) == null) {
             userService.addUserThroughSocialNetworks(currentUser);
