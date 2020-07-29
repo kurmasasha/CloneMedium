@@ -6,9 +6,9 @@ $(document).ready(function() {
     let topicContainer = $('#topics_container');
     const url = decodeURI(window.location.pathname);
 
-    if (url.includes("/find/author/")) {            // действие, в случае поиска по автору
+    if (url.includes("/topic/find/author/")) {            // действие, в случае поиска по автору
         const arr = url.split("/")
-        const authorId = arr[3];
+        const authorId = arr[4];
         getAndPrintAllTopicsByAuthor(authorId, topicContainer)
             .then();
     } else if (url.includes("/topic/find/theme/")) {

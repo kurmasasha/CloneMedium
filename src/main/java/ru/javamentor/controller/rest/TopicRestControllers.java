@@ -289,7 +289,7 @@ public class TopicRestControllers {
      * @return список TopicDto данного автора
      */
     @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
-    public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable Long authorId) {
+    public ResponseEntity<List<TopicDto>> getAllTopicsByAuthor(@PathVariable Long authorId) {
         List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
     }

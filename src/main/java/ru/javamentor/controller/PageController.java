@@ -182,6 +182,16 @@ public class PageController {
     }
 
     /**
+     * метод для страницы всех топиков по автору
+     * @return страницу для показа всех топиков
+     */
+    @GetMapping("/topic/find/author/{authorId}")
+    public String getPageWithTopicsByAuthor(Model model){
+        model.addAttribute("themes", themeService.getAllThemes());
+        return "all_topics_page";
+    }
+
+    /**
      * метод для страницы всех топиков по теме
      * @return страницу для показа всех топиков
      */
