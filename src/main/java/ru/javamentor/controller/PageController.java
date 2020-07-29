@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * Контроллер возвращающий для показа html страниц
+ *
  * @author Java Mentor
  * @version 1.0
  */
@@ -65,9 +66,10 @@ public class PageController {
         model.addAttribute("flagWar", flagWarning);
         return "login";
     }
-  
+
     /**
      * метод для вида главной страницы
+     *
      * @return главную страницу
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -77,6 +79,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков
+     *
      * @return страницу для показа всех топиков
      */
 
@@ -88,7 +91,8 @@ public class PageController {
 
     /**
      * метод для страницы определенного топика
-     * @param id - id топика
+     *
+     * @param id    - id топика
      * @param model - объект для взаимодействия с видом
      * @return страницу для отображения топика
      */
@@ -96,21 +100,33 @@ public class PageController {
     public String topicPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            model.addAttribute("user", userService.getUserByEmail(auth.getName()));
-        } else {
-            model.addAttribute("user", user);
+            user = userService.getUserByEmail(auth.getName());
         }
         Topic topic = topicService.getTopicById(id);
-        model.addAttribute("topic", topic);
+
+        if (topic == null) {
+            model.addAttribute("error", "Статья не существует.");
+            return "topic_error";
+
+        } else if (!topic.isModerate()) {
+            Long userId = (user != null) ? user.getId() : null;
+            if (topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId))) {
+                model.addAttribute("error", "Доступ к статье ограничен.");
+                return "topic_error";
+            }
+        }
+
+        model.addAttribute("user", user);
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
-
         model.addAttribute("comments", comments);
         return "topic";
+
     }
 
     /**
      * метод для страницы всех юзеров для админа
+     *
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
@@ -120,6 +136,7 @@ public class PageController {
 
     /**
      * метод для страницы тем для админа
+     *
      * @return админскую страницу для отображения всех тем
      */
     @GetMapping("/admin/themes")
@@ -130,6 +147,7 @@ public class PageController {
 
     /**
      * метод для страницы неотмодерированных топиков для админа
+     *
      * @return страницу для отображения неотмодерированных топиков для админа
      */
     @GetMapping("/admin/moderate")
@@ -139,7 +157,8 @@ public class PageController {
 
     /**
      * метод для админской странцы редактировани пользователя
-     * @param id - id пользователя которого необходимо редактировать
+     *
+     * @param id    - id пользователя которого необходимо редактировать
      * @param model - объект для взаимодействия с видом
      * @return страницу для отображения формы редактирования юзера
      */
@@ -152,7 +171,8 @@ public class PageController {
 
     /**
      * метод для применения операции обновления пользователя админом
-     * @param user - валидный пользователь которого необходимо обновить
+     *
+     * @param user          - валидный пользователь которого необходимо обновить
      * @param bindingResult - объект для распознования ошибок валидации
      * @return страницу для отображения формы редактирования юзера либо на страницу всех юзеров в случае успешного обеновления
      */
@@ -174,10 +194,11 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по хэштегу
+     *
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/tag/{tag}")
-    public String getPageWithTopicsByHashTag(Model model){
+    public String getPageWithTopicsByHashTag(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
