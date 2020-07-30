@@ -18,12 +18,22 @@ public interface PasswordRecoveryTokenDao {
 
     /**
      * метод для добавления токена в базу
+     *
      * @param passwordRecoveryToken - токен
      */
     void addPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
 
+
+    /**
+     * метод для удаления токена из базы
+     *
+     * @param passwordRecoveryToken - токен
+     */
+    void deletePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
+
     /**
      * метод для обновления токена в базе
+     *
      * @param passwordRecoveryToken - токен
      */
     void updatePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
@@ -31,12 +41,14 @@ public interface PasswordRecoveryTokenDao {
 
     /**
      * получение токена по id
+     *
      * @param id - id токена
      */
     PasswordRecoveryToken getPasswordRecoveryTokenById(Long id);
 
     /**
      * получение токена по хэшу
+     *
      * @param token - хэш, по которому ищем
      */
     PasswordRecoveryToken getPasswordRecoveryTokenByToken(String token);

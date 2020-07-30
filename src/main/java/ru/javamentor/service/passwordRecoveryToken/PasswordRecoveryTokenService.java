@@ -26,6 +26,13 @@ public interface PasswordRecoveryTokenService {
     boolean addPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
 
     /**
+     * метод для удаления токена из базы
+     *
+     * @param passwordRecoveryToken - токен
+     */
+    boolean deletePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
+
+    /**
      * метод для обновления токена в базе
      *
      * @param passwordRecoveryToken - токен
@@ -66,6 +73,9 @@ public interface PasswordRecoveryTokenService {
 
     /**
      * отправление временного пароля пользователю
+     *
+     * @param user - кому отправляем
+     * @param tempPass - временный пароль
      */
-    void sendTempPass(User user);
+    void sendTempPass(User user, String tempPass);
 }

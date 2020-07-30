@@ -19,6 +19,7 @@ import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -167,18 +168,24 @@ public class PageController {
     /**
      * метод для страницы восстановления пароля
      *
-     * @param token - токен восстановления пароля
      * @return страница опопвещения об отправке временного пароля
      */
-    @GetMapping("/recoveryPass/{token}")
-    public String recoveryPassPage(@PathVariable String token, Model model) {
+    @GetMapping("/recoveryPass/**")
+    //Не используется /recoveryPass/{token} потому что токен может содержать символ "/" - ошибка 404
+    public String recoveryPassPage(HttpServletRequest request, Model model) {
+        String token = request.getRequestURI().split(request.getContextPath() + "/recoveryPass/")[1];
+
         PasswordRecoveryToken passwordRecoveryToken = passwordRecoveryTokenService.getPasswordRecoveryTokenByToken(token);
         if (passwordRecoveryToken != null && passwordRecoveryTokenService.isValid(passwordRecoveryToken)) {
             User user = passwordRecoveryToken.getUser();
-            user.setPassword(passwordRecoveryTokenService.generateTempPass());
+            String tempPass = passwordRecoveryTokenService.generateTempPass();
+            user.setPassword(tempPass);
             userService.updateUser(user);
-            passwordRecoveryTokenService.sendTempPass(user);
-
+            passwordRecoveryTokenService.sendTempPass(user, tempPass);
+            passwordRecoveryTokenService.deletePasswordRecoveryToken(passwordRecoveryToken);
+            //TODO: удаление токена из базы. проверить проблемы
+            //TODO: токены теоретически могут пересекаться
+            //TODO: не отправлять 2 раза токен одному и тому же юзеру
             model.addAttribute("message", "Временный пароль отправлен на почту");
             return "password_recovery_result";
         }

@@ -33,6 +33,7 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
         this.mailSender = mailSender;
         this.passwordEncoder = passwordEncoder;
     }
+
     /**
      * метод для всего процесса добавления и отправки токена
      *
@@ -50,6 +51,24 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
             return true;
         } catch (Exception e) {
             log.error("IN addToken - token not added with exception {}", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * метод для удаления токена из базы
+     *
+     * @param passwordRecoveryToken - токен
+     */
+    @Transactional
+    @Override
+    public boolean deletePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken) {
+        try {
+            passwordRecoveryTokenDao.deletePasswordRecoveryToken(passwordRecoveryToken);
+            log.debug("IN deletePasswordRecoveryToken - token.id {} is deleted", passwordRecoveryToken.getId());
+            return true;
+        } catch (Exception e) {
+            log.error("IN deletePasswordRecoveryToken - token.id {} is not deleted with exception {}", passwordRecoveryToken.getId(), e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -118,7 +137,11 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
     public PasswordRecoveryToken getPasswordRecoveryTokenByToken(String token) {
         try {
             PasswordRecoveryToken passwordRecoveryToken = passwordRecoveryTokenDao.getPasswordRecoveryTokenByToken(token);
-            log.debug("IN getPasswordRecoveryTokenByHash - passwordRecoveryToken.hashMail: {} was successfully found", passwordRecoveryToken.getHashEmail());
+            if(passwordRecoveryToken != null) {
+                log.debug("IN getPasswordRecoveryTokenByHash - passwordRecoveryToken.hashMail: {} was successfully found", passwordRecoveryToken.getHashEmail());
+            } else {
+                log.debug("IN getPasswordRecoveryTokenByHash - passwordRecoveryToken was not found");
+            }
             return passwordRecoveryToken;
         } catch (Exception e) {
             log.error("IN getPasswordRecoveryTokenById - passwordRecoveryToken was not selected with exception {}", e.getMessage());
@@ -155,12 +178,12 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
      * @return
      */
     @Override
-    public String generateTempPass(){
+    public String generateTempPass() {
         final String char_list = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         Random random = new Random();
 
         StringBuilder randStr = new StringBuilder();
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             int number = random.nextInt(char_list.length());
             char ch = char_list.charAt(number);
             randStr.append(ch);
@@ -170,13 +193,16 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
 
     /**
      * отправление временного пароля пользователю
+     *
+     * @param user     - кому отправляем
+     * @param tempPass - временный пароль
      */
     @Override
-    public void sendTempPass(User user) {
+    public void sendTempPass(User user, String tempPass) {
         try {
             String message = String.format(
-                    "Вами была отправлена заявка на сброс пароля. Ваш новый пароль для входа на сайт:" +
-                            "%s", user.getPassword()
+                    "Вами была отправлена заявка на сброс пароля. Ваш новый пароль для входа на сайт: " +
+                            "%s", tempPass
             );
             mailSender.send(user.getUsername(), "Восстановление пароля", message);
             log.debug("IN sendTempPass - temporal password was successfully sent to user.id {}", user.getId());
