@@ -5,7 +5,10 @@ create table comments (
     text varchar(2047),
     user_id bigint,
     topic_id bigint,
+    likes int,
+    dislikes int,
     primary key (id));
+
 
 /* Таблица хэштегов */
 create table hashtags (

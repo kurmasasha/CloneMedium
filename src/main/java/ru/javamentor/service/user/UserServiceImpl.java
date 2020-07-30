@@ -7,6 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,16 +36,18 @@ public class UserServiceImpl implements UserService {
     private MailSender mailSender;
     private NotificationDao notificationDao;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
     @Value("${site.link}")
     private String link;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, MailSender mailSender, NotificationDao notificationDao, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDAO userDAO, MailSender mailSender, NotificationDao notificationDao, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.userDAO = userDAO;
         this.mailSender = mailSender;
         this.notificationDao = notificationDao;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
     }
 
     /**
@@ -269,7 +273,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void login(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(username, password, authorities);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(authReq);
         log.debug("IN login User - username: {}", username);

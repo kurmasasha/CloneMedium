@@ -76,9 +76,26 @@
 </div>
 <!--------------------------------------------Модальное окно ---------------------------------------------------------------------------------------------------------------->
 
+<div class="modal" id="checkAuth" th:if="${(param.errorEmail != null)}"
+     aria-labelledby="checkAuthVK" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h6>К вашей учетной записи не привязан email, пожалуйста, авторизуйтесь через другую соц.сеть или <a href="/registration">зарегистрируйтесь</a> </h6>
+            </div>
+            <div class="modal-body">
+                <div class="button">
+                    <a type="button" class="btn btn-primary btn_medium col-3" href="/login">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="js/recoveryPass.js"></script>
+<script src="/js/checkAuthVK.js"></script>
+<script src="js/recoverPass.js"></script>
 </body>
 </html>

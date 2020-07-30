@@ -2,6 +2,7 @@ package ru.javamentor.controller.rest;
 
 import com.github.scribejava.apis.vk.VKOAuth2AccessToken;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.javamentor.config.Facebook;
-import ru.javamentor.config.Google;
-import ru.javamentor.config.VKontakte;
+import ru.javamentor.config.FacebookConfig;
+import ru.javamentor.config.GoogleConfig;
+import ru.javamentor.config.VKontakteConfig;
 import ru.javamentor.model.User;
 import ru.javamentor.service.user.UserService;
 
@@ -31,17 +32,17 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/authorization")
 public class RegistrationThroughSocialNetworks {
 
-    private final VKontakte vKontakte;
-    private final Facebook facebook;
-    private final Google google;
+    private final VKontakteConfig vKontakteConfig;
+    private final FacebookConfig facebookConfig;
+    private final GoogleConfig googleConfig;
 
     public UserService userService;
 
     @Autowired
-    public RegistrationThroughSocialNetworks(VKontakte vKontakte, Facebook facebook, UserService userService, Google google) {
-        this.vKontakte = vKontakte;
-        this.facebook = facebook;
-        this.google = google;
+    public RegistrationThroughSocialNetworks(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, UserService userService, GoogleConfig googleConfig) {
+        this.vKontakteConfig = vKontakteConfig;
+        this.facebookConfig = facebookConfig;
+        this.googleConfig = googleConfig;
         this.userService = userService;
     }
 
@@ -53,9 +54,14 @@ public class RegistrationThroughSocialNetworks {
      */
     @GetMapping("/returnCodeVK")
     public ResponseEntity<Object> getCodeThird(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = vKontakte.toGetTokenVK(code);
+        OAuth2AccessToken token = vKontakteConfig.toGetTokenVK(code);
         String email = ((VKOAuth2AccessToken) token).getEmail();
-        User currentUser = vKontakte.toCreateUser(token, email);
+        if  (email == null){
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(new URI("/login?errorEmail"));
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        }
+        User currentUser = vKontakteConfig.toCreateUser(token, email);
         if (userService.getUserByEmail(email) == null) {
             userService.addUserThroughSocialNetworks(currentUser);
         }
@@ -73,8 +79,8 @@ public class RegistrationThroughSocialNetworks {
      */
     @GetMapping("/returnCodeFacebook")
     public ResponseEntity<Object> getCodeSecond(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = facebook.toGetTokenFacebook(code);
-        User currentUser = facebook.toCreateUser(token);
+        OAuth2AccessToken token = facebookConfig.toGetTokenFacebook(code);
+        User currentUser = facebookConfig.toCreateUser(token);
         if (userService.getUserByEmail(currentUser.getUsername()) == null) {
             userService.addUserThroughSocialNetworks(currentUser);
         }
@@ -86,8 +92,8 @@ public class RegistrationThroughSocialNetworks {
 
     @GetMapping("/returnCodeGoogle")
     public ResponseEntity<Object> getCode (@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = google.toGetTokenGoogle(code);
-        User currentUser = google.toCreateUser(token);
+        OAuth2AccessToken token = googleConfig.toGetTokenGoogle(code);
+        User currentUser = googleConfig.toCreateUser(token);
         System.out.println(token.getRawResponse());
         if (userService.getUserByEmail(currentUser.getUsername()) == null) {
             userService.addUserThroughSocialNetworks(currentUser);
