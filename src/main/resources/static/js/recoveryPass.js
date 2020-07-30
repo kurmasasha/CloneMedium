@@ -22,5 +22,3 @@ $("#recoverPassword").on("click", async function () {
             }
         )
 });
-
-
