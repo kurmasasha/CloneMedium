@@ -95,9 +95,6 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager.createQuery(
                 "SELECT t FROM Topic t " +
                         "LEFT JOIN FETCH t.authors a " +
-                        "LEFT JOIN FETCH t.hashtags h " +
-                        "LEFT JOIN FETCH a.role r  " +
-                        "LEFT JOIN FETCH t.themes th " +
                         "WHERE a.id = :userId " +
                         "GROUP BY t.id " +
                         "ORDER BY t.dateCreated  DESC",
@@ -115,10 +112,6 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getTotalListOfTopics() {
         return entityManager.createQuery(
                 "SELECT t FROM Topic t " +
-                        "LEFT JOIN FETCH t.hashtags h " +
-                        "LEFT JOIN FETCH t.authors a " +
-                        "LEFT JOIN FETCH a.role r " +
-                        "LEFT JOIN FETCH t.themes th " +
                         "GROUP BY t.id " +
                         "ORDER BY t.dateCreated  DESC",
                 Topic.class)
@@ -141,10 +134,7 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.authors a " +
                                 "LEFT JOIN FETCH t.hashtags h " +
-                                "LEFT JOIN FETCH a.role r " +
-                                "LEFT JOIN FETCH t.themes th " +
                                 "WHERE h.name = :value " +
                                 "GROUP BY t.id " +
                                 "ORDER BY t.dateCreated  DESC",
@@ -167,8 +157,6 @@ public class TopicDAOImpl implements TopicDAO {
                         "SELECT t FROM Topic t " +
                                 "LEFT JOIN FETCH t.authors a " +
                                 "LEFT JOIN FETCH t.hashtags h " +
-                                "LEFT JOIN FETCH a.role r " +
-                                "LEFT JOIN FETCH t.themes th " +
                                 "WHERE h.name = :value " +
                                 "AND a.id = :userId " +
                                 "GROUP BY t.id " +
@@ -189,10 +177,6 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.authors a " +
-                                "LEFT JOIN FETCH t.hashtags h " +
-                                "LEFT JOIN FETCH a.role r " +
-                                "LEFT JOIN FETCH t.themes th " +
                                 "WHERE t.isModerate = true " +
                                 "GROUP BY t.id " +
                                 "ORDER BY t.dateCreated  DESC",
@@ -208,7 +192,7 @@ public class TopicDAOImpl implements TopicDAO {
     @Override
     public List<Topic> getNotModeratedTopics() {
         return entityManager
-                .createQuery("SELECT t FROM Topic t LEFT JOIN FETCH t.authors a LEFT JOIN FETCH t.hashtags h LEFT JOIN FETCH a.role r WHERE t.isModerate = false AND t.completed = true GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
+                .createQuery("SELECT t FROM Topic t WHERE t.isModerate = false AND t.completed = true GROUP BY t.id ORDER BY t.dateCreated  DESC", Topic.class)
 
                 .getResultList();
     }
@@ -226,9 +210,6 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.authors a " +
-                                "LEFT JOIN FETCH t.hashtags h " +
-                                "LEFT JOIN FETCH a.role r " +
                                 "WHERE t.isModerate = false " +
                                 "AND t.completed = true " +
                                 "GROUP BY t.id " +
@@ -266,9 +247,6 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.authors a " +
-                                "LEFT JOIN FETCH t.hashtags h " +
-                                "LEFT JOIN FETCH a.role r " +
                                 "LEFT JOIN FETCH t.themes th " +
                                 "WHERE th.id IN :value " +
                                 "AND t.isModerate = true " +
