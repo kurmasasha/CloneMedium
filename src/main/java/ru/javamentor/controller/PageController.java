@@ -183,7 +183,6 @@ public class PageController {
             userService.updateUser(user);
             passwordRecoveryTokenService.sendTempPass(user, tempPass);
             passwordRecoveryTokenService.deletePasswordRecoveryToken(passwordRecoveryToken);
-            //TODO: токены теоретически могут пересекаться
             //TODO: не отправлять 2 раза токен одному и тому же юзеру
             model.addAttribute("message", "Временный пароль отправлен на почту");
             return "password_recovery_result";

@@ -43,7 +43,7 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
     @Override
     public boolean addPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken) {
         try {
-            //хэши теоретически могут пересечься у двух разных юзеров. Стоит этот момент отловить
+            //хэши теоретически могут пересечься у двух разных юзеров. Цикл для того, чтоб обеспечить уникальность.
             String hashMail;
             do {
                 hashMail = passwordEncoder.encode(passwordRecoveryToken.getUser().getUsername());
