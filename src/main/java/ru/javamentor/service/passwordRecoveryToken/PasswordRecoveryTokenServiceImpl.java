@@ -43,7 +43,13 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
     @Override
     public boolean addPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken) {
         try {
-            passwordRecoveryToken.setHashEmail(passwordEncoder.encode(passwordRecoveryToken.getUser().getUsername()));
+            //хэши теоретически могут пересечься у двух разных юзеров. Стоит этот момент отловить
+            String hashMail;
+            do {
+                hashMail = passwordEncoder.encode(passwordRecoveryToken.getUser().getUsername());
+            } while (getPasswordRecoveryTokenByToken(hashMail) != null);
+
+            passwordRecoveryToken.setHashEmail(hashMail);
             passwordRecoveryToken.setStartTime(LocalDateTime.now());
             passwordRecoveryTokenDao.addPasswordRecoveryToken(passwordRecoveryToken);
             sendPasswordRecoveryToken(passwordRecoveryToken);
