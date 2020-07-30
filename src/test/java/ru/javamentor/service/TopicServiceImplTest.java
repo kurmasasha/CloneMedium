@@ -442,30 +442,4 @@ public class TopicServiceImplTest extends Mockito {
 
         Mockito.verify(topicDAO, Mockito.times(1)).getNotModeratedTopicsCount();
     }
-
-    /**
-     * Тест мтеода на увеличение кол-ва лайков для топика.
-     */
-    @Test
-    public void increaseTopicLikes() {
-        Mockito.doReturn(new Topic())
-                .when(topicDAO)
-                .getTopicById(ArgumentMatchers.anyLong());
-
-        Assert.assertNotNull("Проверка на null", topicService.increaseTopicLikes(Mockito.anyLong()));
-
-        //Проверка обращения к дао
-        Mockito.verify(topicDAO, Mockito.times(1)).updateTopic(topicDAO.getTopicById(Mockito.anyLong()));
-    }
-
-    @Test(expected = Exception.class)
-    public void failTestIncreaseTopicLikes() {
-        Mockito.doThrow(new Exception())
-                .when(topicService)
-                .increaseTopicLikes(ArgumentMatchers.anyLong());
-
-        Assert.assertNull("Проверка на null", topicService.increaseTopicLikes(Mockito.anyLong()).getLikes());
-
-        Mockito.verify(topicService, Mockito.times(0)).increaseTopicLikes(Mockito.anyLong());
-    }
 }

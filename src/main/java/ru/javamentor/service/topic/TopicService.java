@@ -139,20 +139,22 @@ public interface TopicService {
     List<Topic> getModeratedTopicsByThemes(Set<Long> themesIds);
 
     /**
-     * Метод для увеличения лайков конкретного топика на 1, в рамках одной сессии
+     * Метод для добавления лайка
      *
-     * @param topicId - уникальный id конкретного топика
-     * @return Topic - топик с обновленным количеством лайков
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий лайк
+     * @return Topic - объект представляющий модель топика
      */
-    Topic increaseTopicLikes(Long topicId);
+    Topic addLikeToTopic(Long topicId, User user);
 
     /**
-     * Метод для уменьшения лайков конкретного топика на 1, в рамках одной сессии
+     * Метод для добавления дизлайка
      *
-     * @param topicId - уникальный id конкретного топика
-     * @return Topic - топик с обновленным количеством лайков
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий дизлайк
+     * @return Topic - объект представляющий модель топика
      */
-    Topic decreaseTopicLikes(Long topicId);
+    Topic addDislikeToTopic(Long topicId, User user);
 
     /**
      * Метод получения списка TopicDto из списка Topic

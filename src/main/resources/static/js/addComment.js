@@ -1,4 +1,4 @@
-document.getElementById('add_comment_button').onclick = function () {
+document.getElementById('add_comment_button').onclick = function (e) {
 
     //Открывает модальное окно для неавторизованных пользователей
     $('#authorizationModal').modal('show');
@@ -7,6 +7,10 @@ document.getElementById('add_comment_button').onclick = function () {
     let comment = commentBody.value.replace(/\n/g, '<br />');
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
+
+    if(($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
+        e.preventDefault();
+    }
 
     if(comment !== '') {
         let data = {

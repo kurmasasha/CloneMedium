@@ -18,7 +18,6 @@ import ru.javamentor.service.mailSender.MailSender;
 import ru.javamentor.service.notification.NotificationService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
-import ru.javamentor.util.buffer.LikeBuffer;
 import ru.javamentor.util.img.LoaderImages;
 import ru.javamentor.util.validation.topic.TopicValidator;
 
@@ -43,7 +42,6 @@ public class TopicRestControllers {
 
     private final TopicService topicService;
     private final UserService userService;
-    private final LikeBuffer likeBuffer;
     private final MailSender mailSender;
     private final NotificationService notificationService;
     private final LoaderImages loaderImages;
@@ -53,10 +51,9 @@ public class TopicRestControllers {
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, LikeBuffer likeBuffer, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
+    public TopicRestControllers(TopicService topicService, UserService userService, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.topicService = topicService;
         this.userService = userService;
-        this.likeBuffer = likeBuffer;
         this.mailSender = mailSender;
         this.notificationService = notificationService;
         this.loaderImages = loaderImages;
@@ -343,26 +340,45 @@ public class TopicRestControllers {
         return new ResponseEntity<>(topicService.getTopicById(id), HttpStatus.OK);
     }
 
+
     /**
-     * метод для лайка топика
+     * Метод для добавления лайка
      *
-     * @param topicId - id  топика который нужно лайкнуть
-     * @param session - текущая сессия клиента
-     * @return Увеличенное количество топиков либо ответ что лайк с текущей сессии запрещен
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий лайк
+     * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/topic/addLike/{topicId}")
-    public ResponseEntity<Topic> increaseLikeOfTopic(@PathVariable Long topicId, HttpSession session) {
-        if (!likeBuffer.isLikedTopic(session.getId(), topicId)) {
-            likeBuffer.addLike(session.getId(), topicId);
-            Topic topic = topicService.increaseTopicLikes(topicId);
+    public ResponseEntity<Topic> addLikeToTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
+        if(user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User userByEmail = userService.getUserByEmail(auth.getName());
+            Topic topic = topicService.addLikeToTopic(topicId, userByEmail);
             return new ResponseEntity<>(topic, HttpStatus.OK);
-        } else if (likeBuffer.isLikedTopic(session.getId(), topicId)) {
-            likeBuffer.deleteLike(session.getId(), topicId);
-            Topic topic = topicService.decreaseTopicLikes(topicId);
+        }else {
+            Topic topic = topicService.addLikeToTopic(topicId, user);
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    /**
+     * Метод для добавления дизлайка
+     *
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий дизлайк
+     * @return ResponseEntity с необходимым топиком и ОК статус
+     */
+    @GetMapping("/topic/addDislike/{topicId}")
+    public ResponseEntity<Topic> addDislikeToTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
+        if(user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User userByEmail = userService.getUserByEmail(auth.getName());
+            Topic topic = topicService.addDislikeToTopic(topicId, userByEmail);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        }else {
+            Topic topic = topicService.addDislikeToTopic(topicId, user);
+            return new ResponseEntity<>(topic, HttpStatus.OK);
+        }
+    }
 
 }
