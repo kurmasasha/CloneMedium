@@ -9,6 +9,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +29,9 @@ import java.util.concurrent.ExecutionException;
  */
 
 @Component
-public class FacebookConfig {
+public class FacebookConfig implements SocialConfig {
 
-    RoleService roleService;
-
-    public FacebookConfig() {
-    }
+    private final RoleService roleService;
 
     @Autowired
     public FacebookConfig(RoleService roleService) {
@@ -54,7 +52,6 @@ public class FacebookConfig {
     @Value("${facebook.callbackUrl}")
     private String callbackUrl;
 
-    @Getter
     private OAuth20Service service;
 
     public String getAuthorizationUrl(){
@@ -70,22 +67,10 @@ public class FacebookConfig {
                 .build();
     }
 
-    /**
-     * Метод для получения OAuth2AccessToken от FB
-     *
-     * @param code -параметр , с которым возвращается пользователь с FB
-     * @return OAuth2AccessToken
-     */
-    public OAuth2AccessToken toGetTokenFacebook(String code) throws InterruptedException, ExecutionException, IOException {
+    public OAuth2AccessToken toGetToken(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
-    /**
-     * Метод для создания нового пользователя с помошью OAuth2AccessToken
-     *
-     * @param token - токен
-     * @return User - пользователь в системе
-     */
     public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(token, request);
@@ -97,6 +82,8 @@ public class FacebookConfig {
             String lastName = jsonObj.getString("last_name");
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
+        }catch (JSONException e){
+            return null;
         }
     }
 }
