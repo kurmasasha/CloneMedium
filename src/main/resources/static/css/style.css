@@ -48,17 +48,28 @@ body {
     size: 15px;
 }
 
-#topics_container i.fa {
-    color: dodgerblue;
+#topics_container i.fa,
+#single_topic_container i.fa {
+    /*color: dodgerblue;*/
     font-size: 1.4em;
     padding: 5px;
 }
-#topics_container i.fa:hover {
+
+#single_topic_container i.fa:hover {
     cursor: pointer;
 }
 
-#likeCounter {
+#likeCounter, #dislikeCounter {
     font-size: 1.5em;
+    margin-right: 20px;
+}
+
+.block-like, .block-dislike {
+    display: inline-block;
+}
+
+.active{
+    color: dodgerblue;
 }
 
 #datecreated {

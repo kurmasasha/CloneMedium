@@ -32,6 +32,7 @@ public class TopicDto {
     private boolean isModerate;
     private boolean completed;
     private Integer likes;
+    private Integer dislikes;
     private String img;
     private Set<User> authors;
     private Set<Hashtag> hashtags;
@@ -49,6 +50,7 @@ public class TopicDto {
         this.isModerate = topic.isModerate();
         this.completed = topic.isCompleted();
         this.likes = topic.getLikes();
+        this.dislikes = topic.getDislikes();
         this.img = topic.getImg();
         this.authors = topic.getAuthors();
         this.hashtags = topic.getHashtags();

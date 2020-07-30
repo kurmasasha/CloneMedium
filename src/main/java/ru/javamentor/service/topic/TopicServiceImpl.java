@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.topic.TopicDAO;
+import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -25,10 +26,12 @@ import java.util.Set;
 public class TopicServiceImpl implements TopicService {
 
     private final TopicDAO topicDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO) {
         this.topicDAO = topicDAO;
+        this.userDAO = userDAO;
     }
 
     /**
@@ -328,41 +331,81 @@ public class TopicServiceImpl implements TopicService {
     }
 
     /**
-     * Метод для увеличения лайков конкретного топика на 1, в рамках одной сессии
+     * Метод для добавления лайка
      *
-     * @param topicId - уникальный id конкретного топика
-     * @return Topic - топик с обновленным количеством лайков
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий лайк
+     * @return Topic - объект представляющий модель топика
      */
     @Transactional
     @Override
-    public Topic increaseTopicLikes(Long topicId) {
-        log.debug("IN increaseTopicLikes in service");
-        Topic currentTopic = topicDAO.getTopicById(topicId);
-        Integer likes = currentTopic.getLikes();
-        likes++;
-        currentTopic.setLikes(likes);
-        topicDAO.updateTopic(currentTopic);
-        log.debug("IN increaseTopicLikes - topic.id: {} increase like", topicId);
-        return currentTopic;
+    public Topic addLikeToTopic(Long topicId, User user) {
+        try {
+            Topic topic = topicDAO.getTopicById(topicId);
+            boolean isLiked = topic.getLikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+            boolean isDisliked = topic.getDislikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+
+            if (!isLiked) {
+                if(isDisliked){
+                    addDislikeToTopic(topicId, user);
+                }
+                topic.getLikedUsers().add(user);
+                topic.setLikes(topic.getLikes() + 1);
+                topicDAO.updateTopic(topic);
+                log.debug("IN addLikeToTopic - likes in topic.id: {} was increased by user.id: {}",topicDAO, user.getId());
+            } else {
+                topic.getLikedUsers().remove(userDAO.getUserById(user.getId()));
+                topic.setLikes(topic.getLikes() - 1);
+                topicDAO.updateTopic(topic);
+                log.debug("IN addLikeToTopic - likes in topic.id: {} was decreased by user.id: {}", topicDAO, user.getId());
+            }
+
+            return topic;
+        } catch (Exception e) {
+            log.error("Exception while addLikeToTopic in service with topic.id {}", topicId);
+            throw new RuntimeException();
+        }
     }
 
     /**
-     * Метод для уменьшения лайков конкретного топика на 1, в рамках одной сессии
+     * Метод для добавления дизлайка
      *
-     * @param topicId - уникальный id конкретного топика
-     * @return Topic - топик с обновленным количеством лайков
+     * @param topicId - id топика
+     * @param user - пользователь добавляющий дизлайк
+     * @return Topic - объект представляющий модель топика
      */
     @Transactional
     @Override
-    public Topic decreaseTopicLikes(Long topicId) {
-        log.debug("IN decreaseTopicLikes in service");
-        Topic currentTopic = topicDAO.getTopicById(topicId);
-        Integer likes = currentTopic.getLikes();
-        likes--;
-        currentTopic.setLikes(likes);
-        topicDAO.updateTopic(currentTopic);
-        log.debug("IN increaseTopicLikes - topic.id: {} decrease like", topicId);
-        return currentTopic;
+    public Topic addDislikeToTopic(Long topicId, User user) {
+        try {
+            Topic topic = topicDAO.getTopicById(topicId);
+            boolean isLiked = topic.getLikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+            boolean isDisliked = topic.getDislikedUsers()
+                    .stream().anyMatch(u -> u.getUsername().equals(user.getUsername()));
+
+            if (!isDisliked) {
+                if(isLiked){
+                    addLikeToTopic(topicId, user);
+                }
+                topic.getDislikedUsers().add(user);
+                topic.setDislikes(topic.getDislikes() + 1);
+                topicDAO.updateTopic(topic);
+                log.debug("IN addDislikeToTopic - likes in topic.id: {} was increased by user.id: {}",topicDAO, user.getId());
+            } else {
+                topic.getDislikedUsers().remove(userDAO.getUserById(user.getId()));
+                topic.setDislikes(topic.getDislikes() - 1);
+                topicDAO.updateTopic(topic);
+                log.debug("IN addDislikeToTopic - likes in topic.id: {} was decreased by user.id: {}", topicDAO, user.getId());
+            }
+
+            return topic;
+        } catch (Exception e) {
+            log.error("Exception while addDislikeToTopic in service with topic.id {}", topicId);
+            throw new RuntimeException();
+        }
     }
 
     /**

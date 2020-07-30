@@ -1,8 +1,6 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
 import ru.javamentor.service.theme.ThemeService;
@@ -101,6 +100,8 @@ public class PageController {
         } else {
             model.addAttribute("user", user);
         }
+        Topic topic = topicService.getTopicById(id);
+        model.addAttribute("topic", topic);
         model.addAttribute("topicId", id);
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
 
