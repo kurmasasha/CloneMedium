@@ -1,6 +1,7 @@
 package ru.javamentor.config;
 
 import com.github.scribejava.apis.VkontakteApi;
+import com.github.scribejava.apis.vk.VKOAuth2AccessToken;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -10,6 +11,7 @@ import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,13 +30,9 @@ import java.util.concurrent.ExecutionException;
  * @version 1.0
  */
 @Component
-@Getter
-public class VKontakteConfig {
+public class VKontakteConfig implements SocialConfig  {
 
-    RoleService roleService;
-
-    public VKontakteConfig() {
-    }
+    private final RoleService roleService;
 
     @Autowired
     public VKontakteConfig(RoleService roleService) {
@@ -72,23 +70,11 @@ public class VKontakteConfig {
                 .build();
     }
 
-    /**
-     * Метод для получения OAuth2AccessToken от VK
-     *
-     * @param code -параметр , с которым возвращается пользователь с FB
-     * @return OAuth2AccessToken
-     */
-    public OAuth2AccessToken toGetTokenVK(String code) throws InterruptedException, ExecutionException, IOException {
+    public OAuth2AccessToken toGetToken(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
-    /**
-     * Метод для создания нового пользователя с помошью OAuth2AccessToken
-     *
-     * @param token - токен
-     * @return User - пользователь в системе
-     */
-    public User toCreateUser(OAuth2AccessToken token, String email) throws InterruptedException, ExecutionException, IOException {
+    public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
         service.signRequest(token, request);
         try (Response response = service.execute(request)) {
@@ -97,8 +83,11 @@ public class VKontakteConfig {
             String password = jArray.getJSONObject(0).optString("id");
             String firstName = jArray.getJSONObject(0).optString("first_name");
             String lastName = jArray.getJSONObject(0).optString("last_name");
+            String email =((VKOAuth2AccessToken) token).getEmail();
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
+        }catch (JSONException e){
+            return null;
         }
     }
 }

@@ -6,8 +6,10 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import lombok.Getter;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +24,14 @@ import java.util.concurrent.ExecutionException;
 
 
 @Configuration
-@Getter
-public class GoogleConfig {
+public class GoogleConfig implements SocialConfig {
+    private final RoleService roleService;
+
+    @Autowired
+    public GoogleConfig(RoleService roleService) {
+        this.roleService = roleService;
+
+    }
 
     private final String PROTECTED_RESOURCE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
@@ -36,7 +44,9 @@ public class GoogleConfig {
     @Value("${google.callbackUrl}")
     private String callbackUrl;
 
-    private final RoleService roleService;
+    @Value("${google.customScope}")
+    private String customScope;
+
 
     private OAuth20Service service;
 
@@ -53,18 +63,11 @@ public class GoogleConfig {
                 .build();
     }
 
-
     final String secretState = "secret" + new Random().nextInt(999_999);
 
-    @Autowired
-    public GoogleConfig(RoleService roleService) {
-        this.roleService = roleService;
 
-    }
-
-    public OAuth2AccessToken toGetTokenGoogle(String code) throws InterruptedException, ExecutionException, IOException {
-        System.out.println(code);
-        return service.getAccessToken(code);
+    public OAuth2AccessToken toGetToken(String code) throws InterruptedException, ExecutionException, IOException {
+        return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
     public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
@@ -79,6 +82,8 @@ public class GoogleConfig {
             String email = jsonObj.getString("email");
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
+        }catch (JSONException e){
+            return null;
         }
     }
 }

@@ -26,7 +26,7 @@ public class PasswordRecoveryToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     String hashEmail;
 
     @Column(updatable = false)

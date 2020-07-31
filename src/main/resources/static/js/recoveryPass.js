@@ -1,4 +1,8 @@
 $("#recoverPassword").on("click", async function () {
+    let container = $(".modal-body");
+
+    showSpinner(container);
+
     let mail = $("#email").val();
     let message = document.getElementById('messageForUser');
     message.innerHTML = "";
@@ -21,4 +25,6 @@ $("#recoverPassword").on("click", async function () {
                 }
             }
         )
+
+    hideSpinner(container);
 });

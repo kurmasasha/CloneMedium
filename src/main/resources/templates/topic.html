@@ -24,7 +24,7 @@
             <div class="col-md-7">
                 <h5 class="card-title-onTopic" id="topicTitle"></h5>
                 <div id="hashtags" class="d-flex flex-wrap"></div>
-                <p class="card-text-onTopic" id="topicContent"></p>
+               <pre> <span class="card-text-onTopic" id="topicContent"  ></span></pre>
 
                 <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
                     <i class="fa fa-thumbs-o-up fa_topic" th:data-id="${topic.getId()}"></i>
@@ -64,7 +64,7 @@
         <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
             <th:block th:each="comment: ${comments}">
-                <div class="card mb-2">
+                <div class="card mb-2"  th:id="commentCard-+${comment.getId()}">
                     <div class="card-header d-flex justify-content-between">
                         <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
@@ -76,6 +76,8 @@
                         <p class="card-text" th:utext="${comment.getText()}"></p>
                     </div>
                     <div class="card-footer">
+                        <div class="d-flex bd-highlight mb-2">
+                            <div class="mr-auto p-2 bd-highlight">
                         <span class="like" th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
                             <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
                             <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}" th:text="${comment.getLikes()}"></span>
@@ -84,6 +86,16 @@
                             <i class="fa fa-thumbs-o-down"  th:data-id="${comment.getId()}"></i>
                             <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}" th:text="${comment.getDislikes()}"></span>
                         </span>
+                            </div>
+                            <div class="delete_comment_button">
+                            <div class="p-2 bd-highlight">
+                                <button  class="btn-sm btn-danger" sec:authorize="hasAuthority('USER')" th:value="${comment.getId()}"
+                                         th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">Удалить комментарий</button>
+                                <button  class="btn-sm btn-danger" th:value="${comment.getId()}"
+                                         sec:authorize="hasAuthority('ADMIN')">Уалить комментарий</button>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </th:block>
@@ -123,5 +135,6 @@
 <script src="/js/util/counterForSymbols.js"></script>
 <script src="/js/likedTopic.js"></script>
 <script src="/js/likedComment.js"></script>
+<script src="/js/delete_comment.js"></script>
 </body>
 </html>

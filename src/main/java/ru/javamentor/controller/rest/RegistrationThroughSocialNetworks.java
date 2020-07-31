@@ -25,8 +25,8 @@ import java.util.concurrent.ExecutionException;
 /**
  * Rest контроллер для авторизации с помощью соцсетей
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @RestController
 @RequestMapping("/authorization")
@@ -37,6 +37,9 @@ public class RegistrationThroughSocialNetworks {
     private final GoogleConfig googleConfig;
 
     public UserService userService;
+
+    private User currentUser;
+    private OAuth2AccessToken token;
 
     @Autowired
     public RegistrationThroughSocialNetworks(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, UserService userService, GoogleConfig googleConfig) {
@@ -50,51 +53,50 @@ public class RegistrationThroughSocialNetworks {
      * метод для ВК-авторизации
      *
      * @param code - параметр запроса
-     * @return ResponseEntity, который перенаправляет на страницу Home
      */
     @GetMapping("/returnCodeVK")
-    public ResponseEntity<Object> getCodeThird(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = vKontakteConfig.toGetTokenVK(code);
-        String email = ((VKOAuth2AccessToken) token).getEmail();
-        if  (email == null){
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setLocation(new URI("/login?errorEmail"));
-            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-        }
-        User currentUser = vKontakteConfig.toCreateUser(token, email);
-        if (userService.getUserByEmail(email) == null) {
-            userService.addUserThroughSocialNetworks(currentUser);
-        }
-        userService.login(currentUser.getUsername(), currentUser.getPassword(), currentUser.getAuthorities());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI("/home"));
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    public ResponseEntity<Object> getCodeVk(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
+        this.token = vKontakteConfig.toGetToken(code);
+        this.currentUser = vKontakteConfig.toCreateUser(token);
+        return authorizationAfterInitialization();
     }
+
 
     /**
      * метод для FB-авторизации
      *
      * @param code - параметр запроса
-     * @return ResponseEntity, который перенаправляет на страницу Home
      */
     @GetMapping("/returnCodeFacebook")
-    public ResponseEntity<Object> getCodeSecond(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = facebookConfig.toGetTokenFacebook(code);
-        User currentUser = facebookConfig.toCreateUser(token);
-        if (userService.getUserByEmail(currentUser.getUsername()) == null) {
-            userService.addUserThroughSocialNetworks(currentUser);
-        }
-        userService.login(currentUser.getUsername(), currentUser.getPassword(), currentUser.getAuthorities());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI("/home"));
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    public ResponseEntity<Object> getCodeFacebook(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
+        this.token = facebookConfig.toGetToken(code);
+        this.currentUser = facebookConfig.toCreateUser(token);
+        return authorizationAfterInitialization();
     }
 
+    /**
+     * метод для Google-авторизации
+     *
+     * @param code - параметр запроса
+     */
     @GetMapping("/returnCodeGoogle")
-    public ResponseEntity<Object> getCode (@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
-        OAuth2AccessToken token = googleConfig.toGetTokenGoogle(code);
-        User currentUser = googleConfig.toCreateUser(token);
-        System.out.println(token.getRawResponse());
+    public ResponseEntity<Object> getCodeGoogle(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
+        this.token = googleConfig.toGetToken(code);
+        this.currentUser = googleConfig.toCreateUser(token);
+        return authorizationAfterInitialization();
+    }
+
+    /**
+     * Метод общей авторизации
+     *
+     * @return ResponseEntity, который перенаправляет на страницу Home
+     */
+    private ResponseEntity<Object> authorizationAfterInitialization() throws URISyntaxException {
+        if(currentUser == null){
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(new URI("/login?errorEmail"));
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        }
         if (userService.getUserByEmail(currentUser.getUsername()) == null) {
             userService.addUserThroughSocialNetworks(currentUser);
         }
@@ -102,5 +104,6 @@ public class RegistrationThroughSocialNetworks {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI("/home"));
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+
     }
 }
