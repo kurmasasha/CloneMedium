@@ -19,8 +19,8 @@ import java.util.Set;
 /**
  * Реализация интерфейса TopicService
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @Service
 @Slf4j
@@ -40,11 +40,11 @@ public class TopicServiceImpl implements TopicService {
     /**
      * метод для добавления топика
      *
-     * @param title   - название топика
-     * @param content - содержимое топика
+     * @param title     - название топика
+     * @param content   - содержимое топика
      * @param completed - статус завершения написния статьи
-     * @param users   - множество пользователей связанных с добавляемым топиком
-     * @param img - название картинки
+     * @param users     - множество пользователей связанных с добавляемым топиком
+     * @param img       - название картинки
      * @return Topic - объект представляющий модель топика
      */
     @Transactional
@@ -72,7 +72,11 @@ public class TopicServiceImpl implements TopicService {
     public Topic getTopicById(Long id) {
         try {
             var result = topicDAO.getTopicById(id);
-            log.debug("IN getTopicById - topic.title: {} found by id: {}", result.getTitle(), id);
+            if (result == null) {
+                log.debug("IN getTopicById - topic: not found by id: {}", id);
+            } else {
+                log.debug("IN getTopicById - topic.title: {} found by id: {}", result.getTitle(), id);
+            }
             return result;
         } catch (Exception e) {
             log.error("Exception while getTopicById in service with topic.id is {}", id);
@@ -318,6 +322,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Поиск топиков по теме.
+     *
      * @param themesIds - id тем, по которым будем происходить поиск
      * @return список топиков
      */
@@ -414,6 +419,7 @@ public class TopicServiceImpl implements TopicService {
 
     /**
      * Метод получения списка TopicDto из списка Topic
+     *
      * @param topicList - лист топиков
      * @return - список TopicDto
      */

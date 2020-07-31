@@ -1,6 +1,7 @@
 package ru.javamentor.service.passwordRecoveryToken;
 
 import ru.javamentor.model.PasswordRecoveryToken;
+import ru.javamentor.model.User;
 
 import java.util.List;
 
@@ -19,27 +20,38 @@ public interface PasswordRecoveryTokenService {
 
     /**
      * метод для добавления токена в базу
+     *
      * @param passwordRecoveryToken - токен
      */
     boolean addPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
 
     /**
+     * метод для удаления токена из базы
+     *
+     * @param passwordRecoveryToken - токен
+     */
+    boolean deletePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
+
+    /**
      * метод для обновления токена в базе
+     *
      * @param passwordRecoveryToken - токен
      */
     boolean updatePasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
 
     /**
      * получение токена по id
+     *
      * @param id - id токена
      */
     PasswordRecoveryToken getPasswordRecoveryTokenById(Long id);
 
     /**
      * получение токена по хэшу
-     * @param hashMail - хэш, по которому ищем
+     *
+     * @param token - хэш, по которому ищем
      */
-    PasswordRecoveryToken getPasswordRecoveryTokenByHash(String hashMail);
+    PasswordRecoveryToken getPasswordRecoveryTokenByToken(String token);
 
     /**
      * отправление токена по мэйлу
@@ -47,4 +59,23 @@ public interface PasswordRecoveryTokenService {
      * @param passwordRecoveryToken - токен для отправки
      */
     void sendPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken);
+
+    /**
+     * отправление токена по мэйлу
+     *
+     */
+    boolean isValid(PasswordRecoveryToken passwordRecoveryToken);
+
+    /**
+     * Метод генерации временного пароля
+     */
+    String generateTempPass();
+
+    /**
+     * отправление временного пароля пользователю
+     *
+     * @param user - кому отправляем
+     * @param tempPass - временный пароль
+     */
+    void sendTempPass(User user, String tempPass);
 }
