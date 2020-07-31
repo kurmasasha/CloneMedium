@@ -106,32 +106,23 @@ public class PageController {
             user = userService.getUserByEmail(auth.getName());
         }
         Topic topic = topicService.getTopicById(id);
-        model.addAttribute("topic",topic);
 
         if (topic == null) {
             model.addAttribute("error", "Такой статьи не существует.");
             return "topic_error";
 
         } else if (!topic.isModerate()) {
-            if (user != null && user.getRole().getName().equals("ADMIN")) {
-                model.addAttribute("user", user);
-                model.addAttribute("topicId", id);
-                List<Comment> comments = commentService.getAllCommentsByTopicId(id);
-                model.addAttribute("comments", comments);
-                return "topic";
-            }
-
             Long userId = (user != null) ? user.getId() : null;
-            if (topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId))) {
+            if (user == null || topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId)) && !user.getRole().getName().equals("ADMIN")) {
                 model.addAttribute("error", "Вы не можете просматривать данную статью.");
                 return "topic_error";
             }
         }
+        List<Comment> comments = commentService.getAllCommentsByTopicId(id);
 
-
+        model.addAttribute("topic", topic);
         model.addAttribute("user", user);
         model.addAttribute("topicId", id);
-        List<Comment> comments = commentService.getAllCommentsByTopicId(id);
         model.addAttribute("comments", comments);
         return "topic";
 
@@ -218,10 +209,11 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/author/{authorId}")
-    public String getPageWithTopicsByAuthor(Model model){
+    public String getPageWithTopicsByAuthor(Model model) {
         model.addAttribute("themes", themeService.getAllThemes());
         return "all_topics_page";
     }
