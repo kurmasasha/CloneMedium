@@ -24,7 +24,7 @@
             <div class="col-md-7">
                 <h5 class="card-title-onTopic" id="topicTitle"></h5>
                 <div id="hashtags" class="d-flex flex-wrap"></div>
-                <p class="card-text-onTopic" id="topicContent"></p>
+               <pre> <span class="card-text-onTopic" id="topicContent"  ></span></pre>
 
                 <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
                     <i class="fa fa-thumbs-o-up fa_topic" th:data-id="${topic.getId()}"></i>
