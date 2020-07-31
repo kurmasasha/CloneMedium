@@ -94,7 +94,7 @@ public class TopicDAOImpl implements TopicDAO {
     public List<Topic> getAllTopicsByUserId(Long userId) {
         return entityManager.createQuery(
                 "SELECT t FROM Topic t " +
-                        "LEFT JOIN FETCH t.authors a " +
+                        "LEFT JOIN  t.authors a " +
                         "WHERE a.id = :userId " +
                         "GROUP BY t.id " +
                         "ORDER BY t.dateCreated  DESC",
@@ -120,7 +120,7 @@ public class TopicDAOImpl implements TopicDAO {
 
     // TODO Не рабочий метод!
     public List<User> getAllUsersByTopicId(Long topicId) {
-        return entityManager.createQuery("SELECT u FROM Topic t LEFT JOIN FETCH t.authors u WHERE t.id = :topicId GROUP BY u.id", User.class).setParameter("topicId", topicId).getResultList();
+        return entityManager.createQuery("SELECT u FROM Topic t LEFT JOIN  t.authors u WHERE t.id = :topicId GROUP BY u.id", User.class).setParameter("topicId", topicId).getResultList();
     }
 
     /**
@@ -134,7 +134,7 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN  t.hashtags h " +
                                 "WHERE h.name = :value " +
                                 "GROUP BY t.id " +
                                 "ORDER BY t.dateCreated  DESC",
@@ -155,8 +155,8 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.authors a " +
-                                "LEFT JOIN FETCH t.hashtags h " +
+                                "LEFT JOIN  t.authors a " +
+                                "LEFT JOIN  t.hashtags h " +
                                 "WHERE h.name = :value " +
                                 "AND a.id = :userId " +
                                 "GROUP BY t.id " +
@@ -247,7 +247,7 @@ public class TopicDAOImpl implements TopicDAO {
         return entityManager
                 .createQuery(
                         "SELECT t FROM Topic t " +
-                                "LEFT JOIN FETCH t.themes th " +
+                                "LEFT JOIN  t.themes th " +
                                 "WHERE th.id IN :value " +
                                 "AND t.isModerate = true " +
                                 "GROUP BY t.id " +

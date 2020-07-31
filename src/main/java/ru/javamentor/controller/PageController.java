@@ -14,6 +14,7 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
+import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
@@ -36,19 +37,21 @@ public class PageController {
 
     private final UserService userService;
     private final ThemeService themeService;
+    private final RoleService roleService;
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, PasswordRecoveryTokenService passwordRecoveryTokenService) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
         this.passwordRecoveryTokenService = passwordRecoveryTokenService;
+        this.roleService = roleService;
     }
 
     /**
@@ -107,17 +110,29 @@ public class PageController {
     public String topicPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            model.addAttribute("user", userService.getUserByEmail(auth.getName()));
-        } else {
-            model.addAttribute("user", user);
+            user = userService.getUserByEmail(auth.getName());
         }
         Topic topic = topicService.getTopicById(id);
-        model.addAttribute("topic", topic);
-        model.addAttribute("topicId", id);
+
+        if (topic == null) {
+            model.addAttribute("error", "Такой статьи не существует.");
+            return "topic_error";
+
+        } else if (!topic.isModerate()) {
+            Long userId = (user != null) ? user.getId() : null;
+            if (user == null || topic.getAuthors().stream().noneMatch(us -> us.getId().equals(userId)) && !user.getRole().getName().equals("ADMIN")) {
+                model.addAttribute("error", "Вы не можете просматривать данную статью.");
+                return "topic_error";
+            }
+        }
         List<Comment> comments = commentService.getAllCommentsByTopicId(id);
 
+        model.addAttribute("topic", topic);
+        model.addAttribute("user", user);
+        model.addAttribute("topicId", id);
         model.addAttribute("comments", comments);
         return "topic";
+
     }
 
     /**
