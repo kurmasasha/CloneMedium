@@ -90,7 +90,7 @@
                             <div class="delete_comment_button">
                             <div class="p-2 bd-highlight">
                                 <button  class="btn-sm btn-danger" sec:authorize="hasAuthority('USER')" th:value="${comment.getId()}"
-                                         th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">Уалить комментарий</button>
+                                         th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">Удалить комментарий</button>
                                 <button  class="btn-sm btn-danger" th:value="${comment.getId()}"
                                          sec:authorize="hasAuthority('ADMIN')">Уалить комментарий</button>
                             </div>
