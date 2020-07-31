@@ -18,4 +18,6 @@ public interface CommentDAO {
     User getAuthorByCommentId(Long commentId);
 
     void removeCommentById(Long id);
+
+    void removeCommentsByTopicId(long topicId);
 }

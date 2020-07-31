@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.dao.topic.TopicDAO;
 import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.dto.TopicDto;
@@ -27,11 +28,13 @@ public class TopicServiceImpl implements TopicService {
 
     private final TopicDAO topicDAO;
     private final UserDAO userDAO;
+    private final CommentDAO commentDAO;
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO, CommentDAO commentDAO) {
         this.topicDAO = topicDAO;
         this.userDAO = userDAO;
+        this.commentDAO = commentDAO;
     }
 
     /**
@@ -152,6 +155,7 @@ public class TopicServiceImpl implements TopicService {
         List<User> userList = getAllUsersByTopicId(id);
         if (userList.contains(currentUser)) {*/
         try {
+            commentDAO.removeCommentsByTopicId(id);
             topicDAO.removeTopicById(id);
             log.debug("IN removeTopicById - topic with Id: {} successfully deleted", id);
             return true;

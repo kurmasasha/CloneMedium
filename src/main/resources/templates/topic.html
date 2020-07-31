@@ -34,7 +34,19 @@
                     <i class="fa fa-thumbs-o-down fa_topic" th:data-id="${topic.getId()}"></i>
                     <span id="dislikeCounter" th:text="${topic.getDislikes()}"></span>
                 </div>
-
+            </div>
+            <div class="col-md-2" id="delete_topic_block">
+                <div sec:authorize="hasAuthority('USER')" th:each="auth : ${topic.getAuthors()}">
+                    <a data-toggle="modal" href="#deleteTopicModal"
+                       th:if="${auth.getUsername().equals(#authentication.getName())}">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a data-toggle="modal" href="#deleteTopicModal">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -108,6 +120,24 @@
         </div>
     </div>
 </div>
+<!--------------------------------------------Модальное окно открывается когда пользователь удаляет свой комментарий------------------------------------------------------------>
+<div class="modal fade" id="deleteTopicModal" tabindex="-1" role="dialog"
+     aria-labelledby="deleteTopicModal" aria-hidden="true">
+    <div id="info_container"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2>Вы действительно хотите удалить?</h2>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-success" id="delete_topic_btn" th:data-id="${topic.getId()}">Да</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
@@ -123,5 +153,6 @@
 <script src="/js/util/counterForSymbols.js"></script>
 <script src="/js/likedTopic.js"></script>
 <script src="/js/likedComment.js"></script>
+<script src="/js/delete_topic.js"></script>
 </body>
 </html>
