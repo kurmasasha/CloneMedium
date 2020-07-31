@@ -8,7 +8,8 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework.boot" level="OFF" additivity="false" />
+    <logger name="org.thymeleaf" level="OFF" additivity="false" />
+
     <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>
