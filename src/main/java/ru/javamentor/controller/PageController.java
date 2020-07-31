@@ -106,6 +106,7 @@ public class PageController {
             user = userService.getUserByEmail(auth.getName());
         }
         Topic topic = topicService.getTopicById(id);
+        model.addAttribute("topic",topic);
 
         if (topic == null) {
             model.addAttribute("error", "Такой статьи не существует.");
