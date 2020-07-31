@@ -47,7 +47,7 @@
 </form>
 
 <!--------------------------------------------Модальное окно для восстановления пароля------------------------------------------------------------------------------------------------->
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>	<div id="forgotPassword" class="modal recoverPass" role="dialog">
+<div id="forgotPassword" class="modal recoverPass" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -55,7 +55,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form method="post" id="Forgot-Password-Form" role="form">
+                <form  class="password-recovery-form" method="post" id="Forgot-Password-Form" role="form">
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
@@ -91,11 +91,10 @@
         </div>
     </div>
 </div>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/checkAuthVK.js"></script>
-<script src="js/recoverPass.js"></script>
+<script src="/js/recoveryPass.js"></script>
 </body>
 </html>
