@@ -1,6 +1,6 @@
 create table password_recovery_token (
                           id bigint not null auto_increment,
-                          hash_email varchar(250),
+                          hash_email varchar(250) unique ,
                           start_time datetime,
                           user_id bigint,
                           primary key (id));

@@ -9,16 +9,21 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.javamentor.model.Comment;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,14 +41,16 @@ public class PageController {
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
+    private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
+        this.passwordRecoveryTokenService = passwordRecoveryTokenService;
         this.roleService = roleService;
     }
 
@@ -171,6 +178,32 @@ public class PageController {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "form_edit_user";
+    }
+
+    /**
+     * метод для страницы восстановления пароля
+     *
+     * @return страница опопвещения об отправке временного пароля
+     */
+    @GetMapping("/recoveryPass/**")
+    //Не используется /recoveryPass/{token} потому что токен может содержать символ "/" - ошибка 404
+    public String recoveryPassPage(HttpServletRequest request, Model model) {
+        String token = request.getRequestURI().split(request.getContextPath() + "/recoveryPass/")[1];
+
+        PasswordRecoveryToken passwordRecoveryToken = passwordRecoveryTokenService.getPasswordRecoveryTokenByToken(token);
+        if (passwordRecoveryToken != null && passwordRecoveryTokenService.isValid(passwordRecoveryToken)) {
+            User user = passwordRecoveryToken.getUser();
+            String tempPass = passwordRecoveryTokenService.generateTempPass();
+            user.setPassword(tempPass);
+            userService.updateUser(user);
+            passwordRecoveryTokenService.sendTempPass(user, tempPass);
+            passwordRecoveryTokenService.deletePasswordRecoveryToken(passwordRecoveryToken);
+            model.addAttribute("message", "Временный пароль отправлен на почту");
+            return "password_recovery_result";
+        }
+
+        model.addAttribute("message", "Не удалось сбросить пароль");
+        return "password_recovery_result";
     }
 
     /**

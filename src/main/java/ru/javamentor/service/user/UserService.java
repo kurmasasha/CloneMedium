@@ -136,4 +136,5 @@ public interface UserService {
      * @return - успех операции создания уведомлений
      */
     boolean notifyAllSubscribersOfAuthor(String author, String title, String text);
+
 }
