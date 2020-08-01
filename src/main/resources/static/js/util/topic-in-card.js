@@ -26,6 +26,7 @@ function topicInCard(topic) {
     let img = '';
     if (topic.img !== 'no-img.png') {
         img = '<img src="/topic-img/' + topic.img + '" alt="topic image">' +
+                '<br> ' +
                 '<br>'
     }
 
@@ -38,6 +39,12 @@ function topicInCard(topic) {
     if (topic.moderate) {
         moderated = 'moderated';
     }
+
+    let active_like = '';
+
+    let active_dis = '';
+
+    let commentCounter = 0;
 
     let article = `
         <article class="topic topic_preview">
@@ -59,21 +66,27 @@ function topicInCard(topic) {
             <footer class="topic_footer">
                 <ul class="topic_stats">
                     <li>
-                        <div class="topic_stats_items">
-                            <span class="fa fa-thumbs-o-up" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}"></span>
-                            <span class="text-info topic_stats_items_counter" data-id="${topic.id}">${topic.likes}</span>
+                        <div class="topic_stats_items ` + active_like + `">
+                            <span class="fa fa-thumbs-o-up fa_topic" id="iconLikeOfTopic-${topic.id}"  data-id="${topic.id}">
+                            </span>
+                            <span class="text-info topic_stats_items_counter" id="likes" data-id="${topic.id}">
+                                ${topic.likes}
+                            </span>
                         </div>
                     </li>
                     <li>
-                        <div class="topic_stats_items">
-                            <span class="fa fa-thumbs-o-down" id="iconDislikeOfTopic-${topic.id}"  data-id="${topic.id}"></span>
-                            <span class="text-info topic_stats_items_counter" data-id="${topic.id}">0</span>
+                        <div class="topic_stats_items ` + active_dis + `">
+                            <span class="fa fa-thumbs-o-down fa_topic" id="iconDislikeOfTopic-${topic.id}"  data-id="${topic.id}">
+                            </span>
+                            <span class="text-info topic_stats_items_counter" id="dislikes" data-id="${topic.id}">
+                                ${topic.dislikes}
+                            </span>
                         </div>
                     </li>
                     <li>
                         <div class="topic_stats_items topic_stats_items_comments">
                             <span class="fa fa-comments-o" data-id="${topic.id}"></span>
-                            <span class="text-info topic_stats_items_counter" data-id="${topic.id}">0</span>
+                            <span class="text-info topic_stats_items_counter" data-id="${topic.id}">` + commentCounter + `</span>
                         </div>
                     </li>
                 </ul>
@@ -109,4 +122,5 @@ function topicInCard(topic) {
 
     return article;
 }
+
 
