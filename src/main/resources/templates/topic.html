@@ -15,16 +15,18 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container" id="single_topic_container">
-    <div class="card p-3 mt-5" th:id="topicId" th:data-topic-id="${topicId}">
-        <h5 class="card-header-author" id="topicAuthor"></h5>
+    <div class="card p-3 mt-5" th:id="${topic.id}" th:data-topic-id="${topic.id}">
+        <h5 class="card-header-author" id="topicAuthor" th:text="${topic.authors[0].firstName + ' ' + topic.authors[0].lastName}"></h5>
         <div class="card-body row">
             <div class="col-md-3">
-                <img class="card-img topic-img" id="topicImg">
+                <img class="card-img topic-img" th:src="${'/topic-img/' + topic.img}" id="topicImg">
             </div>
             <div class="col-md-7">
-                <h5 class="card-title-onTopic" id="topicTitle"></h5>
-                <div id="hashtags" class="d-flex flex-wrap"></div>
-               <pre> <span class="card-text-onTopic" id="topicContent"  ></span></pre>
+                <h5 class="card-title-onTopic" id="topicTitle" th:text="${topic.title}"></h5>
+                <div id="hashtags" class="d-flex flex-wrap" th:each="hashtag : ${topic.hashtags}">
+                    <a th:id="ht_ + ${hashtag.id}" href="#"><h6 th:text="${hashtag.name}"></h6></a>
+                </div>
+               <pre> <span class="card-text-onTopic" id="topicContent"  th:text="${topic.content}"></span></pre>
 
                 <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
                     <i class="fa fa-thumbs-o-up fa_topic" th:data-id="${topic.getId()}"></i>
@@ -124,7 +126,6 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/getTopicById.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script>$('#finderByHashtag').hide();</script>
