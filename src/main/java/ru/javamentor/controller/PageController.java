@@ -129,7 +129,7 @@ public class PageController {
 
         model.addAttribute("topic", topic);
         model.addAttribute("user", user);
-         model.addAttribute("comments", comments);
+        model.addAttribute("comments", comments);
         return "topic";
 
     }
