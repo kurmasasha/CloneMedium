@@ -18,4 +18,7 @@ public interface CommentDAO {
     User getAuthorByCommentId(Long commentId);
 
     void removeCommentById(Long id);
+
+    boolean doesExist(Long id);
+
 }

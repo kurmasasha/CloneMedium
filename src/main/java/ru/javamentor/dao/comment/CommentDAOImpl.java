@@ -47,5 +47,12 @@ public class CommentDAOImpl implements CommentDAO {
         Comment comment = getCommentById(id);
         entityManager.remove(comment);
     }
+
+    @Override
+    public boolean doesExist(Long id){
+        Comment comment = getCommentById(id);
+        return comment!=null;
+    }
+
 }
 
