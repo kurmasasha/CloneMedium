@@ -130,9 +130,6 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
-        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<User> userList = getAllUsersByTopicId(topic.getId());
-        if (userList.contains(currentUser)) {*/
         try {
             topicDAO.updateTopic(topic);
             log.debug("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
@@ -141,9 +138,6 @@ public class TopicServiceImpl implements TopicService {
             log.error("Exception while updateTopic in service with topic.id is {}", topic.getId());
             throw new RuntimeException();
         }
-        /*}
-        log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
-        return false;*/
     }
 
     /**
