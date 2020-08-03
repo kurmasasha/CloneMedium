@@ -2,6 +2,7 @@ package ru.javamentor.service.topic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
@@ -149,9 +150,6 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean removeTopicById(Long id) {
-        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<User> userList = getAllUsersByTopicId(id);
-        if (userList.contains(currentUser)) {*/
         try {
             commentDAO.removeCommentsByTopicId(id);
             topicDAO.removeTopicById(id);
@@ -161,9 +159,6 @@ public class TopicServiceImpl implements TopicService {
             log.error("Exception while removeTopicById in service with topic.id is {}", id);
             throw new RuntimeException();
         }
-        /*}
-        log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
-        return false;*/
     }
 
     /**

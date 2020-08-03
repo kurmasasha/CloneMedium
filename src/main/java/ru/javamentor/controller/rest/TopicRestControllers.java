@@ -243,12 +243,16 @@ public class TopicRestControllers {
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
     @DeleteMapping("/user/topic/delete/{id}")
-    public ResponseEntity<String> deleteTopic(@PathVariable Long id) {
-        if (topicService.removeTopicById(id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> deleteTopic(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        List<User> users = topicService.getAllUsersByTopicId(id);
+        if(user != null) {
+            if (users.contains(user) || user.getRole().getAuthority().equals("ADMIN")) {
+                if (topicService.removeTopicById(id)) {
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }
         }
+        return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
     }
 
     /**
