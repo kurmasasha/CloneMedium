@@ -37,6 +37,16 @@ public class CommentRestController {
         return new ResponseEntity<>(commentService.getAllCommentsByTopicId(topicId), HttpStatus.OK);
     }
 
+    /**
+     * Метод для определения числа комментариев к топику
+     * @param topicId - id нужного топика
+     * @return количество комментариев к топику
+     */
+    @GetMapping("/free-user/countCommentsOfTopic/{id}")
+    public ResponseEntity<String> getCountCommentsOfTopic(@PathVariable(value = "id") Long topicId) {
+        return new ResponseEntity<>(commentService.getCountCommentsForTopic(topicId), HttpStatus.OK);
+    }
+
     @PostMapping("/user/comment/add")
     public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);

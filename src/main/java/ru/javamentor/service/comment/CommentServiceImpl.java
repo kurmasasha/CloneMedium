@@ -239,4 +239,15 @@ public class CommentServiceImpl implements CommentService {
             throw new RuntimeException();
         }
     }
+
+    /**
+     * Метод для определения числа комментариев к топику
+     * @param topicId - id нужного топика
+     * @return количество комментариев к топику
+     */
+    @Transactional
+    @Override
+    public String getCountCommentsForTopic(Long topicId) {
+        return commentDAO.getCountCommentsByTopicId(topicId);
+    }
 }

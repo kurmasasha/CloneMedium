@@ -44,7 +44,7 @@ function topicInCard(topic) {
 
     let active_dis = '';
 
-    let commentCounter = 0;
+    getCountCommentsOfTopic(topic.id);
 
     let article = `
         <article class="topic topic_preview">
@@ -86,7 +86,7 @@ function topicInCard(topic) {
                     <li>
                         <div class="topic_stats_items topic_stats_items_comments">
                             <span class="fa fa-comments-o" data-id="${topic.id}"></span>
-                            <span class="text-info topic_stats_items_counter" data-id="${topic.id}">` + commentCounter + `</span>
+                            <span class="text-info topic_stats_items_counter" id="commentsCount-${topic.id}" data-id="${topic.id}"></span>
                         </div>
                     </li>
                 </ul>
@@ -94,33 +94,15 @@ function topicInCard(topic) {
         </article>
     `
 
-    let card =
-        '<div class="card mb-2 mt-0">' +
-        '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
-        '<a href="/topic/' + topic.id + '">' +
-        '<h5 class="card-title-onCard">' + topic.title + '</h5>' +
-        '</a>' +
-        '<div id="datecreated">'+
-        '<h6{color: red}>' + topic.dateCreated + '</h6>' +
-        '</div>' +
-        '</div>' +
-        '<div class="card-body row">' +
-        '<div class="col-md-4">' +
-        `<img src="/topic-img/${topic.img}" class="card-img topic-img">` +
-        '</div>' +
-        '<div class="col-md-6">' +
-        '<h6 class="card-author-onCard">' + author_label + authors + '</h6>' +
-        '<h6 class="card-tag-onCard">' + tags + '</h6>' +
-        '<p class="card-text-onCard">' + linkify(topic.content) + '</p>' +
-        `<i class="fa fa-thumbs-o-up"></i>` +
-        `<span id="likeCounter">${topic.likes}</span>` +
-        `<i class="fa fa-thumbs-o-down"></i>` +
-        `<span id="likeCounter">${topic.dislikes}</span>` +
-        '</div>' +
-        '</div>' +
-        '</div>';
-
     return article;
+}
+
+async function getCountCommentsOfTopic(topicId) {
+    const response = await fetch(`api/free-user/countCommentsOfTopic/${topicId}`);
+    const count = await response.text();
+
+    const commentCounterElement = document.querySelector(`#commentsCount-${topicId}`);
+    commentCounterElement.textContent = count;
 }
 
 

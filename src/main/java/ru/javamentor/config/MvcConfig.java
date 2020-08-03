@@ -23,7 +23,6 @@ public class MvcConfig implements WebMvcConfigurer {
         Path path = Paths.get(uploadPath);
         String filePath = path.toAbsolutePath().toString();
         String prefix;
-        System.out.println(OS);
 
         if (OS.startsWith("Windows")) {
             prefix = "file:/";

@@ -1,7 +1,6 @@
 package ru.javamentor.dao.comment;
 
 import org.springframework.stereotype.Repository;
-import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.User;
 
@@ -46,6 +45,19 @@ public class CommentDAOImpl implements CommentDAO {
     public void removeCommentById(Long id) {
         Comment comment = getCommentById(id);
         entityManager.remove(comment);
+    }
+
+    /**
+     * Метод для определения числа комментариев к топику
+     * @param topicId - id нужного топика
+     * @return количество комментариев к топику
+     */
+    @Override
+    public String getCountCommentsByTopicId(Long topicId) {
+        return entityManager.createNativeQuery("SELECT COUNT(c.id) FROM comments c WHERE c.topic_id = :topicId")
+                .setParameter("topicId", topicId)
+                .getSingleResult()
+                .toString();
     }
 }
 
