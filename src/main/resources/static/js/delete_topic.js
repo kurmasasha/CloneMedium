@@ -10,7 +10,7 @@ document.getElementById('delete_topic_btn').onclick = function () {
             if (response.ok) {
                 successDeleteTopic(info_container, 2000);
             } else {
-                failDeleteTopic(info_container, response.text(), 2000);
+                errorDeleteTopic(info_container, response.text(), 2000);
             }
         })
 }
@@ -24,7 +24,7 @@ function successDeleteTopic(container, time) {
     }, time)
 }
 
-function failDeleteTopic(container, error, time) {
+function errorDeleteTopic(container, error, time) {
     container.append(`<div class="alert alert-danger m-3" role="alert">${error}</div>`);
     setTimeout(function () {
         container.empty();
