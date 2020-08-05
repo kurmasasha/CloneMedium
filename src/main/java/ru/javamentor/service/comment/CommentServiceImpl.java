@@ -239,4 +239,10 @@ public class CommentServiceImpl implements CommentService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public boolean isExist(Long commentId){
+        return commentDAO.isExist(commentId);
+    }
+
 }
