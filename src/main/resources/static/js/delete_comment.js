@@ -1,5 +1,16 @@
-$('.delete_comment_button').on('click', function( e) {
-    const id = e.target.id;
-    $('#commentCard-' + e.target.value).remove();
-    $.post("/api/user/comment/delete/" + e.target.value);
-});
+$(document).ready( async function () {
+    $('#comments_container').on('click',".fa", async function (e) {
+        if($(this).hasClass("fa-trash")){
+            let id = $(this).attr('data-id');
+             await fetch(`/api/user/comment/delete/${id}`, {method: "delete"})
+                .then(function (response) {
+                        if (response.ok) {
+                            $('#commentCard-' + id).remove();
+                        } else if (response.status > 500) {
+                            alert("Что то пошло не так, мы уже рашаем проблему");
+                        }
+                    }
+                )
+        }
+    })
+})
