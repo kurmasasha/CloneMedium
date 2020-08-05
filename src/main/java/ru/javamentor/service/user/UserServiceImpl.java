@@ -359,4 +359,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public boolean isExisting(Long userId){
+        return userDAO.isExist(userId);
+    }
+
 }

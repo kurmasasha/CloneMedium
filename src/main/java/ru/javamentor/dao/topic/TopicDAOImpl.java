@@ -7,6 +7,7 @@ import ru.javamentor.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Set;
 
@@ -256,4 +257,13 @@ public class TopicDAOImpl implements TopicDAO {
                 .setParameter("value", themesIds)
                 .getResultList();
     }
+
+    @Override
+    public boolean isExist(Long topicId){
+        Query count = entityManager.createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.id = :topicId")
+                .setParameter("topicId", topicId);
+        long res = Long.parseLong(String.valueOf(count));
+        return res>0;
+    }
+
 }

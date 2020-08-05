@@ -134,4 +134,10 @@ public class NotificationServiceImpl implements NotificationService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public boolean isExisting(Long notifId){
+        return notificationDao.isExist(notifId);
+    }
+
 }

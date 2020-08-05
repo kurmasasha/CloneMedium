@@ -7,6 +7,7 @@ import ru.javamentor.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -47,5 +48,14 @@ public class CommentDAOImpl implements CommentDAO {
         Comment comment = getCommentById(id);
         entityManager.remove(comment);
     }
+
+    @Override
+    public boolean isExist(Long commentId){
+        Query count = entityManager.createQuery("SELECT COUNT(c.id) FROM Comment c WHERE c.id = :commentId")
+                .setParameter("commentId", commentId);
+        long res = Long.parseLong(String.valueOf(count));
+        return res>0;
+    }
+
 }
 

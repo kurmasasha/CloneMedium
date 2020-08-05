@@ -5,6 +5,7 @@ import ru.javamentor.model.Theme;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Set;
 
@@ -55,4 +56,13 @@ public class ThemeDAOImpl implements ThemeDAO {
                 .setParameter("value", idThemes)
                 .getResultList();
     }
+
+    @Override
+    public boolean isExist(Long themeId){
+        Query count = entityManager.createQuery("SELECT COUNT(t.id) FROM Theme t WHERE t.id = :themeId")
+                .setParameter("themeId", themeId);
+        long res = Long.parseLong(String.valueOf(count));
+        return res>0;
+    }
+
 }

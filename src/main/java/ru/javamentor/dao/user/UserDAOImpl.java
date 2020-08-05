@@ -5,6 +5,7 @@ import ru.javamentor.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -206,4 +207,13 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("subscriber", subscriber)
                 .executeUpdate();
     }
+
+    @Override
+    public boolean isExist(Long userId){
+        Query count = entityManager.createQuery("SELECT COUNT(u.id) FROM User u WHERE u.id = :userId")
+                .setParameter("userId", userId);
+        long res = Long.parseLong(String.valueOf(count));
+        return res>0;
+    }
+
 }
