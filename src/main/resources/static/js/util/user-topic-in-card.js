@@ -27,13 +27,28 @@ function userTopicInCard(topic) {
     let card =
         '<div class="card mb-2 mt-0">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
-        '<td><button type="button" class="btn btn-info" onclick="editTopicForm(' + topic.id + ')">РЕДАКТИРОВАТЬ</button></td>' +
-        '<td><button type="button" class="btn btn-info" onclick="editTopicForm(' + topic.id + ')">УДАЛИТЬ</button></td>' +
-        '<a href="/topic/' + topic.id + '">' +
-        '<h5 class="card-title-onCard">' + topic.title + '</h5>' +
-        '</a>' +
-        '<div id="datecreated">'+
-        '<h6{color: red}>' + topic.dateCreated + '</h6>' +
+        '<div class="container-fluid">' +
+            '<div class="row">' +
+                '<div class="col-2 align-self-center">' +
+                    '<a href="/topic/' + topic.id + '">' +
+                        '<h5 class="card-title-onCard">' + topic.title + '</h5>' +
+                    '</a>' +
+                '</div>'+
+                '<div class="col-10 align-self-end">' +
+                    '<div class="row justify-content-end">' +
+                        '<div class="col-4">' +
+                            '<button type="button" class="btn btn-outline-dark mr-2" onclick="editTopicForm(' + topic.id + ')">Редактировать</button>' +
+                            '<button type="button" class="btn btn-outline-danger" onclick="editTopicForm(' + topic.id + ')">Удалить</button>' +
+                        '</div>'+
+
+                        '<div class="col-0 align-self-center">' +
+                            '<div id="datecreated">'+
+                            '<h6{color: red}>' + topic.dateCreated + '</h6>' +
+                            '</div>' +
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</div>' +
         '</div>' +
         '</div>' +
         '<div class="card-body row">' +
