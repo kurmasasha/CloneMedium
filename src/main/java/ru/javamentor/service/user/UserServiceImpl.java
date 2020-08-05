@@ -359,4 +359,11 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Transactional
+    @Override
+    public boolean isExist(Long commentId){
+        return userDAO.isExist(commentId);
+    }
+
 }

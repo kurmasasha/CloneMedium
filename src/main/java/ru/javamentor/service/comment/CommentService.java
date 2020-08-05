@@ -1,5 +1,6 @@
 package ru.javamentor.service.comment;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -88,4 +89,7 @@ public interface CommentService {
      */
 
     Comment putDislikeToComment(Long commentId, User user);
+
+    @Transactional
+    boolean isExist(Long commentId);
 }

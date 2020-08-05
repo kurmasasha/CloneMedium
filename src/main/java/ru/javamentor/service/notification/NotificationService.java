@@ -1,5 +1,6 @@
 package ru.javamentor.service.notification;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.model.Notification;
 
 import java.util.List;
@@ -57,4 +58,6 @@ public interface NotificationService {
      */
     boolean deleteNotification(Notification notification);
 
+    @Transactional
+    boolean isExist(Long commentId);
 }

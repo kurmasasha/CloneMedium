@@ -1,5 +1,6 @@
 package ru.javamentor.service.theme;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.model.Theme;
 import org.springframework.ui.Model;
 import ru.javamentor.model.User;
@@ -61,4 +62,7 @@ public interface ThemeService {
      * @return void
      */
     void showThemes(Model model, User userDB);
+
+    @Transactional
+    boolean isExist(Long commentId);
 }

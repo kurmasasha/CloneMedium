@@ -19,6 +19,6 @@ public interface CommentDAO {
 
     void removeCommentById(Long id);
 
-    boolean doesExist(Long id);
+    boolean isExist(Long commentId);
 
 }

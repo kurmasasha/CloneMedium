@@ -150,4 +150,10 @@ public class ThemeServiceImpl implements ThemeService {
         model.addAttribute("themes", allThemes);
     }
 
+    @Transactional
+    @Override
+    public boolean isExist(Long commentId){
+        return themeDAO.isExist(commentId);
+    }
+
 }

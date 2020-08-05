@@ -5,6 +5,7 @@ import ru.javamentor.model.Notification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -42,4 +43,13 @@ public class NotificationDaoImpl implements NotificationDao {
     public void deleteNotification(Notification notification) {
         entityManager.remove(notification);
     }
+
+    @Override
+    public boolean isExist(Long notifId) {
+        Query count = entityManager.createQuery("SELECT COUNT(n.id) FROM Notification n WHERE n.id = :notifId")
+                .setParameter("notifId", notifId);
+        long res = Long.parseLong(String.valueOf(count));
+        return res > 0;
+    }
+
 }

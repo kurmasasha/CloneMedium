@@ -1,5 +1,6 @@
 package ru.javamentor.service.topic;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -162,4 +163,7 @@ public interface TopicService {
      * @return - список TopicDto
      */
     List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList);
+
+    @Transactional
+    boolean isExist(Long commentId);
 }

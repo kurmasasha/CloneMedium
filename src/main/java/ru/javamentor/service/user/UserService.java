@@ -1,6 +1,7 @@
 package ru.javamentor.service.user;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.model.User;
 
 import java.util.Collection;
@@ -137,4 +138,6 @@ public interface UserService {
      */
     boolean notifyAllSubscribersOfAuthor(String author, String title, String text);
 
+    @Transactional
+    boolean isExist(Long commentId);
 }
