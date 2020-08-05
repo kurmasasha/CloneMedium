@@ -17,7 +17,45 @@
 
 <div class="d-flex justify-content-center py-5">
     <div id="topics_container" class="container mx-0 py-3">
-        <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
+        <th:block th:each="topic: ${topics}">
+            <div class="card mb-2 mt-0" th:id="topicCardId" th:data-card-topic-id="${topic.getId()}">
+                <div class="card-header d-flex justify-content-between"
+                     th:classappend="${topic.moderate} ? 'moderated' : 'notmoderated'">
+                    <a th:href="${'/topic/' + topic.getId()}">
+                        <h5 class="card-title-onCard" th:text="${topic.getTitle()}"></h5>
+                    </a>
+                    <div id="datecreated">
+                        <h6 style="font-size: 100%" th:text="${topic.getDateCreated()}"></h6>
+                    </div>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-4">
+                        <img class="card-img topic-img" th:src="${'/topic-img/' + topic.img}">
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="card-author-onCard">
+                            <span th:text="${topic.getAuthors().size() > 1 ? 'Авторы: ' : 'Автор: '}"></span>
+                            <div style="display: inline-block" th:each="author, authIter : ${topic.getAuthors()}">
+                                <a th:href="${'/topic/find/author/' + author.getId()}"
+                                   th:text="${author.getFirstName() + ' ' + author.getLastName()}"></a>
+                                <span th:text="${authIter.index < topic.getAuthors().size() - 1 ? ' / ' : ''}"></span>
+                            </div>
+                        </h6>
+                        <h6 class="card-tag-onCard">
+                            <div style="display: inline-block" th:each="tag,tagIter : ${topic.getHashtags()}">
+                                <a th:href="${'/topic/find/tag/' + tag.getName()}" th:text="${tag.getName()}"></a>
+                                <span th:text="${tagIter.index < topic.getHashtags().size() - 1 ? ' / ' : ''}"></span>
+                            </div>
+                        </h6>
+                        <p th:id="topicCardContent-+${topic.getId()}" th:data-card-topic-content="${topic.getContent()}" class="card-text-onCard"></p>
+                        <i class="fa fa-thumbs-o-up"></i>
+                        <span id="likeCounter" th:text="${topic.getLikes()}"></span>
+                        <i class="fa fa-thumbs-o-down"></i>
+                        <span id="dislikeCounter" th:text="${topic.getDislikes()}"></span>
+                    </div>
+                </div>
+            </div>
+        </th:block>
     </div>
 
     <div class="my-3">
@@ -36,13 +74,12 @@
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
-<script src="/js/getAndPrintAllTopicsOfUser.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
 <script src="/js/getNotifCounterByPrincipal.js"></script>
 <script src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
-<script src="/js/home_events.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
 </body>
