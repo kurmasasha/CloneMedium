@@ -32,6 +32,31 @@
 <!------------------------------------------------ Модальное окно ----------------------------------------------------->
 <div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
 <!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------ Модальное окно редактирования топика ----------------------------------------------------->
+<!-- edit modal -->
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-topic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-topic">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="/api/admin/user/" class="text-center" id="editForm" method="post">
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="edit">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
 
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -45,5 +70,6 @@
 <script src="/js/home_events.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
+<script src="/js/editTopic.js"></script>
 </body>
 </html>
