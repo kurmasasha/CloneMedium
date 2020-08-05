@@ -1,5 +1,5 @@
 
-function topicInCard(topic) {
+function userTopicInCard(topic) {
     let tags = '';
     $.each(topic.hashtags, function (index, tag) {
         tags += '<a  href ="/topic/find/tag/'+ tag.name + '"> '+ tag.name +' </a>';
@@ -27,6 +27,8 @@ function topicInCard(topic) {
     let card =
         '<div class="card mb-2 mt-0">' +
         '<div class="card-header d-flex justify-content-between ' + moderated + '">' +
+        '<td><button type="button" class="btn btn-info" onclick="editTopicForm(' + topic.id + ')">РЕДАКТИРОВАТЬ</button></td>' +
+        '<td><button type="button" class="btn btn-info" onclick="editTopicForm(' + topic.id + ')">УДАЛИТЬ</button></td>' +
         '<a href="/topic/' + topic.id + '">' +
         '<h5 class="card-title-onCard">' + topic.title + '</h5>' +
         '</a>' +
