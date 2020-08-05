@@ -239,15 +239,14 @@ public class TopicRestControllers {
     /**
      * метод для уадления топика
      *
-     * @param id - id топика который необходимо удалить
+     * @param topicId - id топика который необходимо удалить
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
-    @DeleteMapping("/user/topic/delete/{id}")
-    public ResponseEntity<String> deleteTopic(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        List<User> users = topicService.getAllUsersByTopicId(id);
+    @DeleteMapping("/user/topic/delete/{topicId}")
+    public ResponseEntity<String> deleteTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
         if(user != null) {
-            if (users.contains(user) || user.getRole().getAuthority().equals("ADMIN")) {
-                if (topicService.removeTopicById(id)) {
+            if (topicService.isAuthorOfTopic(user.getId(), topicId) || user.getRole().getAuthority().equals("ADMIN")) {
+                if (topicService.removeTopicById(topicId)) {
                     return new ResponseEntity<>(HttpStatus.OK);
                 }
             }

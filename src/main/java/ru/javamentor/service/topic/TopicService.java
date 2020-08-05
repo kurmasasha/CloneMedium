@@ -60,6 +60,15 @@ public interface TopicService {
     boolean removeTopicById(Long id);
 
     /**
+     * метод для проверки удаляемого топика на принадлежность пользователю
+     *
+     * @param userId - уникальный id пользователя
+     * @param topicId - уникальный id топика
+     * @return boolean - удалость удалить топик или нет
+     */
+    boolean isAuthorOfTopic(Long userId, Long topicId);
+
+    /**
      * метод для получения списка топиков конкретного пользователя
      *
      * @param userId -  уникальный id пользователя топики которого нужно получить

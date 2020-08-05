@@ -162,6 +162,29 @@ public class TopicServiceImpl implements TopicService {
     }
 
     /**
+     * метод для проверки удаляемого топика на принадлежность пользователю
+     *
+     * @param userId - уникальный id пользователя
+     * @param topicId - уникальный id топика
+     * @return boolean - удалость удалить топик или нет
+     */
+    @Transactional
+    @Override
+    public boolean isAuthorOfTopic(Long userId, Long topicId){
+        try{
+            Topic topic = topicDAO.getTopicById(topicId);
+            if(topic.getAuthors().contains(userDAO.getUserById(userId))) {
+                log.debug("IN isAuthorOfTopic - topic with id: {} successfully deleted", topicId);
+                return true;
+            }
+            return false;
+        }catch (Exception e) {
+            log.error("Exception while isAuthorOfTopic in service with user.id is {}, with topic.id is {}", userId, topicId);
+            throw new RuntimeException();
+        }
+    }
+
+    /**
      * метод для получения списка топиков конкретного пользователя
      *
      * @param userId -  уникальный id пользователя топики которого нужно получить
