@@ -3,19 +3,10 @@
  */
 
 $(document).ready(function() {
-    let topicContainer = $('#topics_container');
-    const url = decodeURI(window.location.pathname);
 
-    if (url.includes("/topic/find/author/")) {            // действие, в случае поиска по автору
-        const arr = url.split("/")
-        const authorId = arr[4];
-        getAndPrintAllTopicsByAuthor(authorId, topicContainer)
-            .then();
-    } else {
-        $('#all_page_link').addClass('active');
-        getAndPrintModeratedTopics(topicContainer)
-            .then();
-    }
+    let topicContainer = $('#topics_container');
+
+    $('#all_page_link').addClass('active');
 
     /**
      * Нажатие на кнопку поиска по хэштегу
@@ -28,7 +19,6 @@ $(document).ready(function() {
         }
         console.log(hashtag);
         if (hashtag !== '') {
-
             getAllTopicsByHashtag(hashtag, $('#topics_container'))
                 .then();
         } else {
