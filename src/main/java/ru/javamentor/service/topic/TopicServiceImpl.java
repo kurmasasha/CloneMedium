@@ -174,7 +174,7 @@ public class TopicServiceImpl implements TopicService {
         try{
             Topic topic = topicDAO.getTopicById(topicId);
             if(topic.getAuthors().contains(userDAO.getUserById(userId))) {
-                log.debug("IN isAuthorOfTopic - topic with id: {} successfully deleted", topicId);
+                log.debug("IN isAuthorOfTopic - topic with id: {} successfully found", topicId);
                 return true;
             }
             return false;
