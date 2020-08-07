@@ -227,9 +227,12 @@ public class TopicRestControllers {
      * @param topic - обновленный топик
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
-    @PostMapping("/user/topic/update")
+    @PutMapping("/user/topic/update")
     public ResponseEntity<String> updateTopic(@RequestBody Topic topic) {
-        if (topicService.updateTopic(topic)) {
+        Topic topicFromBase = topicService.getTopicById(topic.getId());
+        topicFromBase.setContent(topic.getContent());
+        topicFromBase.setTitle(topic.getTitle());
+        if (topicService.updateTopic(topicFromBase)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("You can't update the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);

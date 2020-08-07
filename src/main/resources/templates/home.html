@@ -45,8 +45,21 @@
             </div>
             <div class="modal-body">
 
-                <form action="/api/admin/user/" class="text-center" id="editForm" method="post">
+                <form action="/api/user/topic/update" id="editForm" method="put">
+                    <div class="form-group">
+                        <label for="editTopicId" class="col-form-label">Id</label>
+                        <input type="text" class="form-control" id="editTopicId" readonly="readonly">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="editTopicTitle" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" id="editTopicTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editTopicContent" class="col-form-label">Content</label>
+                        <textarea class="form-control" id="editTopicContent"></textarea>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

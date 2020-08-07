@@ -38,7 +38,7 @@ function userTopicInCard(topic) {
                     '<div class="row justify-content-end">' +
                         '<div class="col-4">' +
                             '<button type="button" class="btn btn-outline-dark mr-2" onclick="editTopicForm(' + topic.id + ')">Редактировать</button>' +
-                            '<button type="button" class="btn btn-outline-danger" onclick="editTopicForm(' + topic.id + ')">Удалить</button>' +
+                            '<button type="button" class="btn btn-outline-danger" onclick="deleteTopicForm(' + topic.id + ')">Удалить</button>' +
                         '</div>'+
 
                         '<div class="col-0 align-self-center">' +
