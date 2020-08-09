@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,8 +17,76 @@
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 
 <div class="d-flex justify-content-center py-5">
-    <div id="topics_container" class="container mx-0 py-3">
-        <!-- Заполняется скриптом getAndPrintAllTopicsOfUser -->
+    <div id="my_topics_container" class="container mx-0 py-3">
+        <th:block th:each="topic: ${topics}">
+            <article class="topic topic_preview"
+                     th:classappend="${topic.moderate} ? 'moderated' : 'notmoderated'">
+                <header class="topic_meta">
+                    <span th:text="${topic.getAuthors().size() > 1 ? 'Авторы: ' : 'Автор: '}"></span>
+                    <span th:each="author, authIter:${topic.authors}">
+                        <a class="author_name"
+                           th:href="@{'/topic/find/author/' + ${author.id}}"
+                           th:utext="${author.firstName + ' ' + author.lastName}
+                           + ${authIter.index < topic.getAuthors().size() - 1 ? ', ' : ''}">
+                        </a>
+                    </span>
+                    <span class="topic_time"
+                          th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}"></span>
+                </header>
+                <h2 class="topic_title">
+                    <a th:href="@{'/topic/' + ${topic.id}}" th:utext="${topic.title}"></a>
+                </h2>
+                <h6 class="topic_theme">
+                    <a th:each="theme, themeIter:${topic.themes}"
+                       th:href="@{'/topic/find/theme/' + ${theme.id}}"
+                       th:utext="${theme.name} + ${themeIter.index < topic.getThemes().size() - 1 ? ', ' : ''}">
+                    </a>
+                </h6>
+                <h6 class="topic_tag">
+                    <a th:each="tag, tagIter:${topic.hashtags}"
+                       th:href="@{'/topic/find/tag/' + ${tag.name}}"
+                       th:utext="${tag.name} + ${tagIter.index < topic.getHashtags().size() - 1 ? ', ' : ''}">
+                    </a>
+                </h6>
+                <div class="topic_body">
+                    <div class="topic_text">
+                        <div th:if="${topic.img != 'no-img.png'}">
+                            <img th:src="'/topic-img/' + ${topic.img}" th:alt="'image of topic : ' + ${topic.title}">
+                            <br>
+                            <br>
+                        </div>
+                        <span th:id="topicContent-+${topic.getId()}" th:data-topic-content="${topic.getContent()}"
+                              class="topic_content"></span>
+                    </div>
+                </div>
+                <footer class="topic_footer">
+                    <ul class="topic_stats">
+                        <li>
+                            <div class="topic_stats_items">
+                                <span class="fa fa-thumbs-o-up fa_topic"></span>
+                                <span class="text-info topic_stats_items_counter" th:utext="${topic.likes}"></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="topic_stats_items">
+                                <span class="fa fa-thumbs-o-down fa_topic"></span>
+                                <span class="text-info topic_stats_items_counter" th:utext="${topic.dislikes}"></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="topic_stats_items topic_stats_items_comments">
+                                <span class="fa fa-comments-o"></span>
+                                <span class="text-info topic_stats_items_counter" th:id="commentsCount-+${topic.id}"
+                                      th:utext="${topic.commentsCount}">
+                                      <script>
+                                      </script>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </footer>
+            </article>
+        </th:block>
     </div>
 
     <div class="my-3">
@@ -36,13 +105,12 @@
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
-<script src="/js/getAndPrintAllTopicsOfUser.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
 <script src="/js/getNotifCounterByPrincipal.js"></script>
 <script src="/js/addTopic.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
-<script src="/js/home_events.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
 </body>

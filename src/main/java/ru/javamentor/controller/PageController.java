@@ -83,7 +83,9 @@ public class PageController {
      * @return главную страницу
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage() {
+    public String homePage(Model model, @AuthenticationPrincipal User user) {
+        List<Topic> topics = topicService.getAllTopicsByUserId(user.getId());
+        model.addAttribute("topics", topicService.getTopicDtoListByTopicList(topics));
         return "home";
     }
 
