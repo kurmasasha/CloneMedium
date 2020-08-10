@@ -53,5 +53,13 @@ public class CommentDAOImpl implements CommentDAO {
         entityManager.createQuery("DELETE FROM Comment c WHERE c.topic.id = :topicId")
                 .setParameter("topicId", topicId).executeUpdate();
     }
+
+    public boolean isExist(Long commentId){
+        Long count = entityManager.createQuery("SELECT COUNT(c.id) FROM Comment c WHERE c.id = :commentId", Long.class)
+                .setParameter("commentId", commentId)
+                .getSingleResult();
+        return count>0;
+    }
+
 }
 

@@ -1,27 +1,29 @@
 $(document).ready(async function () {
 
     $('#comments_container').on('click', '.fa', function () {
-        //Если не авторизован пользователь, значит есть модальное окно на странице и его надо показать
-        if($('#authorizationModal').length) {
-            $('#authorizationModal').modal('show');
-        } else {
-            let id = $(this).attr('data-id');
-            let likeCounter = $('#likesId-'+id);
-            let dislikeCounter = $('#dislikesId-'+id);
-
-            //поставить лайк или дизлайк
-            if ($(this).hasClass("fa-thumbs-o-up")) {
-                liked(`/api/comment/addLike/${id}`,likeCounter, dislikeCounter);
+        if($(this).hasClass("fa-thumbs-o-up") || $(this).hasClass("fa-thumbs-o-down")) {
+            //Если не авторизован пользователь, значит есть модальное окно на странице и его надо показать
+            if ($('#authorizationModal').length) {
+                $('#authorizationModal').modal('show');
             } else {
-                liked(`/api/comment/addDislike/${id}`,likeCounter, dislikeCounter);
-            }
+                let id = $(this).attr('data-id');
+                let likeCounter = $('#likesId-' + id);
+                let dislikeCounter = $('#dislikesId-' + id);
 
-            //подсветить или убрать подсветку
-            $(this).parent().siblings().removeClass("rated");
-            if ($(this).parent().hasClass("rated")) {
-                $(this).parent().removeClass("rated");
-            } else {
-                $(this).parent().addClass("rated");
+                //поставить лайк или дизлайк
+                if ($(this).hasClass("fa-thumbs-o-up")) {
+                    liked(`/api/comment/addLike/${id}`, likeCounter, dislikeCounter);
+                } else {
+                    liked(`/api/comment/addDislike/${id}`, likeCounter, dislikeCounter);
+                }
+
+                //подсветить или убрать подсветку
+                $(this).parent().siblings().removeClass("rated");
+                if ($(this).parent().hasClass("rated")) {
+                    $(this).parent().removeClass("rated");
+                } else {
+                    $(this).parent().addClass("rated");
+                }
             }
         }
     });

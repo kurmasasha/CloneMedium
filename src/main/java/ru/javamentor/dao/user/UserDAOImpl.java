@@ -206,4 +206,13 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("subscriber", subscriber)
                 .executeUpdate();
     }
+
+    @Override
+    public boolean isExist(Long userId){
+        Long count = entityManager.createQuery("SELECT COUNT(u.id) FROM User u WHERE u.id = :userId", Long.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        return count>0;
+    }
+
 }

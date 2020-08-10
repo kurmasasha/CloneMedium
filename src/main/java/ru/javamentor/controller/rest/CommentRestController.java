@@ -70,7 +70,7 @@ public class CommentRestController {
         }
     }
 
-    @PostMapping("/user/comment/delete/{id}")
+    @DeleteMapping("/user/comment/delete/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long id) {
         if (commentService.removeCommentById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);

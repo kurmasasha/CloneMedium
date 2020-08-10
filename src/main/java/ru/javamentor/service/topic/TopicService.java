@@ -171,4 +171,6 @@ public interface TopicService {
      * @return - список TopicDto
      */
     List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList);
+
+    boolean isExist(Long topicId);
 }

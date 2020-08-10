@@ -257,4 +257,13 @@ public class TopicDAOImpl implements TopicDAO {
                 .setParameter("value", themesIds)
                 .getResultList();
     }
+
+    @Override
+    public boolean isExist(Long topicId){
+        Long count = entityManager.createQuery("SELECT COUNT(t.id) FROM Topic t WHERE t.id = :topicId", Long.class)
+                .setParameter("topicId", topicId)
+                .getSingleResult();
+        return count>0;
+    }
+
 }

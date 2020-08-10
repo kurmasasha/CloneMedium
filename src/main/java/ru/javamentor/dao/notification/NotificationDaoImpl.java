@@ -42,4 +42,14 @@ public class NotificationDaoImpl implements NotificationDao {
     public void deleteNotification(Notification notification) {
         entityManager.remove(notification);
     }
+
+    @Override
+    public boolean isExist(Long notifId){
+        Long count = entityManager.createQuery("SELECT COUNT(n.id) FROM Notification n WHERE n.id = :notifId", Long.class)
+                .setParameter("notifId", notifId)
+                .getSingleResult();
+        return count>0;
+    }
+
+
 }

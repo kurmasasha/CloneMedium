@@ -441,4 +441,10 @@ public class TopicServiceImpl implements TopicService {
         topicList.forEach(topic -> topicDtoList.add(new TopicDto(topic)));
         return topicDtoList;
     }
+
+    @Override
+    public boolean isExist(Long topicId){
+        return topicDAO.isExist(topicId);
+    }
+
 }
