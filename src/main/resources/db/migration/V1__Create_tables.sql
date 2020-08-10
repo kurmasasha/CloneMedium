@@ -65,6 +65,7 @@ create table users (
     activation_code varchar(2047),
     first_name varchar(255) not null,
     is_activated bit,
+    lock_status boolean,
     last_name varchar(255) not null,
     password varchar(255) not null,
     username varchar(255) not null,

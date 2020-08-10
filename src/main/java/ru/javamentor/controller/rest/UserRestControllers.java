@@ -3,6 +3,8 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
 import ru.javamentor.service.role.RoleService;
@@ -40,6 +42,17 @@ public class UserRestControllers {
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<> (userService.getAllUsers(), HttpStatus.OK);
     }
+
+    /**
+     * метод получения авторизованного пользователя
+     *
+     * @return ResponseEntity, который содержит авторизованного пользователя и статус ОК
+     */
+    @GetMapping("/admin/currentUser")
+    public ResponseEntity<User> getAllUsers(@AuthenticationPrincipal User auth) {
+        return new ResponseEntity<> (auth, HttpStatus.OK);
+    }
+
     /**
      * метод для добавления нового пользователя админом
      * @param user - пользователь которого необходимо добавить
@@ -60,6 +73,20 @@ public class UserRestControllers {
         userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    /**
+     * метод для активации или деактивации пользователя админом
+     * @param id - уникальный id пользователя которого необходимо активировать или деактивировать
+     * @return ResponseEntity, который содержит статус ОК
+     */
+    @GetMapping("/admin/enable/{id}")
+    public ResponseEntity<User> enableUser(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        user.setLockStatus(!(user.getLockStatus()));
+
+        userService.updateUser(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     /**
      * метод для обновления пользователя админом
      * @param user - пользовательно которого необходимо обновить
