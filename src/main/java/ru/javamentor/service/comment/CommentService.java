@@ -88,4 +88,6 @@ public interface CommentService {
      */
 
     Comment putDislikeToComment(Long commentId, User user);
+
+    boolean isExist(Long commentId);
 }
