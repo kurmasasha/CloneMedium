@@ -95,7 +95,10 @@ body {
 }
 
 .topic {
-    margin-top: 48px;
+    padding: 10px;
+    margin-top: 25px;
+    background-color: #f5f3f3;
+    border-radius: 10px;
 }
 
 .topic a {
@@ -115,11 +118,11 @@ body {
     color: #548eaa;
 }
 
-.author_name a {
+.author_name {
     color: #548eaa;
 }
 
-.author_name a:hover {
+.author_name:hover {
     color: #5d84ae;
 }
 
@@ -160,7 +163,6 @@ body {
 .topic_text img {
     margin: 0;
     vertical-align: middle;;
-    min-width: 70%;
     max-width: 100%;
     height: auto;
 }
@@ -171,7 +173,7 @@ body {
     margin: 0;
     padding: 0;
     list-style: none;
-    border: 1px solid #e5e9eb;
+    border: 1px solid #bdbdc1;
     height: 40px;
     border-radius: 4px;
 }

@@ -192,7 +192,7 @@ public class TopicRestControllers {
             Principal principal
             ) throws Exception {
         String message = "Что то пошло не так! Попробуйте снова";
-        String resultFileName = "no-image.png";
+        String resultFileName = "no-img.png";
         try {
             // проверка на пустоту title and content
             topicValidator.checkTitleAndContent(title, content);
@@ -212,7 +212,7 @@ public class TopicRestControllers {
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
             if (topic != null) {
-                return new ResponseEntity<>(topic, HttpStatus.OK);
+                return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);
             }
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
