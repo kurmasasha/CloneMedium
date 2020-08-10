@@ -20,4 +20,8 @@ public interface CommentDAO {
     void removeCommentById(Long id);
 
     String getTopicCommentsCount(Long topicId);
+
+    void removeCommentsByTopicId(long topicId);
+
+    boolean isExist(Long commentId);
 }

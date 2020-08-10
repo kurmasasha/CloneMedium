@@ -101,4 +101,6 @@ public interface UserDAO {
      * @param subscriber - подписчик
      */
     void deleteSubscribesOfUser(String subscriber);
+
+    boolean isExist(Long userId);
 }

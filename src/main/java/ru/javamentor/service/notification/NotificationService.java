@@ -57,4 +57,5 @@ public interface NotificationService {
      */
     boolean deleteNotification(Notification notification);
 
+    boolean isExist(Long notifId);
 }

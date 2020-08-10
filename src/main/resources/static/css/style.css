@@ -209,4 +209,13 @@ body {
     box-shadow: none;
 }
 
+#delete_topic_block i.fa{
+    float: right;
+}
+
+#delete_topic_block i.fa:hover{
+    cursor: pointer;
+    color: red;
+}
+
 
