@@ -35,9 +35,9 @@ public class CommentServiceImpl implements CommentService {
     /**
      * метод для добавления комментария
      *
-     * @param text - добавляемый текст комментария
+     * @param text   - добавляемый текст комментария
      * @param author - добавляемый автор комментария
-     * @param topic - добавляемая статья, которую прокомментировали
+     * @param topic  - добавляемая статья, которую прокомментировали
      * @return Comment - возвращает добавленный комментарий
      */
     @Transactional
@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
      * метод для обновления комментария
      *
      * @param comment - обновленный комментарий
-     * @param user - пользователь обновляющий комментарий
+     * @param user    - пользователь обновляющий комментарий
      * @return boolean - удалость обновить комментарий или нет
      */
     @Transactional
@@ -241,6 +241,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public boolean isAuthorOfComment(Long userId, Long commentId) {
+        try {
+            User user = commentDAO.getAuthorByCommentId(commentId);
+            return (user.getId().equals(userId));
+        } catch (Exception e) {
+            log.error("Exception while isAuthorOfComment in service with comment.id is {}", commentId);
+            throw new RuntimeException();
+        }
+
+    }
+
     public boolean isExist(Long commentId){
         return commentDAO.isExist(commentId);
     }

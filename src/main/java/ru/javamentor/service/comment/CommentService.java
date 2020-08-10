@@ -89,5 +89,8 @@ public interface CommentService {
 
     Comment putDislikeToComment(Long commentId, User user);
 
+    boolean isAuthorOfComment(Long userId, Long commentId);
+
     boolean isExist(Long commentId);
+
 }
