@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="card-text" th:utext="${comment.getText()}"></p>
+                        <p class="card-text" th:utext="${comment.getText()}" th:id="commentCardText-+${comment.getId()}"></p>
                     </div>
                     <div class="card-footer">
                         <div class="d-flex bd-highlight mb-2">
@@ -100,6 +100,11 @@
                             <i class="fa fa-thumbs-o-down"  th:data-id="${comment.getId()}"></i>
                             <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}" th:text="${comment.getDislikes()}"></span>
                         </span>
+                                <span>
+                                    <i class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editCommentModal"
+                                       th:data-id="${comment.getId()}"
+                                       th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}"></i>
+                                </span>
                             </div>
                             <div class="delete_comment_button">
                             <div class="p-2 bd-highlight">
@@ -153,6 +158,25 @@
     </div>
 </div>
 
+<!---------------------------------Модальное окно для редактирования комментариев-------------------------------------->
+<div class="modal" id="editCommentModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h6>Редактирование комментария</h6>
+            </div>
+            <div class="modal-body">
+                    <textarea class="form-control" id="editCommentModalText" style="resize:none; overflow: hidden;"
+                              name="comment" required=""></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="editCommentModalButton">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--------------------------------------------------------------------------------------------------------------------->
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -168,5 +192,6 @@
 <script src="/js/likedComment.js"></script>
 <script src="/js/delete_topic.js"></script>
 <script src="/js/delete_comment.js"></script>
+<script src="/js/editComment.js"></script>
 </body>
 </html>

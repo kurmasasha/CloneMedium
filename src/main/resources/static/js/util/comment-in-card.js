@@ -7,7 +7,7 @@ function commentInCard(comment) {
         '<h6>' + comment.dateCreated + '</h6>' +
         '</div>' +
         '<div class="card-body">' +
-        '<p class="card-text">' + comment.text + '</p>' +
+        '<p class="card-text" id="commentCardText-' + comment.id + '">' + comment.text + '</p>' +
         '</div>' +
         '<div class="card-footer">' +
         '<div class="d-flex bd-highlight mb-2">' +
@@ -19,6 +19,10 @@ function commentInCard(comment) {
         '<span class="dislike">' +
         '<i class="fa fa-thumbs-o-down"  data-id="' + comment.id + '"></i>' +
         '<span class="dislikes-num likeCount" id="dislikesId-' + comment.id + '">' + comment.dislikes + '</span>' +
+        '</span>' +
+        '<span>' +
+        '<i class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editCommentModal" ' +
+        'data-id="' + comment.id + '"></i>' +
         '</span>' +
         '</div>' +
         '<div class="delete_comment_button">' +

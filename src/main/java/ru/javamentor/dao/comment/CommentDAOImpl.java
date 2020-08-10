@@ -38,8 +38,8 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public User getAuthorByCommentId(Long commentId) {
-        return (User) entityManager.createQuery("SELECT u FROM Comment c LEFT JOIN FETCH c.author u WHERE c.id = :commentId", User.class)
-                .setParameter("commentId", commentId);
+        return entityManager.createQuery("SELECT c.author FROM Comment c WHERE c.id = :commentId", User.class)
+                .setParameter("commentId", commentId).getSingleResult();
     }
 
     @Override
