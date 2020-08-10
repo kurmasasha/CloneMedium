@@ -282,18 +282,6 @@ public class TopicRestControllers {
     }
 
     /**
-     * Поиск топиков по автору.
-     *
-     * @param authorId - id автора топиков
-     * @return список TopicDto данного автора
-     */
-    @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
-    public ResponseEntity<List<TopicDto>> getAllTopicsByAuthor(@PathVariable Long authorId) {
-        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
-        return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
-    }
-
-    /**
      * метод для удаления топика
      *
      * @param id - id топика который необходимо удалить
