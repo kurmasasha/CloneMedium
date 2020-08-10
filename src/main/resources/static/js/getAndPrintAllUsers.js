@@ -17,6 +17,14 @@ function enableBtn(url) {
 
 
 async function getAndPrintAllUsers(container) {
+    // получаем id авторизированного админа.
+    let currentId;
+    fetch('/api/admin/currentUser')
+        .then(current => current.json())
+        .then(response => {
+            currentId = response.id;
+        })
+
     fetch(`/api/admin/allUsers`)
         .then(result => result.json())
         .then(response => {
@@ -24,14 +32,20 @@ async function getAndPrintAllUsers(container) {
 
                 url = "/api/admin/enable/";
                 let row2;
-                if (user.lockStatus) {
-                    row2 =
-                        `<td><button type="submit" class="btn btn-danger text-white" onclick='enableBtn(url+ ${user.id})'>деактивировать</button></td>`+
-                        '</tr>';
-                } else {
-                    row2 =
-                        `<td><button type="submit" class="btn btn-success text-white" onclick='enableBtn(url+ ${user.id})'>активировать</a></td>` +
-                        '</tr>';
+                // генерим кнопки деактивации для всех, кроме авторизированного админа.
+                if(currentId!==user.id) {
+                    // если юзер активный , генерим кнопку деактивации.
+                    if (user.lockStatus) {
+                        row2 =
+                            `<td><button type="submit" class="btn btn-danger text-white" onclick='enableBtn(url+ ${user.id})'>деактивировать</button></td>` +
+                            '</tr>';
+                    }
+                    // если юзер деактив, генерим кнопку активации.
+                    else {
+                        row2 =
+                            `<td><button type="submit" class="btn btn-success text-white" onclick='enableBtn(url+ ${user.id})'>активировать</a></td>` +
+                            '</tr>';
+                    }
                 }
 
                 let row =
