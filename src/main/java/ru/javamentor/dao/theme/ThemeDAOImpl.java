@@ -55,4 +55,13 @@ public class ThemeDAOImpl implements ThemeDAO {
                 .setParameter("value", idThemes)
                 .getResultList();
     }
+
+    @Override
+    public boolean isExist(Long themeId){
+        Long count = entityManager.createQuery("SELECT COUNT(t.id) FROM Theme t WHERE t.id = :themeId", Long.class)
+                .setParameter("themeId", themeId)
+                .getSingleResult();
+        return count>0;
+    }
+
 }

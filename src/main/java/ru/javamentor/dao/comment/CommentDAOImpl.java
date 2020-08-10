@@ -47,5 +47,15 @@ public class CommentDAOImpl implements CommentDAO {
         Comment comment = getCommentById(id);
         entityManager.remove(comment);
     }
+
+    @Override
+    public boolean isExist(Long commentId){
+        Long count = entityManager.createQuery("SELECT COUNT(c.id) FROM Comment c WHERE c.id = :commentId", Long.class)
+                .setParameter("commentId", commentId)
+                .getSingleResult();
+        return count>0;
+    }
+
+
 }
 

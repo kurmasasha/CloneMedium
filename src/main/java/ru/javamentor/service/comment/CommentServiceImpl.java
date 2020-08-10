@@ -251,4 +251,9 @@ public class CommentServiceImpl implements CommentService {
         }
 
     }
+
+    public boolean isExist(Long commentId){
+        return commentDAO.isExist(commentId);
+    }
+
 }
