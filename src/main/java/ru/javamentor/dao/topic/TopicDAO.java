@@ -127,4 +127,6 @@ public interface TopicDAO {
      * @return список топиков
      */
     List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds);
+
+    boolean isExist(Long topicId);
 }

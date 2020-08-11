@@ -13,4 +13,6 @@ public interface ThemeDAO {
 
     boolean deleteTheme(Long id);
     List<Theme> getThemesByIds(Set<Long> idThemes);
+
+    boolean isExist(Long themeId);
 }
