@@ -36,9 +36,22 @@ function userTopicInCard(topic) {
                 '</div>'+
                 '<div class="col-10 align-self-end">' +
                     '<div class="row justify-content-end">' +
-                        '<div class="col-4">' +
-                            '<button type="button" class="btn btn-outline-dark mr-2" onclick="editTopicForm(' + topic.id + ')">Редактировать</button>' +
-                            '<button type="button" class="btn btn-outline-danger" onclick="deleteTopicForm(' + topic.id + ')">Удалить</button>' +
+                        '<div class="col-0 mr-2">' +
+
+                            '<div class="dropdown">' +
+                                '<button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 2px 5px 0px 5px">' +
+                                    '<span class="glyphicon glyphicon-option-horizontal" aria-hidden="true">'+'</span>' +
+                                '</button>' +
+                                '<div class="dropdown-menu" aria-labelledby="dropdownMenu2">' +
+                                    '<button class="dropdown-item" type="button" onclick="editTopicForm(' + topic.id + ')">' +
+                                        'Редактировать' +
+                                    '</button>' +
+
+                                    '<button class="dropdown-item" type="button" onclick="deleteTopicForm(' + topic.id + ')">' +
+                                        'Удалить' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>'+
                         '</div>'+
 
                         '<div class="col-0 align-self-center">' +
