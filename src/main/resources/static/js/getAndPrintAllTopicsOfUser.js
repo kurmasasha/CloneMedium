@@ -3,7 +3,7 @@ async function getAndPrintAllTopicsOfUser(container) {
         .then(result => result.json())
         .then(arrayTopics => {
             arrayTopics.forEach(function (topic) {
-                let card = topicInCard(topic);
+                let card = userTopicInCard(topic);
                 container.append(card);
             })
         })
