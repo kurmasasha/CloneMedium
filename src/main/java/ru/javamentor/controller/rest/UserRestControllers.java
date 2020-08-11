@@ -44,16 +44,6 @@ public class UserRestControllers {
     }
 
     /**
-     * метод получения авторизованного пользователя
-     *
-     * @return ResponseEntity, который содержит авторизованного пользователя и статус ОК
-     */
-    @GetMapping("/admin/currentUser")
-    public ResponseEntity<User> getAllUsers(@AuthenticationPrincipal User auth) {
-        return new ResponseEntity<> (auth, HttpStatus.OK);
-    }
-
-    /**
      * метод для добавления нового пользователя админом
      * @param user - пользователь которого необходимо добавить
      * @return ResponseEntity, который содержит статус ОК
@@ -63,6 +53,7 @@ public class UserRestControllers {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     /**
      * метод для удаления пользователя админом
      * @param id - уникальный id пользователя которого необходимо удалить
@@ -71,19 +62,6 @@ public class UserRestControllers {
     @DeleteMapping("/admin/remove/{id}")
     public ResponseEntity<User> removeUser(@PathVariable Long id) {
         userService.removeUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    /**
-     * метод для активации или деактивации пользователя админом
-     * @param id - уникальный id пользователя которого необходимо активировать или деактивировать
-     * @return ResponseEntity, который содержит статус ОК
-     */
-    @GetMapping("/admin/enable/{id}")
-    public ResponseEntity<User> enableUser(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        user.setLockStatus(!(user.getLockStatus()));
-
-        userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

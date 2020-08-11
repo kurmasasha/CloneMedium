@@ -34,7 +34,32 @@
                     <th scope="col">Role</th>
                 </tr>
                 </thead>
-                <tbody id="users_table"></tbody>
+                <tbody th:object="${authUser}">
+                <tr th:each="user: ${allUsers}">
+                    <th scope="row"><span th:text="${user.getId()}">id</span></th>
+                    <td><span th:text="${user.getFirstName()}">firstName</span></td>
+                    <td><span th:text="${user.getLastName()}">lastName</span></td>
+                    <td><span th:text="${user.getUsername()}">email</span></td>
+                    <td><span th:text="${user.getRole().getName()}">role</span></td>
+                    <td>
+                        <form action="#" method="get"
+                              th:action="@{'/admin/form_edit_user/'+${user.id}}">
+                            <button type="submit" class="btn btn-info btn-primary">редактировать</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#" method="post"
+                                th:action="@{/admin/enable/}" th:if="${user.getId()!=authUser.getId()}and not ${user.getLockStatus()}">
+                            <button type="submit" class="btn btn-success btn-primary" name="enableId" th:value="${user.getId()}">активировать</button>
+                        </form>
+
+                        <form action="#" method="post"
+                                th:action="@{/admin/disable/}" th:if="${user.getId()!=authUser.getId()}and ${user.getLockStatus()}">
+                            <button type="submit" class="btn btn-danger btn-primary" name="disableId" th:value="${user.getId()}">деактивировать</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
             </table>
 
         </main>
@@ -44,7 +69,6 @@
 
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" th:src="@{/js/getAndPrintAllUsers.js}"></script>
 <script src="/js/admin-all_users-events.js"></script>
 <script src="/js/getNotifCounterByPrincipal.js"></script>
 
