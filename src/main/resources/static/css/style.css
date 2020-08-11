@@ -219,3 +219,61 @@ body {
 }
 
 
+
+
+/* Profile image*/
+.profile_block {
+    margin: auto;
+    width: 50%;
+}
+
+.circle {
+    width: 128px;
+    height: 128px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+    background-color: #c5cacd;
+    border: 8px solid rgba(255, 255, 255, 0.7);
+    transition: top .2s ease-in-out,width .5s,height .5s;
+}
+
+.profile-pic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-upload {
+    display: none;
+}
+
+.p-image {
+    color: #666666;
+    text-align: center;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.p-image:hover {
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.upload-button {
+    font-size: 1.2em;
+}
+
+.upload-button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+}
+
+#error_image_message {
+    text-align: center;
+    color: red;
+}
+

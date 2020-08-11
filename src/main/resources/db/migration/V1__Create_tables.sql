@@ -68,7 +68,9 @@ create table users (
     last_name varchar(255) not null,
     password varchar(255) not null,
     username varchar(255) not null,
-    role_id bigint, primary key (id));
+    role_id bigint,
+    img varchar(2047),
+    primary key (id));
 
 /* Таблица связи пользователей с темами (предпочтения) */
 create table users_themes (

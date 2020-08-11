@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @Column
     private boolean isActivated;
 
+    @Column
+    private String img;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "likedUsers")
     private Set<Topic> likedTopics;
