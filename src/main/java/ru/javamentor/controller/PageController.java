@@ -95,7 +95,9 @@ public class PageController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
+        List<Topic> topics = topicService.getModeratedTopics();
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
 
@@ -129,7 +131,6 @@ public class PageController {
 
         model.addAttribute("topic", topic);
         model.addAttribute("user", user);
-        model.addAttribute("topicId", id);
         model.addAttribute("comments", comments);
         return "topic";
 
@@ -235,19 +236,23 @@ public class PageController {
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/tag/{tag}")
-    public String getPageWithTopicsByHashTag(Model model) {
+    public String getPageWithTopicsByHashTag(Model model, @PathVariable String tag) {
+        List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
 
     /**
      * метод для страницы всех топиков по автору
-     *
+     * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/author/{authorId}")
-    public String getPageWithTopicsByAuthor(Model model) {
+    public String getPageWithTopicsByAuthor(Model model, @PathVariable Long authorId) {
+        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
 }

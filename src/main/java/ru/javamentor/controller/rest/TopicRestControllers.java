@@ -239,16 +239,19 @@ public class TopicRestControllers {
     /**
      * метод для уадления топика
      *
-     * @param id - id топика который необходимо удалить
+     * @param topicId - id топика который необходимо удалить
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
      */
-    @DeleteMapping("/user/topic/delete/{id}")
-    public ResponseEntity<String> deleteTopic(@PathVariable Long id) {
-        if (topicService.removeTopicById(id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
+    @DeleteMapping("/user/topic/delete/{topicId}")
+    public ResponseEntity<String> deleteTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
+        if(user != null) {
+            if (topicService.isAuthorOfTopic(user.getId(), topicId) || user.getRole().getAuthority().equals("ADMIN")) {
+                if (topicService.removeTopicById(topicId)) {
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }
         }
+        return new ResponseEntity<>("You can't delete the topic because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -275,18 +278,6 @@ public class TopicRestControllers {
     public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable String tag) {
        // tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
-        return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
-    }
-
-    /**
-     * Поиск топиков по автору.
-     *
-     * @param authorId - id автора топиков
-     * @return список TopicDto данного автора
-     */
-    @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
-    public ResponseEntity<List<TopicDto>> getAllTopicsByAuthor(@PathVariable Long authorId) {
-        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
     }
 

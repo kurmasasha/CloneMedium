@@ -24,4 +24,6 @@ public interface NotificationDao {
     void addNotification(Notification notification);
 
     void deleteNotification(Notification notification);
+
+    boolean isExist(Long notifId);
 }
