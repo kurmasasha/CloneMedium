@@ -1,15 +1,15 @@
 
-// имитация нотификации; скрипт-заглушка
+// Получение количества нотификаций
 
 async function getNumberOfNotificationsOfUser(container) {
     fetch(`/api/user/MyNotifsNbr`)
-        .then(result => result.text())
-        .then(rndNotifNbr => {
-
-                 if (rndNotifNbr > 0) {
+        .then(response => response.json())
+        .then(result => {
+                 if (result.length === 0) {
                      $('#notif_counter').empty();
-                     $('#notif_bell').css("color", "red");
-                     container.append(rndNotifNbr);
+                 } else {
+                     $('#notif_counter');
+                     container.append(result.length);
                  }
         })
 }
