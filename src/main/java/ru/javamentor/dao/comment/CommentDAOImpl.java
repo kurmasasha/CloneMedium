@@ -44,8 +44,9 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public void removeCommentById(Long id) {
-        Comment comment = getCommentById(id);
-        entityManager.remove(comment);
+        entityManager.createQuery("delete from Comment where id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     /**
