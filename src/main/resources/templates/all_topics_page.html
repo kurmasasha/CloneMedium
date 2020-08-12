@@ -17,7 +17,7 @@
 <div class="d-flex justify-content-center py-5">
   <div id="topics_container" class="container mx-0 py-3">
     <div th:each="topic:${topicList}">
-      <article class="topic topic_preview">
+      <article th:if="${topic.isModerate()}" class="topic topic_preview">
         <header class="topic_meta">
           <span th:text="${topic.getAuthors().size() > 1 ? 'Авторы: ' : 'Автор: '}"></span>
           <span th:each="author, authIter:${topic.authors}">
