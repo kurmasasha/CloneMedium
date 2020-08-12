@@ -38,7 +38,7 @@ public class TopicDto {
     private Set<User> authors;
     private Set<Hashtag> hashtags;
     private Set<Theme> themes;
-    private String commentsCount;
+    private String commentsCount = "0";
 
     public TopicDto(Topic topic) {
         this.id = topic.getId();

@@ -46,7 +46,7 @@ async function addTopic(title, content, completed, img) {
             if (OK) {
                 let card = topicInCard(result);
                 successAddTopic(alert_container, 2000);
-                $('#topics_container').prepend(card);
+                $('#my_topics_container').prepend(card);
             } else {
                 failAddTopic($('#alerts_container'), result, 4000)
             }

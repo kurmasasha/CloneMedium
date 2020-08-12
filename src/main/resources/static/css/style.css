@@ -115,11 +115,11 @@ body {
     color: #548eaa;
 }
 
-.author_name a {
+.author_name {
     color: #548eaa;
 }
 
-.author_name a:hover {
+.author_name:hover {
     color: #5d84ae;
 }
 
@@ -160,7 +160,6 @@ body {
 .topic_text img {
     margin: 0;
     vertical-align: middle;;
-    min-width: 70%;
     max-width: 100%;
     height: auto;
 }

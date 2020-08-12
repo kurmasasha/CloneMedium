@@ -3,6 +3,8 @@ package ru.javamentor.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
 import ru.javamentor.service.role.RoleService;
@@ -40,6 +42,7 @@ public class UserRestControllers {
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<> (userService.getAllUsers(), HttpStatus.OK);
     }
+
     /**
      * метод для добавления нового пользователя админом
      * @param user - пользователь которого необходимо добавить
@@ -50,6 +53,7 @@ public class UserRestControllers {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     /**
      * метод для удаления пользователя админом
      * @param id - уникальный id пользователя которого необходимо удалить
@@ -60,6 +64,7 @@ public class UserRestControllers {
         userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     /**
      * метод для обновления пользователя админом
      * @param user - пользовательно которого необходимо обновить
