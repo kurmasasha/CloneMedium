@@ -1,5 +1,6 @@
 package ru.javamentor.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,6 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,7 +26,10 @@ public class TopicDto {
     private Long id;
     private String title;
     private String content;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM yyyy в HH:mm")
     private LocalDateTime dateCreated;
+
     private boolean isModerate;
     private boolean completed;
     private Integer likes;
@@ -37,6 +38,7 @@ public class TopicDto {
     private Set<User> authors;
     private Set<Hashtag> hashtags;
     private Set<Theme> themes;
+    private String commentsCount;
 
     public TopicDto(Topic topic) {
         this.id = topic.getId();

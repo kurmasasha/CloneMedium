@@ -137,4 +137,5 @@ public interface UserService {
      */
     boolean notifyAllSubscribersOfAuthor(String author, String title, String text);
 
+    boolean isExist(Long userId);
 }

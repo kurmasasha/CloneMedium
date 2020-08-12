@@ -61,4 +61,6 @@ public interface ThemeService {
      * @return void
      */
     void showThemes(Model model, User userDB);
+
+    boolean isExist(Long themeId);
 }

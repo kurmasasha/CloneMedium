@@ -2,8 +2,10 @@ package ru.javamentor.service.topic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.dao.topic.TopicDAO;
 import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.dto.TopicDto;
@@ -27,11 +29,13 @@ public class TopicServiceImpl implements TopicService {
 
     private final TopicDAO topicDAO;
     private final UserDAO userDAO;
+    private final CommentDAO commentDAO;
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO, CommentDAO commentDAO) {
         this.topicDAO = topicDAO;
         this.userDAO = userDAO;
+        this.commentDAO = commentDAO;
     }
 
     /**
@@ -127,9 +131,6 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean updateTopic(Topic topic) {
-        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<User> userList = getAllUsersByTopicId(topic.getId());
-        if (userList.contains(currentUser)) {*/
         try {
             topicDAO.updateTopic(topic);
             log.debug("IN updateTopic - topic with Id: {} successfully updated", topic.getId());
@@ -138,9 +139,6 @@ public class TopicServiceImpl implements TopicService {
             log.error("Exception while updateTopic in service with topic.id is {}", topic.getId());
             throw new RuntimeException();
         }
-        /*}
-        log.warn("IN updateTopic - topic with Id: {} not updated", topic.getId());
-        return false;*/
     }
 
     /**
@@ -152,10 +150,8 @@ public class TopicServiceImpl implements TopicService {
     @Transactional
     @Override
     public boolean removeTopicById(Long id) {
-        /*User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<User> userList = getAllUsersByTopicId(id);
-        if (userList.contains(currentUser)) {*/
         try {
+            commentDAO.removeCommentsByTopicId(id);
             topicDAO.removeTopicById(id);
             log.debug("IN removeTopicById - topic with Id: {} successfully deleted", id);
             return true;
@@ -163,9 +159,29 @@ public class TopicServiceImpl implements TopicService {
             log.error("Exception while removeTopicById in service with topic.id is {}", id);
             throw new RuntimeException();
         }
-        /*}
-        log.warn("IN removeTopicById - topic with Id: {} not deleted", id);
-        return false;*/
+    }
+
+    /**
+     * метод для проверки удаляемого топика на принадлежность пользователю
+     *
+     * @param userId - уникальный id пользователя
+     * @param topicId - уникальный id топика
+     * @return boolean - удалость удалить топик или нет
+     */
+    @Transactional
+    @Override
+    public boolean isAuthorOfTopic(Long userId, Long topicId){
+        try{
+            Topic topic = topicDAO.getTopicById(topicId);
+            if(topic.getAuthors().contains(userDAO.getUserById(userId))) {
+                log.debug("IN isAuthorOfTopic - topic with id: {} successfully found", topicId);
+                return true;
+            }
+            return false;
+        }catch (Exception e) {
+            log.error("Exception while isAuthorOfTopic in service with user.id is {}, with topic.id is {}", userId, topicId);
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -423,6 +439,13 @@ public class TopicServiceImpl implements TopicService {
     public List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList) {
         List<TopicDto> topicDtoList = new ArrayList<>();
         topicList.forEach(topic -> topicDtoList.add(new TopicDto(topic)));
+        topicDtoList.forEach(topicDto -> topicDto.setCommentsCount(commentDAO.getTopicCommentsCount(topicDto.getId())));
         return topicDtoList;
     }
+
+    @Override
+    public boolean isExist(Long topicId){
+        return topicDAO.isExist(topicId);
+    }
+
 }
