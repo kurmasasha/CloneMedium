@@ -85,6 +85,8 @@ public class UserController {
         String resultFileName = "no-img.png";
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             resultFileName = loaderImages.upload(file, uploadPath);
+        }else {
+            resultFileName = userDB.getImg();
         }
         userDB.setImg(resultFileName);
 
