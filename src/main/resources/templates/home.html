@@ -78,6 +78,45 @@
     </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------ Модальное окно удаления топика ----------------------------------------------------->
+<!-- delete modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-topic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delete-topic">Вы уверены что хотите удалить данный топик?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="/api/user/topic/delete" id="deleteForm" method="delete">
+                    <div class="form-group">
+                        <label for="deleteTopicId" class="col-form-label">Id</label>
+                        <input type="text" class="form-control" id="deleteTopicId" readonly="readonly">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deleteTopicTitle" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" id="deleteTopicTitle" readonly="readonly">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deleteTopicContent" class="col-form-label">Content</label>
+                        <textarea class="form-control" id="deleteTopicContent" readonly="readonly"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -101,6 +140,9 @@
 <script src="/js/home_events.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
-<script src="/js/editTopic.js"></script>
+<!-- added scripts for edit and delete topic of user-->
+<script src="/js/userTopicScripts/editTopic.js"></script>
+<script src="/js/userTopicScripts/deleteTopic.js"></script>
+
 </body>
 </html>
