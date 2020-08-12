@@ -5,18 +5,18 @@ insert into roles(id, name)
         (2,'USER');
 
 /* Заполнение таблицы пользователей */
-insert into users(id, first_name, last_name, password, username, role_id, activation_code, is_activated, img)
+insert into users(id, first_name, last_name, password, username, role_id, activation_code, is_activated)
     values
-       (1,'Admin','Adminov','$2y$12$BuFhOIoesnUDalLvZGKPj.oQYczb72MIZ6jv1Z3kPSinNCte2ICsa','admin@mail.ru',1,NULL, true, 'no-img.png'),
-       (2,'User','Userov','$2y$12$QPVye//naiIK6MW57i5sfeN.npX8zvZ5liWpGO7muUkz0861R83TS','user@mail.ru',2,NULL, true, 'no-img.png'),
-       (3,'Fedor','Sumkins','$2y$12$bOXFgFAECDJ6tJoAm5D7T.GVcyowB.q4czONnJhlhcuXMVdZF9ihK','test1@mail.ru',2,NULL, true, 'no-img.png'),
-       (4,'Gendelf','Belyi','$2y$12$rVNZZS2jPy9WLzHhpiUMluqnM3n9ZWvdMFr.9bb.37TrQZp9DcUV2','test2@mail.ru',2,NULL, true, 'no-img.png'),
-       (5,'Lusya','Pelmenina','$2y$12$sa3Dr2wyn3kGRj8vUiYLUeIt1dwzMb1nYGN2JmUbTZFpm08XR1/36','test3@mail.ru',2,NULL, true, 'no-img.png'),
-       (6,'Ket','Sobakova','$2y$12$VvgfyPTt6AH19Y5x.JGml.gl80qBo9GnS65rLzeRfzm3/0UIbJxPy','test4@mail.ru',2,NULL, true, 'no-img.png'),
-       (7,'Garik','Potter','$2y$12$dMiUxcGh3CGqd41TVcLc4esHGW/vUcEHzuoZqr0CWOwNPuuLtYcTy','test5@mail.ru',2,NULL, true, 'no-img.png'),
-       (8,'Brus','Lee','$2y$12$bgqLWf.I3KmfDRo1NUv2Eu9zDavoy02f/aF5Pvy2UoiZtt8OfKZEu','test6@mail.ru',2,NULL, true, 'no-img.png'),
-       (9,'Semen','Buhlov','$2y$12$gvPFh4SsTBHjiDPvtRrC7.thATRCemb3xYMS8QbOYUbbqIfsvdqqW','test7@mail.ru',2,NULL, true, 'no-img.png'),
-       (10,'Covid','Karantinych','$2y$12$fLMtXnItPARgmIiNC/JayeYSLRuE6c1MyVH9jGqF43H.hTVIkg4qC','test8@mail.ru',2,NULL, true, 'no-img.png');
+       (1,'Admin','Adminov','$2y$12$BuFhOIoesnUDalLvZGKPj.oQYczb72MIZ6jv1Z3kPSinNCte2ICsa','admin@mail.ru',1,NULL, true),
+       (2,'User','Userov','$2y$12$QPVye//naiIK6MW57i5sfeN.npX8zvZ5liWpGO7muUkz0861R83TS','user@mail.ru',2,NULL, true),
+       (3,'Fedor','Sumkins','$2y$12$bOXFgFAECDJ6tJoAm5D7T.GVcyowB.q4czONnJhlhcuXMVdZF9ihK','test1@mail.ru',2,NULL, true),
+       (4,'Gendelf','Belyi','$2y$12$rVNZZS2jPy9WLzHhpiUMluqnM3n9ZWvdMFr.9bb.37TrQZp9DcUV2','test2@mail.ru',2,NULL, true),
+       (5,'Lusya','Pelmenina','$2y$12$sa3Dr2wyn3kGRj8vUiYLUeIt1dwzMb1nYGN2JmUbTZFpm08XR1/36','test3@mail.ru',2,NULL, true),
+       (6,'Ket','Sobakova','$2y$12$VvgfyPTt6AH19Y5x.JGml.gl80qBo9GnS65rLzeRfzm3/0UIbJxPy','test4@mail.ru',2,NULL, true),
+       (7,'Garik','Potter','$2y$12$dMiUxcGh3CGqd41TVcLc4esHGW/vUcEHzuoZqr0CWOwNPuuLtYcTy','test5@mail.ru',2,NULL, true),
+       (8,'Brus','Lee','$2y$12$bgqLWf.I3KmfDRo1NUv2Eu9zDavoy02f/aF5Pvy2UoiZtt8OfKZEu','test6@mail.ru',2,NULL, true),
+       (9,'Semen','Buhlov','$2y$12$gvPFh4SsTBHjiDPvtRrC7.thATRCemb3xYMS8QbOYUbbqIfsvdqqW','test7@mail.ru',2,NULL, true),
+       (10,'Covid','Karantinych','$2y$12$fLMtXnItPARgmIiNC/JayeYSLRuE6c1MyVH9jGqF43H.hTVIkg4qC','test8@mail.ru',2,NULL, true);
 
 /* Заполнение таблицы уведомлений */
 insert into notifications(id, text, title, user_id)
