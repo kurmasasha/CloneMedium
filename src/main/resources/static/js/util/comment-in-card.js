@@ -20,6 +20,8 @@ function commentInCard(comment) {
         '<i class="fa fa-thumbs-o-down"  data-id="' + comment.id + '"></i>' +
         '<span class="dislikes-num likeCount" id="dislikesId-' + comment.id + '">' + comment.dislikes + '</span>' +
         '</span>' +
+        //кнопка ответа на коммент
+        //
         '</div>' +
         '<div class="delete_comment_button">' +
         '<div class="p-2 bd-highlight">' +

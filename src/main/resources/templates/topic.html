@@ -16,7 +16,8 @@
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 <div class="container" id="single_topic_container">
     <div class="card p-3 mt-5" th:id="${topic.id}" th:data-topic-id="${topic.id}">
-        <h5 class="card-header-author" id="topicAuthor" th:text="${topic.authors[0].firstName + ' ' + topic.authors[0].lastName}"></h5>
+        <h5 class="card-header-author" id="topicAuthor"
+            th:text="${topic.authors[0].firstName + ' ' + topic.authors[0].lastName}"></h5>
         <div class="card-body row">
             <div class="col-md-3">
                 <img class="card-img topic-img" th:src="${'/topic-img/' + topic.img}" id="topicImg">
@@ -26,13 +27,14 @@
                 <div id="hashtags" class="d-flex flex-wrap" th:each="hashtag : ${topic.hashtags}">
                     <a th:id="ht_ + ${hashtag.id}" href="#"><h6 th:text="${hashtag.name}"></h6></a>
                 </div>
-               <pre> <span class="card-text-onTopic" id="topicContent"  th:text="${topic.content}"></span></pre>
+                <pre> <span class="card-text-onTopic" id="topicContent" th:text="${topic.content}"></span></pre>
 
                 <div class="block-like" th:classappend="${#lists.contains(topic.likedUsers, user)} ? 'active' : ''">
                     <i class="fa fa-thumbs-o-up fa_topic" th:data-id="${topic.getId()}"></i>
                     <span id="likeCounter" th:text="${topic.getLikes()}"></span>
                 </div>
-                <div class="block-dislike" th:classappend="${#lists.contains(topic.dislikedUsers, user)} ? 'active' : ''">
+                <div class="block-dislike"
+                     th:classappend="${#lists.contains(topic.dislikedUsers, user)} ? 'active' : ''">
                     <i class="fa fa-thumbs-o-down fa_topic" th:data-id="${topic.getId()}"></i>
                     <span id="dislikeCounter" th:text="${topic.getDislikes()}"></span>
                 </div>
@@ -78,7 +80,7 @@
         <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
             <th:block th:each="comment: ${comments}">
-                <div class="card mb-2"  th:id="commentCard-+${comment.getId()}">
+                <div class="card mb-2" th:id="commentCard-+${comment.getId()}">
                     <div class="card-header d-flex justify-content-between">
                         <h6 class="card-comment-author"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
@@ -94,20 +96,38 @@
                             <div class="mr-auto p-2 bd-highlight">
                         <span class="like" th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
                             <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
-                            <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}" th:text="${comment.getLikes()}"></span>
+                            <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}"
+                                  th:text="${comment.getLikes()}"></span>
                         </span>
-                        <span class="dislike" th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
-                            <i class="fa fa-thumbs-o-down"  th:data-id="${comment.getId()}"></i>
-                            <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}" th:text="${comment.getDislikes()}"></span>
+                                <span class="dislike"
+                                      th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-down" th:data-id="${comment.getId()}"></i>
+                            <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}"
+                                  th:text="${comment.getDislikes()}"></span>
                         </span>
+                                <!-- Заполняется скриптом comment-in-card -->
+                                <button class="replybutton"
+                                        th:data-commentbox="panel+${comment.getId()}">ответить
+                                </button>
+                                <br>
+                                <br/>
+                                <div class="replybox" style="display:none" th:id="panel+${comment.getId()}">
+                                    <textarea class="form-control col-xs-12" rows="7" cols="120" id="textareaanswer"></textarea><br/>
+                                    <button class="cancelbutton">закрыть</button>
+                                    <button id="add_comment_answer" class="btn btn-sm btn-primary float-left" type="submit"><i
+                                            class="fas fa-pencil-alt"></i>
+                                        Добавить
+                                    </button>
+                                </div>
                             </div>
                             <div class="delete_comment_button">
-                            <div class="p-2 bd-highlight">
-                                <a  class="fa fa-trash" sec:authorize="hasAuthority('USER')" th:data-id="${comment.getId()}"
-                                         th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}"></a>
-                                <a  class="fa fa-trash" th:data-id="${comment.getId()}"
-                                         sec:authorize="hasAuthority('ADMIN')"></a>
-                            </div>
+                                <div class="p-2 bd-highlight">
+                                    <a class="fa fa-trash" sec:authorize="hasAuthority('USER')"
+                                       th:data-id="${comment.getId()}"
+                                       th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}"></a>
+                                    <a class="fa fa-trash" th:data-id="${comment.getId()}"
+                                       sec:authorize="hasAuthority('ADMIN')"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -145,7 +165,9 @@
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-around">
-                    <button type="button" class="btn btn-success" id="delete_topic_btn" th:data-id="${topic.getId()}">Да</button>
+                    <button type="button" class="btn btn-success" id="delete_topic_btn" th:data-id="${topic.getId()}">
+                        Да
+                    </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>
@@ -168,5 +190,6 @@
 <script src="/js/likedComment.js"></script>
 <script src="/js/delete_topic.js"></script>
 <script src="/js/delete_comment.js"></script>
+<script src="/js/comment_reply.js"></script>
 </body>
 </html>
