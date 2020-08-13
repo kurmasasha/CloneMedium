@@ -42,9 +42,9 @@ public class CommentServiceImpl implements CommentService {
      */
     @Transactional
     @Override
-    public Comment addComment(String text, User author, Topic topic) {
+    public Comment addComment(String text, User author, Topic topic, Boolean isMainComment, Long mainCommentId) {
         try {
-            Comment comment = new Comment(text, author, topic, LocalDateTime.now());
+            Comment comment = new Comment(text, author, topic, LocalDateTime.now(), isMainComment, mainCommentId);
             commentDAO.addComment(comment);
             log.debug("IN addComment - comment: {} with author.id: {} and author.userName: {} successfully added",
                     text, author.getId(), author.getUsername());

@@ -38,7 +38,7 @@ class CommentServiceImplTest {
      */
     @Test
     void addComment() {
-        Comment comment = commentService.addComment("testText", new User(), new Topic());
+        Comment comment = commentService.addComment("testText", new User(), new Topic(), true, 1L);
 
         Assert.assertNotNull("Проверка создания объекта комментария", comment);
         Assert.assertNull("Проверка id комментария", comment.getId());
@@ -64,7 +64,7 @@ class CommentServiceImplTest {
                 .when(commentDAO)
                 .addComment(ArgumentMatchers.any(Comment.class));
 
-        Assert.assertNull("Проверка возвращаемого значения", commentService.addComment("", new User(), new Topic()));
+        Assert.assertNull("Проверка возвращаемого значения", commentService.addComment("", new User(), new Topic(), true, 1L));
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(ArgumentMatchers.any(Comment.class));
     }
 

@@ -22,7 +22,7 @@ public interface CommentService {
      * @param topic - добавляемая статья, которую прокомментировали
      * @return Comment - возвращает добавленный комментарий
      */
-    Comment addComment(String text, User author, Topic topic);
+    Comment addComment(String text, User author, Topic topic, Boolean isMainComment, Long mainCommentId);
 
     /**
      * метод для получения комментария по id

@@ -11,8 +11,8 @@ import java.util.Set;
 /**
  * Класс представляющий модель комментария
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @NoArgsConstructor
 @Getter
@@ -63,8 +63,22 @@ public class Comment {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    public Comment(String text) {
+//    @OneToOne(fetch = FetchType.EAGER,
+//            mappedBy = "is_main_comment")
+    @Column(name = "main_comment_id")
+    private Long mainCommentId;
+
+    @Column(name = "is_main_comment")
+    private Boolean isMainComment;
+
+    public Comment(String text, User author, Topic topic, LocalDateTime dateCreated, Boolean isMainComment, Long mainCommentId) {
         this.text = text;
+        this.author = author;
+        this.topic = topic;
+        this.dateCreated = dateCreated;
+        this.isMainComment = isMainComment;
+        this.mainCommentId = mainCommentId;
+
     }
 
     public Comment(String text, User author, Topic topic, LocalDateTime dateCreated) {

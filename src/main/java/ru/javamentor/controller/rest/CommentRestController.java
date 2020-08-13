@@ -38,21 +38,24 @@ public class CommentRestController {
     }
 
     @PostMapping("/user/comment/add")
-    public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Comment> addComment(@RequestBody String data, @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);
         Long topicId = Long.parseLong(jsonObj.getString("topicId"));
         String comment = jsonObj.getString("comment");
         Topic topic = topicService.getTopicById(topicId);
+        Boolean isMainComment = Boolean.parseBoolean(jsonObj.getString("isMainComment"));
+        Long mainCommentId = Long.parseLong(jsonObj.getString("mainCommentId"));
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
+            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic,
+                    isMainComment, mainCommentId);
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            Comment newComment = commentService.addComment(comment, user, topic);
+            Comment newComment = commentService.addComment(comment, user, topic, isMainComment, mainCommentId);
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
