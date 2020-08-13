@@ -63,8 +63,6 @@ public class Comment {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-//    @OneToOne(fetch = FetchType.EAGER,
-//            mappedBy = "is_main_comment")
     @Column(name = "main_comment_id")
     private Long mainCommentId;
 

@@ -1,5 +1,6 @@
 package ru.javamentor.controller.rest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,8 +44,13 @@ public class CommentRestController {
         Long topicId = Long.parseLong(jsonObj.getString("topicId"));
         String comment = jsonObj.getString("comment");
         Topic topic = topicService.getTopicById(topicId);
-        Boolean isMainComment = Boolean.parseBoolean(jsonObj.getString("isMainComment"));
-        Long mainCommentId = Long.parseLong(jsonObj.getString("mainCommentId"));
+        Boolean isMainComment = jsonObj.getBoolean("isMainComment");
+        Long mainCommentId;
+        try {
+            mainCommentId = jsonObj.getLong("mainCommentId");
+        } catch (JSONException e){
+            mainCommentId = null;
+        }
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic,
