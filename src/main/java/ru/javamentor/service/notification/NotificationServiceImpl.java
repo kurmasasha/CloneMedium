@@ -41,7 +41,11 @@ public class NotificationServiceImpl implements NotificationService {
             throw new RuntimeException();
         }
     }
-
+    /**
+     * метод для получения всех уведомлений
+     *
+     * @return List уведомлений по ID юзера
+     */
     @Override
     public List<Notification> getAllNotesById(Long id) {
         try {
