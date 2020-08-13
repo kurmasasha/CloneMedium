@@ -33,12 +33,18 @@ public class NotificationRestController {
     }
 
     /**
-     *  Возвращает количество новых уведомлений для залогиненого юзера - "ЗАГЛУШКА - имитатор"
+     *  Возвращает количество новых уведомлений для залогиненого юзера по его ID
      * @param 'Principal User'
-     * @return случайное число нотификаций
+     * @return количество нотификаций
      */
     @GetMapping("/user/MyNotifsNbr")
     public ResponseEntity<List<Notification>> getNumberOfNotificationsNbrDumper(@AuthenticationPrincipal User user) throws InterruptedException {
-        return new ResponseEntity<>( notificationService.getAllNotes(), HttpStatus.OK);
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(notificationService.getAllNotesById(currentUser.getId()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(notificationService.getAllNotesById(user.getId()), HttpStatus.OK);
+        }
     }
 }

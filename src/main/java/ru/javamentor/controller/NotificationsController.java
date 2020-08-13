@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Notification;
 import ru.javamentor.service.notification.NotificationServiceImpl;
 
@@ -41,14 +38,13 @@ public class NotificationsController {
     }
 
     /**
-     * метод получения уведомления по уникальному ID
+     * метод получения всех уведомлений по ID юзера
      *
-     * @param id - уникальный id уведомления
-     * @return ResponseEntity, который содержит увеломление и статус ОК
+     * @return ResponseEntity, который содержит List уведомлений и статус ОК
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Notification> showNotificationById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
+    public ResponseEntity<List<Notification>> showNotificationsById(@PathVariable Long id) {
+        return new ResponseEntity<>(service.getAllNotesById(id), HttpStatus.OK);
     }
 
     /**

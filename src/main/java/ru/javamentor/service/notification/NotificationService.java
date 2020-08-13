@@ -19,6 +19,13 @@ public interface NotificationService {
     List<Notification> getAllNotes();
 
     /**
+     * метод для получения всех уведомлений
+     *
+     * @return List уведомлений
+     */
+    List<Notification> getAllNotesById(Long id);
+
+    /**
      * метод для получения уведомления по уникальному Id
      *
      * @return Notification - объект уведомления

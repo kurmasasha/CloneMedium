@@ -15,6 +15,8 @@ public interface NotificationDao {
 
     List<Notification> getAllNotes();
 
+    List<Notification> getAllNotesById(Long id);
+
     Notification getOne(Long id);
 
     Notification getByTitle(String title);

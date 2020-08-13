@@ -5,6 +5,7 @@ import ru.javamentor.model.Notification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -16,6 +17,11 @@ public class NotificationDaoImpl implements NotificationDao {
     @Override
     public List<Notification> getAllNotes() {
        return entityManager.createQuery("SELECT n FROM Notification n", Notification.class).getResultList();
+    }
+
+    @Override
+    public List<Notification> getAllNotesById(Long id) {
+        return entityManager.createQuery("SELECT n FROM Notification n where user_id LIKE :id", Notification.class).setParameter("id", id).getResultList();
     }
 
     @Override

@@ -42,6 +42,18 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    @Override
+    public List<Notification> getAllNotesById(Long id) {
+        try {
+            List<Notification> notifications = notificationDao.getAllNotesById(id);
+            log.debug("IN getAllNotes: {} notifications", notifications.size());
+            return notifications;
+        } catch (Exception e) {
+            log.error("Exception while getAllNotes in service");
+            throw new RuntimeException();
+        }
+    }
+
     /**
      * метод для получения уведомления по уникальному Id
      *

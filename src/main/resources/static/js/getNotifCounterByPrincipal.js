@@ -10,6 +10,7 @@ async function getNumberOfNotificationsOfUser(container) {
                  } else {
                      $('#notif_counter');
                      container.append(result.length);
+                     console.log(result.length);
                  }
         })
 }

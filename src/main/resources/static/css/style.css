@@ -38,7 +38,7 @@ body {
 /* Уведомления, число над колокольчиком */
 .badge {
     position: absolute;
-    top: -15px;
+    top: -7px;
     right: -30px;
     padding: 5px 10px;
     border-radius: 25%;
