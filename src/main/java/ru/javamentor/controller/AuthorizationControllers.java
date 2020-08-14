@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.javamentor.config.FacebookConfig;
 import ru.javamentor.config.GoogleConfig;
+import ru.javamentor.config.OdnoklassnikiConfig;
 import ru.javamentor.config.VKontakteConfig;
 
 import java.net.URI;
@@ -25,14 +26,16 @@ public class AuthorizationControllers {
     private final VKontakteConfig vKontakteConfig;
     private final FacebookConfig facebookConfig;
     private final GoogleConfig googleConfig;
+    private final OdnoklassnikiConfig odnoklassnikiConfig;
 
     private URI authUrl;
 
     @Autowired
-    public AuthorizationControllers(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, GoogleConfig googleConfig) {
+    public AuthorizationControllers(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, GoogleConfig googleConfig, OdnoklassnikiConfig odnoklassnikiConfig) {
         this.vKontakteConfig = vKontakteConfig;
         this.facebookConfig = facebookConfig;
         this.googleConfig = googleConfig;
+        this.odnoklassnikiConfig = odnoklassnikiConfig;
     }
 
     /**
@@ -64,6 +67,16 @@ public class AuthorizationControllers {
     @GetMapping("/authorization/googleAuthorization")
     public ResponseEntity<Object> redirectToGoogle() throws URISyntaxException {
         this.authUrl = new URI(googleConfig.getAuthorizationUrl());
+        return setLocation();
+    }
+    /**
+     * метод для перенаправления на страницу авторизации Odnoklassniki
+     *
+     * @return ResponseEntity, который содержит заголовок с URI
+     */
+    @GetMapping("/authorization/okAuthorization")
+    public ResponseEntity<Object> redirectToOk() throws URISyntaxException {
+        this.authUrl = new URI(odnoklassnikiConfig.getAuthorizationUrl());
         return setLocation();
     }
     /**
