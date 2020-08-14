@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <title>Login page</title>
 </head>
@@ -16,7 +17,6 @@
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <input type="text" name="username" class="form-control " placeholder="Username">
         <input type="password" name="password" class="form-control" placeholder="Password">
-
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me"> Remember me
@@ -75,7 +75,6 @@
     </div>
 </div>
 <!--------------------------------------------Модальное окно ---------------------------------------------------------------------------------------------------------------->
-
 <div class="modal" id="checkAuth" th:if="${(param.errorEmail != null)}"
      aria-labelledby="checkAuthVK" aria-hidden="true">
     <div class="modal-dialog">
@@ -91,6 +90,7 @@
         </div>
     </div>
 </div>
+
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -1,27 +1,43 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/color_moderated.css">
-    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title></title>
 </head>
 <body>
-<!------------------------------------------------------- Шапка ------------------------------------------------------->
-<nav th:replace="fragments/header :: home_header"></nav>
-<!--------------------------------------------------------------------------------------------------------------------->
-<!------------------------------------------------------- Топики ------------------------------------------------------>
-<div class="container h-100">
-    <div class="row text-center h-100 align-items-center">
-        <h2 class="topic-error col-12 d-block" th:text="${error}"></h2>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+<body>
+<!-- HTML-код модального окна -->
+<div id="myModalBox" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <div class="modal-body">
+                Пароль или логин введен неправильно.Проверьте корректность введенных данных.
+            </div>
+
+            <div class="modal-footer">
+               <a href="/registration"><button type="button" class="btn btn-default">Регистрация</button> </a>
+                <a href="/login"><button type="button" class="btn btn-primary">Вернуться на страницу авторизации</button></a>
+            </div>
+        </div>
     </div>
 </div>
-<!--------------------------------------------------------------------------------------------------------------------->
 
-<!------------------------------------------------ Модальное окно ----------------------------------------------------->
-<div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
-<!--------------------------------------------------------------------------------------------------------------------->
+
+<script>
+    $(document).ready(function() {
+        $("#myModalBox").modal('show');
+    });
+</script>
 </body>
 </html>

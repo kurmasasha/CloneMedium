@@ -63,15 +63,22 @@ public class PageController {
      * @return страницу логина
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, Model model) {
+    public String loginPage(@ModelAttribute("message") String message, @ModelAttribute("warning") String warning, @ModelAttribute("error") String error, Model model) {
         boolean flagMessage = false;
         boolean flagWarning = false;
+
         if (message != null && !message.equals("")) {
             flagMessage = true;
         }
         if (warning != null && !warning.equals("")) {
             flagWarning = true;
         }
+
+        if (error.equals("true")) {
+            return "topic_error";
+        }
+
+
         model.addAttribute("flagMes", flagMessage);
         model.addAttribute("flagWar", flagWarning);
         return "login";
@@ -86,6 +93,7 @@ public class PageController {
     public String homePage() {
         return "home";
     }
+
 
     /**
      * метод для страницы всех топиков
@@ -245,6 +253,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
