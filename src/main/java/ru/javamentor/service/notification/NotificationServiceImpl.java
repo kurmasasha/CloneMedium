@@ -42,7 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
     /**
-     * метод для получения всех уведомлений
+     * метод для получения уведомлений отдельного юзера
      *
      * @return List уведомлений по ID юзера
      */
@@ -50,10 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> getAllNotesById(Long id) {
         try {
             List<Notification> notifications = notificationDao.getAllNotesById(id);
-            log.debug("IN getAllNotes: {} notifications", notifications.size());
+            log.debug("IN getAllNotesById: {} notifications", notifications.size());
             return notifications;
         } catch (Exception e) {
-            log.error("Exception while getAllNotes in service");
+            log.error("Exception while getAllNotesById in service");
             throw new RuntimeException();
         }
     }
