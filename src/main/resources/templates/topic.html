@@ -79,7 +79,7 @@
     <div class="d-flex justify-content-center" style="clear: both">
         <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
-            <th:block th:each="comment: ${comments}">
+            <th:block th:each="comment: ${comments}" th:if="${comment.getMainCommentId()==null}">
                 <div class="card mb-2" th:id="commentCard-+${comment.getId()}">
                     <div class="card-header d-flex justify-content-between">
                         <h6 class="card-comment-author"
@@ -105,16 +105,19 @@
                             <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}"
                                   th:text="${comment.getDislikes()}"></span>
                         </span>
-                                <!-- Заполняется скриптом comment-in-card -->
+                                <!-- кнопка открывает окно ответа на комментарий-->
                                 <button class="replybutton"
                                         th:data-commentbox="panel+${comment.getId()}">ответить
                                 </button>
                                 <br>
                                 <br/>
+                                <!-- окно ответа на комментарий-->
                                 <div class="replybox" style="display:none" th:id="panel+${comment.getId()}">
-                                    <textarea class="form-control col-xs-12" rows="7" cols="120" id="textareaanswer"></textarea><br/>
+                                    <textarea class="form-control col-xs-12" rows="7" cols="120"
+                                              id="textareaanswer"></textarea><br/>
                                     <button class="cancelbutton">закрыть</button>
-                                    <button id="add_comment_answer" class="btn btn-sm btn-primary float-left" type="submit"><i
+                                    <button id="add_comment_answer" class="btn btn-sm btn-primary float-left"
+                                            type="submit" th:data-id="${comment.getId()}"><i
                                             class="fas fa-pencil-alt"></i>
                                         Добавить
                                     </button>
@@ -130,6 +133,49 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!--ANSWERS-->
+                    <div id="comments_answer_container" class="container m-0 p-30">
+                        <th:block th:each="answer: ${comments}"
+                                  th:if="${answer.getMainCommentId()==comment.getId()}">
+                            <div class="card mb-2" th:id="commentCard-+${answer.getId()}">
+                                <div class="card-header d-flex justify-content-between">
+                                    <h6 class="card-comment-author"
+                                        th:text="${answer.getAuthor().getFirstName()+ ' ' + answer.getAuthor().getLastName()}"></h6>
+                                    <div id="datecreatedanswer">
+                                        <h6 th:text="${#temporals.format(answer.getDateCreated(), 'd MMMM yyyy в HH:mm')}"></h6>
+                                    </div>
+                                </div>
+                                <p class="card-text" th:utext="${answer.getText()}"></p>
+                                <div class="card-footer">
+                                    <div class="d-flex bd-highlight mb-2">
+                                        <div class="mr-auto p-2 bd-highlight">
+                        <span class="like" th:classappend="${#lists.contains(answer.likedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-up" th:data-id="${answer.getId()}"></i>
+                            <span class="likes-num likeCount" th:id="likesId-+${answer.getId()}"
+                                  th:text="${answer.getLikes()}"></span>
+                        </span>
+                                            <span class="dislike"
+                                                  th:classappend="${#lists.contains(answer.dislikedUsers, user)} ? 'rated' : ''">
+                            <i class="fa fa-thumbs-o-down" th:data-id="${answer.getId()}"></i>
+                            <span class="dislikes-num likeCount" th:id="dislikesId-+${answer.getId()}"
+                                  th:text="${answer.getDislikes()}"></span>
+                        </span>
+                                        </div>
+                                        <div class="delete_comment_button">
+                                            <div class="p-2 bd-highlight">
+                                                <a class="fa fa-trash" sec:authorize="hasAuthority('USER')"
+                                                   th:data-id="${answer.getId()}"
+                                                   th:if="${answer.getAuthor().equals(#authentication.getPrincipal())}"></a>
+                                                <a class="fa fa-trash" th:data-id="${answer.getId()}"
+                                                   sec:authorize="hasAuthority('ADMIN')"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <!--ANSWERS_END-->
                     </div>
                 </div>
             </th:block>
