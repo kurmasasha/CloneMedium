@@ -59,8 +59,8 @@ public class UserController {
     }
 
     //TODO при неудачной валидации перенаправляет на адрес запроса
-      @PostMapping("/user")
-    public String upgrade(@ModelAttribute("user") User user,
+    @PostMapping("/user")
+    public String userUpdate(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,
                           @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
                           @RequestParam(name = "file", required = false) MultipartFile file,
