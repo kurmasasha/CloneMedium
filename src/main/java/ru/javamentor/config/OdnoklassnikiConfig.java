@@ -78,13 +78,7 @@ public class OdnoklassnikiConfig implements SocialConfig {
             String password = jsonObj.optString("uid");
             String firstName = jsonObj.optString("first_name");
             String lastName = jsonObj.optString("last_name");
-            String email = null;
-            //todo: убрать заглушку.
-            try {
-                email = jsonObj.getString("email");
-            } catch (Exception e) {
-                email = "noemail" + password + "@jm.com";
-            }
+            String email = jsonObj.getString("email");
             Role roleUser = roleService.getRoleByName("USER");
             return new User(firstName, lastName, email, password, roleUser);
         } catch (JSONException e) {
