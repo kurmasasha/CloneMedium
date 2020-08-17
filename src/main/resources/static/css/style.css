@@ -4,7 +4,7 @@ body {
 }
 
 #hashtag_input, #hashtag_home_button {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .social a {
@@ -89,6 +89,108 @@ body {
     text-align: center;
 }
 
+.topic_meta {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.topic {
+    margin-top: 48px;
+}
+
+.topic a {
+    color: #333;
+}
+
+.topic a:visited {
+    color: #487284;
+}
+
+.topic a:hover {
+    color: #5d84ae;
+    text-decoration: none;
+}
+
+.author_name {
+    color: #548eaa;
+}
+
+.author_name {
+    color: #548eaa;
+}
+
+.author_name:hover {
+    color: #5d84ae;
+}
+
+.topic_time {
+    margin-left: 8px;
+}
+
+.topic_title {
+    margin: 0 0 9px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.topic_theme, .topic_tag{
+    font-size: 13px;
+}
+
+.topic_theme a {
+    color: #5e6973;
+}
+
+.topic_tag a {
+    color: #5e6973;
+}
+
+.topic_body {
+    padding-top: 20px;
+    padding-bottom: 24px;
+}
+
+.topic_text {
+    margin-right: -5px;
+    padding-right: 5px;
+    color: #222;
+    font-size: 16px;
+}
+
+.topic_text img {
+    margin: 0;
+    vertical-align: middle;;
+    max-width: 100%;
+    height: auto;
+}
+
+.topic_stats {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #e5e9eb;
+    height: 40px;
+    border-radius: 4px;
+}
+
+.topic_stats_items {
+    display: flex;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    margin-left: 20px;
+}
+
+.topic_stats_items_counter {
+    margin-left: 8px;
+}
+
+.topic_stats_items_comments {
+    padding-left: 0;
+    padding-right: 12px;
+}
 
 #comments_container i.fa {
     padding: 5px;

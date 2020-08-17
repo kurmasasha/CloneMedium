@@ -29,6 +29,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements UserDetails {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,6 +62,9 @@ public class User implements UserDetails {
     @Column
     private boolean isActivated;
 
+    @Column
+    private boolean lockStatus=true;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "likedUsers")
     private Set<Topic> likedTopics;
@@ -91,6 +95,7 @@ public class User implements UserDetails {
             mappedBy = "dislikedUsers")
     private Set<Comment> dislikedComments;
 
+
     @Override
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -105,6 +110,14 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public void setLockStatus(boolean lockStatus) {
+        this.lockStatus = lockStatus;
+    }
+
+    public boolean getLockStatus() {
+        return lockStatus;
     }
 
     @Override
@@ -124,8 +137,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.lockStatus;
     }
+
+
 
     /**
      * Переопределенный метод сравнения двух пользователей.

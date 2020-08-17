@@ -192,7 +192,7 @@ public class TopicRestControllers {
             Principal principal
             ) throws Exception {
         String message = "Что то пошло не так! Попробуйте снова";
-        String resultFileName = "no-image.png";
+        String resultFileName = "no-img.png";
         try {
             // проверка на пустоту title and content
             topicValidator.checkTitleAndContent(title, content);
@@ -212,7 +212,7 @@ public class TopicRestControllers {
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
             if (topic != null) {
-                return new ResponseEntity<>(topic, HttpStatus.OK);
+                return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);
             }
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -278,18 +278,6 @@ public class TopicRestControllers {
     public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable String tag) {
        // tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
-        return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
-    }
-
-    /**
-     * Поиск топиков по автору.
-     *
-     * @param authorId - id автора топиков
-     * @return список TopicDto данного автора
-     */
-    @GetMapping("/free-user/get-all-topics-by-author/{authorId}")
-    public ResponseEntity<List<TopicDto>> getAllTopicsByAuthor(@PathVariable Long authorId) {
-        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
     }
 

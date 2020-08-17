@@ -44,8 +44,22 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public void removeCommentById(Long id) {
-        Comment comment = getCommentById(id);
-        entityManager.remove(comment);
+        entityManager.createQuery("delete from Comment where id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
+    /**
+     * метод для определения количества комментариев у топика
+     * @param topicId - id нужного топика
+     * @return количесвто комментариев у топика
+     */
+    @Override
+    public String getTopicCommentsCount(Long topicId) {
+        return entityManager.createNativeQuery("SELECT COUNT(c.id) FROM comments c WHERE c.topic_id = :topicId")
+                .setParameter("topicId", topicId)
+                .getSingleResult()
+                .toString();
     }
 
     @Override

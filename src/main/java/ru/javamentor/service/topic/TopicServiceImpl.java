@@ -439,6 +439,7 @@ public class TopicServiceImpl implements TopicService {
     public List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList) {
         List<TopicDto> topicDtoList = new ArrayList<>();
         topicList.forEach(topic -> topicDtoList.add(new TopicDto(topic)));
+        topicDtoList.forEach(topicDto -> topicDto.setCommentsCount(commentDAO.getTopicCommentsCount(topicDto.getId())));
         return topicDtoList;
     }
 

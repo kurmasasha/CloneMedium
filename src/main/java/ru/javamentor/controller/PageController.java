@@ -1,6 +1,8 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,7 +85,9 @@ public class PageController {
      * @return главную страницу
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage() {
+    public String homePage(Model model, @AuthenticationPrincipal User user) {
+        List<Topic> topics = topicService.getAllTopicsByUserId(user.getId());
+        model.addAttribute("topics", topicService.getTopicDtoListByTopicList(topics));
         return "home";
     }
 
@@ -95,7 +99,9 @@ public class PageController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String allTopicsPage(Model model) {
+        List<Topic> topics = topicService.getModeratedTopics();
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
 
@@ -140,7 +146,9 @@ public class PageController {
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
-    public String adminAllUsersPage() {
+    public String adminAllUsersPage(Model model,@AuthenticationPrincipal User auth) {
+        model.addAttribute("allUsers", userService.getAllUsers());
+        model.addAttribute("authUser", auth);
         return "admin-all_users";
     }
 
@@ -234,20 +242,53 @@ public class PageController {
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/tag/{tag}")
-    public String getPageWithTopicsByHashTag(Model model) {
+    public String getPageWithTopicsByHashTag(Model model, @PathVariable String tag) {
+        List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
 
     /**
      * метод для страницы всех топиков по автору
-     *
+     * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
     @GetMapping("/topic/find/author/{authorId}")
-    public String getPageWithTopicsByAuthor(Model model) {
+    public String getPageWithTopicsByAuthor(Model model, @PathVariable Long authorId) {
+        List<Topic> topics = topicService.getAllTopicsByUserId(authorId);
         model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "all_topics_page";
     }
+
+    /**
+     * метод для активации пользователя админом
+     * @param enableId - уникальный id пользователя которого необходимо активировать
+     * @return редирект на список пользователей
+     */
+    @PostMapping("/admin/enable/")
+    public String enableUser(@RequestParam Long enableId) {
+        User user = userService.getUserById(enableId);
+        user.setLockStatus(!(user.getLockStatus()));
+
+        userService.updateUser(user);
+        return "redirect:/admin/allUsers";
+    }
+
+    /**
+     * метод для деактивации пользователя админом
+     * @param disableId - уникальный id пользователя которого необходимо отключить
+     * @return редирект на список пользователей
+     */
+    @PostMapping("/admin/disable/")
+    public String disableUser(@RequestParam Long disableId) {
+        User user = userService.getUserById(disableId);
+        user.setLockStatus(!(user.getLockStatus()));
+
+        userService.updateUser(user);
+        return "redirect:/admin/allUsers";
+    }
+
 }
 
