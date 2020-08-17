@@ -27,6 +27,7 @@ body {
 .google-plus-g a:hover {background: #DD4B39; color: #fff;}
 .facebook-f a:hover {background: #3b5998; color: #fff;}
 .vk a:hover {background: #5d84ae; color: #fff;}
+.ok a:hover {background: rgb(237, 129, 43); color: #fff}
 
 .social-buttons {
     display: inline-flex;
