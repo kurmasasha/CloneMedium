@@ -1,16 +1,21 @@
-$(document).ready( async function () {
-    $('#comments_container').on('click',".fa", async function (e) {
-        if($(this).hasClass("fa-trash")){
-            let id = $(this).attr('data-id');
-             await fetch(`/api/user/comment/delete/${id}`, {method: "delete"})
+$('#comments_container').on('click','.delete-comment', function () {
+        let id = $(this).attr('data-id');
+        $('#deleteCommentConfirm').on('click', async function () {
+            await fetch(`/api/user/comment/delete/${id}`, {method: "delete"})
                 .then(function (response) {
                         if (response.ok) {
+                            $("#deleteCommentModal").modal("hide");
                             $('#commentCard-' + id).remove();
+
                         } else if (response.status > 500) {
                             alert("Что то пошло не так, мы уже рашаем проблему");
                         }
                     }
                 )
-        }
-    })
-})
+        });
+});
+
+
+
+
+
