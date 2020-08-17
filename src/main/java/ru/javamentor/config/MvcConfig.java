@@ -10,8 +10,12 @@ import java.nio.file.Paths;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Value("${upload.topic.path}")
+    private String uploadTopicPath;
+
+    @Value("${upload.user.path}")
+    private String uploadUserPath;
+
     private static String OS = System.getProperty("os.name");
 
     /**
@@ -20,10 +24,14 @@ public class MvcConfig implements WebMvcConfigurer {
      * */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path path = Paths.get(uploadPath);
-        String filePath = path.toAbsolutePath().toString();
-        String prefix;
+        Path topicPath = Paths.get(uploadTopicPath);
+        String topicFilePath = topicPath.toAbsolutePath().toString();
 
+        Path userPath = Paths.get(uploadUserPath);
+        String userFilePath = userPath.toAbsolutePath().toString();
+
+
+        String prefix;
         if (OS.startsWith("Windows")) {
             prefix = "file:/";
         } else {
@@ -31,6 +39,9 @@ public class MvcConfig implements WebMvcConfigurer {
         }
 
         registry.addResourceHandler("/topic-img/**")
-                .addResourceLocations(prefix + filePath + "/");
+                .addResourceLocations(prefix + topicFilePath + "/");
+
+        registry.addResourceHandler("/user-img/**")
+                .addResourceLocations(prefix + userFilePath + "/");
     }
 }
