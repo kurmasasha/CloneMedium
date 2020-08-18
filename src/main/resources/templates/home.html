@@ -41,7 +41,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/temp/topic/update}" id="editForm" method="post">
+                            <form th:action="@{/topic/update}" id="editForm" method="post">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="editTopicId">Id</label>
                                     <input class="form-control" type="text" id="editTopicId" name="id"  th:value="${topic.id}">
@@ -57,7 +57,7 @@
                                     <textarea class="form-control" id="editTopicContent"  name="content" th:inline="text">[[${topic.content}]]></textarea>
                                 </div>
 
-                                <div class="modal-footer">
+                                <div class="modal-footer justify-content-center">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                                     <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                                 </div>
@@ -78,13 +78,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/temp/topic/delete}" id="deleteForm" method="delete">
+                            <form th:action="@{/topic/delete}" id="deleteForm" method="post">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="deleteTopicId">Id</label>
                                     <input class="form-control" type="text" id="deleteTopicId" name="id"  th:value="${topic.id}">
                                 </div>
 
-                                <div class="modal-footer">
+                                <div class="modal-footer justify-content-center">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                                     <button type="submit" class="btn btn-danger">Удалить</button>
                                 </div>

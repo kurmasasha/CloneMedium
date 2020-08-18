@@ -10,12 +10,12 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.service.topic.TopicService;
 
 @Controller
-@RequestMapping(value = "/temp/topic/*")
-public class TempController {
+@RequestMapping(value = "/topic/*")
+public class TopicController {
     final private TopicService topicService;
 
     @Autowired
-    public TempController(TopicService topicService) {
+    public TopicController(TopicService topicService) {
         this.topicService = topicService;
     }
 
@@ -31,7 +31,7 @@ public class TempController {
         return "redirect:/home";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String deleteTopic(@RequestParam(required = false, value = "id") Long id) {
         topicService.removeTopicById(id);
         return "redirect:/home";
