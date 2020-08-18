@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/color_moderated.css">
     <!-- set glyphicon's icons-->
     <link rel="stylesheet" href="css/font-glyphicons.css">
+
     <title>Home</title>
 </head>
 <body>
@@ -27,6 +28,43 @@
 <div class="d-flex justify-content-center py-5">
     <div id="my_topics_container" class="container mx-0 py-3">
         <th:block th:each="topic: ${topics}">
+
+            <!-- Edit modal -->
+            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Редактировать топик</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/api/user/topic/update}" id="editForm" method="post">
+                                <div class="form-group" style="display: none">
+                                    <label class="col-form-label" for="editTopicId">Id</label>
+                                    <input class="form-control" type="text" id="editTopicId"  th:value="${topic.id}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editTopicTitle" class="col-form-label">Заголовок</label>
+                                    <input class="form-control" type="text" id="editTopicTitle" th:value="${topic.title}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editTopicContent" class="col-form-label">Содержание</label>
+                                    <textarea class="form-control" id="editTopicContent" th:inline="text">[[${topic.content}]]></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <article class="topic topic_preview">
                 <header class="row topic_meta">
                     <div class="col-10">
@@ -52,33 +90,12 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Launch demo modal
+                                <button type="button" class="dropdown-item" data-toggle="modal" th:data-target="'#edit'+${topic.id}">
+                                    Редактировать
                                 </button>
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
 <!--                                delete topic-->
-                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="'#exampleModal">Удалить</button>
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="'#exampleModal">Удалить</button>
 
 
                             </div>
