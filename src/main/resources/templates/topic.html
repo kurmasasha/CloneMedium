@@ -84,25 +84,25 @@
                     </a>
                 </div>
             </div>
-            <!-------------------------------------------- Блок добавления коммента------------------------------------------------------------>
-            <div class="new-comment">
-                <div class="comment-box">
-                    <form>
-                        <div class="form-group" style="margin: 0">
+        </div>
+        <!-------------------------------------------- Блок добавления коммента------------------------------------------------------------>
+        <div class="new-comment">
+            <div class="comment-box">
+                <form>
+                    <div class="form-group" style="margin: 0">
                     <textarea class="form-control" id="textareaResize" rows="1" style="resize:none; overflow: hidden;"
                               placeholder="Добавьте Ваш комментарий" name="comment" required=""></textarea>
+                    </div>
+                    <!-- Кнопка добавления коммента через скрипт addComment-->
+                    <div class="form-group">
+                        <button id="add_comment_button" class="btn btn-sm btn-primary float-left" type="submit"><i
+                                class="fas fa-pencil-alt"></i>
+                            Добавить
+                        </button>
+                        <div class="counter form-group float-right">Осталось символов: <b><span id="counter"></span></b>
                         </div>
-                        <!-- Кнопка добавления коммента через скрипт addComment-->
-                        <div class="form-group">
-                            <button id="add_comment_button" class="btn btn-sm btn-primary float-left" type="submit"><i
-                                    class="fas fa-pencil-alt"></i>
-                                Добавить
-                            </button>
-                            <div class="counter form-group float-right">Осталось символов: <b><span id="counter"></span></b>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
