@@ -67,7 +67,6 @@ body {
 }
 
 #likeCounter, #dislikeCounter {
-    font-size: 1.5em;
     margin-right: 20px;
 }
 
@@ -116,11 +115,11 @@ body {
     color: #548eaa;
 }
 
-.author_name {
+.author_name a {
     color: #548eaa;
 }
 
-.author_name:hover {
+.author_name a:hover {
     color: #5d84ae;
 }
 
@@ -161,6 +160,7 @@ body {
 .topic_text img {
     margin: 0;
     vertical-align: middle;;
+    min-width: 70%;
     max-width: 100%;
     height: auto;
 }
