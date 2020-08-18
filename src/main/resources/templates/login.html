@@ -11,6 +11,7 @@
 <body class="bg-light text-center">
 <div th:if="${flagMes}" class="alert alert-success  mx-auto my-5" role="alert"><p th:text="${message}"></p></div>
 <div th:if="${flagWar}" class="alert alert-warning  mx-auto my-5" role="alert"><p th:text="${warning}"></p></div>
+<div th:if="${flagError}" class="alert alert-danger  mx-auto my-5" role="alert"><p>Пароль или логин введен неправильно.Проверьте корректность введенных данных.</p></div>
 <form class="form-signin" method="post" action="/login">
     <div class="mx-auto my-5" style="width: 100%; max-width: 330px;">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -94,6 +95,9 @@
         </div>
     </div>
 </div>
+
+<!--------------------------------------------Модальное окно ошибки ---------------------------------------------------------------------------------------------------------------->
+
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
