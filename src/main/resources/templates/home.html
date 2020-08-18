@@ -40,26 +40,27 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/api/user/topic/update}" id="editForm" method="post">
+                            <form th:action="@{/temp/topic/update}" id="editForm" method="post">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="editTopicId">Id</label>
-                                    <input class="form-control" type="text" id="editTopicId"  th:value="${topic.id}">
+                                    <input class="form-control" type="text" id="editTopicId" name="id"  th:value="${topic.id}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="editTopicTitle" class="col-form-label">Заголовок</label>
-                                    <input class="form-control" type="text" id="editTopicTitle" th:value="${topic.title}">
+                                    <input class="form-control" type="text" id="editTopicTitle" name="title" th:value="${topic.title}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="editTopicContent" class="col-form-label">Содержание</label>
-                                    <textarea class="form-control" id="editTopicContent" th:inline="text">[[${topic.content}]]></textarea>
+                                    <textarea class="form-control" id="editTopicContent"  name="content" th:inline="text">[[${topic.content}]]></textarea>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                                 </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                         </div>
                     </div>
                 </div>
