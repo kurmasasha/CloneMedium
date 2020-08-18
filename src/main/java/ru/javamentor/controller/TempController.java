@@ -2,6 +2,7 @@ package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public class TempController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@RequestParam(required = false, value = "id") Long id,
+    public String updateTopic(@RequestParam(required = false, value = "id") Long id,
                              @RequestParam(required = false, value = "title") String title,
                              @RequestParam(required = false, value = "content") String content) {
 
@@ -27,6 +28,12 @@ public class TempController {
         currentTopic.setTitle(title);
         currentTopic.setContent(content);
         topicService.updateTopic(currentTopic);
+        return "redirect:/home";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteTopic(@RequestParam(required = false, value = "id") Long id) {
+        topicService.removeTopicById(id);
         return "redirect:/home";
     }
 }

@@ -25,16 +25,17 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Топики ------------------------------------------------------>
 
+<!------------------------------------Модальные окна редактирования и удаления топиков--------------------------------->
 <div class="d-flex justify-content-center py-5">
     <div id="my_topics_container" class="container mx-0 py-3">
         <th:block th:each="topic: ${topics}">
 
             <!-- Edit modal -->
-            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="editTopicForm" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Редактировать топик</h5>
+                            <h5 class="modal-title" id="editTopicForm">Редактировать топик</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -66,6 +67,33 @@
                 </div>
             </div>
 
+            <!-- Delete modal -->
+            <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteTopicForm">Вы уверены что хотите удалить данный топик?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/temp/topic/delete}" id="deleteForm" method="delete">
+                                <div class="form-group" style="display: none">
+                                    <label class="col-form-label" for="deleteTopicId">Id</label>
+                                    <input class="form-control" type="text" id="deleteTopicId" name="id"  th:value="${topic.id}">
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--------------------------------------------------------------------------------------------------------------------->
             <article class="topic topic_preview">
                 <header class="row topic_meta">
                     <div class="col-10">
@@ -90,15 +118,15 @@
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
-                                <!-- Button trigger modal -->
+                                <!-- button edit topic -->
                                 <button type="button" class="dropdown-item" data-toggle="modal" th:data-target="'#edit'+${topic.id}">
                                     Редактировать
                                 </button>
 
-<!--                                delete topic-->
-                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="'#exampleModal">Удалить</button>
-
-
+                                <!-- button delete topic-->
+                                <button type="button" class="dropdown-item" data-toggle="modal" th:data-target="'#delete'+${topic.id}">
+                                    Удалить
+                                </button>
                             </div>
                         </div>
                     </div>
