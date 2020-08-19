@@ -2,19 +2,19 @@ function commentInCard(comment) {
 
     let card =
         '<div class="card mb-2" id="commentCard-' + comment.id + '">' +
-        '<div class="card-header row">' +
-        '<h6 class="card-comment-author col">' + comment.author.firstName + ' ' + comment.author.lastName + '</h6>' +
-        '<div class="datecreated row">' +
-        '<h6>' + comment.dateCreated + '</h6>' +
-        '</div>' +
-        '<div class="dropdown col">' +
-        '<i class="fa fa-ellipsis-v pl-5 float-right" aria-hidden="true" type="button" id="dropdownMenuButton"' +
+        '<div class="card-header clearfix">' +
+        '<h6 class="card-comment-author float-left">' + comment.author.firstName + ' ' + comment.author.lastName + '</h6>' +
+        '<div class="d-inline-flex float-right">' +
+        '<h6 id="datecreated">' + comment.dateCreated + '</h6>' +
+        '<div class="dropdown">' +
+        '<i class="fa fa-ellipsis-v pl-4 " aria-hidden="true" type="button" id="dropdownMenuButton"' +
         '   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>' +
         '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
         '<button class="dropdown-item edit-comment" type="button" data-toggle="modal" data-target="#editCommentModal"' +
         '        data-id="' + comment.id + '">Редактировать</button>' +
         '<button class="dropdown-item delete-comment" type="button" data-toggle="modal" data-target="#deleteCommentModal"' +
         '        data-id="' + comment.id + '">Удалить</button>' +
+        '</div>' +
         '</div>' +
         '</div>' +
         '</div>' +

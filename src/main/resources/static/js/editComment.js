@@ -1,12 +1,11 @@
-$('#comments_container').on('click','.edit-comment', async function () {
+$('#comments_container').on('click', '.edit-comment', async function (e) {
     let id = $(this).attr('data-id');
-    console.log(id);
     let comment = await fetch("/api/user/comment/" + id).then(function (response) {
         return response.json();
     });
     $("#editCommentModalText").val(comment.text);
 
-    $("#editCommentConfirm").on("click", function () {
+    $("#editCommentConfirm").one('click', function () {
         let newText = $("#editCommentModalText").val();
         if (newText !== '') {
             comment.text = newText;
@@ -20,6 +19,7 @@ $('#comments_container').on('click','.edit-comment', async function () {
                 if (response.ok) {
                     $("#editCommentModal").modal("hide");
                     $("#commentCardText-" + id).text(newText);
+                    e.preventDefault();
                 }
             })
         } else {
@@ -27,4 +27,6 @@ $('#comments_container').on('click','.edit-comment', async function () {
         }
     })
 });
+
+
 
