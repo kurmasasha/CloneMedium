@@ -1,6 +1,7 @@
 package ru.javamentor.service;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -15,10 +16,11 @@ import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
-
 import javax.persistence.TransactionRequiredException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Тесты для класса CommentServiceImpl
@@ -42,15 +44,15 @@ class CommentServiceImplTest {
 
         Assert.assertNotNull("Проверка создания объекта комментария", comment);
         Assert.assertNull("Проверка id комментария", comment.getId());
-        Assert.assertEquals("Проверка текста комментария","testText", comment.getText());
-        Assert.assertNotNull("Проверка автора комментария",comment.getAuthor());
-        Assert.assertNotNull("Проверка связанного топика комментария",comment.getTopic());
+        Assert.assertEquals("Проверка текста комментария", "testText", comment.getText());
+        Assert.assertNotNull("Проверка автора комментария", comment.getAuthor());
+        Assert.assertNotNull("Проверка связанного топика комментария", comment.getTopic());
         Assert.assertEquals("Проверка времени создания комментария",
-                            comment.getDateCreated().getYear(), LocalDateTime.now().getYear());
+                comment.getDateCreated().getYear(), LocalDateTime.now().getYear());
         Assert.assertEquals("Проверка времени создания комментария",
-                            comment.getDateCreated().getMonth(), LocalDateTime.now().getMonth());
+                comment.getDateCreated().getMonth(), LocalDateTime.now().getMonth());
         Assert.assertEquals("Проверка времени создания комментария",
-                            comment.getDateCreated().getDayOfMonth(), LocalDateTime.now().getDayOfMonth());
+                comment.getDateCreated().getDayOfMonth(), LocalDateTime.now().getDayOfMonth());
 
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(comment);
     }
@@ -63,8 +65,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .addComment(ArgumentMatchers.any(Comment.class));
-
-        Assert.assertNull("Проверка возвращаемого значения", commentService.addComment("", new User(), new Topic()));
+        Comment[] comment = new Comment[1];
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            comment[0] = commentService.addComment("", new User(), new Topic());
+        });
+        Assert.assertNull("Проверка возвращаемого значения", comment[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(ArgumentMatchers.any(Comment.class));
     }
 
@@ -73,10 +78,9 @@ class CommentServiceImplTest {
      */
     @Test
     void getCommentById() {
-        Mockito.doReturn(new Comment())
+        Mockito.doReturn(new Comment("", new User(), new Topic(), LocalDateTime.now()))
                 .when(commentDAO)
                 .getCommentById(ArgumentMatchers.anyLong());
-
         Comment comment = commentService.getCommentById(ArgumentMatchers.anyLong());
         Assert.assertNotNull("Проверка наличия возвращаемого объекта комментария", comment);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(ArgumentMatchers.anyLong());
@@ -90,9 +94,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getCommentById(ArgumentMatchers.anyLong());
-        Comment comment = commentService.getCommentById(ArgumentMatchers.anyLong());
-
-        Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comment);
+        Comment[] comment = new Comment[1];
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            comment[0] = commentService.getCommentById(ArgumentMatchers.anyLong());
+        });
+        Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comment[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(ArgumentMatchers.anyLong());
     }
 
@@ -159,8 +165,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getAuthorByCommentId(ArgumentMatchers.anyLong());
-
-        Assert.assertNull("Проверка возвращаемого объекта", commentService.getAuthorByCommentId(ArgumentMatchers.anyLong()));
+        User[] user = new User[1];
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            user[0] = commentService.getAuthorByCommentId(ArgumentMatchers.anyLong());
+        });
+        Assert.assertNull("Проверка возвращаемого объекта", user[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getAuthorByCommentId(ArgumentMatchers.anyLong());
     }
 
@@ -170,7 +179,7 @@ class CommentServiceImplTest {
     @Test
     void removeCommentById() {
         Assert.assertTrue("Проверка возвращаемого объекта",
-                                commentService.removeCommentById(ArgumentMatchers.anyLong()));
+                commentService.removeCommentById(ArgumentMatchers.anyLong()));
         Mockito.verify(commentDAO, Mockito.times(1)).removeCommentById(ArgumentMatchers.anyLong());
     }
 
@@ -210,9 +219,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getAllCommentsByTopicId(ArgumentMatchers.anyLong());
-
-        Assert.assertNull("Проверка возвращаемого объекта",
-                commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong()));
+        List[] comments = new List[1];
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            comments[0] = commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong());
+        });
+        Assert.assertNull("Проверка возвращаемого объекта", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getAllCommentsByTopicId(ArgumentMatchers.anyLong());
     }
 }
