@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.notification.NotificationDao;
+import ru.javamentor.dto.NotificationDto;
+import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Notification;
+import ru.javamentor.model.Topic;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Реализация интерфейса NotificationService
@@ -149,6 +153,19 @@ public class NotificationServiceImpl implements NotificationService {
                     notification.getId(), notification.getTitle());
             throw new RuntimeException();
         }
+    }
+
+    /**
+     * Метод получения списка NotificationsDto из списка Notifications
+     *
+     * @param notifList - лист нотификаций
+     * @return - список Notification DTO
+     */
+    @Override
+    public List<NotificationDto> getNotificationDtoListByNotifList(List<Notification> notifList) {
+        List<NotificationDto> notificationDtoList = new ArrayList<>();
+        notifList.forEach(notification -> notificationDtoList.add(new NotificationDto(notification)));
+        return notificationDtoList;
     }
 
     @Override

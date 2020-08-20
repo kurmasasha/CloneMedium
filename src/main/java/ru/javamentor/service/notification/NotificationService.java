@@ -1,6 +1,9 @@
 package ru.javamentor.service.notification;
 
+import ru.javamentor.dto.NotificationDto;
+import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Notification;
+import ru.javamentor.model.Topic;
 
 import java.util.List;
 
@@ -63,6 +66,12 @@ public interface NotificationService {
      * @return boolean - удалось удалить уведомление или нет
      */
     boolean deleteNotification(Notification notification);
+    /**
+     * Метод получения списка NotificationDto из списка Notifications
+     * @param notifList - лист топиков
+     * @return - список TopicDto
+     */
+    List<NotificationDto> getNotificationDtoListByNotifList(List<Notification> notifList);
 
     boolean isExist(Long notifId);
 }

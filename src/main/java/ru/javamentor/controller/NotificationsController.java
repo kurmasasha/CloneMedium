@@ -3,10 +3,18 @@ package ru.javamentor.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.dto.NotificationDto;
 import ru.javamentor.model.Notification;
+import ru.javamentor.model.User;
+import ru.javamentor.service.notification.NotificationService;
 import ru.javamentor.service.notification.NotificationServiceImpl;
+import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 
@@ -20,11 +28,13 @@ import java.util.List;
 @RequestMapping(value = "/notifications")
 public class NotificationsController {
 
-    private NotificationServiceImpl service;
+    private NotificationService service;
+    private UserService userService;
 
     @Autowired
-    public NotificationsController(NotificationServiceImpl service) {
+    public NotificationsController(NotificationService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     /**
@@ -32,19 +42,35 @@ public class NotificationsController {
      *
      * @return ResponseEntity, который содержит List уведомлений и статус ОК
      */
-    @GetMapping("/")
-    public ResponseEntity<List<Notification>> showNotifications() {
-        return new ResponseEntity<>(service.getAllNotes(), HttpStatus.OK);
+    @GetMapping("/all")
+    public ResponseEntity<List<NotificationDto>> showNotifications() {
+        return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotes()), HttpStatus.OK);
     }
-
     /**
-     * метод получения всех уведомлений по ID юзера
+     * метод получения всех уведомлений по аутентификации юзера
      *
      * @return ResponseEntity, который содержит List уведомлений и статус ОК
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Notification>> showNotificationsById(@PathVariable Long id) {
-        return new ResponseEntity<>(service.getAllNotesById(id), HttpStatus.OK);
+    @GetMapping("/")
+    public ResponseEntity<List<NotificationDto>> showNotificationsById(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        }
+    }
+    @GetMapping("/test")
+    public ResponseEntity<List<NotificationDto>> test(@AuthenticationPrincipal User user, Model model){
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            model.addAttribute("list", service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())));
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        }
     }
 
     /**

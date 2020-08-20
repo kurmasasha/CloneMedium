@@ -1,6 +1,5 @@
 
 // Получение количества нотификаций
-
 async function getNumberOfNotificationsOfUser(container) {
     fetch(`/api/user/MyNotifsNbr`)
         .then(response => response.json())
