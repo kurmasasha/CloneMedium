@@ -73,7 +73,6 @@ public class PageController {
         if (warning != null && !warning.equals("")) {
             flagWarning = true;
         }
-
         if (error.equals("true")) {
             flagError = true;
         }
