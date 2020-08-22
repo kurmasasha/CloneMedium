@@ -81,7 +81,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getTopicById in service with topic.id is {}", id);
-            throw new RuntimeException();
+            throw e;
         }
     }
 
@@ -99,7 +99,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getTotalListOfTopics in service with exception {}", e.getMessage());
-            throw new RuntimeException();
+            throw e;
         }
     }
 
@@ -118,7 +118,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getTopicByTitle in service with title {}", title);
-            throw new RuntimeException();
+            throw e;
         }
     }
 
@@ -199,7 +199,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getAllTopicsByUserId in service with user.id is {}", userId);
-            throw new RuntimeException();
+            throw e;
         }
     }
 
@@ -273,7 +273,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getModeratedTopics in service with exception {}", e.getMessage());
-            throw new RuntimeException();
+            throw e;
         }
     }
 
@@ -290,7 +290,7 @@ public class TopicServiceImpl implements TopicService {
             return result;
         } catch (Exception e) {
             log.error("Exception while getNotModeratedTopics in service with exception {}", e.getMessage());
-            throw new RuntimeException();
+            throw e;
         }
     }
 
