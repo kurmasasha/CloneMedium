@@ -52,7 +52,8 @@
               <br>
               <br>
             </div>
-            <span th:utext="${topic.content}"></span>
+            <span th:id="topicContent-+${topic.getId()}" th:data-topic-content="${topic.getContent()}"
+                  class="topic_content"></span>
           </div>
         </div>
         <footer class="topic_footer">
@@ -123,6 +124,7 @@
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/likedTopic.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/all_topics_events.js"></script>
 </body>

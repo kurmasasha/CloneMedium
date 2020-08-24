@@ -47,7 +47,7 @@ public class TopicRestControllers {
     private final TopicValidator topicValidator;
     private final WsNotificationService wsNotificationService;
 
-    @Value("${upload.path}")
+    @Value("${upload.topic.path}")
     private String uploadPath;
 
     @Autowired
@@ -202,7 +202,7 @@ public class TopicRestControllers {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 topicValidator.checkFile(file);
                 if (topicValidator.getError() == null) {
-                    resultFileName = loaderImages.upload(file);
+                    resultFileName = loaderImages.upload(file, uploadPath);
                 }
             }
             if (topicValidator.getError() != null) {

@@ -7,5 +7,5 @@ import java.io.IOException;
 
 @Component
 public interface LoaderImages {
-    String upload(MultipartFile file) throws IOException;
+    String upload(MultipartFile file, String uploadPath) throws IOException;
 }

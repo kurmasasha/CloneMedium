@@ -17,7 +17,9 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> getAllCommentsByTopicId(Long topicId) {
-        return entityManager.createQuery("SELECT c FROM Comment c LEFT JOIN FETCH c.topic t WHERE t.id = :topicId GROUP BY c.id ORDER BY c.dateCreated  DESC", Comment.class)
+        return entityManager.createQuery("SELECT c FROM Comment c " +
+                "LEFT JOIN FETCH c.topic t " +
+                "WHERE t.id = :topicId GROUP BY c.id ORDER BY c.dateCreated  DESC", Comment.class)
                 .setParameter("topicId", topicId).getResultList();
     }
 
@@ -38,7 +40,8 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public User getAuthorByCommentId(Long commentId) {
-        return (User) entityManager.createQuery("SELECT u FROM Comment c LEFT JOIN FETCH c.author u WHERE c.id = :commentId", User.class)
+        return (User) entityManager.createQuery("SELECT u FROM Comment c " +
+                "LEFT JOIN FETCH c.author u WHERE c.id = :commentId", User.class)
                 .setParameter("commentId", commentId);
     }
 
