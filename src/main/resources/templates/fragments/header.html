@@ -26,8 +26,8 @@
         <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------------------------------------------>
 
         <!--------------------------------- Кнопка панели администратора --------------------------------------->
-        <div sec:authorize="hasAuthority('ADMIN')" class="mr-4">
-            <a th:href="@{admin/allUsers}" class="btn btn-warning">Панель администратора</a>
+        <div sec:authorize="hasAuthority('ADMIN')" th:if="${#httpServletRequest.requestURI != '/admin/allUsers'} and ${#httpServletRequest.requestURI != '/admin/moderate'} and ${#httpServletRequest.requestURI != '/admin/themes'}"class="mr-4">
+            <a th:href="@{/admin/allUsers}" class="btn btn-warning">Панель администратора</a>
         </div>
         <!--------------------------------------------------------------------------------------------------------->
         
