@@ -75,10 +75,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .addComment(ArgumentMatchers.any(Comment.class));
+        Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            Comment comment = commentService.addComment("", new User(), new Topic());
-            Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comment);
+            comments[0] = commentService.addComment("", new User(), new Topic());
         });
+        Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(ArgumentMatchers.any(Comment.class));
     }
 
@@ -103,10 +104,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getCommentById(ArgumentMatchers.anyLong());
+        Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            Comment comment = commentService.getCommentById(ArgumentMatchers.anyLong());
-            Assert.assertNotNull("Проверка наличия возвращаемого объекта комментария", comment);
+            comments[0] = commentService.getCommentById(ArgumentMatchers.anyLong());
         });
+        Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(ArgumentMatchers.anyLong());
     }
 
@@ -173,10 +175,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getAuthorByCommentId(ArgumentMatchers.anyLong());
+        User[] users = new User[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            User user = commentService.getAuthorByCommentId(ArgumentMatchers.anyLong());
-            Assert.assertNull("Проверка возвращаемого объекта", user);
+            users[0] = commentService.getAuthorByCommentId(ArgumentMatchers.anyLong());
         });
+        Assert.assertNull("Проверка возвращаемого объекта", users[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getAuthorByCommentId(ArgumentMatchers.anyLong());
     }
 
@@ -224,10 +227,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getAllCommentsByTopicId(ArgumentMatchers.anyLong());
+        List<?>[] lists = new List[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            List<Comment> comments = commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong());
-            Assert.assertNull("Проверка возвращаемого объекта", comments);
+            lists[0] = commentService.getAllCommentsByTopicId(ArgumentMatchers.anyLong());
         });
+        Assert.assertNull("Проверка возвращаемого объекта", lists[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getAllCommentsByTopicId(ArgumentMatchers.anyLong());
     }
 
@@ -282,10 +286,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getCommentById(1L);
+        Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            Comment comment = commentService.putLikeToComment(1L, new User());
-            Assert.assertNull("Проверка возвращаемого объекта", comment);
+            comments[0] = commentService.putLikeToComment(1L, new User());
         });
+        Assert.assertNull("Проверка возвращаемого объекта", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(1L);
     }
 
@@ -340,10 +345,11 @@ class CommentServiceImplTest {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .getCommentById(1L);
+        Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            Comment comment = commentService.putDislikeToComment(1L, new User());
-            Assert.assertNull("Проверка возвращаемого объекта", comment);
+            comments[0]= commentService.putDislikeToComment(1L, new User());
         });
+        Assert.assertNull("Проверка возвращаемого объекта", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(1L);
     }
 
