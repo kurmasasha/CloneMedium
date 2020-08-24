@@ -350,7 +350,7 @@ public class UserServiceImpl implements UserService {
         try {
             List<User> subscribers = userDAO.getAllSubscribersOfAuthor(author);
             for (User subscriber : subscribers) {
-                notificationDao.addNotification(new Notification(title, text, subscriber));
+                notificationDao.addNotification(new Notification(title, text, subscriber, false));
                 log.debug("IN notifyAllSubscribersOfAuthor notification for {} is added", subscriber.getUsername());
             }
             return true;

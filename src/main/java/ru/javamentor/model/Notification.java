@@ -39,9 +39,14 @@ public class Notification {
     @JoinColumn
     private User user;
 
-    public Notification(String title, String text, User user) {
+
+    @Column(name = "is_read")
+    boolean readBy;
+
+    public Notification(String title, String text, User user, boolean readBy) {
         this.title = title;
         this.text = text;
         this.user = user;
+        this.readBy = readBy;
     }
 }

@@ -73,5 +73,7 @@ public interface NotificationService {
      */
     List<NotificationDto> getNotificationDtoListByNotifList(List<Notification> notifList);
 
+    NotificationDto getNotificationDto(Notification notification);
+
     boolean isExist(Long notifId);
 }

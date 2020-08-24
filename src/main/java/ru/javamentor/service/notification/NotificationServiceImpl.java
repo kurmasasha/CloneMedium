@@ -2,14 +2,18 @@ package ru.javamentor.service.notification;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.notification.NotificationDao;
 import ru.javamentor.dto.NotificationDto;
 import ru.javamentor.dto.TopicDto;
+import ru.javamentor.model.Comment;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
+import ru.javamentor.model.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -20,6 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
@@ -123,7 +128,6 @@ public class NotificationServiceImpl implements NotificationService {
      * @param notification - объект добавляемого уведомления
      * @return boolean - удалось добавить уведомление или нет
      */
-    @Transactional
     @Override
     public boolean addNotification(Notification notification) {
         if (notification != null) {
@@ -166,6 +170,17 @@ public class NotificationServiceImpl implements NotificationService {
         List<NotificationDto> notificationDtoList = new ArrayList<>();
         notifList.forEach(notification -> notificationDtoList.add(new NotificationDto(notification)));
         return notificationDtoList;
+    }
+
+    /**
+     * Метод получения NotificationsDto
+     *
+     * @param notification - нотификация
+     * @return - Notification DTO
+     */
+    @Override
+    public NotificationDto getNotificationDto(Notification notification) {
+        return new NotificationDto(notificationDao.getOne(notification.getId()));
     }
 
     @Override

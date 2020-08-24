@@ -6,17 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.dto.NotificationDto;
+import ru.javamentor.model.Comment;
+import ru.javamentor.model.Notification;
 import ru.javamentor.model.User;
 import ru.javamentor.service.notification.NotificationService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.user.UserService;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api")
@@ -24,11 +23,13 @@ public class NotificationRestController {
 
     private final NotificationService notificationService;
     private final UserService userService;
+    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public NotificationRestController(NotificationService notificationService, UserService userService) {
+    public NotificationRestController(NotificationService notificationService, UserService userService, WsNotificationService wsNotificationService) {
         this.notificationService = notificationService;
         this.userService = userService;
+        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -44,6 +45,19 @@ public class NotificationRestController {
             return new ResponseEntity<>(notificationService.getNotificationDtoListByNotifList(notificationService.getAllNotesById(user.getId())), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(notificationService.getNotificationDtoListByNotifList(notificationService.getAllNotesById(user.getId())), HttpStatus.OK);
+        }
+    }
+    @PostMapping("/user/notification/update")
+    public ResponseEntity<String> updateComment(@RequestBody NotificationDto notification) {
+        Notification currentNotification = notificationService.getById(notification.getId());
+        currentNotification.setId(notification.getId());
+        currentNotification.setTitle(notification.getTitle());
+        currentNotification.setText(notification.getText());
+        currentNotification.setReadBy(true);
+        if (notificationService.updateNotification(currentNotification)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("You can't update the comment because it doesn't exists.", HttpStatus.BAD_REQUEST);
         }
     }
 }

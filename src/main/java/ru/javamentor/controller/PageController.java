@@ -1,8 +1,6 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +13,7 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
@@ -24,8 +23,6 @@ import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -44,9 +41,10 @@ public class PageController {
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
+    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService, WsNotificationService wsNotificationService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
@@ -54,6 +52,7 @@ public class PageController {
         this.validatorFormEditUser = validatorFormEditUser;
         this.passwordRecoveryTokenService = passwordRecoveryTokenService;
         this.roleService = roleService;
+        this.wsNotificationService = wsNotificationService;
     }
 
     /**

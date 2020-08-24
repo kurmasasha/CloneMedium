@@ -7,13 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.dto.NotificationDto;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.User;
 import ru.javamentor.service.notification.NotificationService;
-import ru.javamentor.service.notification.NotificationServiceImpl;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.user.UserService;
 
 import java.util.List;
@@ -28,13 +27,15 @@ import java.util.List;
 @RequestMapping(value = "/notifications")
 public class NotificationsController {
 
-    private NotificationService service;
-    private UserService userService;
+    private final NotificationService service;
+    private final UserService userService;
+    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public NotificationsController(NotificationService service, UserService userService) {
+    public NotificationsController(NotificationService service, UserService userService, WsNotificationService wsNotificationService) {
         this.service = service;
         this.userService = userService;
+        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -56,17 +57,6 @@ public class NotificationsController {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userService.getUserByEmail(auth.getName());
-            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
-        }
-    }
-    @GetMapping("/test")
-    public ResponseEntity<List<NotificationDto>> test(@AuthenticationPrincipal User user, Model model){
-        if (user == null) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = userService.getUserByEmail(auth.getName());
-            model.addAttribute("list", service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())));
             return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
@@ -125,6 +115,15 @@ public class NotificationsController {
             return new ResponseEntity<>(HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/from-db", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> fromDb (@AuthenticationPrincipal User user) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.getUserByEmail(auth.getName());
+        wsNotificationService.getNotifications(currentUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
