@@ -19,15 +19,31 @@
     </div>
     <div class="card">
         <div class="card-body">
-          
+
             <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
-            <form action="/user" th:object="${user}" method="post">
+            <form action="/user" th:object="${user}" enctype="multipart/form-data" method="post">
 
 
                 <div class="modal-body">
                     <!-- скрытые поля. начало -->
                     <div hidden="true">
                         <input th:field="*{id}" id="id-for-edit"/>
+                    </div>
+                    <div class="form-group">
+                        <p id="error_image_message" style=""></p>
+                    </div>
+                    <div class="form-group">
+                        <div class="profile_block">
+                            <div class="circle">
+                                <!-- User Profile Image -->
+                                <img class="profile-pic"
+                                     th:src="*{img != 'no-img.png'} ? '/user-img/' + *{img} : ''">
+                            </div>
+                            <div class="p-image">
+                                <i class="fa fa-camera upload-button"></i>
+                                <input class="file-upload" name="file" type="file" accept="image/*"/>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -98,6 +114,7 @@
 <script src="/js/getAllThemes.js"></script>
 <script src="/js/getNotifCounterByPrincipal.js"></script>
 <script src="/js/header_events.js"></script>
+<script src="/js/uploadImage.js"></script>
 </body>
 
 </html>

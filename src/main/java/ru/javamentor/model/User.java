@@ -63,6 +63,9 @@ public class User implements UserDetails {
     private boolean isActivated;
 
     @Column
+    private String img;
+
+    @Column
     private boolean lockStatus=true;
 
     @JsonIgnore
