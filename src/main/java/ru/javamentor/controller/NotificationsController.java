@@ -116,14 +116,4 @@ public class NotificationsController {
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    @RequestMapping(value = "/from-db", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<?> fromDb (@AuthenticationPrincipal User user) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.getUserByEmail(auth.getName());
-        wsNotificationService.getNotifications(currentUser);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

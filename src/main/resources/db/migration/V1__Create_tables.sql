@@ -27,7 +27,6 @@ create table notifications (
     id bigint not null auto_increment,
     text varchar(2047) not null,
     title varchar(255) not null,
-    is_read bit not null ,
     user_id bigint, primary key (id));
 
 /* Таблица ролей */

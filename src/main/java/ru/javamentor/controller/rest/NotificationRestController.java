@@ -23,13 +23,11 @@ public class NotificationRestController {
 
     private final NotificationService notificationService;
     private final UserService userService;
-    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public NotificationRestController(NotificationService notificationService, UserService userService, WsNotificationService wsNotificationService) {
+    public NotificationRestController(NotificationService notificationService, UserService userService) {
         this.notificationService = notificationService;
         this.userService = userService;
-        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -53,7 +51,6 @@ public class NotificationRestController {
         currentNotification.setId(notification.getId());
         currentNotification.setTitle(notification.getTitle());
         currentNotification.setText(notification.getText());
-        currentNotification.setReadBy(true);
         if (notificationService.updateNotification(currentNotification)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface WsNotificationService {
     void sendNotification(User user, NotificationDto notification);
-    List<NotificationDto> getNotifications(User user);
-    void delNotification(Notification notification);
+    void getNotifications(User user);
 }

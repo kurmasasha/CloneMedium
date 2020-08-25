@@ -20,7 +20,6 @@ public class NotificationDto {
     private Long id;
     private String title;
     private String text;
-    private boolean readBy;
 
     public NotificationDto(Notification notification) {
         this.id = notification.getId();
@@ -30,6 +29,5 @@ public class NotificationDto {
         } else {
             this.text = notification.getText();
         }
-        this.readBy = notification.isReadBy();
     }
 }

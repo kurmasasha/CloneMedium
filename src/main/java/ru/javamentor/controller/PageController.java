@@ -41,10 +41,10 @@ public class PageController {
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
-    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService, WsNotificationService wsNotificationService) {
+    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService,
+                          ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
@@ -52,7 +52,6 @@ public class PageController {
         this.validatorFormEditUser = validatorFormEditUser;
         this.passwordRecoveryTokenService = passwordRecoveryTokenService;
         this.roleService = roleService;
-        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -145,7 +144,7 @@ public class PageController {
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
-    public String adminAllUsersPage(Model model,@AuthenticationPrincipal User auth) {
+    public String adminAllUsersPage(Model model, @AuthenticationPrincipal User auth) {
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("authUser", auth);
         return "admin-all_users";
@@ -250,6 +249,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
@@ -263,6 +263,7 @@ public class PageController {
 
     /**
      * метод для активации пользователя админом
+     *
      * @param enableId - уникальный id пользователя которого необходимо активировать
      * @return редирект на список пользователей
      */
@@ -277,6 +278,7 @@ public class PageController {
 
     /**
      * метод для деактивации пользователя админом
+     *
      * @param disableId - уникальный id пользователя которого необходимо отключить
      * @return редирект на список пользователей
      */

@@ -17,36 +17,42 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.user.UserService;
 
 import java.util.List;
-
+/**
+ * Реализация интерфейса WsNotificationService
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
 @Component
 public class WsNotificationServiceImpl implements WsNotificationService {
 
 
     private SimpMessagingTemplate messagingTemplate;
-    private final UserService userService;
     private final NotificationService notificationService;
 
     @Autowired
     public WsNotificationServiceImpl(SimpMessagingTemplate messagingTemplate, UserService userService, NotificationService notificationService) {
         this.messagingTemplate = messagingTemplate;
-        this.userService = userService;
         this.notificationService = notificationService;
     }
 
-    @Override
-    public void delNotification(Notification notification) {
-    }
-
+    /**
+     * метод для отправки уведомления отдельному юзера по WebSocket
+     *
+     */
     @Override
     public void sendNotification(User user, NotificationDto notification) {
         messagingTemplate.convertAndSendToUser(user.getUsername(),"/queue/notify", notification);
     }
 
+    /**
+     * метод для получения уведомлений отдельного юзера по WebSocket
+     *
+     */
     @Override
-    public List<NotificationDto> getNotifications(User user) {
+    public void getNotifications(User user) {
         messagingTemplate.convertAndSendToUser( user.getUsername(),
                 "/queue/notify",
                 notificationService.getNotificationDtoListByNotifList(notificationService.getAllNotesById(user.getId())));
-        return notificationService.getNotificationDtoListByNotifList(notificationService.getAllNotesById(user.getId()));
     }
 }
