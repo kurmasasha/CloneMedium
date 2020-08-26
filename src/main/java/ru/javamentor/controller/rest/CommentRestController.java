@@ -31,8 +31,11 @@ public class CommentRestController {
     private final NotificationService notificationService;
 
     @Autowired
-    public CommentRestController(UserService userService, CommentService commentService, TopicService topicService,
-                                 WsNotificationService wsNotificationService, NotificationService notificationService) {
+    public CommentRestController(UserService userService, 
+                                 CommentService commentService, 
+                                 TopicService topicService,
+                                 WsNotificationService wsNotificationService, 
+                                 NotificationService notificationService) {
         this.userService = userService;
         this.commentService = commentService;
         this.topicService = topicService;
