@@ -1,11 +1,13 @@
 package ru.javamentor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.javamentor.util.CustomAuthorityDeserializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -98,6 +100,7 @@ public class User implements UserDetails {
 
 
     @Override
+    @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(getRole());

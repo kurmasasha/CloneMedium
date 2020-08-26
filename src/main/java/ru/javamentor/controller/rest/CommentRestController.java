@@ -48,6 +48,16 @@ public class CommentRestController {
         return new ResponseEntity<>(commentService.getAllCommentsByTopicId(topicId), HttpStatus.OK);
     }
 
+    @GetMapping("/user/comment/{id}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
+        Comment comment = commentService.getCommentById(id);
+        if (comment == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(comment,HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/user/comment/add")
     public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);
@@ -88,7 +98,7 @@ public class CommentRestController {
         }
     }
 
-    @PostMapping("/user/comment/update")
+    @PutMapping("/user/comment/update")
     public ResponseEntity<String> updateComment(@RequestBody Comment comment, @AuthenticationPrincipal User user) {
         if (commentService.updateComment(comment, user)) {
             return new ResponseEntity<>(HttpStatus.OK);
