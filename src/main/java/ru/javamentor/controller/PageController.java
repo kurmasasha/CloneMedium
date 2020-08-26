@@ -47,13 +47,6 @@ public class PageController {
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
- public PageController(UserService userService, 
-                          ThemeService themeService, 
-                          TopicService topicService, 
-                          CommentService commentService,
-                          ValidatorFormEditUser validatorFormEditUser, 
-                          RoleService roleService, 
-=======
     public PageController(UserService userService,
                           ThemeService themeService,
                           TopicService topicService,
