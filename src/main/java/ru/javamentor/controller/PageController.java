@@ -19,6 +19,7 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
@@ -46,12 +47,19 @@ public class PageController {
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
+ public PageController(UserService userService, 
+                          ThemeService themeService, 
+                          TopicService topicService, 
+                          CommentService commentService,
+                          ValidatorFormEditUser validatorFormEditUser, 
+                          RoleService roleService, 
+=======
     public PageController(UserService userService,
                           ThemeService themeService,
                           TopicService topicService,
                           CommentService commentService,
                           ValidatorFormEditUser validatorFormEditUser,
-                          PasswordRecoveryTokenService passwordRecoveryTokenService) {
+                       PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
@@ -151,7 +159,7 @@ public class PageController {
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
-    public String adminAllUsersPage(Model model,@AuthenticationPrincipal User auth) {
+    public String adminAllUsersPage(Model model, @AuthenticationPrincipal User auth) {
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("authUser", auth);
         return "admin-all_users";
@@ -256,6 +264,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
@@ -269,6 +278,7 @@ public class PageController {
 
     /**
      * метод для активации пользователя админом
+     *
      * @param enableId - уникальный id пользователя которого необходимо активировать
      * @return редирект на список пользователей
      */
@@ -283,6 +293,7 @@ public class PageController {
 
     /**
      * метод для деактивации пользователя админом
+     *
      * @param disableId - уникальный id пользователя которого необходимо отключить
      * @return редирект на список пользователей
      */

@@ -2,6 +2,7 @@
  * Обработчики событий на странице all_topics_page.html (/allTopics)
  */
 
+
 $(document).ready(function() {
 
     let topicContainer = $('#topics_container');
@@ -49,10 +50,10 @@ $(document).ready(function() {
                 })
             })
     });
-
+    // window.onload = fromDB();
     // имитация нотификации
-    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+    // window.onload = getNumberOfNotificationsOfUser();
+    // setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
 
 })
 

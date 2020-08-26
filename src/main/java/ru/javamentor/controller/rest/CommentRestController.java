@@ -9,9 +9,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.Comment;
+import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.notification.NotificationService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
 
@@ -24,12 +27,20 @@ public class CommentRestController {
     private final UserService userService;
     private final CommentService commentService;
     private final TopicService topicService;
+    private final WsNotificationService wsNotificationService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CommentRestController(UserService userService, CommentService commentService, TopicService topicService) {
+    public CommentRestController(UserService userService, 
+                                 CommentService commentService, 
+                                 TopicService topicService,
+                                 WsNotificationService wsNotificationService, 
+                                 NotificationService notificationService) {
         this.userService = userService;
         this.commentService = commentService;
         this.topicService = topicService;
+        this.wsNotificationService = wsNotificationService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/free-user/allCommentsOfTopic/{id}")
@@ -56,6 +67,14 @@ public class CommentRestController {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
+            for (User u : topic.getAuthors()) {
+                Notification notification = new Notification();
+                notification.setTitle("Новый комментарий");
+                notification.setText("Пользователь " + userService.getUserByEmail(auth.getName()) + " оставил новый комментарий в статье " + topic.getTitle() + " ");
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
@@ -63,6 +82,14 @@ public class CommentRestController {
             }
         } else {
             Comment newComment = commentService.addComment(comment, user, topic);
+            for (User u : topic.getAuthors()) {
+                Notification notification = new Notification();
+                notification.setTitle("Новый комментарий");
+                notification.setText("Пользователь " + user.getUsername() + " оставил новый комментарий в статье " + topic.getTitle() + " ");
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
@@ -88,6 +115,7 @@ public class CommentRestController {
             return new ResponseEntity<>("You can't delete the comment because it doesn't belong to you.", HttpStatus.BAD_REQUEST);
         }
     }
+
     @DeleteMapping("/admin/comment/delete/{id}")
     public ResponseEntity<String> deleteCommentByAdmin(@PathVariable Long id) {
         if (commentService.removeCommentById(id)) {
@@ -102,9 +130,21 @@ public class CommentRestController {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Comment comment = commentService.putLikeToComment(commentId, userService.getUserByEmail(auth.getName()));
+            Notification notification = new Notification();
+            notification.setTitle("Новое уведомление");
+            notification.setText("Пользователю " + userService.getUserByEmail(auth.getName()) + " понравился ваш комментарий " + comment.getText() + " ");
+            notification.setUser(userService.getUserByEmail(auth.getName()));
+            notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(userService.getUserByEmail(auth.getName()), notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             return new ResponseEntity<>(comment, HttpStatus.OK);
         }
         Comment comment = commentService.putLikeToComment(commentId, user);
+        Notification notification = new Notification();
+        notification.setTitle("Новое уведомление");
+        notification.setText("Пользователю " + user.getUsername() + " понравился ваш комментарий " + comment.getText() + " ");
+        notification.setUser(user);
+        notificationService.addNotification(notification);
+        wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
@@ -113,9 +153,21 @@ public class CommentRestController {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Comment comment = commentService.putDislikeToComment(commentId, userService.getUserByEmail(auth.getName()));
+            Notification notification = new Notification();
+            notification.setTitle("Новое уведомление");
+            notification.setText("Пользователю " + userService.getUserByEmail(auth.getName()) + " не понравился ваш комментарий " + comment.getText() + " ");
+            notification.setUser(userService.getUserByEmail(auth.getName()));
+            notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(userService.getUserByEmail(auth.getName()), notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             return new ResponseEntity<>(comment, HttpStatus.OK);
         }
         Comment comment = commentService.putDislikeToComment(commentId, user);
+        Notification notification = new Notification();
+        notification.setTitle("Новое уведомление");
+        notification.setText("Пользователю " + user.getUsername() + " не понравился ваш комментарий " + comment.getText() + " ");
+        notification.setUser(user);
+        notificationService.addNotification(notification);
+        wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 }
