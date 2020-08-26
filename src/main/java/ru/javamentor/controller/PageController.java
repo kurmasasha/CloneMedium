@@ -43,8 +43,13 @@ public class PageController {
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService,
-                          ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
+    public PageController(UserService userService, 
+                          ThemeService themeService, 
+                          TopicService topicService, 
+                          CommentService commentService,
+                          ValidatorFormEditUser validatorFormEditUser, 
+                          RoleService roleService, P
+                          asswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
