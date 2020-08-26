@@ -48,8 +48,8 @@ public class PageController {
                           TopicService topicService, 
                           CommentService commentService,
                           ValidatorFormEditUser validatorFormEditUser, 
-                          RoleService roleService, P
-                          asswordRecoveryTokenService passwordRecoveryTokenService) {
+                          RoleService roleService, 
+                          PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
