@@ -217,8 +217,10 @@
 
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
 <script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
-<script src="/js/getNotifCounterByPrincipal.js"></script>
 <script src="/js/addTopic.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>

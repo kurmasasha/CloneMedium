@@ -1,22 +1,26 @@
 package ru.javamentor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.javamentor.model.Comment;
-import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
-import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
@@ -24,8 +28,6 @@ import ru.javamentor.util.validation.ValidatorFormEditUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,21 +41,31 @@ public class PageController {
 
     private final UserService userService;
     private final ThemeService themeService;
-    private final RoleService roleService;
     public final TopicService topicService;
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
 
     @Autowired
-    public PageController(UserService userService, ThemeService themeService, TopicService topicService, CommentService commentService, ValidatorFormEditUser validatorFormEditUser, RoleService roleService, PasswordRecoveryTokenService passwordRecoveryTokenService) {
+ public PageController(UserService userService, 
+                          ThemeService themeService, 
+                          TopicService topicService, 
+                          CommentService commentService,
+                          ValidatorFormEditUser validatorFormEditUser, 
+                          RoleService roleService, 
+=======
+    public PageController(UserService userService,
+                          ThemeService themeService,
+                          TopicService topicService,
+                          CommentService commentService,
+                          ValidatorFormEditUser validatorFormEditUser,
+                       PasswordRecoveryTokenService passwordRecoveryTokenService) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
         this.passwordRecoveryTokenService = passwordRecoveryTokenService;
-        this.roleService = roleService;
     }
 
     /**
@@ -74,6 +86,7 @@ public class PageController {
         if (warning != null && !warning.equals("")) {
             flagWarning = true;
         }
+
         model.addAttribute("flagMes", flagMessage);
         model.addAttribute("flagWar", flagWarning);
         return "login";
@@ -146,7 +159,7 @@ public class PageController {
      * @return админскую страницу для отображения всех юзеров
      */
     @GetMapping("/admin/allUsers")
-    public String adminAllUsersPage(Model model,@AuthenticationPrincipal User auth) {
+    public String adminAllUsersPage(Model model, @AuthenticationPrincipal User auth) {
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("authUser", auth);
         return "admin-all_users";
@@ -251,6 +264,7 @@ public class PageController {
 
     /**
      * метод для страницы всех топиков по автору
+     *
      * @param authorId - id автора топиков
      * @return страницу для показа всех топиков
      */
@@ -264,6 +278,7 @@ public class PageController {
 
     /**
      * метод для активации пользователя админом
+     *
      * @param enableId - уникальный id пользователя которого необходимо активировать
      * @return редирект на список пользователей
      */
@@ -278,6 +293,7 @@ public class PageController {
 
     /**
      * метод для деактивации пользователя админом
+     *
      * @param disableId - уникальный id пользователя которого необходимо отключить
      * @return редирект на список пользователей
      */
