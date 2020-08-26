@@ -3,10 +3,11 @@ $('#comments_container').on('click', '.edit-comment', async function (e) {
     let comment = await fetch("/api/user/comment/" + id).then(function (response) {
         return response.json();
     });
-    $("#editCommentModalText").val(comment.text);
+
+    $("#editCommentModalText").val(comment.text.replace(/<br \/>/g,'\n'));
 
     $("#editCommentConfirm").one('click', function () {
-        let newText = $("#editCommentModalText").val();
+        let newText = $("#editCommentModalText").val().replace(/\n/g, '<br />');
         if (newText !== '') {
             comment.text = newText;
             return fetch('/api/user/comment/update', {
@@ -18,7 +19,7 @@ $('#comments_container').on('click', '.edit-comment', async function (e) {
             }).then(function (response) {
                 if (response.ok) {
                     $("#editCommentModal").modal("hide");
-                    $("#commentCardText-" + id).text(newText);
+                    $("#commentCardText-" + id).html(newText);
                     e.preventDefault();
                 }
             })
