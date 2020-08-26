@@ -227,3 +227,7 @@ body {
     text-align: center;
     color: red;
 }
+
+.modal-header {
+    border-bottom: 0px;
+}
