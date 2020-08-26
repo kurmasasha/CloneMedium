@@ -51,7 +51,13 @@ public class TopicRestControllers {
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator, WsNotificationService wsNotificationService) {
+    public TopicRestControllers(TopicService topicService, 
+                                UserService userService, 
+                                MailSender mailSender, 
+                                NotificationService notificationService, 
+                                LoaderImages loaderImages, 
+                                TopicValidator topicValidator, 
+                                WsNotificationService wsNotificationService) {
         this.topicService = topicService;
         this.userService = userService;
         this.mailSender = mailSender;
