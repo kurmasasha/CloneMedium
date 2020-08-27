@@ -14,6 +14,13 @@ import ru.javamentor.service.theme.ThemeServiceImpl;
 import java.util.ArrayList;
 import static org.mockito.Mockito.doThrow;
 
+/**
+ * Тесты для класса ThemeServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ThemeServiceTest {

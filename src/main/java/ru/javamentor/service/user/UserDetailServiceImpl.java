@@ -10,6 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.model.User;
 
+/**
+ * Реализация интерфейса UserDetailsService
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
 @Slf4j
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -21,6 +27,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         this.userDAO = userDAO;
     }
 
+    /**
+     * Метод находит сущность пользователя на основе имени пользователя
+     */
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

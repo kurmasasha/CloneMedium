@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
  */
 @Component
 public class ValidatorFormEditUser extends UserValidator {
+
+    /**
+     * Проверка на валидность юзера
+     */
     @Override
     public void validate(Object object, Errors errors) {
         User user = (User) object;

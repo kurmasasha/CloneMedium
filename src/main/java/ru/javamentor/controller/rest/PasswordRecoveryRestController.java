@@ -11,6 +11,13 @@ import ru.javamentor.model.User;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.user.UserService;
 
+/**
+ * Rest контроллер для восстановления пароля
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @RestController
 @RequestMapping("/api")
 public class PasswordRecoveryRestController {
@@ -24,6 +31,9 @@ public class PasswordRecoveryRestController {
         this.userService = userService;
     }
 
+    /**
+     * Метод для восстановления пароля юзера по email.
+     */
     @PostMapping("/free-user/recoveryPassword/getCode")
     public ResponseEntity<PasswordRecoveryToken> sendRecoveryToken(@RequestParam("email") String email) {
         User user = userService.getUserByEmail(email);
