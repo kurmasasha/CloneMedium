@@ -234,7 +234,7 @@ body {
 
 /*display off excess buttons in skedit */
 #cke_18, #cke_60,
-#cke_19, #cke_61
+#cke_19, #cke_61,
 #cke_20, #cke_62 {
     display: none;
 }
