@@ -12,8 +12,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Класс отвечающий за настройку десериализатора
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 public class CustomAuthorityDeserializer extends JsonDeserializer {
 
+    /**
+     * Метод по настройке десериализации
+     */
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();

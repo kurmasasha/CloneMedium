@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Класс для доступа к топикам из базы с помощью Hibernate
+ * Реализация интерфейса TopicDAO
  *
  * @version 1.0
  * @author Java Mentor
  */
+
 @Repository
 public class TopicDAOImpl implements TopicDAO {
 

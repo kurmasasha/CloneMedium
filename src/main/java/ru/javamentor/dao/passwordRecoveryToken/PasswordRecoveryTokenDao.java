@@ -5,11 +5,12 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import java.util.List;
 
 /**
- * Класс для доступа к ключам восстанволения пароля
+ * Интерфейс для доступа к ключам восстанволения пароля
  *
  * @author Java Mentor
  * @version 1.0
  */
+
 public interface PasswordRecoveryTokenDao {
     /**
      * метод для получения всех токенов

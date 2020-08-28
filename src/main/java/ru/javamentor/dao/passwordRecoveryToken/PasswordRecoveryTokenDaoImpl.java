@@ -7,6 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * Реализация интерфейса PasswordRecoveryTokenDao
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Repository
 public class PasswordRecoveryTokenDaoImpl implements PasswordRecoveryTokenDao {
 
