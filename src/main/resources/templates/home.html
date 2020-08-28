@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="/css/color_moderated.css">
     <!-- set glyphicon's icons-->
     <link rel="stylesheet" href="css/font-glyphicons.css">
-
+    <!-- added Scedit library-->
+    <script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
     <title>Home</title>
 </head>
 <body>
@@ -54,7 +55,7 @@
 
                                 <div class="form-group">
                                     <label for="editTopicContent" class="col-form-label">Содержание</label>
-                                    <textarea class="form-control" id="editTopicContent"  name="content" th:inline="text">[[${topic.content}]]></textarea>
+                                    <textarea class="form-control" id="editTopicContent"  name="content" th:inline="text">[[${topic.content}]]</textarea>
                                 </div>
 
                                 <div class="modal-footer justify-content-center">
@@ -196,7 +197,9 @@
     </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------->
-
+<div id="editor">
+    <p>This is some sample content.</p>
+</div>
 <!------------------------------------------------ Модальное окно ----------------------------------------------------->
 <div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -226,5 +229,6 @@
 <script src="/js/parseText.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
+<script src="/js/ckeditor/replaceTextArea.js"></script>
 </body>
 </html>
