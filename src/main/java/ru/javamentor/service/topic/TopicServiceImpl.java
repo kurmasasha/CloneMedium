@@ -72,7 +72,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic getTopicById(Long id) {
         try {
-            var result = topicDAO.getTopicById(id);
+            Topic result = topicDAO.getTopicById(id);
             if (result == null) {
                 log.debug("IN getTopicById - topic: not found by id: {}", id);
             } else {
@@ -113,7 +113,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic getTopicByTitle(String title) {
         try {
-            var result = topicDAO.getTopicByTitle(title);
+            Topic result = topicDAO.getTopicByTitle(title);
             log.debug("IN getTopicByTitle - topic.id: {} found by title: {}", result.getId(), title);
             return result;
         } catch (Exception e) {
