@@ -14,6 +14,7 @@ let socket = new SockJS('/ws');
             con.append(counter);
         }
     }
+
     stompClient.connect({}, function (frame) {
         fetch(`/api/user/MyNotifsNbr`)
             .then(response => response.json())
@@ -23,9 +24,25 @@ let socket = new SockJS('/ws');
             })
     stompClient.subscribe('/user/queue/notify', function (notification) {
         // Call the notify function when receive a notification
-        let data = JSON.parse(notification.body);
+        let data = JSON.parse(notification.body); // notification data
         if (notification) {
             bell(con,counter+=1);
-        }
+
+            //заполняем div id = drop_note данными
+            $('#drop_note').append('<a class="dropdown-item" href="#">'
+                + data.title + '</a>') //" " + data.text +
+
+                /*ограничиваем текст элемента <a сlass = dropdown-item> 20 символами,
+                  если символов более 20 , режется до 20 , и прибавляется "..."
+                */
+            let elem = $('.dropdown-item')
+            for(var i = 0; i < elem.length; i++ ) {
+                if (elem[i].innerText.length > 20) {
+                    elem[i].innerText = elem[i].innerText.slice(0, 20) + "...";
+                }
+            }
+
+         }
     });
 });
+
