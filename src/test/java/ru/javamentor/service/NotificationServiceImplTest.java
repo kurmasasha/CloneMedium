@@ -17,7 +17,10 @@ import javax.persistence.TransactionRequiredException;
 import java.util.ArrayList;
 
 /**
- * JUnit-тестирование методов класса NotificationServiceImpl
+ * Тесты для класса NotificationServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
 
 @RunWith(SpringRunner.class)

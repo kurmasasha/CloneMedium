@@ -240,6 +240,11 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    /**
+     * Метод для првоерки на установление соответствия автора комментарию.
+     * @param userId -  id юзера
+     * @param commentId - id комментария
+     */
     @Override
     public boolean isAuthorOfComment(Long userId, Long commentId) {
         try {

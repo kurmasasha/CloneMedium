@@ -24,6 +24,9 @@ public class ThemeRestController {
         this.themeService = themeService;
     }
 
+    /**
+     * Метод для добавления темы.
+     */
     @PostMapping("/admin/addTheme")
     public ResponseEntity<Theme> addTheme(@RequestParam String name) {
         Theme theme = new Theme(name);
@@ -34,6 +37,9 @@ public class ThemeRestController {
         }
     }
 
+    /**
+     * Метод для удаления темы.
+     */
     @DeleteMapping("/admin/deleteTheme")
     public ResponseEntity<String> deleteTheme(@RequestParam(name = "id") Long id) {
         if (themeService.deleteTheme(id)) {

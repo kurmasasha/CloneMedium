@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.javamentor.model.Notification;
 
-/**hashtags
+/**
  * Класс представляющий объект DTO нотификации
  *
  * @version 1.0
- * @author Ilya Krasavin
+ * @author Java Mentor
  */
 
 @Data

@@ -8,6 +8,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Класс конфигураций mvc
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     @Value("${upload.topic.path}")

@@ -73,6 +73,11 @@ public interface NotificationService {
      */
     List<NotificationDto> getNotificationDtoListByNotifList(List<Notification> notifList);
 
+    /**
+     * Метод получения NotificationDto из Notification
+     * @param notification - обьект Notification
+     * @return - NotificationDto
+     */
     NotificationDto getNotificationDto(Notification notification);
 
     boolean isExist(Long notifId);

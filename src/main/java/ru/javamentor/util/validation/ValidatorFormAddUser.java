@@ -14,7 +14,10 @@ import java.util.regex.Pattern;
  */
 @Component
 public class ValidatorFormAddUser extends UserValidator {
-    // расширяем базовый валидатор пароля
+
+    /**
+     * Проверка на валидность по паролю
+     */
     @Override
     protected void validPassword(User user, Errors errors) {
         super.validPassword(user, errors);
@@ -23,6 +26,9 @@ public class ValidatorFormAddUser extends UserValidator {
         }
     }
 
+    /**
+     * Проверка на валидность юзера
+     */
     @Override
     public void validate(Object object, Errors errors) {
         User user = (User) object;

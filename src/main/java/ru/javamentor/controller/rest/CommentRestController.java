@@ -20,6 +20,13 @@ import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 
+/**
+ * Rest контроллер для комментариев
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @RestController
 @RequestMapping("/api")
 public class CommentRestController {
@@ -43,11 +50,17 @@ public class CommentRestController {
         this.notificationService = notificationService;
     }
 
+    /**
+     *  Метод получение списка комментариев топика.
+     */
     @GetMapping("/free-user/allCommentsOfTopic/{id}")
     public ResponseEntity<List<Comment>> getAllUsersByTopicId(@PathVariable(value = "id") Long topicId) {
         return new ResponseEntity<>(commentService.getAllCommentsByTopicId(topicId), HttpStatus.OK);
     }
 
+    /**
+     *  Метод получение комментария по id.
+     */
     @GetMapping("/user/comment/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
         Comment comment = commentService.getCommentById(id);
@@ -58,6 +71,9 @@ public class CommentRestController {
         }
     }
 
+    /**
+     *  Метод добавление комментария.
+     */
     @PostMapping("/user/comment/add")
     public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);
@@ -98,6 +114,9 @@ public class CommentRestController {
         }
     }
 
+    /**
+     *  Метод изменения комментария.
+     */
     @PutMapping("/user/comment/update")
     public ResponseEntity<String> updateComment(@RequestBody Comment comment, @AuthenticationPrincipal User user) {
         if (commentService.updateComment(comment, user)) {
@@ -107,6 +126,9 @@ public class CommentRestController {
         }
     }
 
+    /**
+     *  Метод удаления комментария юзером по id.
+     */
     @DeleteMapping("/user/comment/delete/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long id) {
         if (commentService.removeCommentById(id)) {
@@ -116,6 +138,9 @@ public class CommentRestController {
         }
     }
 
+    /**
+     *  Метод удаления комментария админом по id.
+     */
     @DeleteMapping("/admin/comment/delete/{id}")
     public ResponseEntity<String> deleteCommentByAdmin(@PathVariable Long id) {
         if (commentService.removeCommentById(id)) {
@@ -125,6 +150,9 @@ public class CommentRestController {
         }
     }
 
+    /**
+     *  Метод добавление лайка на комментарий.
+     */
     @GetMapping("/comment/addLike/{commentId}")
     public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
         if (user == null) {
@@ -148,6 +176,9 @@ public class CommentRestController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
+    /**
+     *  Метод добавление дизлайка на комментарий.
+     */
     @GetMapping("/comment/addDislike/{commentId}")
     public ResponseEntity<Comment> putDislikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
         if (user == null) {

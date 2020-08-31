@@ -20,6 +20,13 @@ import ru.javamentor.service.role.RoleService;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Класс отвечающий за Odnoklassniki- авторизацию
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Configuration
 public class OdnoklassnikiConfig implements SocialConfig {
     private final RoleService roleService;
@@ -50,6 +57,10 @@ public class OdnoklassnikiConfig implements SocialConfig {
     private OAuth20Service service;
 
 
+    /**
+     Метод для сборки URL из clientId, clientSecret и callbackUrl приложения разработчика, которые отправляются в RestController
+     Поле OAuth20Service инициализируется один раз при первой авторизации
+     */
     public String getAuthorizationUrl() {
         if (this.service == null) {
             this.service = new ServiceBuilder(clientId)
@@ -63,10 +74,16 @@ public class OdnoklassnikiConfig implements SocialConfig {
                 .build();
     }
 
+    /**
+     * Метод для получения OAuth2AccessToken
+     */
     public OAuth2AccessToken toGetToken(String code) throws InterruptedException, ExecutionException, IOException {
         return service.getAccessToken(AccessTokenRequestParams.create(code).scope(customScope));
     }
 
+    /**
+     * Метод для создания нового пользователя с помошью OAuth2AccessToken
+     */
     public User toCreateUser(OAuth2AccessToken token) throws InterruptedException, ExecutionException, IOException {
         final OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL + "?application_key=" + publicKey);
         service.signRequest(token, request);

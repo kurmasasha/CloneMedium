@@ -28,10 +28,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * Тесты для класса CommentServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CommentServiceImplTest {

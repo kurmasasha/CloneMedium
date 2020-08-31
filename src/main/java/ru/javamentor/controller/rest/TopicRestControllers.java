@@ -187,7 +187,6 @@ public class TopicRestControllers {
     /**
      * метод для добавления топика
      *
-     * @param topicData - содержимое топика
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
