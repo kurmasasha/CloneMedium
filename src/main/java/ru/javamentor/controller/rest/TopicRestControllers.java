@@ -169,6 +169,7 @@ public class TopicRestControllers {
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
             notification.setUser(user);
             notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
