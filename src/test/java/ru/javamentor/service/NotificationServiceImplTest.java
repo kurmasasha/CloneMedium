@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JUnit-тестирование методов класса NotificationServiceImpl
+ * Тесты для класса NotificationServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
 
 @RunWith(SpringRunner.class)

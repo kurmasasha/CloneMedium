@@ -16,12 +16,14 @@ import ru.javamentor.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Реализация интерфейса NotificationService
  *
  * @version 1.0
  * @author Java Mentor
  */
+
 @Slf4j
 @Service
 @Transactional

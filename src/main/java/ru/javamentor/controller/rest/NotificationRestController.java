@@ -17,6 +17,13 @@ import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 
+/**
+ * Rest контроллер для уведомлений
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @RestController
 @RequestMapping("/api")
 public class NotificationRestController {
@@ -45,6 +52,10 @@ public class NotificationRestController {
             return new ResponseEntity<>(notificationService.getNotificationDtoListByNotifList(notificationService.getAllNotesById(user.getId())), HttpStatus.OK);
         }
     }
+
+    /**
+     *  Метод для изменения уведомления.
+     */
     @PostMapping("/user/notification/update")
     public ResponseEntity<String> updateComment(@RequestBody NotificationDto notification) {
         Notification currentNotification = notificationService.getById(notification.getId());

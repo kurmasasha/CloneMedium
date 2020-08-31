@@ -6,9 +6,16 @@ import ru.javamentor.model.User;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Интерфейс отвечающий за авторизацию пользователя
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 public interface SocialConfig {
 
-    /*
+    /**
         Метод для сборки URL из clientId, clientSecret и callbackUrl приложения разработчика, которые отправляются в RestController
         Поле OAuth20Service инициализируется один раз при первой авторизации
      */

@@ -23,10 +23,13 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
 
-
 /**
  * Тесты для класса PasswordRecoveryTokenServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class PasswordRecoveryTokenServiceImplTest {

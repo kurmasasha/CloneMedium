@@ -8,8 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
-//import org.springframework.security.core.GrantedAuthority;
-
 /**
  * Класс представляющий модель пользовательских ролей
  *

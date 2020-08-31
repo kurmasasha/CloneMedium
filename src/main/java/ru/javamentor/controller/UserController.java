@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Контроллер для юзера
+ *
+ * @author Java Mentor
+ * @version 1.0
+ */
+
 @Controller
 public class UserController {
 
@@ -45,6 +52,9 @@ public class UserController {
         this.loaderImages = loaderImages;
     }
 
+    /**
+     * Метод обрабатывающий юзера и возвращающий его страницу.
+     */
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
         User user = (User) ((Authentication) principal).getPrincipal();
@@ -59,6 +69,9 @@ public class UserController {
     }
 
     //TODO при неудачной валидации перенаправляет на адрес запроса
+    /**
+     * Метод изменяющий юзера.
+     */
     @PostMapping("/user")
     public String userUpdate(@ModelAttribute("user") User user,
                           @RequestParam(name = "themes", required = false) Set<Long> themesIds,

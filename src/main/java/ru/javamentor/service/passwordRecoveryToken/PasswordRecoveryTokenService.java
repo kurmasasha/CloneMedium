@@ -6,7 +6,7 @@ import ru.javamentor.model.User;
 import java.util.List;
 
 /**
- * Класс для сервиса ключей восстановления пароля
+ * Интерфейс для сервиса ключей восстановления пароля
  *
  * @author Java Mentor
  * @version 1.0

@@ -13,6 +13,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+/**
+ * Реализация интерфейса LoaderImages
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Component
 public class LoaderImagesImpl implements LoaderImages {
     private static final int IMG_WIDTH = 225;

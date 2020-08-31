@@ -6,6 +6,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Класс представляющий модель подписок
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Entity
 @NoArgsConstructor
 @Getter
