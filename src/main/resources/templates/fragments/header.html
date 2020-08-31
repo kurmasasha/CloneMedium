@@ -28,17 +28,24 @@
         <!--------------------------------------------------------------------------------------------------------->
         
         <!------------------------------------------------------- Колокольчик + счётчик уведомлений ------------------->
-
+        <div class="dropdown">
         <ul sec:authorize="isAuthenticated()" class="navbar-nav mr-auto d-flex">
             <li id="notification_bell" class="nav-item">
-                <a class="navbar-brand col-2 p-0" href="#">
+                <a class="navbar-brand col-2 p-0" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
                     <svg width="1em" height="2em" viewBox="0 0 16 16" id="notif_bell" class="bi bi-bell-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
                     </svg>
                     <span id="notif_counter" class="badge"> </span>
                 </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="drop_note">
+                        <!-- ws.js 31 строка -->
+                </div>
             </li>
         </ul>
+        </div>
+
         <!------------------------------------------------------------------------------------------------------------------------------------------------>
 
         <ul class="navbar-nav mr-auto">
@@ -63,3 +70,4 @@
 </nav>
 </body>
 </html>
+
