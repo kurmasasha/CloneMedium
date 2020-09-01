@@ -19,4 +19,6 @@ public interface LoaderImages {
      * Метод возвращает путь до картинки, который мы будем использовать в html
      */
     String upload(MultipartFile file, String uploadPath) throws IOException;
+
+    String fileToImage(MultipartFile file) throws IOException;
 }

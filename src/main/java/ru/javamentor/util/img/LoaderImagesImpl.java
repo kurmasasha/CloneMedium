@@ -1,7 +1,10 @@
 package ru.javamentor.util.img;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,7 +24,17 @@ import java.util.UUID;
 
 @Component
 public class LoaderImagesImpl implements LoaderImages {
+    private final TopicValidator topicValidator;
+
     private static final int IMG_WIDTH = 225;
+
+    @Value("${upload.topic.path}")
+    private String uploadPath;
+
+    @Autowired
+    public LoaderImagesImpl(TopicValidator topicValidator) {
+        this.topicValidator = topicValidator;
+    }
 
     /**
      * Если загрузка прошла удачно и не выпало исключение то,
@@ -34,6 +47,7 @@ public class LoaderImagesImpl implements LoaderImages {
         int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 
         BufferedImage resizeImagePng = resizeImage(originalImage, type);
+
         String uuidFile = UUID.randomUUID().toString();
         String imgName = uuidFile + "." + file.getOriginalFilename().split("\\.")[0] + "." + "png";
 
@@ -49,6 +63,22 @@ public class LoaderImagesImpl implements LoaderImages {
                 new File(filePath + "/" + imgName));
 
         return imgName;
+    }
+
+    @Override
+    public String fileToImage(MultipartFile file) throws IOException {
+        String imageName = "no-img.png";
+        boolean availableFile = (file != null && !file.getOriginalFilename().isEmpty());
+
+        if (availableFile) {
+            topicValidator.checkFile(file);
+
+            if (topicValidator.getError() == null) {
+                imageName = upload(file, uploadPath);
+            }
+        }
+
+        return imageName;
     }
 
     /**

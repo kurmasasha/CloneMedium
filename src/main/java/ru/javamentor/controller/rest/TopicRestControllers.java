@@ -29,8 +29,8 @@ import java.util.Set;
 /**
  * Rest контроллер для топиков
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @RestController
 @RequestMapping(value = {"/api"}, produces = "application/json")
@@ -47,16 +47,13 @@ public class TopicRestControllers {
     private final TopicValidator topicValidator;
     private final WsNotificationService wsNotificationService;
 
-    @Value("${upload.topic.path}")
-    private String uploadPath;
-
     @Autowired
-    public TopicRestControllers(TopicService topicService, 
-                                UserService userService, 
-                                MailSender mailSender, 
-                                NotificationService notificationService, 
-                                LoaderImages loaderImages, 
-                                TopicValidator topicValidator, 
+    public TopicRestControllers(TopicService topicService,
+                                UserService userService,
+                                MailSender mailSender,
+                                NotificationService notificationService,
+                                LoaderImages loaderImages,
+                                TopicValidator topicValidator,
                                 WsNotificationService wsNotificationService) {
         this.topicService = topicService;
         this.userService = userService;
@@ -169,7 +166,7 @@ public class TopicRestControllers {
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
             notification.setUser(user);
             notificationService.addNotification(notification);
-            wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -197,40 +194,41 @@ public class TopicRestControllers {
             @RequestParam("content") String content,
             @RequestParam("completed") boolean completed,
             @RequestParam(required = false) MultipartFile file,
-            Principal principal
-            ) throws Exception {
+            Principal principal) {
         String message = "Что то пошло не так! Попробуйте снова";
-        String resultFileName = "no-img.png";
+
         try {
             // проверка на пустоту title and content
             topicValidator.checkTitleAndContent(title, content);
             // если пользователь загрузил файл и валидные поля title, content загружаем картинку на сервер
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                topicValidator.checkFile(file);
-                if (topicValidator.getError() == null) {
-                    resultFileName = loaderImages.upload(file, uploadPath);
-                }
-            }
+            String resultFileName = loaderImages.fileToImage(file);
+
             if (topicValidator.getError() != null) {
                 return new ResponseEntity<>(topicValidator.getError(), HttpStatus.BAD_REQUEST);
             }
 
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
+
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
-            for (User user :
-                    topic.getAuthors()) {
+
+            for (User user : topic.getAuthors()) {
                 Notification notification = new Notification();
+
                 notification.setTitle("Модерация");
                 notification.setText("Ваша статья \"" + topic.getTitle() + "\" ожидает модерацию");
                 notification.setUser(user);
+
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+
+                wsNotificationService.sendNotification(user,
+                        notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
 
             if (topic != null) {
                 return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);
             }
+
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             // тут мы логируем исключение, а пользователю кинем сообщение
@@ -261,7 +259,7 @@ public class TopicRestControllers {
      */
     @DeleteMapping("/user/topic/delete/{topicId}")
     public ResponseEntity<String> deleteTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
-        if(user != null) {
+        if (user != null) {
             if (topicService.isAuthorOfTopic(user.getId(), topicId) || user.getRole().getAuthority().equals("ADMIN")) {
                 if (topicService.removeTopicById(topicId)) {
                     return new ResponseEntity<>(HttpStatus.OK);
@@ -293,7 +291,7 @@ public class TopicRestControllers {
      */
     @GetMapping("/free-user/get-all-topics-by-hashtag/{tag}")
     public ResponseEntity<List<TopicDto>> getAllTopicsByHashtag(@PathVariable String tag) {
-       // tag = "#" + tag;
+        // tag = "#" + tag;
         List<Topic> topics = topicService.getAllTopicsByHashtag(tag);
         return new ResponseEntity<>(topicService.getTopicDtoListByTopicList(topics), HttpStatus.OK);
     }
@@ -316,7 +314,7 @@ public class TopicRestControllers {
                 notification.setText("Ваша статья \"" + topic.getTitle() + "\" не прошла модерацию и удалена");
                 notification.setUser(user);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(user , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -327,7 +325,7 @@ public class TopicRestControllers {
     /**
      * метод для получения неотмодерированного топика по id админом
      *
-     * @param id  - id топика который необходимо получитьв ответе
+     * @param id - id топика который необходимо получитьв ответе
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/admin/topic/{id}")
@@ -340,33 +338,33 @@ public class TopicRestControllers {
      * Метод для добавления лайка
      *
      * @param topicId - id топика
-     * @param user - пользователь добавляющий лайк
+     * @param user    - пользователь добавляющий лайк
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/topic/addLike/{topicId}")
     public ResponseEntity<Topic> addLikeToTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
-        if(user == null) {
+        if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User userByEmail = userService.getUserByEmail(auth.getName());
             Topic topic = topicService.addLikeToTopic(topicId, userByEmail);
             Notification notification = new Notification();
             notification.setTitle("Новое уведомление");
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" понравилась пользователю " + auth.getName());
-            for (User u: topic.getAuthors()) {
+            for (User u : topic.getAuthors()) {
                 notification.setUser(u);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(topic, HttpStatus.OK);
-        }else {
+        } else {
             Topic topic = topicService.addLikeToTopic(topicId, user);
-            for (User u: topic.getAuthors()) {
+            for (User u : topic.getAuthors()) {
                 Notification notification = new Notification();
                 notification.setTitle("Новое уведомление");
                 notification.setText("Ваша статья \"" + topic.getTitle() + "\" понравилась пользователю " + user.getUsername());
                 notification.setUser(u);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
@@ -376,33 +374,33 @@ public class TopicRestControllers {
      * Метод для добавления дизлайка
      *
      * @param topicId - id топика
-     * @param user - пользователь добавляющий дизлайк
+     * @param user    - пользователь добавляющий дизлайк
      * @return ResponseEntity с необходимым топиком и ОК статус
      */
     @GetMapping("/topic/addDislike/{topicId}")
     public ResponseEntity<Topic> addDislikeToTopic(@PathVariable Long topicId, @AuthenticationPrincipal User user) {
-        if(user == null) {
+        if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User userByEmail = userService.getUserByEmail(auth.getName());
             Topic topic = topicService.addDislikeToTopic(topicId, userByEmail);
             Notification notification = new Notification();
             notification.setTitle("Новое уведомление");
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" не понравилась пользователю" + auth.getName());
-            for (User u: topic.getAuthors()) {
+            for (User u : topic.getAuthors()) {
                 notification.setUser(u);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(topic, HttpStatus.OK);
-        }else {
+        } else {
             Topic topic = topicService.addDislikeToTopic(topicId, user);
             Notification notification = new Notification();
             notification.setTitle("Новое уведомление");
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" не понравилась пользователю " + user.getUsername());
-            for (User u: topic.getAuthors()) {
+            for (User u : topic.getAuthors()) {
                 notification.setUser(u);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
