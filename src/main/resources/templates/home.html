@@ -42,7 +42,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/topic/update}" method="post" id="editForm">
+                            <form th:action="@{/topic/update}" method="post" id="editForm" enctype="multipart/form-data">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="editTopicId">Id</label>
                                     <input class="form-control" type="text" name="id" th:value="${topic.id}"
@@ -59,6 +59,15 @@
                                     <label for="editTopicContent" class="col-form-label">Содержание</label>
                                     <textarea class="form-control" name="content" th:inline="text"
                                               id="editTopicContent">[[${topic.content}]]</textarea>
+                                </div>
+
+<!--                                <div class= "p-image">-->
+<!--                                    <img th:if="${topic.img != 'no-img.png'}" th:src="'/topic-img/' + ${topic.img}"-->
+<!--                                         th:alt="'image of topic : ' + ${topic.title}">-->
+<!--                                </div>-->
+
+                                <div class="form-group">
+                                    <input class="form-control-file" name="file" type="file" id="editTopicFile">
                                 </div>
 
                                 <div class="modal-footer justify-content-center">

@@ -252,7 +252,7 @@ public class TopicRestControllers {
     }
 
     /**
-     * метод для уадления топика
+     * метод для удаления топика
      *
      * @param topicId - id топика который необходимо удалить
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае неудачи
