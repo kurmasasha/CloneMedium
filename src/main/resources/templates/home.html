@@ -31,7 +31,8 @@
         <th:block th:each="topic: ${topics}">
 
             <!-- Edit modal -->
-            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="editTopicForm" aria-hidden="true">
+            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="editTopicForm"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -41,20 +42,23 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/topic/update}" id="editForm" method="post">
+                            <form th:action="@{/topic/update}" method="post" id="editForm">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="editTopicId">Id</label>
-                                    <input class="form-control" type="text" id="editTopicId" name="id"  th:value="${topic.id}">
+                                    <input class="form-control" type="text" name="id" th:value="${topic.id}"
+                                           id="editTopicId">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="editTopicTitle" class="col-form-label">Заголовок</label>
-                                    <input class="form-control" type="text" id="editTopicTitle" name="title" th:value="${topic.title}">
+                                    <input class="form-control" type="text" name="title" th:value="${topic.title}"
+                                           id="editTopicTitle">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="editTopicContent" class="col-form-label">Содержание</label>
-                                    <textarea class="form-control" id="editTopicContent"  name="content" th:inline="text">[[${topic.content}]]</textarea>
+                                    <textarea class="form-control" name="content" th:inline="text"
+                                              id="editTopicContent">[[${topic.content}]]</textarea>
                                 </div>
 
                                 <div class="modal-footer justify-content-center">
@@ -68,11 +72,13 @@
             </div>
 
             <!-- Delete modal -->
-            <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm" aria-hidden="true">
+            <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteTopicForm">Вы уверены что хотите удалить данный топик?</h5>
+                            <h5 class="modal-title" id="deleteTopicForm">Вы уверены что хотите удалить данный
+                                топик?</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -81,7 +87,8 @@
                             <form th:action="@{/topic/delete}" id="deleteForm" method="post">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="deleteTopicId">Id</label>
-                                    <input class="form-control" type="text" id="deleteTopicId" name="id"  th:value="${topic.id}">
+                                    <input class="form-control" type="text" id="deleteTopicId" name="id"
+                                           th:value="${topic.id}">
                                 </div>
 
                                 <div class="modal-footer justify-content-center">
@@ -93,7 +100,7 @@
                     </div>
                 </div>
             </div>
-<!--------------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------------->
             <article class="topic topic_preview">
                 <header class="row topic_meta">
                     <div class="col-10">
@@ -105,26 +112,29 @@
                            + ${authIter.index < topic.getAuthors().size() - 1 ? ', ' : ''}">
                         </a>
                         </span>
-                            <span class="topic_time"
-                                  th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
+                        <span class="topic_time"
+                              th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
                         </span>
                     </div>
 
                     <div class="col">
                         <div class="dropdown">
-                            <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 2px 5px 0px 5px">
+                            <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="padding: 2px 5px 0px 5px">
                                 <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                             </button>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
                                 <!-- button edit topic -->
-                                <button type="button" class="dropdown-item" data-toggle="modal" th:data-target="'#edit'+${topic.id}">
+                                <button type="button" class="dropdown-item" data-toggle="modal"
+                                        th:data-target="'#edit'+${topic.id}">
                                     Редактировать
                                 </button>
 
                                 <!-- button delete topic-->
-                                <button type="button" class="dropdown-item" data-toggle="modal" th:data-target="'#delete'+${topic.id}">
+                                <button type="button" class="dropdown-item" data-toggle="modal"
+                                        th:data-target="'#delete'+${topic.id}">
                                     Удалить
                                 </button>
                             </div>
