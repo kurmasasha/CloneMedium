@@ -14,6 +14,13 @@ $(document).ready(function(){
      *
      */
     $(document).ready(container($('#notif_counter')));
+
+    /**
+     *  получаем все уведомления
+     *
+     */
+
+    $(document).ready(getAllNotifications());
     /**
      * Нажатие на кнопку поиска по хэштегу
      */
@@ -34,3 +41,4 @@ $(document).ready(function(){
         }
     });
 });
+
