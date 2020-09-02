@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +25,6 @@ import java.util.UUID;
 public class LoaderImagesImpl implements LoaderImages {
     private final TopicValidator topicValidator;
 
-    private static final int IMG_WIDTH = 225;
-
     @Value("${upload.topic.path}")
     private String uploadPath;
 
@@ -44,10 +41,6 @@ public class LoaderImagesImpl implements LoaderImages {
     public String upload(MultipartFile file, String uploadPath) throws IOException {
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
 
-        int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-
-        BufferedImage resizeImagePng = resizeImage(originalImage, type);
-
         String uuidFile = UUID.randomUUID().toString();
         String imgName = uuidFile + "." + file.getOriginalFilename().split("\\.")[0] + "." + "png";
 
@@ -59,7 +52,7 @@ public class LoaderImagesImpl implements LoaderImages {
             uploadDir.mkdirs();
         }
 
-        ImageIO.write(resizeImagePng, "png",
+        ImageIO.write(originalImage, "png",
                 new File(filePath + "/" + imgName));
 
         return imgName;
@@ -81,19 +74,4 @@ public class LoaderImagesImpl implements LoaderImages {
         return imageName;
     }
 
-    /**
-     * Изменение размера картинки, т.к. задается только ширина,
-     * то рассчитываем высоту
-     */
-    public BufferedImage resizeImage(BufferedImage originalImage, int type) {
-        float height = IMG_WIDTH / ((float) originalImage.getWidth() / originalImage.getHeight());
-
-        BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, (int) height, type);
-        Graphics2D g = resizedImage.createGraphics();
-
-        g.drawImage(originalImage, 0, 0, IMG_WIDTH, (int) height, null);
-        g.dispose();
-
-        return resizedImage;
-    }
 }
