@@ -408,4 +408,61 @@ public class TopicRestControllers {
         }
     }
 
+    /**
+     * метод для удаления автора у топика
+     *
+     * @param idTopic - id топика у которого необходимо удалить автора
+     * @param idAuthor - username автора топика которого необходимо удалить
+     * @return ResponseEntity со статусом ОК если удаление прошло успешно , иначе BAD REQUEST
+     */
+    @DeleteMapping("/topic/{idTopic}/author/{idAuthor}")
+    public ResponseEntity<String> deleteAuthorOfTopic(@PathVariable Long idTopic, @PathVariable Long idAuthor) {
+        Topic topic = topicService.getTopicById(idTopic);
+        Set<User> authors = topic.getAuthors();
+        User author = userService.getUserById(idAuthor);
+        if (authors.size() != 1) {
+            authors.remove(author);
+                Notification notification = new Notification();
+                notification.setTitle("Уведомление:");
+                notification.setText("Вы больше не являетесь соавтором статьи \"" + topic.getTitle() + "\"");
+                notification.setUser(author);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(author , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Cannot delete all authors", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * метод для добалвения автора к топику
+     *
+     * @param id - id топика к которому добавляем автора
+     * @param username - username автора которого добавляем
+     * @return ResponseEntity со статусом ОК если добавление прошло успешно , иначе BAD REQUEST
+     */
+    @PostMapping("/topic/{id}/author")
+    public ResponseEntity<String> addAuthorToTopic(@PathVariable Long id,
+                                                   @RequestParam(required = false, value = "username") String username) {
+        Topic topic = topicService.getTopicById(id);
+        Set<User> authors = topic.getAuthors();
+        User author = null;
+        try {
+            author = userService.getUserByUsername(username);
+        } catch (RuntimeException e) {
+        }
+        if (author != null && !authors.contains(author)) {
+            authors.add(author);
+            Notification notification = new Notification();
+            notification.setTitle("Уведомление:");
+            notification.setText("Вы назначены соавтором статьи \"" + topic.getTitle() + "\"");
+            notification.setUser(author);
+            notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(author , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            return new ResponseEntity<>("" + author.getId(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("This user is not exist", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
