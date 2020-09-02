@@ -8,8 +8,8 @@ import java.io.IOException;
 /**
  * Интерфейс для работы с изображением
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 
 @Component
@@ -20,5 +20,13 @@ public interface LoaderImages {
      */
     String upload(MultipartFile file, String uploadPath) throws IOException;
 
+    /**
+     * Метод проверяет загружаемый файл на соответствие и
+     * возвращает имя файла на сервере
+     *
+     * @param file - картинка
+     * @return - имя файла на сервере
+     * @throws IOException
+     */
     String fileToImage(MultipartFile file) throws IOException;
 }
