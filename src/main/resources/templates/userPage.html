@@ -6,6 +6,7 @@
     <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="webjars/bootstrap-multiselect/0.9.15/dist/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link href="/css/style.css" rel="stylesheet">
     <title>Форма редактирования пользователя</title>
 </head>
@@ -76,7 +77,7 @@
                         <select name="subscribes" id="subscribesFromDB" multiple="multiple">
                             <option th:each="notSubscribed : ${notSubscribedAuthors}" th:value="${notSubscribed}"
                                     th:text="${notSubscribed}" th:selected="${false}"></option>
-                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"
+                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"+
                                     th:text="${subscribe}" th:selected="${true}"></option>
                         </select>
                     </div>
@@ -86,6 +87,11 @@
                     <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="social-buttons">
+        <div class="social telegram">
+            <a href="https://t.me/clonemedium" target="_blank"><i class="fab fa-telegram-plane fa-2x"></i></a>
         </div>
     </div>
 </div>

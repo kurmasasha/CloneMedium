@@ -57,6 +57,9 @@ public class User implements UserDetails {
     private String matchingPassword;
 
     @Column
+    private String phoneNumber;
+
+    @Column
     private String activationCode;
 
     @Column
