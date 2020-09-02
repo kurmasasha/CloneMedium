@@ -61,10 +61,12 @@
                                               id="editTopicContent">[[${topic.content}]]</textarea>
                                 </div>
 
-<!--                                <div class= "p-image">-->
-<!--                                    <img th:if="${topic.img != 'no-img.png'}" th:src="'/topic-img/' + ${topic.img}"-->
-<!--                                         th:alt="'image of topic : ' + ${topic.title}">-->
-<!--                                </div>-->
+                                <div class= "p-image" th:if="${topic.img != 'no-img.png'}">
+                                    <input type="reset" value="&times;">
+                                    <br>
+                                    <img  th:src="'/topic-img/' + ${topic.img}"
+                                         th:alt="'image of topic : ' + ${topic.title}">
+                                </div>
 
                                 <div class="form-group">
                                     <input class="form-control-file" name="file" type="file" id="editTopicFile">
