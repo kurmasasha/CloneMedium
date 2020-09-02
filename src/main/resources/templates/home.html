@@ -171,7 +171,7 @@
                 </h6>
                 <div class="topic_body">
                     <div class="topic_text">
-                        <div th:if="${topic.img != 'no-img.png'}">
+                        <div th:if="${topic.img != 'no-img.png'}" id="topicImage">
                             <img th:src="'/topic-img/' + ${topic.img}" th:alt="'image of topic : ' + ${topic.title}">
                             <br>
                             <br>
