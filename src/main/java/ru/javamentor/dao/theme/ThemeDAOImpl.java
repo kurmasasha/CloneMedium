@@ -8,11 +8,21 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Реализация интерфейса ThemeDAO
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Repository
 public class ThemeDAOImpl implements ThemeDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Метод для получения листа тем.
+     */
     @Override
     public List<Theme> getAllThemes() {
         return entityManager.createQuery(
@@ -22,6 +32,9 @@ public class ThemeDAOImpl implements ThemeDAO {
                 .getResultList();
     }
 
+    /**
+     * Метод для добавления темы.
+     */
     @Override
     public boolean addTheme(Theme theme) {
         try {
@@ -32,6 +45,9 @@ public class ThemeDAOImpl implements ThemeDAO {
         }
     }
 
+    /**
+     * Метод для удаления темы.
+     */
     @Override
     public boolean deleteTheme(Long id) {
         try {
@@ -46,6 +62,9 @@ public class ThemeDAOImpl implements ThemeDAO {
         }
     }
 
+    /**
+     * Метод для получения списка тем по id сэта.
+     */
     @Override
     public List<Theme> getThemesByIds(Set<Long> idThemes) {
         return entityManager.createQuery(

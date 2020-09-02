@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Класс отвечающий за проверку на валидность даных пользователя в системе
+ * Класс отвечающий за проверку на валидность данных пользователя в системе
  *
  * @version 1.0
  * @author Java Mentor
@@ -26,14 +26,23 @@ public class UserValidator implements Validator {
     private Matcher matcher;
     private static final String EMAIL_PATTERN = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,}$";
 
+    /**
+     * Проверка на принадлежность к классу
+     */
     @Override
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
 
+    /**
+     * Проверка на валидность юзера
+     */
     @Override
     public void validate(Object o, Errors errors) {}
 
+    /**
+     * Проверка на валидность по email
+     */
     protected void validEmail(User user, Errors errors) {
         if (!user.getUsername().equals("")) {
             pattern = Pattern.compile(EMAIL_PATTERN);
@@ -48,6 +57,9 @@ public class UserValidator implements Validator {
         }
     }
 
+    /**
+     * Проверка на валидность по паролю
+     */
     protected void validPassword(User user, Errors errors) {
         if (!user.getPassword().equals("")) {
             if (!user.getPassword().equals(user.getMatchingPassword())) {
@@ -56,6 +68,9 @@ public class UserValidator implements Validator {
         }
     }
 
+    /**
+     * Проверка на валидность по имени
+     */
     protected void validFirstName(User user, Errors errors, Pattern pattern) {
         matcher = pattern.matcher(user.getFirstName());
         if (!user.getFirstName().equals("")) {
@@ -65,6 +80,9 @@ public class UserValidator implements Validator {
         }
     }
 
+    /**
+     * Проверка на валидность по фамилии
+     */
     protected void validLastName(User user, Errors errors, Pattern pattern) {
         matcher = pattern.matcher(user.getLastName());
         if (!user.getLastName().equals("")) {

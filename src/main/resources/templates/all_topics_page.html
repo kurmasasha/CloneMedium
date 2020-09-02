@@ -52,7 +52,8 @@
               <br>
               <br>
             </div>
-            <span th:utext="${topic.content}"></span>
+            <span th:id="topicContent-+${topic.getId()}" th:data-topic-content="${topic.getContent()}"
+                  class="topic_content"></span>
           </div>
         </div>
         <footer class="topic_footer">
@@ -114,13 +115,17 @@
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/js/all_topics_events.js"></script>
+<script src="/js/header_events.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/likedTopic.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
-<script sec:authorize="isAuthenticated()" src="/js/add-topic_events.js"></script>
-<script sec:authorize="isAuthenticated()" src="/js/getNotifCounterByPrincipal.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/all_topics_events.js"></script>
 </body>
 </html>

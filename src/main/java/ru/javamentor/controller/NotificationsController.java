@@ -3,13 +3,17 @@ package ru.javamentor.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.javamentor.dto.NotificationDto;
 import ru.javamentor.model.Notification;
-import ru.javamentor.service.notification.NotificationServiceImpl;
+import ru.javamentor.model.User;
+import ru.javamentor.service.notification.NotificationService;
+import ru.javamentor.service.notification.WsNotificationService;
+import ru.javamentor.service.user.UserService;
 
 import java.util.List;
 
@@ -23,11 +27,15 @@ import java.util.List;
 @RequestMapping(value = "/notifications")
 public class NotificationsController {
 
-    private NotificationServiceImpl service;
+    private final NotificationService service;
+    private final UserService userService;
+    private final WsNotificationService wsNotificationService;
 
     @Autowired
-    public NotificationsController(NotificationServiceImpl service) {
+    public NotificationsController(NotificationService service, UserService userService, WsNotificationService wsNotificationService) {
         this.service = service;
+        this.userService = userService;
+        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -35,20 +43,24 @@ public class NotificationsController {
      *
      * @return ResponseEntity, который содержит List уведомлений и статус ОК
      */
-    @GetMapping("/")
-    public ResponseEntity<List<Notification>> showNotifications() {
-        return new ResponseEntity<>(service.getAllNotes(), HttpStatus.OK);
+    @GetMapping("/all")
+    public ResponseEntity<List<NotificationDto>> showNotifications() {
+        return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotes()), HttpStatus.OK);
     }
-
     /**
-     * метод получения уведомления по уникальному ID
+     * метод получения всех уведомлений по аутентификации юзера
      *
-     * @param id - уникальный id уведомления
-     * @return ResponseEntity, который содержит увеломление и статус ОК
+     * @return ResponseEntity, который содержит List уведомлений и статус ОК
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Notification> showNotificationById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
+    @GetMapping("/")
+    public ResponseEntity<List<NotificationDto>> showNotificationsById(@AuthenticationPrincipal User user) {
+        if (user == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = userService.getUserByEmail(auth.getName());
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+        }
     }
 
     /**
@@ -104,5 +116,4 @@ public class NotificationsController {
         } else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 }

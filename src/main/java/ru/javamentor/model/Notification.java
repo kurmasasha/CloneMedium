@@ -39,6 +39,7 @@ public class Notification {
     @JoinColumn
     private User user;
 
+
     public Notification(String title, String text, User user) {
         this.title = title;
         this.text = text;

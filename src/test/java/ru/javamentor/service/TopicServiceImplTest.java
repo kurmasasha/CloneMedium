@@ -2,14 +2,19 @@ package ru.javamentor.service;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javamentor.dao.topic.TopicDAOImpl;
+import ru.javamentor.dao.user.UserDAO;
+import ru.javamentor.dto.TopicDto;
+import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.topic.TopicServiceImpl;
@@ -21,10 +26,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
- * JUnit-тестирование методов класса TopicServiceImpl
+ * Тесты для класса TopicServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TopicServiceImplTest extends Mockito {
@@ -35,13 +43,16 @@ public class TopicServiceImplTest extends Mockito {
     @MockBean
     TopicDAOImpl topicDAO;
 
+    @SpyBean
+    UserDAO userDAO;
+
     /**
      * Проверка метода добавления нового топика
      */
     @Test
     public void addTopic() {
-        Set<User>users = new HashSet<>();
-        Topic topic = topicService.addTopic("title", "content", true, "image.png",  users);
+        Set<User> users = new HashSet<>();
+        Topic topic = topicService.addTopic("title", "content", true, "image.png", users);
 
         //Проверка обращения к репозиторию
         Mockito.verify(topicDAO, Mockito.times(1)).addTopic(topic);
@@ -76,7 +87,7 @@ public class TopicServiceImplTest extends Mockito {
         //проверка возвращаемого значения при добавлении пустого топика
         Assert.assertNull(topicService.addTopic(topic.getTitle(), topic.getContent(), true, topic.getImg(), topic.getAuthors()));
 
-      //  Mockito.verify(topicDAO, Mockito.times(0)).addTopic(topic);
+        //  Mockito.verify(topicDAO, Mockito.times(0)).addTopic(topic);
     }
 
     /**
@@ -96,12 +107,12 @@ public class TopicServiceImplTest extends Mockito {
     }
 
     //Проверка на возвращаемые исключения при ошшибке
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void getTopicByIdFailTest() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(topicDAO)
                 .getTopicById(ArgumentMatchers.anyLong());
-        Assert.assertNull( topicService.getTopicById(ArgumentMatchers.anyLong()));
+        Assert.assertNull(topicService.getTopicById(ArgumentMatchers.anyLong()));
         Mockito.verify(topicDAO, Mockito.times(1)).getTopicById(ArgumentMatchers.anyLong());
     }
 
@@ -127,7 +138,7 @@ public class TopicServiceImplTest extends Mockito {
         Mockito.verify(topicDAO, Mockito.times(1)).getTotalListOfTopics();
     }
 
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void failGetTotalListOfTopics() {
         Mockito.doThrow(new TransactionRequiredException()).
                 when(topicDAO)
@@ -148,7 +159,7 @@ public class TopicServiceImplTest extends Mockito {
         Mockito.verify(topicDAO, Mockito.times(1)).getTopicByTitle(ArgumentMatchers.anyString());
     }
 
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void failTestGetTopicByTitle() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(topicDAO)
@@ -225,7 +236,7 @@ public class TopicServiceImplTest extends Mockito {
         Mockito.verify(topicDAO, Mockito.times(1)).getAllTopicsByUserId(ArgumentMatchers.anyLong());
     }
 
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void failTestGetAllTopicsByUserId() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(topicDAO)
@@ -333,7 +344,7 @@ public class TopicServiceImplTest extends Mockito {
         Mockito.verify(topicDAO, Mockito.times(1)).getModeratedTopics();
     }
 
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void failTestGetModeratedTopics() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(topicDAO)
@@ -364,7 +375,7 @@ public class TopicServiceImplTest extends Mockito {
         Mockito.verify(topicDAO, Mockito.times(2)).getNotModeratedTopics();
     }
 
-    @Test(expected = TransactionRequiredException.class)
+    @Test(expected = RuntimeException.class)
     public void failTestGetNotModeratedTopics() {
         Mockito.doThrow(new TransactionRequiredException())
                 .when(topicDAO)
@@ -420,7 +431,7 @@ public class TopicServiceImplTest extends Mockito {
                 count++;
             }
         }
-        Assert.assertEquals("Проверка на кол-во топиков, возвращаеиое методом", topicDAO.getNotModeratedTopicsCount(), count);
+        Assert.assertEquals("Проверка на кол-во топиков, возвращаемое методом", topicDAO.getNotModeratedTopicsCount(), count);
 
         Mockito.verify(topicDAO, Mockito.times(1)).getNotModeratedTopicsCount();
     }
@@ -438,8 +449,166 @@ public class TopicServiceImplTest extends Mockito {
                 count++;
             }
         }
-        Assert.assertNotEquals("Проверка на кол-во топиков, возвращаеиое методом", topicDAO.getNotModeratedTopicsCount(), count);
+        Assert.assertNotEquals("Проверка на кол-во топиков, возвращаемое методом", topicDAO.getNotModeratedTopicsCount(), count);
 
         Mockito.verify(topicDAO, Mockito.times(1)).getNotModeratedTopicsCount();
+    }
+
+    /**
+     * Проверка метода поиска топиков по темам
+     */
+    @Test
+    public void getModeratedTopicsByThemes() {
+        Set<Long> themesIds = new HashSet<>();
+        Mockito.doReturn(new ArrayList<>())
+                .when(topicDAO)
+                .getModeratedTopicsByTheme(themesIds);
+        List<Topic> result = topicDAO.getModeratedTopicsByTheme(themesIds);
+        Assert.assertNotNull("Проверка топиков, на возвращаемое значение", result);
+        Mockito.verify(topicDAO, Mockito.times(1)).getModeratedTopicsByTheme(themesIds);
+
+    }
+
+    @Test
+    public void failTestGetModeratedTopicsByThemes() {
+        Set<Long> themesIds = new HashSet<>();
+        Mockito.doThrow(new TransactionRequiredException())
+                .when(topicDAO)
+                .getModeratedTopicsByTheme(themesIds);
+        List<?>[] list = new List[1];
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            list[0] = topicDAO.getModeratedTopicsByTheme(themesIds);
+        });
+
+        Assert.assertNull("Проверка топиков, на возвращаемое значение", list[0]);
+        Mockito.verify(topicDAO, Mockito.times(1)).getModeratedTopicsByTheme(themesIds);
+
+    }
+
+    /**
+     * Проверка метода на добавление лайков
+     */
+    @Test
+    public void addLikeToTopic() {
+        User user = new User("firstName", "lastName", "username",
+                "password", new Role("ADMIN"));
+        user.setId(1L);
+        Topic topic3 = new Topic();
+        topic3.setId(1L);
+        topic3.setLikedUsers(new HashSet<>());
+        topic3.setDislikedUsers(new HashSet<>());
+        Mockito.doReturn(topic3)
+                .when(topicDAO)
+                .getTopicById(1L);
+        Mockito.doReturn(user)
+                .when(userDAO)
+                .getUserById(1L);
+        Mockito.doNothing()
+                .when(topicDAO)
+                .updateTopic(ArgumentMatchers.any(Topic.class));
+
+        Topic topic = topicService.addLikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество лайков", 1, (int) topic.getLikes());
+        Assert.assertTrue("Проверка лайка юзера на топике", topic.getLikedUsers().contains(user));
+
+        topic = topicService.addLikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество лайков", 0, (int) topic.getLikes());
+        Assert.assertFalse("Проверка лайка юзера на топике", topic.getLikedUsers().contains(user));
+
+        topic3.getDislikedUsers().add(user);
+        topic3.setDislikes(1);
+
+        topic = topicService.addLikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество лайков", 1, (int) topic.getLikes());
+        Assert.assertEquals("Проверка на количество дизлайков", 0, (int) topic.getDislikes());
+        Assert.assertTrue("Проверка лайка юзера на топике", topic.getLikedUsers().contains(user));
+        Assert.assertFalse("Проверка дизлайка юзера на топике", topic.getDislikedUsers().contains(user));
+
+    }
+
+    @Test
+    public void failTestAddLikeToTopic() {
+        Mockito.doThrow(new TransactionRequiredException())
+                .when(topicDAO)
+                .getTopicById(1L);
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            Topic topic = topicService.addLikeToTopic(1L, new User());
+            Assert.assertNull("Проверка возвращаемого объекта", topic);
+        });
+        Mockito.verify(topicDAO, Mockito.times(1)).getTopicById(1L);
+    }
+
+    /**
+     * Проверка метода на добавление дизлайков
+     */
+    @Test
+    public void addDislikeToTopic() {
+        User user = new User("firstName", "lastName", "username",
+                "password", new Role("ADMIN"));
+        user.setId(1L);
+        Topic topic3 = new Topic();
+        topic3.setId(1L);
+        topic3.setLikedUsers(new HashSet<>());
+        topic3.setDislikedUsers(new HashSet<>());
+        Mockito.doReturn(topic3)
+                .when(topicDAO)
+                .getTopicById(1L);
+        Mockito.doReturn(user)
+                .when(userDAO)
+                .getUserById(1L);
+        Mockito.doNothing()
+                .when(topicDAO)
+                .updateTopic(ArgumentMatchers.any(Topic.class));
+
+        Topic topic = topicService.addDislikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество дизлайков", 1, (int) topic.getDislikes());
+        Assert.assertTrue("Проверка дизлайка юзера на топике", topic.getDislikedUsers().contains(user));
+
+        topic = topicService.addDislikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество дизлайков", 0, (int) topic.getDislikes());
+        Assert.assertFalse("Проверка дизлайка юзера на топике", topic.getDislikedUsers().contains(user));
+
+        topic3.getLikedUsers().add(user);
+        topic3.setLikes(1);
+
+        topic = topicService.addDislikeToTopic(1L, user);
+
+        Assert.assertEquals("Проверка на количество дизлайков", 1, (int) topic.getDislikes());
+        Assert.assertEquals("Проверка на количество лайков", 0, (int) topic.getLikes());
+        Assert.assertTrue("Проверка дизлайка юзера на топике", topic.getDislikedUsers().contains(user));
+        Assert.assertFalse("Проверка лайка юзера на топике", topic.getLikedUsers().contains(user));
+
+    }
+
+    @Test
+    public void failTestAddDislikeToTopic() {
+        Mockito.doThrow(new TransactionRequiredException())
+                .when(topicDAO)
+                .getTopicById(1L);
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            Topic topic = topicService.addDislikeToTopic(1L, new User());
+            Assert.assertNull("Проверка возвращаемого объекта", topic);
+        });
+        Mockito.verify(topicDAO, Mockito.times(1)).getTopicById(1L);
+    }
+
+    /**
+     * Проверка метода получения списка TopicDto из списка Topic
+     */
+    @Test
+    public void getTopicDtoListByTopicList() {
+        List<Topic> topicList = new ArrayList<>();
+        Topic topic = new Topic("Топик","Топик");
+        topicList.add(topic);
+        List<TopicDto> topicDtoList = topicService.getTopicDtoListByTopicList(topicList);
+
+        Assert.assertNotNull("Проверка на null", topicDtoList);
+        Assert.assertEquals("Проверка на кол-во топиков",1,topicDtoList.size());
     }
 }

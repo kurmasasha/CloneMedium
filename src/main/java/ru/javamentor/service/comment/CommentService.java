@@ -89,6 +89,11 @@ public interface CommentService {
 
     Comment putDislikeToComment(Long commentId, User user);
 
+    /**
+     * Метод для првоерки на установление соответствия автора комментарию.
+     * @param userId -  id юзера
+     * @param commentId - id комментария
+     */
     boolean isAuthorOfComment(Long userId, Long commentId);
 
     boolean isExist(Long commentId);

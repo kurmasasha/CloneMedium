@@ -15,12 +15,12 @@ import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.mailSender.MailSender;
 import ru.javamentor.service.notification.NotificationService;
+import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
 import ru.javamentor.util.img.LoaderImages;
 import ru.javamentor.util.validation.topic.TopicValidator;
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -45,18 +45,26 @@ public class TopicRestControllers {
     private final NotificationService notificationService;
     private final LoaderImages loaderImages;
     private final TopicValidator topicValidator;
+    private final WsNotificationService wsNotificationService;
 
-    @Value("${upload.path}")
+    @Value("${upload.topic.path}")
     private String uploadPath;
 
     @Autowired
-    public TopicRestControllers(TopicService topicService, UserService userService, MailSender mailSender, NotificationService notificationService, LoaderImages loaderImages, TopicValidator topicValidator) {
+    public TopicRestControllers(TopicService topicService, 
+                                UserService userService, 
+                                MailSender mailSender, 
+                                NotificationService notificationService, 
+                                LoaderImages loaderImages, 
+                                TopicValidator topicValidator, 
+                                WsNotificationService wsNotificationService) {
         this.topicService = topicService;
         this.userService = userService;
         this.mailSender = mailSender;
         this.notificationService = notificationService;
         this.loaderImages = loaderImages;
         this.topicValidator = topicValidator;
+        this.wsNotificationService = wsNotificationService;
     }
 
     /**
@@ -161,6 +169,7 @@ public class TopicRestControllers {
             notification.setText("Ваша статья \"" + topic.getTitle() + "\" прошла модерацию и одобренна");
             notification.setUser(user);
             notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -179,7 +188,6 @@ public class TopicRestControllers {
     /**
      * метод для добавления топика
      *
-     * @param topicData - содержимое топика
      * @param principal - хранит инфо об авторизованном пользователе
      * @return ResponseEntity, который содержит добавленный топик и статус ОК либо BAD REQUEST в случае если топик пуст
      */
@@ -200,7 +208,7 @@ public class TopicRestControllers {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 topicValidator.checkFile(file);
                 if (topicValidator.getError() == null) {
-                    resultFileName = loaderImages.upload(file);
+                    resultFileName = loaderImages.upload(file, uploadPath);
                 }
             }
             if (topicValidator.getError() != null) {
@@ -210,6 +218,15 @@ public class TopicRestControllers {
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
+            for (User user :
+                    topic.getAuthors()) {
+                Notification notification = new Notification();
+                notification.setTitle("Модерация");
+                notification.setText("Ваша статья \"" + topic.getTitle() + "\" ожидает модерацию");
+                notification.setUser(user);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
 
             if (topic != null) {
                 return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);
@@ -291,7 +308,6 @@ public class TopicRestControllers {
     public ResponseEntity<String> deleteTopicByAdmin(@PathVariable Long id) {
         Topic topic = topicService.getTopicById(id);
         Set<User> users = topic.getAuthors();
-
         if (topicService.removeTopicById(id)) {
             for (User user :
                     users) {
@@ -300,6 +316,7 @@ public class TopicRestControllers {
                 notification.setText("Ваша статья \"" + topic.getTitle() + "\" не прошла модерацию и удалена");
                 notification.setUser(user);
                 notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(user , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -332,9 +349,25 @@ public class TopicRestControllers {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User userByEmail = userService.getUserByEmail(auth.getName());
             Topic topic = topicService.addLikeToTopic(topicId, userByEmail);
+            Notification notification = new Notification();
+            notification.setTitle("Новое уведомление");
+            notification.setText("Ваша статья \"" + topic.getTitle() + "\" понравилась пользователю " + auth.getName());
+            for (User u: topic.getAuthors()) {
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }else {
             Topic topic = topicService.addLikeToTopic(topicId, user);
+            for (User u: topic.getAuthors()) {
+                Notification notification = new Notification();
+                notification.setTitle("Новое уведомление");
+                notification.setText("Ваша статья \"" + topic.getTitle() + "\" понравилась пользователю " + user.getUsername());
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
     }
@@ -352,9 +385,25 @@ public class TopicRestControllers {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User userByEmail = userService.getUserByEmail(auth.getName());
             Topic topic = topicService.addDislikeToTopic(topicId, userByEmail);
+            Notification notification = new Notification();
+            notification.setTitle("Новое уведомление");
+            notification.setText("Ваша статья \"" + topic.getTitle() + "\" не понравилась пользователю" + auth.getName());
+            for (User u: topic.getAuthors()) {
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }else {
             Topic topic = topicService.addDislikeToTopic(topicId, user);
+            Notification notification = new Notification();
+            notification.setTitle("Новое уведомление");
+            notification.setText("Ваша статья \"" + topic.getTitle() + "\" не понравилась пользователю " + user.getUsername());
+            for (User u: topic.getAuthors()) {
+                notification.setUser(u);
+                notificationService.addNotification(notification);
+                wsNotificationService.sendNotification(u,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            }
             return new ResponseEntity<>(topic, HttpStatus.OK);
         }
     }

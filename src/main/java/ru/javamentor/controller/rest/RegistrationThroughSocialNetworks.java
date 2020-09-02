@@ -1,8 +1,6 @@
 package ru.javamentor.controller.rest;
 
-import com.github.scribejava.apis.vk.VKOAuth2AccessToken;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javamentor.config.FacebookConfig;
 import ru.javamentor.config.GoogleConfig;
+import ru.javamentor.config.OdnoklassnikiConfig;
 import ru.javamentor.config.VKontakteConfig;
 import ru.javamentor.model.User;
 import ru.javamentor.service.user.UserService;
@@ -35,6 +34,7 @@ public class RegistrationThroughSocialNetworks {
     private final VKontakteConfig vKontakteConfig;
     private final FacebookConfig facebookConfig;
     private final GoogleConfig googleConfig;
+    private final OdnoklassnikiConfig odnoklassnikiConfig;
 
     public UserService userService;
 
@@ -42,7 +42,9 @@ public class RegistrationThroughSocialNetworks {
     private OAuth2AccessToken token;
 
     @Autowired
-    public RegistrationThroughSocialNetworks(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, UserService userService, GoogleConfig googleConfig) {
+    public RegistrationThroughSocialNetworks(VKontakteConfig vKontakteConfig, FacebookConfig facebookConfig, UserService userService,
+                                             GoogleConfig googleConfig, OdnoklassnikiConfig odnoklassnikiConfig) {
+        this.odnoklassnikiConfig = odnoklassnikiConfig;
         this.vKontakteConfig = vKontakteConfig;
         this.facebookConfig = facebookConfig;
         this.googleConfig = googleConfig;
@@ -83,6 +85,18 @@ public class RegistrationThroughSocialNetworks {
     public ResponseEntity<Object> getCodeGoogle(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
         this.token = googleConfig.toGetToken(code);
         this.currentUser = googleConfig.toCreateUser(token);
+        return authorizationAfterInitialization();
+    }
+
+    /**
+     * метод для Ok-авторизации
+     *
+     * @param code - параметр запроса
+     */
+    @GetMapping("/returnCodeOdnoklassniki")
+    public ResponseEntity<Object> getCodeOk(@RequestParam String code) throws InterruptedException, ExecutionException, IOException, URISyntaxException {
+        this.token = odnoklassnikiConfig.toGetToken(code);
+        this.currentUser = odnoklassnikiConfig.toCreateUser(token);
         return authorizationAfterInitialization();
     }
 

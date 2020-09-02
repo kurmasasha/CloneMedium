@@ -16,6 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Реализация интерфейса PasswordRecoveryTokenService
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
+
 @Slf4j
 @Service
 public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenService {
@@ -155,6 +162,9 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
         }
     }
 
+    /**
+     * метод для отправки токена восстановления пароля.
+     */
     @Transactional
     @Override
     public void sendPasswordRecoveryToken(PasswordRecoveryToken passwordRecoveryToken) {
@@ -173,6 +183,9 @@ public class PasswordRecoveryTokenServiceImpl implements PasswordRecoveryTokenSe
         }
     }
 
+    /**
+     * метод для валидации токена восстановления пароля.
+     */
     @Override
     public boolean isValid(PasswordRecoveryToken passwordRecoveryToken) {
         return Duration.between(passwordRecoveryToken.getStartTime(), LocalDateTime.now()).toMinutes() < 20;

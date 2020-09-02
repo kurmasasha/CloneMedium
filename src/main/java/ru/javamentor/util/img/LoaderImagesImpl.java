@@ -13,19 +13,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-@Component
-public class LoaderImagesForTopic implements LoaderImages {
-    private static final int IMG_WIDTH = 225;
+/**
+ * Реализация интерфейса LoaderImages
+ *
+ * @version 1.0
+ * @author Java Mentor
+ */
 
-    @Value("${upload.path}")
-    private String uploadPath;
+@Component
+public class LoaderImagesImpl implements LoaderImages {
+    private static final int IMG_WIDTH = 225;
 
 
     /**
      * Если загрузка прошла удачно и не выпало исключение то, метод возвращает путь до картинки, который мы будем использовать в html
      */
     @Override
-    public String upload(MultipartFile file) throws IOException {
+    public String upload(MultipartFile file, String uploadPath) throws IOException {
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
         int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 

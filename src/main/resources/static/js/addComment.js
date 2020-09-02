@@ -14,7 +14,7 @@ document.getElementById('add_comment_button').onclick = function (e) {
         e.preventDefault();
     }
 
-    if(comment !== '') {
+    if(!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
         let data = {
             comment: comment,
             topicId: topicId,

@@ -10,14 +10,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javamentor.dao.notification.NotificationDaoImpl;
+import ru.javamentor.dto.NotificationDto;
 import ru.javamentor.model.Notification;
+import ru.javamentor.model.Theme;
 import ru.javamentor.service.notification.NotificationServiceImpl;
 
 import javax.persistence.TransactionRequiredException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * JUnit-тестирование методов класса NotificationServiceImpl
+ * Тесты для класса NotificationServiceImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
 
 @RunWith(SpringRunner.class)
@@ -170,5 +176,32 @@ public class NotificationServiceImplTest extends Mockito {
         Assert.assertFalse(notificationService.deleteNotification(notification));
 
         Mockito.verify(notificationsDao, Mockito.times(0)).addNotification(notification);
+    }
+
+    /**
+     * тест для проверки получения нотификации ДТО листа
+     */
+    @Test
+    public void getNotificationDtoListByNotifList() {
+        Mockito.doReturn(new ArrayList<Theme>())
+                .when(notificationService)
+                .getNotificationDtoListByNotifList(ArgumentMatchers.anyList());
+
+        Assert.assertNotNull("проверка на null", notificationService.getNotificationDtoListByNotifList(ArgumentMatchers.anyList()));
+        Mockito.verify(notificationService, Mockito.times(1)).getNotificationDtoListByNotifList(ArgumentMatchers.anyList());
+    }
+
+    /**
+     * тест для проверки получения объекта NotificationDto
+     */
+    @Test
+    public void getNotificationDto() {
+        Notification notification = new Notification();
+        Mockito.doReturn(new NotificationDto())
+                .when(notificationService)
+                .getNotificationDto(notification);
+
+        Assert.assertNotNull("проверка на null", notificationService.getNotificationDto(notification));
+        Mockito.verify(notificationService, Mockito.times(1)).getNotificationDto(notification);
     }
 }

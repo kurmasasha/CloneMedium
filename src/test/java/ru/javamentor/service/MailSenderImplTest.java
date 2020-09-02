@@ -18,7 +18,11 @@ import java.util.Objects;
 
 /**
  * Тесты для класса MailSenderImpl
+ *
+ * @version 1.0
+ * @author Java Mentor
  */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class MailSenderImplTest {

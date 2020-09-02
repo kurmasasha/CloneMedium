@@ -1,62 +1,6 @@
 body {
-    font-size: .875rem;
+    height: 100vh;
 }
-/* Параметры картинок боковой панели */
-.feather {
-    width: 16px;
-    height: 16px;
-    vertical-align: text-bottom;
-}
-
-/* Параметры боковой панели */
-.sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100; /* Behind the navbar */
-    padding: 48px 0 0; /* Height of navbar */
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-}
-
-/* Контейнер внутри боковой панели */
-.sidebar-sticky {
-    position: relative;
-    top: 0;
-    height: calc(100vh - 48px);
-    padding-top: .5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-/* Цветовая схема элементов боковой панели */
-.sidebar .nav-link {
-    font-weight: 500;
-    color: #333;
-}
-
-/* Картинки внутри элементов боковой панели */
-.sidebar .nav-link .feather {
-    margin-right: 4px;
-    color: #999;
-}
-
-/* Цвет выделенного элемента боковой панели */
-.sidebar .nav-link.active {
-    color: #007bff;
-}
-
-/* Прозрачность картинок при наведении мыши */
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-    color: inherit;
-}
-
-.container-fluid {
-    padding: 10px;
-    margin-top: 10px;
-}
-
 /* Уведомления, число над колокольчиком */
 .badge {
     position: absolute;
@@ -68,4 +12,218 @@ body {
     color: white;
     font-size: small;
     size: 15px;
+}
+#hashtag_input, #hashtag_home_button {
+    border-radius: 0;
+}
+.social a {
+    text-align: center;
+    width: 48px;
+    height: 48px;
+    float: left;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15), inset 0 0 50px rgba(0,0,0,0.1);
+    /*border-radius: 24px;*/
+    border-radius: 6px;
+    /*margin: 10px 10px 10px 0;*/
+    margin: 20px;
+    padding: 6px;
+    color: #000;
+    display: block;
+}
+.google-plus-g a:hover {background: #DD4B39; color: #fff;}
+.facebook-f a:hover {background: #3B5998; color: #fff;}
+.vk a:hover {background: #5D84AE; color: #fff;}
+.ok a:hover {background: rgb(237, 129, 43); color: #fff}
+.social-buttons {
+    display: inline-flex;
+}
+.card {
+    margin-top: 30px;
+    border: none;
+}
+#topics_container i.fa,
+#single_topic_container i.fa {
+    /*color: dodgerblue;*/
+    font-size: 1.4em;
+    padding: 5px;
+}
+.card-text-onTopic{
+    font-family:sans-serif;
+    font-size: 15px;
+    margin-left: -7px;
+}
+#single_topic_container i.fa:hover {
+    cursor: pointer;
+}
+#likeCounter, #dislikeCounter {
+    margin-right: 20px;
+}
+.block-like, .block-dislike {
+    display: inline-block;
+}
+.active{
+    color: dodgerblue;
+}
+#datecreated {
+    font-size: 70%;
+    color: #777777;
+}
+.topic-img {
+    width: 225px;
+}
+.card-header-author{
+    text-align: center;
+}
+.topic_meta {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+.topic {
+    margin-top: 48px;
+}
+.topic a {
+    color: #333;
+}
+.topic a:visited {
+    color: #487284;
+}
+.topic a:hover {
+    color: #5D84AE;
+    text-decoration: none;
+}
+.author_name {
+    color: #548EAA;
+}
+.author_name a {
+    color: #548EAA;
+}
+.author_name a:hover {
+    color: #5D84AE;
+}
+.topic_time {
+    margin-left: 8px;
+}
+.topic_title {
+    margin: 0 0 9px;
+    font-size: 28px;
+    font-weight: bold;
+}
+.topic_theme, .topic_tag{
+    font-size: 13px;
+}
+.topic_theme a {
+    color: #5E6973;
+}
+.topic_tag a {
+    color: #5E6973;
+}
+.topic_body {
+    padding-top: 20px;
+    padding-bottom: 24px;
+}
+.topic_text {
+    margin-right: -5px;
+    padding-right: 5px;
+    color: #222;
+    font-size: 16px;
+}
+.topic_text img {
+    margin: 0;
+    vertical-align: middle;;
+    min-width: 70%;
+    max-width: 100%;
+    height: auto;
+}
+.topic_stats {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #E5E9EB;
+    height: 40px;
+    border-radius: 4px;
+}
+.topic_stats_items {
+    display: flex;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    margin-left: 20px;
+}
+.topic_stats_items_counter {
+    margin-left: 8px;
+}
+.topic_stats_items_comments {
+    padding-left: 0;
+    padding-right: 12px;
+}
+#comments_container i.fa {
+    padding: 5px;
+}
+#comments_container i.fa:hover {
+    cursor: pointer;
+}
+.rated {
+    color: dodgerblue;
+}
+#add_comment_button:focus {
+    outline: none;
+    box-shadow: none;
+}
+#delete_topic_block i.fa{
+    float: right;
+}
+#delete_topic_block i.fa:hover{
+    cursor: pointer;
+    color: red;
+}
+/* Profile image*/
+.profile_block {
+    margin: auto;
+    width: 50%;
+}
+.circle {
+    width: 128px;
+    height: 128px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+    background-color: #C5CACD;
+    border: 8px solid rgba(255, 255, 255, 0.7);
+    transition: top .2s ease-in-out,width .5s,height .5s;
+}
+.profile-pic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.file-upload {
+    display: none;
+}
+.p-image {
+    color: #666666;
+    text-align: center;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.p-image:hover {
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.upload-button {
+    font-size: 1.2em;
+}
+.upload-button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+}
+#error_image_message {
+    text-align: center;
+    color: red;
 }
