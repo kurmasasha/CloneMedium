@@ -90,7 +90,7 @@ public class CommentRestController {
         }
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
+            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic, isMainComment, mainCommentId);
             for (User u : topic.getAuthors()) {
                 Notification notification = new Notification();
                 notification.setTitle("Новый комментарий");
@@ -99,15 +99,13 @@ public class CommentRestController {
                 notificationService.addNotification(notification);
                 wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
-            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic,
-                    isMainComment, mainCommentId);
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            Comment newComment = commentService.addComment(comment, user, topic);
+            Comment newComment = commentService.addComment(comment, user, topic, isMainComment, mainCommentId);
             for (User u : topic.getAuthors()) {
                 Notification notification = new Notification();
                 notification.setTitle("Новый комментарий");
@@ -116,7 +114,6 @@ public class CommentRestController {
                 notificationService.addNotification(notification);
                 wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
-            Comment newComment = commentService.addComment(comment, user, topic, isMainComment, mainCommentId);
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {

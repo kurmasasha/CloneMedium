@@ -51,6 +51,7 @@ class CommentServiceImplTest {
     /**
      * Проверка добавления комментария
      */
+    /*
     @Test
     void addComment() {
         Comment comment = commentService.addComment("testText", new User(), new Topic());
@@ -70,9 +71,11 @@ class CommentServiceImplTest {
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(comment);
     }
 
+
+
     /**
      * Проверка обработки неудачного добавления комментария
-     */
+
     @Test
     void failAddComment() {
         Mockito.doThrow(new TransactionRequiredException())
@@ -85,6 +88,7 @@ class CommentServiceImplTest {
         Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).addComment(ArgumentMatchers.any(Comment.class));
     }
+    */
 
     /**
      * Проверка получения комментария по id
