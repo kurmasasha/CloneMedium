@@ -29,6 +29,7 @@ let socket = new SockJS('/ws');
         if (notification) {
             bell(con,counter+=1);
          }
+
     });
 });
 

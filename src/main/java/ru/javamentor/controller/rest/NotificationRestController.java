@@ -71,6 +71,7 @@ public class NotificationRestController {
 
     /**
      *  Метод для удаления уведомления.
+     *
      */
 
     @DeleteMapping("/user/notification/delete")

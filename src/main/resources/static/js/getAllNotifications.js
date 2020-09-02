@@ -1,3 +1,8 @@
+
+/**
+ *  метод для отображения уведомлений
+ *
+ */
 function getAllNotifications() {
     $.ajax({
         type:'GET',
@@ -20,7 +25,10 @@ function getAllNotifications() {
         }
     })
 }
-
+/**
+ *  метод для удаления уведомлений (ознакомлен) , выполняется при помощи запроса в NotificationRestController
+ *
+ */
 $(document).on('click','.info', function (){
     let notification = $(this).data('notification')
     console.log(notification)
