@@ -42,7 +42,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/topic/update}" method="post" id="editForm" enctype="multipart/form-data">
+                            <form th:action="@{/topic/update}" method="post" id="editForm"
+                                  enctype="multipart/form-data">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="editTopicId">Id</label>
                                     <input class="form-control" type="text" name="id" th:value="${topic.id}"
@@ -61,10 +62,10 @@
                                               id="editTopicContent">[[${topic.content}]]</textarea>
                                 </div>
 
-                                <div class= "p-image" th:if="${topic.img != 'no-img.png'}">
-                                    <input type="reset" value="&times;">
+                                <div class="p-image" th:if="${topic.img != 'no-img.png'}" id="imageEditForm">
+                                    <input type="reset" value="&times;" id="resetButtonEditForm">
                                     <br>
-                                    <img  th:src="'/topic-img/' + ${topic.img}"
+                                    <img th:src="'/topic-img/' + ${topic.img}"
                                          th:alt="'image of topic : ' + ${topic.title}">
                                 </div>
 

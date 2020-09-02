@@ -70,6 +70,14 @@ body {
     font-size: 90%;
     color: #777777;
 }
+#resetButtonEditForm {
+    float: right;
+}
+
+#imageEditForm {
+    display: block;
+}
+
 .topic-img {
     width: 225px;
 }
