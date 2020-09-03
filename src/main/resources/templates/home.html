@@ -91,7 +91,7 @@
                                             <tr th:each="author : ${topic.authors}" th:id="'tr' + ${author.id}">
                                                 <td th:text="${author.username}"></td>
                                                 <td>
-                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'">
+                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'" href="#">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
