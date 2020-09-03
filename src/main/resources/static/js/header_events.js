@@ -1,12 +1,11 @@
-let imageEditForm = document.getElementById("imageEditForm");
-let resetButtonEditForm = document.getElementById("resetButtonEditForm");
 
-$(document).ready(function () {
-    $('.menu a').filter(function () {
-        return this.href == location.href
-    }).parent().addClass('active').siblings().removeClass('active');
 
-    $('.menu a').click(function () {
+
+$(document).ready(function(){
+    $('.menu a').filter(function(){
+        return this.href==location.href}).parent().addClass('active').siblings().removeClass('active');
+
+    $('.menu a').click(function(){
         $(this).parent().addClass('active').siblings().removeClass('active')
     });
 
@@ -15,10 +14,17 @@ $(document).ready(function () {
      *
      */
     $(document).ready(container($('#notif_counter')));
+
+    /**
+     *  получаем все уведомления
+     *
+     */
+
+    $(document).ready(getAllNotifications());
     /**
      * Нажатие на кнопку поиска по хэштегу
      */
-    $('#hashtag_home_button').on('click', function () {
+    $('#hashtag_home_button').on('click', function() {
         let hashtag = $('#hashtag_input').val();
         hashtag = hashtag.trim();
         if (hashtag.startsWith('#')) {
@@ -36,8 +42,3 @@ $(document).ready(function () {
     });
 });
 
-resetButtonEditForm.addEventListener('click', hideImage, false)
-
-function hideImage() {
-    imageEditForm.style.display = "none";
-}

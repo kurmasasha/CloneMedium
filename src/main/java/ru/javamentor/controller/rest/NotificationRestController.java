@@ -68,4 +68,14 @@ public class NotificationRestController {
             return new ResponseEntity<>("You can't update the comment because it doesn't exists.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     *  Метод для удаления уведомления.
+     *
+     */
+
+    @DeleteMapping("/user/notification/delete")
+    public void deleteNotification(Long id) {
+        notificationService.deleteNotification(notificationService.getById(id));
+    }
 }

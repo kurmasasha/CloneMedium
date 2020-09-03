@@ -42,55 +42,85 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/topic/update}" method="post" id="editForm"
-                                  enctype="multipart/form-data">
-                                <div class="form-group" style="display: none">
-                                    <label class="col-form-label" for="editTopicId">Id</label>
-                                    <input class="form-control" type="text" name="id" th:value="${topic.id}"
-                                           id="editTopicId">
-                                </div>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="content-tab" data-toggle="tab"
+                                       th:href="'#content' + ${topic.id}" role="tab" aria-controls="content"
+                                       aria-selected="true">Содержимое</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="authors-tab" data-toggle="tab"
+                                       th:href="'#authors' + ${topic.id}" role="tab" aria-controls="authors"
+                                       aria-selected="false">Авторы</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" th:id="'content' + ${topic.id}" role="tabpanel"
+                                     aria-labelledby="content-tab">
+                                    <form th:action="@{/topic/update}" id="editForm" method="post">
+                                        <div class="form-group" style="display: none">
+                                            <label class="col-form-label" for="editTopicId">Id</label>
+                                            <input class="form-control" type="text" id="editTopicId" name="id"
+                                                   th:value="${topic.id}">
+                                        </div>
 
-                                <div class="form-group">
-                                    <label for="editTopicTitle" class="col-form-label">Заголовок</label>
-                                    <input class="form-control" type="text" name="title" th:value="${topic.title}"
-                                           id="editTopicTitle">
-                                </div>
+                                        <div class="form-group">
+                                            <label for="editTopicTitle" class="col-form-label">Заголовок</label>
+                                            <input class="form-control" type="text" id="editTopicTitle" name="title"
+                                                   th:value="${topic.title}">
+                                        </div>
 
-                                <div class="form-group">
-                                    <label for="editTopicContent" class="col-form-label">Содержание</label>
-                                    <textarea class="form-control" name="content" th:inline="text"
-                                              id="editTopicContent">[[${topic.content}]]</textarea>
+                                        <div class="form-group">
+                                            <label for="editTopicContent" class="col-form-label">Содержание</label>
+                                            <textarea class="form-control" id="editTopicContent" name="content"
+                                                      th:inline="text">[[${topic.content}]]</textarea>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Отмена
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                        </div>
+                                    </form>
                                 </div>
-
-                                <div class="p-image" th:if="${topic.img != 'no-img.png'}" id="imageEditForm">
-                                    <input type="reset" value="&times;" id="resetButtonEditForm">
-                                    <br>
-                                    <img th:src="'/topic-img/' + ${topic.img}"
-                                         th:alt="'image of topic : ' + ${topic.title}">
+                                <div class="tab-pane fade" th:id="'authors' + ${topic.id}" role="tabpanel"
+                                     aria-labelledby="authors-tab">
+                                    <div class="table-responsive table-borderless">
+                                        <table class="table table-bordered" th:id="'table' + ${topic.id}">
+                                            <tbody>
+                                            <tr th:each="author : ${topic.authors}" th:id="'tr' + ${author.id}">
+                                                <td th:text="${author.username}"></td>
+                                                <td>
+                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <form id="addNewAuthorForm">
+                                    <div class="form-group">
+                                        <label th:for="'addNewAuthor' + ${topic.id}" class="col-form-label">E-mail:</label>
+                                        <input class="form-control" type="text" th:id="'addNewAuthor' + ${topic.id}">
+                                    </div>
+                                </form>
+                                    <button class="btn btn-success" th:onclick="'addByEmail(' + ${topic.id} + ')'">
+                                        Добавить соавтора
+                                    </button>
                                 </div>
-
-                                <div class="form-group">
-                                    <input class="form-control-file" name="file" type="file" id="editTopicFile">
-                                </div>
-
-                                <div class="modal-footer justify-content-center">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Delete modal -->
-            <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm"
-                 aria-hidden="true">
+            <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteTopicForm">Вы уверены что хотите удалить данный
-                                топик?</h5>
+                            <h5 class="modal-title" id="deleteTopicForm">Вы уверены что хотите удалить данный топик?</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -99,8 +129,7 @@
                             <form th:action="@{/topic/delete}" id="deleteForm" method="post">
                                 <div class="form-group" style="display: none">
                                     <label class="col-form-label" for="deleteTopicId">Id</label>
-                                    <input class="form-control" type="text" id="deleteTopicId" name="id"
-                                           th:value="${topic.id}">
+                                    <input class="form-control" type="text" id="deleteTopicId" name="id"  th:value="${topic.id}">
                                 </div>
 
                                 <div class="modal-footer justify-content-center">
@@ -112,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <!--------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
             <article class="topic topic_preview">
                 <header class="row topic_meta">
                     <div class="col-10">
@@ -124,15 +153,14 @@
                            + ${authIter.index < topic.getAuthors().size() - 1 ? ', ' : ''}">
                         </a>
                         </span>
-                        <span class="topic_time"
-                              th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
+                            <span class="topic_time"
+                                  th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
                         </span>
                     </div>
 
                     <div class="col">
                         <div class="dropdown">
-                            <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="padding: 2px 5px 0px 5px">
+                            <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 2px 5px 0px 5px">
                                 <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                             </button>
 
@@ -140,15 +168,11 @@
 
                                 <!-- button edit topic -->
                                 <button type="button" class="dropdown-item" data-toggle="modal"
-                                        th:data-target="'#edit'+${topic.id}">
-                                    Редактировать
-                                </button>
+                                        th:data-target="'#edit'+${topic.id}">Редактировать</button>
 
                                 <!-- button delete topic-->
                                 <button type="button" class="dropdown-item" data-toggle="modal"
-                                        th:data-target="'#delete'+${topic.id}">
-                                    Удалить
-                                </button>
+                                        th:data-target="'#delete'+${topic.id}">Удалить</button>
                             </div>
                         </div>
                     </div>
@@ -171,7 +195,7 @@
                 </h6>
                 <div class="topic_body">
                     <div class="topic_text">
-                        <div th:if="${topic.img != 'no-img.png'}" id="topicImage">
+                        <div th:if="${topic.img != 'no-img.png'}">
                             <img th:src="'/topic-img/' + ${topic.img}" th:alt="'image of topic : ' + ${topic.title}">
                             <br>
                             <br>
@@ -223,6 +247,36 @@
 <div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<!-- Модальное окно Уведомлений -->
+<div class="modal fade" id="notificationModalSamp" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredLabel">
+                    Уведомление
+                </h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="notifModalBody">
+                <h5 id="notifTitle"></h5>
+                <p id="notifText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрыть</button>
+                <button type="submit"
+                        class="btn btn-primary deleteNotification"
+                        data-dismiss="modal">Ознакомлен</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!------------------------------------------------ Модальное окно редактирования топика-------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
 
@@ -243,10 +297,12 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getAllNotifications.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
+<script src="/js/editAuthorsOfTopic.js"></script>
 </body>
 </html>
