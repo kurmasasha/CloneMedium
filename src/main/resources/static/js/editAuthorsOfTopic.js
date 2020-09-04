@@ -19,7 +19,7 @@ function  addByEmail(idTopic) {
         success: function (data) {
             $('#table' + idTopic).append('<tr id="tr' + data + '">' +
                  '<td >' + email + '</td>' +
-                 '<td><a onclick="removeById('+ idTopic +',' + data + ')">' +
+                 '<td><a onclick="removeById('+ idTopic +',' + data + ')" href="#">' +
                  '<i class="fa fa-trash" aria-hidden="true"></i> </a> </td>' +
                  '</tr>');
             $('#addNewAuthor' + idTopic).val("");
