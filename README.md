@@ -6,7 +6,7 @@
     
 - запустите docker на своем компьютере;
 - загрузка образа, настройка и установка контейнера выполняется одной командой 
-`docker run --name cm_mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=jm_clone_medium -d -p 3307:3306 mysql`;
+   `docker run --name cm_mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=jm_clone_medium -d -p 3307:3306 mysql`;
 - для сохранения файлов БД локально в скрипт выше, после имени `cm_mysql`, 
    нужно добавить `-v /ваша/локальная/директория:/var/lib/mysql`;
 - остановка контейнера `docker stop cm_mysql`;
