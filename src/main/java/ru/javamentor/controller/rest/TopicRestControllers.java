@@ -422,12 +422,12 @@ public class TopicRestControllers {
         User author = userService.getUserById(idAuthor);
         if (authors.size() != 1) {
             authors.remove(author);
-                Notification notification = new Notification();
-                notification.setTitle("Уведомление:");
-                notification.setText("Вы больше не являетесь соавтором статьи \"" + topic.getTitle() + "\"");
-                notification.setUser(author);
+                Notification notification = new Notification("Уведомление:",
+                        "Вы больше не являетесь соавтором статьи \"" + topic.getTitle() + "\"",
+                        author);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(author , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(author,
+                        notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Cannot delete all authors", HttpStatus.BAD_REQUEST);
@@ -453,12 +453,12 @@ public class TopicRestControllers {
         }
         if (author != null && !authors.contains(author)) {
             authors.add(author);
-            Notification notification = new Notification();
-            notification.setTitle("Уведомление:");
-            notification.setText("Вы назначены соавтором статьи \"" + topic.getTitle() + "\"");
-            notification.setUser(author);
+            Notification notification = new Notification("Уведомление:",
+                    "Вы назначены соавтором статьи \"" + topic.getTitle() + "\"",
+                    author);
             notificationService.addNotification(notification);
-            wsNotificationService.sendNotification(author , notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            wsNotificationService.sendNotification(author,
+                    notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             return new ResponseEntity<>("" + author.getId(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("This user is not exist", HttpStatus.BAD_REQUEST);
