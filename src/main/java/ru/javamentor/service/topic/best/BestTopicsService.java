@@ -18,14 +18,5 @@ public interface BestTopicsService {
      *
      * @return List<Topic> - коллекция содержащая до 5-ти лучший статей
      */
-    List<Topic> bestFive();
-
-    /**
-     * Метод сортировки статей по количеству лайков
-     *
-     * @param bestTopics - неотсортированный список статей
-     * @return List<Topic> - коллекция сортированных по количеству
-     * лайков статей
-     */
-    List<Topic> sortByLikes(List<Topic> bestTopics);
+    List<Topic> bestFive(); //todo change doc to this method
 }
