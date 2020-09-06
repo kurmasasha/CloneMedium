@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма добавления статьи</title>
+</head>
+<body>
+<form th:action="@{/addTopic}"
+      th:object="${newTopic}" method="POST" enctype="multipart/form-data">
+    Title:
+    <input type="text" th:field="*{title}"/>
+    <br/>
+    Content:
+    <input type="text" th:field="*{content}">
+    <br/>
+    <div class="custom-file">
+        <input th:id="${newTopic.img}" name="file" type="file"
+               id="inputGroupFile02" aria-describedby="inputGroupFileAddon02">
+        <label class="custom-file-label" for="inputGroupFile02">Картинка</label>
+    </div>
+
+    <button class="btn btn-success btn-block" type="submit" value="Lets go">Upload</button>
+</form>
+</body>
+</html>

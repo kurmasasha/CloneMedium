@@ -1,11 +1,14 @@
 package ru.javamentor.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,21 +17,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
-import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
 import ru.javamentor.service.user.UserService;
+import ru.javamentor.util.img.LoaderImages;
 import ru.javamentor.util.validation.ValidatorFormEditUser;
+import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * Контроллер возвращающий для показа html страниц
@@ -37,6 +44,7 @@ import java.util.List;
  * @version 1.0
  */
 @Controller
+@Slf4j
 public class PageController {
 
     private final UserService userService;
@@ -45,6 +53,8 @@ public class PageController {
     private final CommentService commentService;
     private final ValidatorFormEditUser validatorFormEditUser;
     private final PasswordRecoveryTokenService passwordRecoveryTokenService;
+    private final LoaderImages loaderImages;
+    private final TopicValidator topicValidator;
 
     @Autowired
     public PageController(UserService userService,
@@ -52,14 +62,19 @@ public class PageController {
                           TopicService topicService,
                           CommentService commentService,
                           ValidatorFormEditUser validatorFormEditUser,
-                       PasswordRecoveryTokenService passwordRecoveryTokenService) {
+                          PasswordRecoveryTokenService passwordRecoveryTokenService, LoaderImages loaderImages, TopicValidator topicValidator) {
         this.userService = userService;
         this.themeService = themeService;
         this.topicService = topicService;
         this.commentService = commentService;
         this.validatorFormEditUser = validatorFormEditUser;
         this.passwordRecoveryTokenService = passwordRecoveryTokenService;
+        this.loaderImages = loaderImages;
+        this.topicValidator = topicValidator;
     }
+
+    @Value("${upload.topic.path}")
+    private String uploadPath;
 
     /**
      * метод для страницы логина
@@ -303,5 +318,38 @@ public class PageController {
         return "redirect:/admin/allUsers";
     }
 
+    @GetMapping("/addTopic")
+    public String addNewTopic(Model model) {
+        Topic topic = new Topic();
+        model.addAttribute("newTopic", topic);
+        return "add-Topic-Form";
+    }
+
+    @PostMapping("/addTopic")
+    public String addTopic(ModelMap model,
+                           @ModelAttribute("newTopic") Topic topic,
+                           Principal principal,
+                           MultipartFile file) throws IOException {
+        String title = topic.getTitle();
+        String content = topic.getContent();
+        String img = "no-img.png";
+        Set<User> users = new HashSet<>();
+
+        users.add(userService.getUserByUsername(principal.getName()));
+        try {
+            topicValidator.checkTitleAndContent(title, content);
+            if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
+                topicValidator.checkFile(file);
+                if (topicValidator.getError() == null) {
+                    img = loaderImages.upload(file, uploadPath);
+                }
+            }
+            topicService.addTopic(title, content, true, img, users);
+        } catch (Exception e) {
+            log.error("Что-то сломалось при попытке добавления статьи!");
+            log.error("Поля title и content обязательны к заполнению!");
+        }
+        return "redirect:/home";
+    }
 }
 
