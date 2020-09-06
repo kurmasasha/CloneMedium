@@ -3,10 +3,11 @@ package ru.javamentor.service.topic.best;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.javamentor.dao.topic.BestTopicsDAO;
+import ru.javamentor.dao.topic.best.BestTopicsDAO;
 import ru.javamentor.model.Topic;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация BestTopicsService
@@ -25,7 +26,9 @@ public class BestTopicsServiceImpl implements BestTopicsService {
 
     @Override
     public List<Topic> bestFive() {
-        return bestTopicsDAO.findAll
-                (Sort.by(Sort.Direction.DESC, "likes"));
+        return bestTopicsDAO.findAll(Sort.by(Sort.Direction.DESC, "likes"))
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
     }
 }

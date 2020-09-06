@@ -15,8 +15,8 @@ import java.util.List;
  * REST контроллер для получения
  * 5-ти лучших статей по лайкам
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 @RestController
 @RequestMapping("/best/topics")
@@ -28,8 +28,12 @@ public class BestTopicsRestController {
         this.bestTopicsService = bestTopicsService;
     }
 
+    /**
+     * Метод для получения списка лучших статей
+     * (до 5 штук)
+     */
     @GetMapping
-    public ResponseEntity<List<Topic>> getFiveTopicsByLikes(){
+    public ResponseEntity<List<Topic>> getFiveTopicsByLikes() {
         return new ResponseEntity<>(bestTopicsService.bestFive(), HttpStatus.OK);
     }
 }

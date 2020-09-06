@@ -18,5 +18,5 @@ public interface BestTopicsService {
      *
      * @return List<Topic> - коллекция содержащая до 5-ти лучший статей
      */
-    List<Topic> bestFive(); //todo change doc to this method
+    List<Topic> bestFive();
 }
