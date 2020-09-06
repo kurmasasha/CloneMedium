@@ -11,6 +11,13 @@ import ru.javamentor.service.comment.best.BestCommentService;
 
 import java.util.List;
 
+/**
+ * Rest контроллер для получения 5 лучших комментариев
+ * по количеству лайков
+ *
+ * @author Java Mentor
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("best/comment")
 public class BestCommentRestController {
@@ -22,7 +29,7 @@ public class BestCommentRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Comment>> getBestFiveComment(){
+    public ResponseEntity<List<Comment>> getBestFiveComment() {
         return new ResponseEntity<>(bestCommentService.bestFiveComment(), HttpStatus.OK);
     }
 }

@@ -7,9 +7,16 @@ import ru.javamentor.dao.comment.best.BestCommentDAO;
 import ru.javamentor.model.Comment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Реализация интерфейса BestCommentService
+ *
+ * @author Java Mentor
+ * @version 1.0
+ */
 @Service
-public class BestCommentServiceImpl implements BestCommentService{
+public class BestCommentServiceImpl implements BestCommentService {
     private final BestCommentDAO bestCommentDAO;
 
     @Autowired
@@ -19,6 +26,9 @@ public class BestCommentServiceImpl implements BestCommentService{
 
     @Override
     public List<Comment> bestFiveComment() {
-        return bestCommentDAO.findAll(Sort.by(Sort.Direction.DESC, "likes"));
+        return bestCommentDAO.findAll(Sort.by(Sort.Direction.DESC, "likes"))
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
     }
 }
