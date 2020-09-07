@@ -82,7 +82,7 @@
                         <select name="subscribes" id="subscribesFromDB" multiple="multiple">
                             <option th:each="notSubscribed : ${notSubscribedAuthors}" th:value="${notSubscribed}"
                                     th:text="${notSubscribed}" th:selected="${false}"></option>
-                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"+
+                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"
                                     th:text="${subscribe}" th:selected="${true}"></option>
                         </select>
                     </div>
