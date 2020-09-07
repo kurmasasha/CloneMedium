@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script src="ckeditor5/build/ckeditor.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>Форма добавления статьи</title>
@@ -11,8 +12,8 @@
     <input type="text" th:field="*{title}"/>
     <br/>
     Content:
-    <input type="text" th:field="*{content}">
-    <br/>
+<!--    <input type="text" th:field="*{content}">-->
+<!--    <br/>-->
     <div class="custom-file">
         <input th:id="${newTopic.img}" name="file" type="file"
                id="inputGroupFile02" aria-describedby="inputGroupFileAddon02">
@@ -21,5 +22,16 @@
 
     <button class="btn btn-success btn-block" type="submit" value="Lets go">Upload</button>
 </form>
+
+<label for="content"></label><textarea id="content" name="content">textarea</textarea>
+
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#content' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+
 </body>
 </html>
