@@ -27,5 +27,8 @@ public class ValidatorFormEditUser extends UserValidator {
         Pattern pattern = Pattern.compile("^[A-zА-яЁё]+$");
         validFirstName(user, errors, pattern);
         validLastName(user, errors, pattern);
+
+        Pattern patternForPhoneNumber = Pattern.compile("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$");
+        validPhoneNumber(user, errors, patternForPhoneNumber);
     }
 }
