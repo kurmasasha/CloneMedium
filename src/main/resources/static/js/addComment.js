@@ -8,11 +8,11 @@ document.getElementById('add_comment_button').onclick = function (e) {
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
 
-    if(($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
+    if (($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
         e.preventDefault();
     }
 
-    if(!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
+    if (!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
         let data = {
             comment: comment,
             topicId: topicId
@@ -37,3 +37,4 @@ document.getElementById('add_comment_button').onclick = function (e) {
             });
     }
 }
+
