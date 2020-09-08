@@ -162,6 +162,19 @@
                                           th:text="${comment.getDislikes()}"></span>
                                 </span>
                             </div>
+
+                            <a class="float-right" type="button" id="replyButton"
+                               th:data-commentbox="panel+${comment.getId()}">ответить</a>
+                        </div>
+                        <div style="display:none" th:id="panel+${comment.getId()}" name="answerBox">
+                            <textarea class="form-control col-xs-12" rows="7" cols="120"
+                                      id="textareaanswer"></textarea>
+                            <br/>
+
+                            <button id="add_comment_answer" class="btn btn-sm btn-primary float-left"
+                                    type="submit" th:data-id="${comment.getId()}"
+                                    th:data-commentbox="panel+${comment.getId()}">Добавить
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -266,6 +279,7 @@
 <script src="/js/delete_topic.js"></script>
 <script src="/js/delete_comment.js"></script>
 <script src="/js/editComment.js"></script>
+<script src="/js/responseComment.js"></script>
 
 </body>
 </html>
