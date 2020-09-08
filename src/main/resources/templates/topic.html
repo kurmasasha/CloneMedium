@@ -208,6 +208,9 @@
     </div>
 </div>
 
+<!-- Модальное окно Уведомлений -->
+<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
+
 <!----------------------Модальное окно открывается когда пользователь удаляет свой комментарии------------------------->
 <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div></div>
@@ -266,6 +269,9 @@
 <script src="/js/delete_topic.js"></script>
 <script src="/js/delete_comment.js"></script>
 <script src="/js/editComment.js"></script>
+<script src="/js/util/ws.js"></script>
+<script src="/js/getAllNotifications.js"></script>
+
 
 </body>
 </html>

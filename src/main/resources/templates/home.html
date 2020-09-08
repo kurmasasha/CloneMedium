@@ -248,33 +248,8 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <!-- Модальное окно Уведомлений -->
-<div class="modal fade" id="notificationModalSamp" tabindex="-1"
-     role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenteredLabel">
-                    Уведомление
-                </h5>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="notifModalBody">
-                <h5 id="notifTitle"></h5>
-                <p id="notifText"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Закрыть</button>
-                <button type="submit"
-                        class="btn btn-primary deleteNotification"
-                        data-dismiss="modal">Ознакомлен</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
+
 
 
 <!------------------------------------------------ Модальное окно редактирования топика-------------------------------->
