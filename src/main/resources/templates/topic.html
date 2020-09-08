@@ -110,60 +110,75 @@
     </div>
     <!--------------------------------------- Комментарии ------------------------------------------------------------->
     <div class="d-flex justify-content-center" style="clear: both">
+        <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
-
-            <!------Шаблон комментария ---->
-            <template id="template-comment">
-                <div class="comment-card card mb-2">
+            <th:block th:each="comment: ${comments}">
+                <div class="card mb-2" th:id="commentCard-+${comment.getId()}">
                     <div class="card-header clearfix">
-                        <h6 class="card-comment-author float-left"></h6>
-
-                        <i class="dropdown fa fa-ellipsis-v fa-lg pl-4 float-right"
-                           id="dropdownMenuButton" aria-hidden="true" type="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item edit-comment" type="button" data-toggle="modal"
-                                    data-target="#editCommentModal">Редактировать
-                            </button>
-
-                            <button class="dropdown-item delete-comment" type="button"
-                                    data-toggle="modal" data-target="#deleteCommentModal">Удалить
-                            </button>
+                        <h6 class="card-comment-author float-left"
+                            th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
+                        <div class="float-right d-inline-flex">
+                            <h6 th:text="${#temporals.format(comment.getDateCreated(),'d MMMM yyyy в HH:mm')}"
+                                id="datecreated"></h6>
+                            <div class="dropdown" sec:authorize="isAuthenticated()">
+                                <i class="fa fa-ellipsis-v fa-lg pl-4" aria-hidden="true" type="button"
+                                   id="dropdownMenuButton"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                   th:if="${#authentication.getPrincipal().getRole().getName().equals('ADMIN') ||
+                                    comment.getAuthor().equals(#authentication.getPrincipal())}">
+                                </i>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button class="dropdown-item edit-comment" type="button" data-toggle="modal"
+                                            th:data-id="${comment.getId()}"
+                                            data-target="#editCommentModal"
+                                            th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">
+                                        Редактировать
+                                    </button>
+                                    <button class="dropdown-item delete-comment" type="button" data-toggle="modal"
+                                            th:data-id="${comment.getId()}"
+                                            data-target="#deleteCommentModal">Удалить
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
-                        <h6 class="data-created float-right d-inline-flex"></h6>
                     </div>
-
                     <div class="card-body">
-                        <p class="card-text"></p>
+                        <p class="card-text" th:utext="${comment.getText()}"
+                           th:id="commentCardText-+${comment.getId()}"></p>
                     </div>
+                    <div class="card-footer">
+                        <div class="d-flex bd-highlight mb-2">
+                            <div class="mr-auto p-2 bd-highlight">
+                                <span class="like"
+                                      th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
+                                    <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
+                                    <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}"
+                                          th:text="${comment.getLikes()}"></span>
+                                </span>
+                                <span class="dislike"
+                                      th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
+                                    <i class="fa fa-thumbs-o-down" th:data-id="${comment.getId()}"></i>
+                                    <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}"
+                                          th:text="${comment.getDislikes()}"></span>
+                                </span>
+                            </div>
 
-                    <div class="d-flex bd-highlight mb-2 card-footer">
-                        <div class="mr-auto p-2 bd-highlight">
-                            <span class="like">
-                                <i class="like-button fa fa-thumbs-o-up"></i>
-                                <span class="likes-num likeCount"></span>
-                            </span>
-
-                            <span class="dislike">
-                                <i class="dislike-button fa fa-thumbs-o-down"></i>
-                                <span class="dislikes-num likeCount"></span>
-                            </span>
+                            <a class="float-right" type="button" id="replyButton"
+                               th:data-commentbox="panel+${comment.getId()}">ответить</a>
                         </div>
+                        <div style="display:none" th:id="panel+${comment.getId()}" name="answerBox">
+                            <textarea class="form-control col-xs-12" rows="7" cols="120"
+                                      id="textareaanswer"></textarea>
+                            <br/>
 
-                        <a class="response-button float-right" type="button" id="replyButton">ответить</a>
-                    </div>
-
-                    <div style="display:none" class="reply-panel">
-                        <input class="form-control col-xs-12" rows="7" cols="120" id="inputReply">
-                        <br/>
-
-                        <button id="addReplyButton" class="btn btn-sm btn-primary float-left">Добавить
-                        </button>
+                            <button id="add_comment_answer" class="btn btn-sm btn-primary float-left"
+                                    type="submit" th:data-id="${comment.getId()}"
+                                    th:data-commentbox="panel+${comment.getId()}">Добавить
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </template>
-            <!------Конец шаблона------>
+            </th:block>
         </div>
     </div>
 </div>
@@ -205,9 +220,6 @@
         </div>
     </div>
 </div>
-
-<!-- Модальное окно Уведомлений -->
-<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
 
 <!----------------------Модальное окно открывается когда пользователь удаляет свой комментарии------------------------->
 <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -259,6 +271,7 @@
 <script>$('#finderByHashtag').hide();</script>
 <script src="/js/textareaResize.js"></script>
 <script src="/js/addComment.js"></script>
+<script src="/js/util/comment-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/util/counterForSymbols.js"></script>
 <script src="/js/likedTopic.js"></script>
@@ -266,11 +279,7 @@
 <script src="/js/delete_topic.js"></script>
 <script src="/js/delete_comment.js"></script>
 <script src="/js/editComment.js"></script>
-<script src="/js/util/ws.js"></script>
-<script src="/js/getAllNotifications.js"></script>
-
 <script src="/js/responseComment.js"></script>
-<script src="/js/fillCommentContainer.js"></script>
 
 </body>
 </html>
