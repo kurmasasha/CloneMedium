@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addUserThroughSocialNetworks(User user) {
         try {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             userDAO.addUser(user);
             log.debug("IN addUserThroughSocialNetworks - user.userName: {} successfully added", user.getUsername());
             return true;
