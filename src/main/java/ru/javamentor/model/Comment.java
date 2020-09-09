@@ -2,7 +2,6 @@ package ru.javamentor.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,6 +36,12 @@ public class Comment {
     @NotNull
     private Integer dislikes = 0;
 
+    @Column
+    private Boolean isMainComment;
+
+    @Column
+    private Long main_comment_id;
+
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinTable(name = "users_comments_likes",
@@ -50,7 +55,6 @@ public class Comment {
             joinColumns = @JoinColumn(name = "comment_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> dislikedUsers;
-
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMMM yyyy в HH:mm")
