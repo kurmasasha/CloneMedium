@@ -20,7 +20,13 @@ let responseButton = templateComment.querySelector('.response-button');
 let replyPanel = templateComment.querySelector('.reply-panel');
 let addReplyButton = templateComment.querySelector('#addReplyButton');
 
-$(async function () {
+$(fillCommentFields())
+
+async function fillCommentFields() {
+    while (commentContainer.firstChild) {
+        commentContainer.removeChild(commentContainer.firstChild);
+    }
+
     let url = document.location.href;
     let array = url.split('/');
     let topicNum = array[array.length - 1];
@@ -51,6 +57,4 @@ $(async function () {
         let clone = document.importNode(templateComment, true)
         commentContainer.appendChild(clone)
     })
-
-
-})
+}
