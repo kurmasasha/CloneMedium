@@ -81,7 +81,16 @@ public class UserServiceImpl implements UserService {
     public boolean addUserThroughSocialNetworks(User user) {
         try {
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            userDAO.addUser(user);
+            if (user.getSocialNetwork().equals("Google")) {
+                user.setActivated(false);
+                user.setActivationCode(UUID.randomUUID().toString());
+                userDAO.addUser(user);
+                sendCode(user);
+            } else {
+                user.setActivated(true);
+                user.setActivationCode(null);
+                userDAO.addUser(user);
+            }
             log.debug("IN addUserThroughSocialNetworks - user.userName: {} successfully added", user.getUsername());
             return true;
         } catch (Exception e) {

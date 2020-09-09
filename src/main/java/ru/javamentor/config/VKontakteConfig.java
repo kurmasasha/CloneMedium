@@ -95,7 +95,9 @@ public class VKontakteConfig implements SocialConfig  {
             String lastName = jArray.getJSONObject(0).optString("last_name");
             String email =((VKOAuth2AccessToken) token).getEmail();
             Role roleUser = roleService.getRoleByName("USER");
-            return new User(firstName, lastName, email, password, roleUser);
+            User user = new User(firstName, lastName, email, password, roleUser);
+            user.setSocialNetwork("VKontakte");
+            return user;
         }catch (JSONException e){
             return null;
         }

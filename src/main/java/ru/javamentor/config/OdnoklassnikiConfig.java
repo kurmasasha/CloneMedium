@@ -94,7 +94,9 @@ public class OdnoklassnikiConfig implements SocialConfig {
             String lastName = jsonObj.optString("last_name");
             String email = jsonObj.getString("email");
             Role roleUser = roleService.getRoleByName("USER");
-            return new User(firstName, lastName, email, password, roleUser);
+            User user = new User(firstName, lastName, email, password, roleUser);
+            user.setSocialNetwork("Odnoklassniki");
+            return user;
         } catch (JSONException e) {
             return null;
         }

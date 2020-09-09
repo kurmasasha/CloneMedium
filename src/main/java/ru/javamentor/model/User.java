@@ -98,6 +98,10 @@ public class User implements UserDetails {
             mappedBy = "dislikedUsers")
     private Set<Comment> dislikedComments;
 
+    @JsonIgnore
+    @Transient
+    private String socialNetwork;
+
 
     @Override
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
@@ -142,7 +146,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.lockStatus;
     }
-
 
 
     /**
