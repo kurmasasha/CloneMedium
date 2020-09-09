@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Topic page</title>
-    <script src="../../../../../../../comment no me/addComment.js"></script>
 </head>
 <body>
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
@@ -111,74 +110,72 @@
     </div>
     <!--------------------------------------- Комментарии ------------------------------------------------------------->
     <div class="d-flex justify-content-center" style="clear: both">
-        <template>
-
-        </template>
         <!-- Заполняется скриптом comment-in-card -->
+
         <div id="comments_container" class="container m-0 p-0">
             <th:block th:each="comment: ${comments}">
                 <div class="card mb-2" th:id="commentCard-+${comment.getId()}">
                     <div class="card-header clearfix">
                         <h6 class="card-comment-author float-left"
                             th:text="${comment.getAuthor().getFirstName()+ ' ' + comment.getAuthor().getLastName()}"></h6>
-                        <div class="float-right d-inline-flex">
-                            <h6 th:text="${#temporals.format(comment.getDateCreated(),'d MMMM yyyy в HH:mm')}"
-                                id="datecreated"></h6>
-                            <div class="dropdown" sec:authorize="isAuthenticated()">
-                                <i class="fa fa-ellipsis-v fa-lg pl-4" aria-hidden="true" type="button"
-                                   id="dropdownMenuButton"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                   th:if="${#authentication.getPrincipal().getRole().getName().equals('ADMIN') ||
-                                    comment.getAuthor().equals(#authentication.getPrincipal())}">
-                                </i>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <button class="dropdown-item edit-comment" type="button" data-toggle="modal"
-                                            th:data-id="${comment.getId()}"
-                                            data-target="#editCommentModal"
-                                            th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">
-                                        Редактировать
-                                    </button>
-                                    <button class="dropdown-item delete-comment" type="button" data-toggle="modal"
-                                            th:data-id="${comment.getId()}"
-                                            data-target="#deleteCommentModal">Удалить
-                                    </button>
-                                </div>
-                            </div>
+
+                        <i class="fa fa-ellipsis-v fa-lg pl-4 dropdown float-right" aria-hidden="true" type="button"
+                           id="dropdownMenuButton" sec:authorize="isAuthenticated()"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           th:if="${#authentication.getPrincipal().getRole().getName().equals('ADMIN') ||
+                                    comment.getAuthor().equals(#authentication.getPrincipal())}"></i>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item edit-comment" type="button" data-toggle="modal"
+                                    th:data-id="${comment.getId()}" data-target="#editCommentModal"
+                                    th:if="${comment.getAuthor().equals(#authentication.getPrincipal())}">
+                                Редактировать
+                            </button>
+
+                            <button class="dropdown-item delete-comment" type="button" data-toggle="modal"
+                                    th:data-id="${comment.getId()}" data-target="#deleteCommentModal">
+                                Удалить
+                            </button>
                         </div>
+
+                        <h6 class="float-right d-inline-flex"
+                            th:text="${#temporals.format(comment.getDateCreated(),'d MMMM yyyy в HH:mm')}"
+                            id="datecreated"></h6>
                     </div>
+
                     <div class="card-body">
                         <p class="card-text" th:utext="${comment.getText()}"
                            th:id="commentCardText-+${comment.getId()}"></p>
                     </div>
-                    <div class="card-footer">
-                        <div class="d-flex bd-highlight mb-2">
-                            <div class="mr-auto p-2 bd-highlight">
+
+                    <div class="d-flex bd-highlight mb-2 card-footer">
+                        <div class="mr-auto p-2 bd-highlight">
                                 <span class="like"
                                       th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''">
                                     <i class="fa fa-thumbs-o-up" th:data-id="${comment.getId()}"></i>
                                     <span class="likes-num likeCount" th:id="likesId-+${comment.getId()}"
                                           th:text="${comment.getLikes()}"></span>
                                 </span>
-                                <span class="dislike"
-                                      th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
+                            <span class="dislike"
+                                  th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''">
                                     <i class="fa fa-thumbs-o-down" th:data-id="${comment.getId()}"></i>
                                     <span class="dislikes-num likeCount" th:id="dislikesId-+${comment.getId()}"
                                           th:text="${comment.getDislikes()}"></span>
                                 </span>
-                            </div>
-
-                            <a class="float-right" type="button" id="replyButton"
-                               th:data-panelId="panel+${comment.getId()}">ответить</a>
                         </div>
-                        <div style="display:none" th:id="panel+${comment.getId()}">
-                            <input class="form-control col-xs-12" rows="7" cols="120" id="inputReply">
-                            <br/>
 
-                            <button id="addReplyButton" class="btn btn-sm btn-primary float-left"
-                                    type="submit" th:data-id="${comment.getId()}"
-                                    th:data-panelId="panel+${comment.getId()}">Добавить
-                            </button>
-                        </div>
+                        <a class="float-right" type="button" id="replyButton"
+                           th:data-panelId="panel+${comment.getId()}">ответить</a>
+                    </div>
+
+                    <div style="display:none" th:id="panel+${comment.getId()}">
+                        <input class="form-control col-xs-12" rows="7" cols="120" id="inputReply">
+                        <br/>
+
+                        <button id="addReplyButton" class="btn btn-sm btn-primary float-left"
+                                type="submit" th:data-id="${comment.getId()}"
+                                th:data-panelId="panel+${comment.getId()}">Добавить
+                        </button>
                     </div>
                 </div>
             </th:block>
