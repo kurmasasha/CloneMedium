@@ -93,9 +93,7 @@ public class FacebookConfig implements SocialConfig {
             String firstName = jsonObj.getString("first_name");
             String lastName = jsonObj.getString("last_name");
             Role roleUser = roleService.getRoleByName("USER");
-            User user = new User(firstName, lastName, email, password, roleUser);
-            user.setSocialNetwork("Facebook");
-            return user;
+            return new User(firstName, lastName, email, password, roleUser,true);
         }catch (JSONException e){
             return null;
         }

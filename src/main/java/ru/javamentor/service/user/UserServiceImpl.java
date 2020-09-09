@@ -81,16 +81,7 @@ public class UserServiceImpl implements UserService {
     public boolean addUserThroughSocialNetworks(User user) {
         try {
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            if (user.getSocialNetwork().equals("Google")) {
-                user.setActivated(false);
-                user.setActivationCode(UUID.randomUUID().toString());
-                userDAO.addUser(user);
-                sendCode(user);
-            } else {
-                user.setActivated(true);
-                user.setActivationCode(null);
-                userDAO.addUser(user);
-            }
+            userDAO.addUser(user);
             log.debug("IN addUserThroughSocialNetworks - user.userName: {} successfully added", user.getUsername());
             return true;
         } catch (Exception e) {
@@ -334,14 +325,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeSubscribe(Set<String> authors, String subscriber) {
         try {
-            if(authors == null) {
-                userDAO.deleteSubscribesOfUser(subscriber);
-            }else {
-                userDAO.deleteSubscribesOfUser(subscriber);
-                for (String author : authors) {
-                    userDAO.addSubscribe(author, subscriber);
-                    log.debug("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
-                }
+            userDAO.deleteSubscribesOfUser(subscriber);
+            for (String author : authors) {
+                userDAO.addSubscribe(author, subscriber);
+                log.debug("Subscribe with author: " + author + " and subscriber: " + subscriber + "successful");
             }
             return true;
         } catch (Exception e) {
