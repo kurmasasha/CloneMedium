@@ -1,8 +1,8 @@
-$('#replyButton').on('click', function () {
+$(document).on('click', '.response-button', function () {
     $('#' + $(this).attr('data-panelId')).toggle();
-});
+})
 
-$('#addReplyButton').on('click', function () {
+$(document).on('click', '#addReplyButton', async function () {
     $('#authorizationModal').modal('show');
 
     let comment = document.getElementById('inputReply').value;
@@ -18,22 +18,18 @@ $('#addReplyButton').on('click', function () {
             isMainComment: isMainComment,
             mainCommentId: mainCommentId
         }
-        document.getElementById('inputReply').value = '';
 
-        fetch('/api/user/comment/add', {
+        await fetch('/api/user/comment/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify(data)
-
         })
-            .then(result => result.json())
-            .then(comment => {
-                let commentAnswerCard = commentInCard(comment);
-                $('#comments_answer_container').prepend(commentAnswerCard);
-            });
+
     }
 
     $('#' + $(this).attr('data-panelId')).toggle();
+
+    await fillCommentFields();
 });
