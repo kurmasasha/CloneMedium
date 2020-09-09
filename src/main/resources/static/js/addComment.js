@@ -7,6 +7,8 @@ document.getElementById('add_comment_button').onclick = function (e) {
     let comment = commentBody.value.replace(/\n/g, '<br />');
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
+    let isMainComment = true;
+    let mainCommentId = null;
 
     if (($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
         e.preventDefault();
@@ -15,7 +17,9 @@ document.getElementById('add_comment_button').onclick = function (e) {
     if (!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
         let data = {
             comment: comment,
-            topicId: topicId
+            topicId: topicId,
+            isMainComment: isMainComment,
+            mainCommentId: mainCommentId
         }
 
         document.getElementById('textareaResize').value = '';
