@@ -58,6 +58,7 @@ public class FacebookConfig implements SocialConfig {
      Метод для сборки URL из clientId, clientSecret и callbackUrl приложения разработчика, которые отправляются в RestController
      Поле OAuth20Service инициализируется один раз при первой авторизации
      */
+
     public String getAuthorizationUrl(){
         if(this.service == null) {
             this.service = new ServiceBuilder(clientId)
@@ -92,7 +93,7 @@ public class FacebookConfig implements SocialConfig {
             String firstName = jsonObj.getString("first_name");
             String lastName = jsonObj.getString("last_name");
             Role roleUser = roleService.getRoleByName("USER");
-            return new User(firstName, lastName, email, password, roleUser);
+            return new User(firstName, lastName, email, password, roleUser,true);
         }catch (JSONException e){
             return null;
         }

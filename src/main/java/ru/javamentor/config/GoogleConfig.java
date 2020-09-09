@@ -96,7 +96,7 @@ public class GoogleConfig implements SocialConfig {
             String lastName = jsonObj.getString("family_name");
             String email = jsonObj.getString("email");
             Role roleUser = roleService.getRoleByName("USER");
-            return new User(firstName, lastName, email, password, roleUser);
+            return new User(firstName, lastName, email, password, roleUser,true);
         }catch (JSONException e){
             return null;
         }

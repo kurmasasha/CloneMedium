@@ -29,7 +29,6 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements UserDetails {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -98,7 +97,6 @@ public class User implements UserDetails {
             mappedBy = "dislikedUsers")
     private Set<Comment> dislikedComments;
 
-
     @Override
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -113,6 +111,15 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String firstName, String lastName, String username, String password, Role role, boolean isActivated) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.isActivated = isActivated;
     }
 
     public void setLockStatus(boolean lockStatus) {
@@ -142,7 +149,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.lockStatus;
     }
-
 
 
     /**
