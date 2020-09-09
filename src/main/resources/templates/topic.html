@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Topic page</title>
+    <script src="../../../../../../../comment no me/addComment.js"></script>
 </head>
 <body>
 <!------------------------------------------------------- Шапка ------------------------------------------------------->
@@ -110,6 +111,9 @@
     </div>
     <!--------------------------------------- Комментарии ------------------------------------------------------------->
     <div class="d-flex justify-content-center" style="clear: both">
+        <template>
+
+        </template>
         <!-- Заполняется скриптом comment-in-card -->
         <div id="comments_container" class="container m-0 p-0">
             <th:block th:each="comment: ${comments}">
@@ -164,16 +168,15 @@
                             </div>
 
                             <a class="float-right" type="button" id="replyButton"
-                               th:data-commentbox="panel+${comment.getId()}">ответить</a>
+                               th:data-panelId="panel+${comment.getId()}">ответить</a>
                         </div>
-                        <div style="display:none" th:id="panel+${comment.getId()}" name="answerBox">
-                            <textarea class="form-control col-xs-12" rows="7" cols="120"
-                                      id="textareaanswer"></textarea>
+                        <div style="display:none" th:id="panel+${comment.getId()}">
+                            <input class="form-control col-xs-12" rows="7" cols="120" id="inputReply">
                             <br/>
 
-                            <button id="add_comment_answer" class="btn btn-sm btn-primary float-left"
+                            <button id="addReplyButton" class="btn btn-sm btn-primary float-left"
                                     type="submit" th:data-id="${comment.getId()}"
-                                    th:data-commentbox="panel+${comment.getId()}">Добавить
+                                    th:data-panelId="panel+${comment.getId()}">Добавить
                             </button>
                         </div>
                     </div>
