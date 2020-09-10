@@ -3,18 +3,7 @@
  */
 let socket = new SockJS('/ws');
     let stompClient = Stomp.over(socket);
-    let con = $('#notif_counter');
-    let counter = 0;
 
-    function container(container){
-    con = container;
-    }
-    function bell(con, counter){
-        if(counter > 0){
-            con.empty();
-            con.append(counter);
-        }
-    }
 
     stompClient.connect({}, function (frame) {
         fetch(`/api/user/MyNotifsNbr`)
@@ -22,14 +11,20 @@ let socket = new SockJS('/ws');
             .then(result => {
                 result.forEach(element =>
                     stompClient.send('/user/queue/notify', {}, JSON.stringify(element)))
+                bell(con,result.length)
             })
-    stompClient.subscribe('/user/queue/notify', function (notification) {
-        // Call the notify function when receive a notification
-        let data = JSON.parse(notification.body); // notification data
-        if (notification) {
-            bell(con,counter+=1);
-         }
 
-    });
 });
 
+
+//P.S :
+
+    //На случай если нужно будет отправлять уведомления от имени администратора !
+    // stompClient.subscribe('/user/queue/notify', function (notification) {
+    //     // Call the notify function when receive a notification
+    //     let data = JSON.parse(notification.body); // notification data
+    //     if (notification) {
+    //         bell(con,counter+=1);
+    //     }
+    //
+    // });

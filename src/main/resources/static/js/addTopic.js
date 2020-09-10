@@ -18,7 +18,9 @@ $('#add_topic_button').on('click', async function (event) {
     let img = $('#topic_img').prop('files')[0];
 
     await addTopic(title, content, completed, img)
+
 });
+
 
 async function addTopic(title, content, completed, img) {
     const formData = new FormData();
