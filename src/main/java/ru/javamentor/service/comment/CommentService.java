@@ -16,12 +16,9 @@ import java.util.List;
 public interface CommentService {
 
     /**
-     * метод для добавления комментария
-     *
-     * @param text - добавляемый текст комментария
-     * @param author - добавляемый автор комментария
-     * @param topic - добавляемая статья, которую прокомментировали
-     * @return Comment - возвращает добавленный комментарий
+     * @param commentDTO - DTO комментария
+     * @param author     - автор комментария
+     * @return - Собранный из DTO комментарий
      */
     Comment addComment(CommentDTO commentDTO, User author);
 
