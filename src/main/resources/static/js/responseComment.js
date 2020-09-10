@@ -8,14 +8,13 @@ $(document).on('click', '#addReplyButton', async function () {
     let comment = document.getElementById('inputReply').value;
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
-    let isMainComment = false;
     let mainCommentId = $(this).attr('data-id');
 
     if (comment !== '') {
         let data = {
-            comment: comment,
+            text: comment,
             topicId: topicId,
-            isMainComment: isMainComment,
+            isMainComment: false,
             mainCommentId: mainCommentId
         }
 

@@ -78,35 +78,49 @@ public class CommentRestController {
     public ResponseEntity<Comment> addTopic(@RequestBody String data,
                                             @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);
+
         Long topicId = Long.parseLong(jsonObj.getString("topicId"));
         String comment = jsonObj.getString("comment");
         Topic topic = topicService.getTopicById(topicId);
+
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
+
             for (User u : topic.getAuthors()) {
                 Notification notification = new Notification();
+
                 notification.setTitle("Новый комментарий");
-                notification.setText("Пользователь " + userService.getUserByEmail(auth.getName()) + " оставил новый комментарий в статье " + topic.getTitle() + " ");
+                notification.setText("Пользователь " +
+                        userService.getUserByEmail(auth.getName()) +
+                        " оставил новый комментарий в статье " + topic.getTitle() + " ");
                 notification.setUser(u);
+
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification(u, notificationService.getNotificationDto
+                        (notificationService.getById(notification.getId())));
             }
+
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
+
         } else {
             Comment newComment = commentService.addComment(comment, user, topic);
+
             for (User u : topic.getAuthors()) {
                 Notification notification = new Notification();
                 notification.setTitle("Новый комментарий");
-                notification.setText("Пользователь " + user.getUsername() + " оставил новый комментарий в статье " + topic.getTitle() + " ");
+                notification.setText("Пользователь " + user.getUsername() +
+                                " оставил новый комментарий в статье " + topic.getTitle() + " ");
                 notification.setUser(u);
                 notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+                wsNotificationService.sendNotification
+                        (u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             }
+
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
