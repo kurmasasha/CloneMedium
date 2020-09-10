@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Top 5 Comments</title>
+</head>
+<body>
+<!------------------------------------------------------- Шапка ------------------------------------------------------->
+<nav th:replace="fragments/header :: home_header"></nav>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+<!--&lt;!&ndash; Модальное окно Уведомлений &ndash;&gt;-->
+<!--<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>-->
+
+<!------------------------------------------------------- Комменты ------------------------------------------------------>
+<div class="container-fluid">
+    <div class="row">
+        <!------------------------------------------ Боковая панель ------------------------------------------>
+        <nav th:replace="fragments/side-bar :: admin-left_side_bar"></nav>
+        <!---------------------------------------------------------------------------------------------------->
+
+        <!------------------------------------ Область отображения данных ------------------------------------>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>Section title</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Автор</th>
+                    <th scope="col">Текст</th>
+                    <th scope="col">Количество Лайков</th>
+                </tr>
+                </thead>
+                <tbody id="comment-table">
+
+                </tbody>
+            </table>
+
+        </main>
+        <!---------------------------------------------------------------------------------------------------->
+    </div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+
+
+<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/all_topics_events.js"></script>
+<script src="/js/header_events.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getAllNotifications.js"></script>
+<script src="/js/getAllTopicsByHashtag.js"></script>
+<script src="/js/util/topic-in-card.js"></script>
+<script src="/js/util/timeConverter.js"></script>
+<script src="/js/parseText.js"></script>
+<script src="/js/likedTopic.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/admin_top_comments_event.js"></script>
+</body>
+</html>

@@ -2,9 +2,11 @@ package ru.javamentor.service.comment;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
+import ru.javamentor.dao.comment.best.BestCommentDAO;
 import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
@@ -12,6 +14,7 @@ import ru.javamentor.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация интерфейса для работы с комментариями
@@ -25,11 +28,13 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserDAO userDAO;
     private final CommentDAO commentDAO;
+    private final BestCommentDAO bestCommentDAO;
 
     @Autowired
-    public CommentServiceImpl(CommentDAO commentDAO, UserDAO userDAO) {
+    public CommentServiceImpl(CommentDAO commentDAO, UserDAO userDAO, BestCommentDAO bestCommentDAO) {
         this.commentDAO = commentDAO;
         this.userDAO = userDAO;
+        this.bestCommentDAO = bestCommentDAO;
     }
 
     /**
@@ -259,6 +264,15 @@ public class CommentServiceImpl implements CommentService {
 
     public boolean isExist(Long commentId){
         return commentDAO.isExist(commentId);
+    }
+
+    @Transactional
+    @Override
+    public List<Comment> bestFiveComment() {
+        return bestCommentDAO.findAll(Sort.by(Sort.Direction.DESC, "likes"))
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
     }
 
 }

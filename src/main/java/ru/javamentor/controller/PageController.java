@@ -163,6 +163,29 @@ public class PageController {
     }
 
     /**
+     * контроллер для вкладки с пятью лучшими статьями
+     *
+     * @return
+     */
+    @GetMapping("/admin/top_topics")
+    public String adminTopTopicsPage(Model model) {
+        List<Topic> topics = topicService.bestFive();
+        model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
+        return "admin_top5_topics";
+    }
+
+    /**
+     * контроллер для влкадки с пятью лучшими комментами
+     *
+     * @return
+     */
+    @GetMapping("/admin/top_comments")
+    public String adminTopCommentsPage() {
+        return "admin_top5_comments";
+    }
+
+    /**
      * метод для страницы тем для админа
      *
      * @return админскую страницу для отображения всех тем

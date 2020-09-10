@@ -173,4 +173,12 @@ public interface TopicService {
     List<TopicDto> getTopicDtoListByTopicList(List<Topic> topicList);
 
     boolean isExist(Long topicId);
+
+    /**
+     * Метод для получения 5-ти статей,
+     * набравших наибольшее количество лайков
+     *
+     * @return List<Topic> - коллекция содержащая до 5-ти лучший статей
+     */
+    List<Topic> bestFive();
 }

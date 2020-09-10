@@ -463,4 +463,13 @@ public class TopicRestControllers {
         }
     }
 
+    /**
+     * Метод для получения списка лучших статей
+     * (до 5 штук)
+     */
+    @GetMapping("/admin/best/topics")
+    public ResponseEntity<List<Topic>> getFiveTopicsByLikes() {
+        return new ResponseEntity<>(topicService.bestFive(), HttpStatus.OK);
+    }
+
 }

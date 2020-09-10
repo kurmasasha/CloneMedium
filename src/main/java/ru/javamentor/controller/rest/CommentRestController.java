@@ -201,4 +201,9 @@ public class CommentRestController {
         wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
+
+    @GetMapping("/admin/best/comment")
+    public ResponseEntity<List<Comment>> getBestFiveComment() {
+        return new ResponseEntity<>(commentService.bestFiveComment(), HttpStatus.OK);
+    }
 }
