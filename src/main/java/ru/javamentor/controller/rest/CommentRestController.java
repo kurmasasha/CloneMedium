@@ -38,10 +38,10 @@ public class CommentRestController {
     private final NotificationService notificationService;
 
     @Autowired
-    public CommentRestController(UserService userService, 
-                                 CommentService commentService, 
+    public CommentRestController(UserService userService,
+                                 CommentService commentService,
                                  TopicService topicService,
-                                 WsNotificationService wsNotificationService, 
+                                 WsNotificationService wsNotificationService,
                                  NotificationService notificationService) {
         this.userService = userService;
         this.commentService = commentService;
@@ -75,7 +75,8 @@ public class CommentRestController {
      *  Метод добавление комментария.
      */
     @PostMapping("/user/comment/add")
-    public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Comment> addTopic(@RequestBody String data,
+                                            @AuthenticationPrincipal User user) {
         JSONObject jsonObj = new JSONObject(data);
         Long topicId = Long.parseLong(jsonObj.getString("topicId"));
         String comment = jsonObj.getString("comment");

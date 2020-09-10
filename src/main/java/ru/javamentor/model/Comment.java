@@ -11,8 +11,8 @@ import java.util.Set;
 /**
  * Класс представляющий модель комментария
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.1 A
  */
 @NoArgsConstructor
 @Getter
@@ -40,7 +40,7 @@ public class Comment {
     private Boolean isMainComment;
 
     @Column
-    private Long main_comment_id;
+    private Long mainCommentId;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
@@ -77,6 +77,20 @@ public class Comment {
         this.author = author;
         this.topic = topic;
         this.dateCreated = dateCreated;
+    }
+
+    public Comment(String text,
+                   User author,
+                   Topic topic,
+                   LocalDateTime dateCreated,
+                   Boolean isMainComment,
+                   Long mainCommentId) {
+        this.text = text;
+        this.author = author;
+        this.topic = topic;
+        this.dateCreated = dateCreated;
+        this.isMainComment = isMainComment;
+        this.mainCommentId = mainCommentId;
     }
 
 }
