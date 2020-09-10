@@ -55,7 +55,8 @@ public class CommentServiceImpl implements CommentService {
     /**
      * метод для добавления комментария
      *
-     * @param author - добавляемый автор комментария
+     * @param author     - добавляемый автор комментария
+     * @param commentDTO - DTO комментария
      * @return Comment - возвращает добавленный комментарий
      */
     @Transactional
@@ -77,6 +78,11 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    /**
+     * @param commentDTO - DTO комментария
+     * @param author     - автор комментария
+     * @return - Собранный из DTO комментарий
+     */
     private Comment commentDTOToComment(CommentDTO commentDTO, User author) {
         return new Comment(commentDTO.getText(),
                 author,
@@ -84,6 +90,7 @@ public class CommentServiceImpl implements CommentService {
                 LocalDateTime.now(), commentDTO.getIsMainComment(),
                 commentDTO.getMainCommentId());
     }
+
 
     private void sendNotification(Topic topic, User author) {
         for (User u : topic.getAuthors()) {
