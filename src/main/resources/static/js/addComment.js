@@ -14,7 +14,7 @@ document.getElementById('add_comment_button').onclick = async function (e) {
 
     if (!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
         let data = {
-            comment: comment,
+            text: comment,
             topicId: topicId,
             isMainComment: true,
             mainCommentId: null

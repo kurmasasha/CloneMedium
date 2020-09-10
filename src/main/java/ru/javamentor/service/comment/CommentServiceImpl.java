@@ -48,8 +48,10 @@ public class CommentServiceImpl implements CommentService {
         try {
             Comment comment = new Comment(text, author, topic, LocalDateTime.now());
             commentDAO.addComment(comment);
+
             log.debug("IN addComment - comment: {} with author.id: {} and author.userName: {} successfully added",
                     text, author.getId(), author.getUsername());
+
             return comment;
         } catch (Exception e) {
             log.error("IN addComment - comment not added with exception {}", e.getMessage());
