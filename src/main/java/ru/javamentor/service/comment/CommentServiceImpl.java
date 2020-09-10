@@ -60,8 +60,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment addComment(CommentDTO commentDTO, User author) {
         try {
-//            checkEmptyComment(commentDTO);
-
             Comment comment = commentDTOToComment(commentDTO, author);
             commentDAO.addComment(comment);
 
@@ -74,12 +72,6 @@ public class CommentServiceImpl implements CommentService {
         } catch (Exception e) {
             log.error("IN addComment - comment not added with exception {}", e.getMessage());
             throw new RuntimeException();
-        }
-    }
-
-    private void checkEmptyComment(CommentDTO commentDTO) throws Exception {
-        if (commentDTO.getText().isEmpty()) {
-            throw new Exception();
         }
     }
 
