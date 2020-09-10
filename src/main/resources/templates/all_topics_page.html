@@ -115,6 +115,9 @@
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<!-- Модальное окно Уведомлений -->
+<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
+
 <!------------------------------------------------ Модальное окно ----------------------------------------------------->
 <nav th:replace="fragments/add-topic-modal :: add-topic_modal"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -127,6 +130,7 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getAllNotifications.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
