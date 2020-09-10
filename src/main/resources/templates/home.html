@@ -57,7 +57,8 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" th:id="'content' + ${topic.id}" role="tabpanel"
                                      aria-labelledby="content-tab">
-                                    <form th:action="@{/topic/update}" id="editForm" method="post">
+                                    <form th:action="@{/topic/update}" id="editForm" method="post"
+                                          enctype="multipart/form-data">
                                         <div class="form-group" style="display: none">
                                             <label class="col-form-label" for="editTopicId">Id</label>
                                             <input class="form-control" type="text" id="editTopicId" name="id"
@@ -75,6 +76,18 @@
                                             <textarea class="form-control" id="editTopicContent" name="content"
                                                       th:inline="text">[[${topic.content}]]</textarea>
                                         </div>
+
+                                        <div class="p-image" th:if="${topic.img != 'no-img.png'}" id="imageEditForm">
+                                            <input type="reset" value="&times;" id="resetButtonEditForm">
+                                            <br>
+                                            <img th:src="'/topic-img/' + ${topic.img}"
+                                                 th:alt="'image of topic : ' + ${topic.title}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input class="form-control-file" name="file" type="file" id="editTopicFile">
+                                        </div>
+
                                         <div class="modal-footer justify-content-center">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                 Отмена
@@ -91,7 +104,7 @@
                                             <tr th:each="author : ${topic.authors}" th:id="'tr' + ${author.id}">
                                                 <td th:text="${author.username}"></td>
                                                 <td>
-                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'">
+                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'" href="#">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
@@ -304,5 +317,6 @@
 <script src="/js/header_events.js"></script>
 <script src="/js/likedTopic.js"></script>
 <script src="/js/editAuthorsOfTopic.js"></script>
+<script src="/js/editformButtonHandler.js"></script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-                xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <title>All topics page</title>
 </head>
@@ -48,11 +49,13 @@
         <div class="topic_body">
           <div class="topic_text">
             <div th:if="${topic.img != 'no-img.png'}">
-              <img th:src="'/topic-img/' + ${topic.img}" th:alt="'image of topic : ' + ${topic.title}">
+              <img th:src="'/topic-img/' + ${topic.img}"
+                   th:alt="'image of topic : ' + ${topic.title}">
               <br>
               <br>
             </div>
-            <span th:id="topicContent-+${topic.getId()}" th:data-topic-content="${topic.getContent()}"
+            <span th:id="topicContent-+${topic.getId()}"
+                  th:data-topic-content="${topic.getContent()}"
                   class="topic_content"></span>
           </div>
         </div>
@@ -60,20 +63,22 @@
           <ul class="topic_stats">
             <li>
               <div class="topic_stats_items">
-                <span class="fa fa-thumbs-o-up fa_topic" ></span>
+                <span class="fa fa-thumbs-o-up fa_topic"></span>
                 <span class="text-info topic_stats_items_counter" th:utext="${topic.likes}"></span>
               </div>
             </li>
             <li>
               <div class="topic_stats_items">
                 <span class="fa fa-thumbs-o-down fa_topic"></span>
-                <span class="text-info topic_stats_items_counter" th:utext="${topic.dislikes}"></span>
+                <span class="text-info topic_stats_items_counter"
+                      th:utext="${topic.dislikes}"></span>
               </div>
             </li>
             <li>
               <div class="topic_stats_items topic_stats_items_comments">
                 <span class="fa fa-comments-o"></span>
-                <span class="text-info topic_stats_items_counter" th:id="commentsCount-+${topic.id}" th:utext="${topic.commentsCount}">
+                <span class="text-info topic_stats_items_counter" th:id="commentsCount-+${topic.id}"
+                      th:utext="${topic.commentsCount}">
                   <script>
                   </script>
                 </span>
@@ -99,6 +104,9 @@
         </select>
         <button id="theme_button" type="button" class="btn btn-dark mt-2">
           Найти по теме
+        </button>
+        <button id="reset_theme_button" type="button" class="btn btn-dark mt-2">
+          Все
         </button>
       </form>
     </div>

@@ -118,6 +118,5 @@ public class RegistrationThroughSocialNetworks {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI("/home"));
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-
     }
 }
