@@ -1,5 +1,6 @@
 package ru.javamentor.service.comment;
 
+import ru.javamentor.dto.CommentDTO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -22,7 +23,7 @@ public interface CommentService {
      * @param topic - добавляемая статья, которую прокомментировали
      * @return Comment - возвращает добавленный комментарий
      */
-    Comment addComment(String text, User author, Topic topic);
+    Comment addComment(CommentDTO commentDTO, User author);
 
     /**
      * метод для получения комментария по id

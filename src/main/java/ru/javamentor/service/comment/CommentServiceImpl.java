@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.dao.user.UserDAO;
+import ru.javamentor.dto.CommentDTO;
 import ru.javamentor.model.Comment;
+import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -35,25 +37,44 @@ public class CommentServiceImpl implements CommentService {
     /**
      * метод для добавления комментария
      *
-     * @param text   - добавляемый текст комментария
      * @param author - добавляемый автор комментария
-     * @param topic  - добавляемая статья, которую прокомментировали
      * @return Comment - возвращает добавленный комментарий
      */
     @Transactional
     @Override
-    public Comment addComment(String text, User author, Topic topic) {
+    public Comment addComment(CommentDTO commentDTO, User author) {
         try {
-            Comment comment = new Comment(text, author, topic, LocalDateTime.now());
+            Comment comment = commentDTOToComment(commentDTO, author);
+
             commentDAO.addComment(comment);
 
             log.debug("IN addComment - comment: {} with author.id: {} and author.userName: {} successfully added",
-                    text, author.getId(), author.getUsername());
+                    commentDTO.getText(), author.getId(), author.getUsername());
 
             return comment;
         } catch (Exception e) {
             log.error("IN addComment - comment not added with exception {}", e.getMessage());
             throw new RuntimeException();
+        }
+    }
+
+    private Comment commentDTOToComment(CommentDTO commentDTO, User author){
+        return null;
+    }
+
+    private void sendNotification(){
+        for (User u : topic.getAuthors()) {
+            Notification notification = new Notification();
+
+            notification.setTitle("Новый комментарий");
+            notification.setText("Пользователь " +
+                    userService.getUserByEmail(auth.getName()) +
+                    " оставил новый комментарий в статье " + topic.getTitle() + " ");
+            notification.setUser(u);
+
+            notificationService.addNotification(notification);
+            wsNotificationService.sendNotification(u, notificationService.getNotificationDto
+                    (notificationService.getById(notification.getId())));
         }
     }
 
