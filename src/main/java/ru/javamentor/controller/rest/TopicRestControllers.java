@@ -218,15 +218,6 @@ public class TopicRestControllers {
             Set<User> users = new HashSet<>();
             users.add(userService.getUserByUsername(principal.getName()));
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
-            for (User user :
-                    topic.getAuthors()) {
-                Notification notification = new Notification();
-                notification.setTitle("Модерация");
-                notification.setText("Ваша статья \"" + topic.getTitle() + "\" ожидает модерацию");
-                notification.setUser(user);
-                notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(user,notificationService.getNotificationDto(notificationService.getById(notification.getId())));
-            }
 
             if (topic != null) {
                 return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);

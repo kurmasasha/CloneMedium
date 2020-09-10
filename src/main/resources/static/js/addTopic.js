@@ -19,8 +19,6 @@ $('#add_topic_button').on('click', async function (event) {
 
     await addTopic(title, content, completed, img)
 
-    $(document).ready(getAllNotifications())
-
 });
 
 
