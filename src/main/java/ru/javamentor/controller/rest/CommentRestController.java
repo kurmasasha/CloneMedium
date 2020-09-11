@@ -157,22 +157,25 @@ public class CommentRestController {
     public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Comment comment = commentService.putLikeToComment(commentId, userService.getUserByEmail(auth.getName()));
+            User userByEmail = userService.getUserByEmail(auth.getName());
+            Comment comment = commentService.putLikeToComment(commentId, userByEmail);
             Notification notification = new Notification();
             notification.setTitle("Новое уведомление");
-            notification.setText("Пользователю " + userService.getUserByEmail(auth.getName()) + " понравился ваш комментарий " + comment.getText() + " ");
-            notification.setUser(userService.getUserByEmail(auth.getName()));
+            notification.setText("Пользователю " + auth.getName() + " понравился ваш комментарий " + comment.getText() + " ");
+            notification.setUser(comment.getAuthor());
             notificationService.addNotification(notification);
-            wsNotificationService.sendNotification(userService.getUserByEmail(auth.getName()), notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+            wsNotificationService.sendNotification(comment.getAuthor(),
+                    notificationService.getNotificationDto(notificationService.getById(notification.getId())));
             return new ResponseEntity<>(comment, HttpStatus.OK);
         }
         Comment comment = commentService.putLikeToComment(commentId, user);
         Notification notification = new Notification();
         notification.setTitle("Новое уведомление");
         notification.setText("Пользователю " + user.getUsername() + " понравился ваш комментарий " + comment.getText() + " ");
-        notification.setUser(user);
+        notification.setUser(comment.getAuthor());
         notificationService.addNotification(notification);
-        wsNotificationService.sendNotification(user, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
+        wsNotificationService.sendNotification(comment.getAuthor(),
+                notificationService.getNotificationDto(notificationService.getById(notification.getId())));
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
