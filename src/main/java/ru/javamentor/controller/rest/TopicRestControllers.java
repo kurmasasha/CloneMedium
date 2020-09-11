@@ -212,19 +212,6 @@ public class TopicRestControllers {
 
             Topic topic = topicService.addTopic(title, content, completed, resultFileName, users);
 
-            for (User user : topic.getAuthors()) {
-                Notification notification = new Notification();
-
-                notification.setTitle("Модерация");
-                notification.setText("Ваша статья \"" + topic.getTitle() + "\" ожидает модерацию");
-                notification.setUser(user);
-
-                notificationService.addNotification(notification);
-
-                wsNotificationService.sendNotification(user,
-                        notificationService.getNotificationDto(notificationService.getById(notification.getId())));
-            }
-
             if (topic != null) {
                 return new ResponseEntity<>(new TopicDto(topic), HttpStatus.OK);
             }
@@ -461,15 +448,6 @@ public class TopicRestControllers {
         } else {
             return new ResponseEntity<>("This user is not exist", HttpStatus.BAD_REQUEST);
         }
-    }
-
-    /**
-     * Метод для получения списка лучших статей
-     * (до 5 штук)
-     */
-    @GetMapping("/admin/best/topics")
-    public ResponseEntity<List<Topic>> getFiveTopicsByLikes() {
-        return new ResponseEntity<>(topicService.bestFive(), HttpStatus.OK);
     }
 
 }
