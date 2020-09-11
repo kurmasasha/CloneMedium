@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     function getTopComments() {
         $('#comment-table').empty();
-        fetch(`/api/admin/best/comment`)
+        fetch(`/api/admin/top/comment`)
             .then(responce => responce.json())
             .then(result => {
                 console.log(result)

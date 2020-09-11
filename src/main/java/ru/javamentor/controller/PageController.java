@@ -19,7 +19,6 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
-import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
@@ -169,7 +168,7 @@ public class PageController {
      */
     @GetMapping("/admin/top_topics")
     public String adminTopTopicsPage(Model model) {
-        List<Topic> topics = topicService.bestFive();
+        List<Topic> topics = topicService.topFiveTopic();
         model.addAttribute("themes", themeService.getAllThemes());
         model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
         return "admin_top5_topics";

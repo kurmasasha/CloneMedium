@@ -180,5 +180,5 @@ public interface TopicService {
      *
      * @return List<Topic> - коллекция содержащая до 5-ти лучший статей
      */
-    List<Topic> bestFive();
+    List<Topic> topFiveTopic();
 }

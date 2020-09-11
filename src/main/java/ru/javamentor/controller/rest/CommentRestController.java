@@ -205,8 +205,8 @@ public class CommentRestController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @GetMapping("/admin/best/comment")
-    public ResponseEntity<List<Comment>> getBestFiveComment() {
-        return new ResponseEntity<>(commentService.bestFiveComment(), HttpStatus.OK);
+    @GetMapping("/admin/top/comment")
+    public ResponseEntity<List<Comment>> getTopFiveComment() {
+        return new ResponseEntity<>(commentService.topFiveComment(), HttpStatus.OK);
     }
 }

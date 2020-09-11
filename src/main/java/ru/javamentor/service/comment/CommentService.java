@@ -104,5 +104,5 @@ public interface CommentService {
      *
      * @return List<Comment> - возвращает список из 5 комментариев
      */
-    List<Comment> bestFiveComment();
+    List<Comment> topFiveComment();
 }

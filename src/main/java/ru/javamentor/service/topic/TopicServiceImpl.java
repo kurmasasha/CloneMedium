@@ -2,12 +2,10 @@ package ru.javamentor.service.topic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.dao.topic.TopicDAO;
-import ru.javamentor.dao.topic.best.BestTopicsDAO;
 import ru.javamentor.dao.user.UserDAO;
 import ru.javamentor.dto.TopicDto;
 import ru.javamentor.model.Topic;
@@ -32,14 +30,12 @@ public class TopicServiceImpl implements TopicService {
     private final TopicDAO topicDAO;
     private final UserDAO userDAO;
     private final CommentDAO commentDAO;
-    private final BestTopicsDAO bestTopicsDAO;
 
     @Autowired
-    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO, CommentDAO commentDAO, BestTopicsDAO bestTopicsDAO) {
+    public TopicServiceImpl(TopicDAO topicDAO, UserDAO userDAO, CommentDAO commentDAO) {
         this.topicDAO = topicDAO;
         this.userDAO = userDAO;
         this.commentDAO = commentDAO;
-        this.bestTopicsDAO = bestTopicsDAO;
     }
 
     /**
@@ -452,10 +448,14 @@ public class TopicServiceImpl implements TopicService {
         return topicDAO.isExist(topicId);
     }
 
+    /**
+     * метод для получения Топ 5 топиков
+     * @return
+     */
     @Transactional
     @Override
-    public List<Topic> bestFive() {
-        return bestTopicsDAO.findAll(Sort.by(Sort.Direction.DESC, "likes"))
+    public List<Topic> topFiveTopic() {
+        return topicDAO.topFiveTopic()
                 .stream()
                 .limit(5)
                 .collect(Collectors.toList());
