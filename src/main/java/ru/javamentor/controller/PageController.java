@@ -32,7 +32,9 @@ import ru.javamentor.util.validation.ValidatorFormEditUser;
 import ru.javamentor.util.validation.topic.TopicValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Path;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -334,7 +336,7 @@ public class PageController {
         String content = topic.getContent();
         String img = "no-img.png";
         Set<User> users = new HashSet<>();
-
+        model.getAttribute("content");
         users.add(userService.getUserByUsername(principal.getName()));
         try {
             topicValidator.checkTitleAndContent(title, content);
@@ -349,7 +351,7 @@ public class PageController {
             log.error("Что-то сломалось при попытке добавления статьи!");
             log.error("Поля title и content обязательны к заполнению!");
         }
-        return "redirect:/home";
+        return "add-Topic-Form";
     }
 }
 

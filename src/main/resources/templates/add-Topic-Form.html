@@ -1,37 +1,116 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<script src="ckeditor5/build/ckeditor.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>Форма добавления статьи</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../js/ckeditor5/sample/styles.css">
 </head>
 <body>
-<form th:action="@{/addTopic}"
-      th:object="${newTopic}" method="POST" enctype="multipart/form-data">
-    Title:
-    <input type="text" th:field="*{title}"/>
-    <br/>
-    Content:
-<!--    <input type="text" th:field="*{content}">-->
-<!--    <br/>-->
-    <div class="custom-file">
-        <input th:id="${newTopic.img}" name="file" type="file"
-               id="inputGroupFile02" aria-describedby="inputGroupFileAddon02">
-        <label class="custom-file-label" for="inputGroupFile02">Картинка</label>
+<main>
+    <div class="centered">
+        <form th:action="@{/addTopic}"
+              th:object="${newTopic}" method="POST" enctype="multipart/form-data">
+            Title:
+            <label>
+                <input type="text" th:field="*{title}" id="add_topic_title"/>
+            </label>
+            <br/>
+
+            <div class="row row-editor">
+                <div class="editor">
+                    <textarea id="content" name="content"></textarea>
+                </div>
+            </div>
+            <!--            <input type="text" id="con" name="con" class="form-control"/>-->
+
+
+            <div class="custom-file">
+                <input th:id="${newTopic.img}" name="file" type="file"
+                       id="inputGroupFile02" aria-describedby="inputGroupFileAddon02">
+                <label class="custom-file-label" for="inputGroupFile02">Картинка</label>
+            </div>
+            <button class="btn btn-success btn-block add" type="submit" value="Lets go" id="add_topic_button">Upload
+            </button>
+        </form>
+        <div id="divi">
+            <p>hello</p>
+        </div>
     </div>
+</main>
+</body>
 
-    <button class="btn btn-success btn-block" type="submit" value="Lets go">Upload</button>
-</form>
+<script src="../js/ckeditor5/build/ckeditor.js"></script>
+<script>
+    ClassicEditor.replace('content')
+    updateDivi()
 
-<label for="content"></label><textarea id="content" name="content">textarea</textarea>
-
+    function updateDivi() {
+        var CKE = ClassicEditor.instances.content.getData()
+        $("#divi").html(CKE)
+    }
+</script>
 <script>
     ClassicEditor
-        .create( document.querySelector( '#content' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
+        .create(document.querySelector('.editor'), {
 
-</body>
+            toolbar: {
+                items: [
+                    'alignment',
+                    '|',
+                    'bold',
+                    'italic',
+                    'strikethrough',
+                    'subscript',
+                    'superscript',
+                    'blockQuote',
+                    'undo',
+                    'redo',
+                    'link',
+                    'specialCharacters',
+                    '|',
+                    'insertTable',
+                    'bulletedList',
+                    'numberedList',
+                    'indent',
+                    'outdent',
+                    '|',
+                    'CKFinder',
+                    'imageUpload',
+                    'mediaEmbed',
+                    'code',
+                    'codeBlock'
+                ]
+            },
+            language: 'ru',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:full',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+
+        })
+        .then(editor => {
+            window.editor = editor;
+
+        })
+        .catch(error => {
+            console.error('Oops, something went wrong!');
+            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+            console.warn('Build id: gwyh46tv4ta0-le6whw5ztnbc');
+            console.error(error);
+        });
+</script>
+<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 </html>
