@@ -30,5 +30,5 @@ $(document).on('click', '#addReplyButton', async function () {
 
     $('#' + $(this).attr('data-panelId')).toggle();
 
-    await fillCommentFields();
+    await fillCommentContainer();
 });
