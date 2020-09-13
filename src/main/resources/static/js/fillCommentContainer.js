@@ -10,8 +10,6 @@ let editCommentButton = templateComment.querySelector('.edit-comment')
 let deleteCommentButton = templateComment.querySelector('.delete-comment')
 let dataCreated = templateComment.querySelector('.data-created')
 let textComment = templateComment.querySelector('.card-text')
-//let like todo check (th:classappend="${#lists.contains(comment.likedUsers, user)} ? 'rated' : ''")
-//let dislike todo check (th:classappend="${#lists.contains(comment.dislikedUsers, user)} ? 'rated' : ''")
 let likeButton = templateComment.querySelector('.like-button');
 let dislikeButton = templateComment.querySelector('.dislike-button');
 let likeNum = templateComment.querySelector('.likes-num');
@@ -22,6 +20,7 @@ let addReplyButton = templateComment.querySelector('#addReplyButton');
 
 let res = [];
 let json = [];
+let deeper = 0;
 
 $(fillCommentContainer())
 
@@ -68,20 +67,31 @@ async function printComment(comment) {
 }
 
 function commentTree() {
+    deeper = 0;
+
     json.forEach((comment) => {
         if(comment.isMainComment && (res.indexOf(comment)== -1)){
-            res.push(comment);
+            addEl(comment);
             findChild(comment);
         }
     })
 }
 
 function findChild(parentComment) {
-    json.forEach((comment)=>{
-        if((comment.mainCommentId == parentComment.id) && (res.indexOf(comment)== -1)){
-            res.push(comment);
-            findChild(comment);
+    json.forEach((childComment)=>{
+        if((childComment.mainCommentId == parentComment.id) && (res.indexOf(childComment)== -1)){
+            deeper += 30;
+
+            addEl(childComment);
+            findChild(parentComment)
+            findChild(childComment);
             commentTree();
         }
     })
+}
+
+function addEl(comment) {
+    comment.deeper = deeper;
+
+    res.push(comment)
 }
