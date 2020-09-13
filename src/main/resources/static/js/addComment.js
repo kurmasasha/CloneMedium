@@ -33,7 +33,7 @@ document.getElementById('add_comment_button').onclick = async function (e) {
 
         })
 
-        await fillCommentFields()
+        await fillCommentContainer()
     }
 }
 

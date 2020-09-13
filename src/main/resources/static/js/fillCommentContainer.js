@@ -20,41 +20,71 @@ let responseButton = templateComment.querySelector('.response-button');
 let replyPanel = templateComment.querySelector('.reply-panel');
 let addReplyButton = templateComment.querySelector('#addReplyButton');
 
-$(fillCommentFields())
+$(fillCommentContainer())
 
-async function fillCommentFields() {
-    while (commentContainer.firstChild) {
-        commentContainer.removeChild(commentContainer.firstChild);
-    }
+async function fillCommentContainer() {
+   commentContainer.innerHTML = '';
 
-    let url = document.location.href;
-    let array = url.split('/');
-    let topicNum = array[array.length - 1];
+    let url = document.location.href.split('/');
+    let topicNum = url[url.length - 1];
 
     let json = await fetch(commentApiUrl + topicNum).then((res) => {
         return res.json()
     })
 
-    json.map((comment) => {
-        commentCard.setAttribute('id', 'commentCard-' + comment.id);
-        commentAuthor.textContent = comment.author.firstName + ' ' + comment.author.lastName;
-        editCommentButton.setAttribute('data-id', comment.id);
-        deleteCommentButton.setAttribute('data-id', comment.id);
-        dataCreated.textContent = comment.dateCreated;
-        textComment.setAttribute('id', 'commentCardText-' + comment.id);
-        textComment.textContent = comment.text;
-        likeButton.setAttribute('data-id', comment.id);
-        dislikeButton.setAttribute('data-id', comment.id);
-        likeNum.setAttribute('id', 'likesId-' + comment.id)
-        likeNum.textContent = comment.likes;
-        dislikeNum.setAttribute('id', 'dislikesId-' + comment.id);
-        dislikeNum.textContent = comment.dislikes;
-        responseButton.setAttribute('data-panelId', 'panel' + comment.id);
-        replyPanel.setAttribute('id', 'panel' + comment.id);
-        addReplyButton.setAttribute('data-id', comment.id);
-        addReplyButton.setAttribute('data-panelId', 'panel' + comment.id);
+    let result = commentTree(json);
 
-        let clone = document.importNode(templateComment, true)
-        commentContainer.appendChild(clone)
+    result.map((comment) => {
+       printComment(comment)
     })
 }
+ function printComment(comment) {
+     if(!comment.isMainComment){
+         commentCard.setAttribute('style', "margin-left: 30px")
+     }else{
+         commentCard.setAttribute('style', ' margin-left: 0px')
+     }
+
+     commentCard.setAttribute('id', 'commentCard-' + comment.id);
+     commentAuthor.textContent = comment.author;
+     editCommentButton.setAttribute('data-id', comment.id);
+     deleteCommentButton.setAttribute('data-id', comment.id);
+     dataCreated.textContent = comment.dateCreated;
+     textComment.setAttribute('id', 'commentCardText-' + comment.id);
+     textComment.textContent = comment.text;
+     likeButton.setAttribute('data-id', comment.id);
+     dislikeButton.setAttribute('data-id', comment.id);
+     likeNum.setAttribute('id', 'likesId-' + comment.id)
+     likeNum.textContent = comment.likes;
+     dislikeNum.setAttribute('id', 'dislikesId-' + comment.id);
+     dislikeNum.textContent = comment.dislikes;
+     responseButton.setAttribute('data-panelId', 'panel' + comment.id);
+     replyPanel.setAttribute('id', 'panel' + comment.id);
+     addReplyButton.setAttribute('data-id', comment.id);
+     addReplyButton.setAttribute('data-panelId', 'panel' + comment.id);
+
+     let clone = document.importNode(templateComment, true)
+     commentContainer.appendChild(clone)
+ }
+
+ function commentTree(json) {
+    let res = [];
+
+     for (let comment in json) {
+        let com;
+             com.id = comment.id;
+             com.text = comment.text;
+             com.dateCreated = comment.dateCreated;
+             com.author = comment.author.firstName + ' ' + comment.author.lastName;
+             com.isMainComment = comment.isMainComment;
+             com.mainCommentId = comment.isMainComment;
+
+         if (commentChildren(com, json)){
+
+         }
+     }
+ }
+
+ function commentChildren(com, json) {
+
+ }
