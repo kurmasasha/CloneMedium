@@ -20,71 +20,68 @@ let responseButton = templateComment.querySelector('.response-button');
 let replyPanel = templateComment.querySelector('.reply-panel');
 let addReplyButton = templateComment.querySelector('#addReplyButton');
 
+let res = [];
+let json = [];
+
 $(fillCommentContainer())
 
 async function fillCommentContainer() {
-   commentContainer.innerHTML = '';
+    commentContainer.innerHTML = '';
+    res = [];
 
     let url = document.location.href.split('/');
     let topicNum = url[url.length - 1];
 
-    let json = await fetch(commentApiUrl + topicNum).then((res) => {
+    json = await fetch(commentApiUrl + topicNum).then((res) => {
         return res.json()
     })
 
-    let result = commentTree(json);
+    commentTree();
 
-    result.map((comment) => {
-       printComment(comment)
+    res.map((comment) => {
+        printComment(comment)
     })
 }
- function printComment(comment) {
-     if(!comment.isMainComment){
-         commentCard.setAttribute('style', "margin-left: 30px")
-     }else{
-         commentCard.setAttribute('style', ' margin-left: 0px')
-     }
 
-     commentCard.setAttribute('id', 'commentCard-' + comment.id);
-     commentAuthor.textContent = comment.author;
-     editCommentButton.setAttribute('data-id', comment.id);
-     deleteCommentButton.setAttribute('data-id', comment.id);
-     dataCreated.textContent = comment.dateCreated;
-     textComment.setAttribute('id', 'commentCardText-' + comment.id);
-     textComment.textContent = comment.text;
-     likeButton.setAttribute('data-id', comment.id);
-     dislikeButton.setAttribute('data-id', comment.id);
-     likeNum.setAttribute('id', 'likesId-' + comment.id)
-     likeNum.textContent = comment.likes;
-     dislikeNum.setAttribute('id', 'dislikesId-' + comment.id);
-     dislikeNum.textContent = comment.dislikes;
-     responseButton.setAttribute('data-panelId', 'panel' + comment.id);
-     replyPanel.setAttribute('id', 'panel' + comment.id);
-     addReplyButton.setAttribute('data-id', comment.id);
-     addReplyButton.setAttribute('data-panelId', 'panel' + comment.id);
+async function printComment(comment) {
+    commentCard.setAttribute('style', "margin-left: " + comment.deeper + "px")
+    commentCard.setAttribute('id', 'commentCard-' + comment.id);
+    commentAuthor.textContent = comment.author.firstName + ' ' + comment.author.lastName;
+    editCommentButton.setAttribute('data-id', comment.id);
+    deleteCommentButton.setAttribute('data-id', comment.id);
+    dataCreated.textContent = comment.dateCreated;
+    textComment.setAttribute('id', 'commentCardText-' + comment.id);
+    textComment.textContent = comment.text;
+    likeButton.setAttribute('data-id', comment.id);
+    dislikeButton.setAttribute('data-id', comment.id);
+    likeNum.setAttribute('id', 'likesId-' + comment.id)
+    likeNum.textContent = comment.likes;
+    dislikeNum.setAttribute('id', 'dislikesId-' + comment.id);
+    dislikeNum.textContent = comment.dislikes;
+    responseButton.setAttribute('data-panelId', 'panel' + comment.id);
+    replyPanel.setAttribute('id', 'panel' + comment.id);
+    addReplyButton.setAttribute('data-id', comment.id);
+    addReplyButton.setAttribute('data-panelId', 'panel' + comment.id);
 
-     let clone = document.importNode(templateComment, true)
-     commentContainer.appendChild(clone)
- }
+    let clone = document.importNode(templateComment, true)
+    commentContainer.appendChild(clone)
+}
 
- function commentTree(json) {
-    let res = [];
+function commentTree() {
+    json.forEach((comment) => {
+        if(comment.isMainComment && (res.indexOf(comment)== -1)){
+            res.push(comment);
+            findChild(comment);
+        }
+    })
+}
 
-     for (let comment in json) {
-        let com;
-             com.id = comment.id;
-             com.text = comment.text;
-             com.dateCreated = comment.dateCreated;
-             com.author = comment.author.firstName + ' ' + comment.author.lastName;
-             com.isMainComment = comment.isMainComment;
-             com.mainCommentId = comment.isMainComment;
-
-         if (commentChildren(com, json)){
-
-         }
-     }
- }
-
- function commentChildren(com, json) {
-
- }
+function findChild(parentComment) {
+    json.forEach((comment)=>{
+        if((comment.mainCommentId == parentComment.id) && (res.indexOf(comment)== -1)){
+            res.push(comment);
+            findChild(comment);
+            commentTree();
+        }
+    })
+}
