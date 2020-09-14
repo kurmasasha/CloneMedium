@@ -351,7 +351,7 @@ public class PageController {
             log.error("Что-то сломалось при попытке добавления статьи!");
             log.error("Поля title и content обязательны к заполнению!");
         }
-        return "add-Topic-Form";
+        return "redirect:/home";
     }
 }
 
