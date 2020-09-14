@@ -43,7 +43,8 @@ public class CommentServiceImpl implements CommentService {
                               UserDAO userDAO,
                               TopicService topicService,
                               UserService userService,
-                              NotificationService notificationService, WsNotificationService wsNotificationService) {
+                              NotificationService notificationService,
+                              WsNotificationService wsNotificationService) {
         this.commentDAO = commentDAO;
         this.userDAO = userDAO;
         this.topicService = topicService;
@@ -180,12 +181,31 @@ public class CommentServiceImpl implements CommentService {
     public boolean removeCommentById(Long id) {
         try {
             commentDAO.removeCommentById(id);
+            removeChild(id);
+
             log.debug("IN removeCommentById - comment with Id: {} successfully deleted", id);
+
             return true;
         } catch (Exception e) {
             log.error("Exception while removeCommentById in service with comment.id {}", id);
+
             return false;
         }
+    }
+
+    /**
+     * Метод находит все дочерние комментарии и удаляет их
+     * @param parentId - id родительского комментария
+     */
+    private void removeChild(Long parentId){
+        for (Comment comment : getAllCommentsByParentId(parentId)) {
+            removeCommentById(comment.getId());
+        }
+    }
+
+    @Override
+    public List<Comment> getAllCommentsByParentId(Long parentId) {
+        return commentDAO.getAllCommentsByParentId(parentId);
     }
 
     /**
