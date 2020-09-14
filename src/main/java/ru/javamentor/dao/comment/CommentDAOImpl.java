@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Реализация интерфейса CommentDAO
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 
 @Repository
@@ -76,6 +76,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     /**
      * метод для определения количества комментариев у топика
+     *
      * @param topicId - id нужного топика
      * @return количесвто комментариев у топика
      */
@@ -96,11 +97,17 @@ public class CommentDAOImpl implements CommentDAO {
                 .setParameter("topicId", topicId).executeUpdate();
     }
 
-    public boolean isExist(Long commentId){
+    public boolean isExist(Long commentId) {
         Long count = entityManager.createQuery("SELECT COUNT(c.id) FROM Comment c WHERE c.id = :commentId", Long.class)
                 .setParameter("commentId", commentId)
                 .getSingleResult();
-        return count>0;
+        return count > 0;
+    }
+
+    @Override
+    public List<Comment> getAllCommentsByParentId(Long parentId) {
+        return entityManager.createQuery("SELECT c FROM Comment c WHERE c.mainCommentId = :parentId", Comment.class)
+                .setParameter("parentId", parentId).getResultList();
     }
 
 }
