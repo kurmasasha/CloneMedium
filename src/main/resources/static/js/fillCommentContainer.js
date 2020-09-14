@@ -17,6 +17,7 @@ let dislikeNum = templateComment.querySelector('.dislikes-num');
 let responseButton = templateComment.querySelector('.response-button');
 let replyPanel = templateComment.querySelector('.reply-panel');
 let addReplyButton = templateComment.querySelector('#addReplyButton');
+let inputReply = templateComment.querySelector('[name=inputReply]');
 
 let res = [];
 let json = [];
@@ -61,6 +62,7 @@ async function printComment(comment) {
     replyPanel.setAttribute('id', 'panel' + comment.id);
     addReplyButton.setAttribute('data-id', comment.id);
     addReplyButton.setAttribute('data-panelId', 'panel' + comment.id);
+    inputReply.setAttribute('id','inputReply'+comment.id);
 
     let clone = document.importNode(templateComment, true)
     commentContainer.appendChild(clone)
