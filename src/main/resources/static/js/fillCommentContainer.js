@@ -72,7 +72,8 @@ function commentTree() {
     deeper = 0;
 
     json.forEach((comment) => {
-        if(comment.isMainComment && (res.indexOf(comment)== -1)){
+        if(comment.isMainComment &&
+            (res.indexOf(comment)== -1)){
             addEl(comment);
             findChild(comment);
         }
@@ -81,7 +82,8 @@ function commentTree() {
 
 function findChild(parentComment) {
     json.forEach((childComment)=>{
-        if((childComment.mainCommentId == parentComment.id) && (res.indexOf(childComment)== -1)){
+        if((childComment.mainCommentId == parentComment.id) &&
+            (res.indexOf(childComment)== -1)){
             deeper += 30;
 
             addEl(childComment);
