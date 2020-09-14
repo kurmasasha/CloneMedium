@@ -128,28 +128,6 @@ public class ThemeServiceImpl implements ThemeService {
         }
     }
 
-    /**
-     * Метод для отображения тем
-     *
-     * @param model - переменна для передачи тем на контроллер
-     * @param userDB - конкретный пользователь
-     * @return void
-     */
-    @Override
-    public void showThemes(Model model, User userDB) {
-        log.debug("IN showThemes in service with userDB.id: {} and userDB.userName: {}",
-                userDB.getId(), userDB.getUsername());
-        List<Theme> allThemes = getAllThemes(); // все темы
-        if (userDB.getThemes().size() != 0) {
-            Set<Theme> themesOfUser = userDB.getThemes(); // все темы юзера
-            for (Theme themeOfUser : themesOfUser) {
-                allThemes.remove(themeOfUser); //удаляем из всех тем темы юзера
-            }
-            model.addAttribute("themesOfUser", themesOfUser);
-        }
-        model.addAttribute("themes", allThemes);
-    }
-
     @Override
     public boolean isExist(Long themeId){
         return themeDAO.isExist(themeId);
