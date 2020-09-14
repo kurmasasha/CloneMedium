@@ -151,6 +151,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.ckeditor/ckeditor-java-core -->
+        <dependency>
+            <groupId>com.ckeditor</groupId>
+            <artifactId>ckeditor-java-core</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
