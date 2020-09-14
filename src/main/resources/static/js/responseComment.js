@@ -5,10 +5,10 @@ $(document).on('click', '.response-button', function () {
 $(document).on('click', '#addReplyButton', async function () {
     $('#authorizationModal').modal('show');
 
-    let comment = document.getElementById('inputReply').value;
+    let mainCommentId = $(this).attr('data-id');
+    let comment = document.querySelector('#inputReply' + mainCommentId).value;
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
-    let mainCommentId = $(this).attr('data-id');
 
     if (comment !== '') {
         let data = {
