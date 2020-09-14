@@ -25,7 +25,7 @@ import java.util.List;
  * Rest контроллер для комментариев
  *
  * @author Java Mentor
- * @version 1.0
+ * @version 2.0
  */
 
 @RestController

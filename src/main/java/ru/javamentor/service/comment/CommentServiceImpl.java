@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Реализация интерфейса для работы с комментариями
  *
- * @version 1.0
+ * @version 2.0
  * @autor Java Mentor
  */
 @Service
