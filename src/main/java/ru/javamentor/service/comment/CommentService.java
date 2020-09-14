@@ -16,6 +16,8 @@ import java.util.List;
 public interface CommentService {
 
     /**
+     * Метод добавления нового комментария
+     *
      * @param commentDTO - DTO комментария
      * @param author     - автор комментария
      * @return - Собранный из DTO комментарий
@@ -46,6 +48,14 @@ public interface CommentService {
      * @return boolean - удалость удалить комментарий или нет
      */
     boolean removeCommentById(Long id);
+
+    /**
+     * Метод получения все дочерних комментариев
+     *
+     * @param parentId - id родительского комментария
+     * @return List<Comment> - список дочерних комментариев
+     */
+    List<Comment> getAllCommentsByParentId(Long parentId);
 
     /**
      * метод для получения автора конкретного комментария
