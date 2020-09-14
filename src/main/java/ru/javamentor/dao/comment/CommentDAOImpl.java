@@ -14,7 +14,7 @@ import java.util.List;
  * Реализация интерфейса CommentDAO
  *
  * @author Java Mentor
- * @version 1.0
+ * @version 2.0
  */
 
 @Repository
