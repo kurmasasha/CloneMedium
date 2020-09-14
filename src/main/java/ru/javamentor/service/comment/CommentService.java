@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Интерфейс для работы с комментариями
  *
- * @version 1.0
+ * @version 2.0
  * @autor Java Mentor
  */
 public interface CommentService {
@@ -34,7 +34,7 @@ public interface CommentService {
      * метод для обновления комментария
      *
      * @param comment - обновленный комментарий
-     * @param user - пользователь обновляющий комментарий
+     * @param user    - пользователь обновляющий комментарий
      * @return boolean - удалость обновить комментарий или нет
      */
     boolean updateComment(Comment comment, User user);
@@ -66,11 +66,9 @@ public interface CommentService {
     /**
      * метод для добавления или удаления лайка к комменту.
      *
-     *
      * @param commentId -  уникальный id комментария
-     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @param user      - пользователь, добавляющий или удаляющий лайк
      * @return comment - возвращает изменённый комметарий
-     *
      */
 
     Comment putLikeToComment(Long commentId, User user);
@@ -78,18 +76,17 @@ public interface CommentService {
     /**
      * метод для добавления или удаления дизлайка к комменту.
      *
-     *
      * @param commentId -  уникальный id комментария
-     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @param user      - пользователь, добавляющий или удаляющий лайк
      * @return comment - возвращает изменённый комметарий
-     *
      */
 
     Comment putDislikeToComment(Long commentId, User user);
 
     /**
      * Метод для првоерки на установление соответствия автора комментарию.
-     * @param userId -  id юзера
+     *
+     * @param userId    -  id юзера
      * @param commentId - id комментария
      */
     boolean isAuthorOfComment(Long userId, Long commentId);

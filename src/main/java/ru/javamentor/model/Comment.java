@@ -12,7 +12,7 @@ import java.util.Set;
  * Класс представляющий модель комментария
  *
  * @author Java Mentor
- * @version 1.1
+ * @version 2.0
  */
 @NoArgsConstructor
 @Getter
