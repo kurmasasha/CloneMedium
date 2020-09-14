@@ -69,6 +69,7 @@ async function printComment(comment) {
 }
 
 function commentTree() {
+    deeper = 0;
     json.forEach((comment) => {
         if(comment.isMainComment &&
             (res.indexOf(comment)== -1)){
@@ -94,7 +95,6 @@ function findChild(parentComment) {
 
 function addEl(comment) {
     comment.deeper = deeper;
-    deeper = 0;
 
     res.push(comment)
 }
