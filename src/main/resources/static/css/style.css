@@ -308,3 +308,19 @@ body {
 .modal-header {
     border-bottom: 0px;
 }
+
+.nav a:hover {
+    background-color: darkred !important;
+    color: white;
+    cursor: pointer;
+}
+.nav a:focus {
+    background-color: darkred !important;
+    color: white;
+    cursor: pointer;
+}
+.nav a:active {
+    background-color: darkblue !important;
+    color: white;
+    cursor: pointer;
+}
