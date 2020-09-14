@@ -19,7 +19,6 @@ import ru.javamentor.model.PasswordRecoveryToken;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 import ru.javamentor.service.comment.CommentService;
-import ru.javamentor.service.notification.WsNotificationService;
 import ru.javamentor.service.passwordRecoveryToken.PasswordRecoveryTokenService;
 import ru.javamentor.service.theme.ThemeService;
 import ru.javamentor.service.topic.TopicService;
@@ -160,6 +159,29 @@ public class PageController {
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("authUser", auth);
         return "admin-all_users";
+    }
+
+    /**
+     * контроллер для вкладки с пятью лучшими статьями
+     *
+     * @return
+     */
+    @GetMapping("/admin/top_topics")
+    public String adminTopTopicsPage(Model model) {
+        List<Topic> topics = topicService.topFiveTopic();
+        model.addAttribute("themes", themeService.getAllThemes());
+        model.addAttribute("topicList", topicService.getTopicDtoListByTopicList(topics));
+        return "admin_top5_topics";
+    }
+
+    /**
+     * контроллер для влкадки с пятью лучшими комментами
+     *
+     * @return
+     */
+    @GetMapping("/admin/top_comments")
+    public String adminTopCommentsPage() {
+        return "admin_top5_comments";
     }
 
     /**

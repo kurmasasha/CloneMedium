@@ -1,5 +1,6 @@
 package ru.javamentor.dao.comment;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.model.Comment;
@@ -101,6 +102,15 @@ public class CommentDAOImpl implements CommentDAO {
                 .setParameter("commentId", commentId)
                 .getSingleResult();
         return count>0;
+    }
+
+
+    @Override
+    public List<Comment> topFiveComment(Sort var1) {
+        List<Comment> commentList = entityManager
+                .createQuery("select comment from Comment comment")
+                .getResultList();
+        return commentList;
     }
 
 }
