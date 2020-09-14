@@ -46,9 +46,8 @@ async function addTopic(title, content, completed, img) {
         })
         .then(result => {
             if (OK) {
-                let card = topicInCard(result);
                 successAddTopic(alert_container, 2000);
-                $('#my_topics_container').prepend(card);
+                location = "/home"
             } else {
                 failAddTopic($('#alerts_container'), result, 4000)
             }
@@ -68,5 +67,6 @@ function failAddTopic(container, error, time) {
         container.empty();
     }, time)
 }
+
 
 
