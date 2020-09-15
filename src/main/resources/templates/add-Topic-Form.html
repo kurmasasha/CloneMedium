@@ -15,7 +15,7 @@
 
     <title>Форма добавления статьи</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <link rel="stylesheet" type="text/css" href="../js/ckeditor5/sample/styles.css">-->
+    <link rel="stylesheet" type="text/css" href="../js/ckeditor5/sample/styles.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
                     <div class="modal-body">
                         <label for="formGroupExampleInput">Название топика:<font color="red">*</font></label>
                         <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Введите название"
-                               name="title">
+                               name="title" required>
 
                         <div class="form-group">
                             <label for="editor" class="col-form-label">Содержание</label>
@@ -147,8 +147,4 @@
         console.log(editorData);
     });
 </script>
-<script
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
 </html>
