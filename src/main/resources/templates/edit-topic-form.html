@@ -12,8 +12,6 @@
           crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/color_moderated.css">
     <!-- set glyphicon's icons-->
     <link rel="stylesheet" href="css/font-glyphicons.css">
 
@@ -21,13 +19,13 @@
 </head>
 <body>
 
-<div class="d-flex justify-content-center py-5">
+<div class="d-flex justify-content-sm-center">
     <div id="my_topics_container" class="container mx-0 py-3">
         <div th:id="'edit' + ${topic.id}"
              aria-labelledby="editTopicForm">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header justify-content-center">
                         <h5 class="modal-title" id="editTopicForm">Редактировать топик</h5>
                     </div>
                     <div class="modal-body">
@@ -54,7 +52,7 @@
                                                th:value="${topic.id}">
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group justify-content-center">
                                         <label for="editTopicTitle" class="col-form-label">Заголовок</label>
                                         <input class="form-control" type="text" id="editTopicTitle" name="title"
                                                th:value="${topic.title}">
@@ -78,9 +76,10 @@
                                     </div>
 
                                     <div class="modal-footer justify-content-center">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <a type="button" role="button" class="btn btn-secondary"
+                                           data-dismiss="modal" href="/home">
                                             Отмена
-                                        </button>
+                                        </a>
                                         <button type="submit" class="btn btn-primary" id="add_topic_button">Сохранить изменения</button>
                                     </div>
                                 </form>
