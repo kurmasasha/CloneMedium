@@ -352,7 +352,7 @@ public class PageController {
 
     @RequestMapping("/editTopic/{id}")
     public String editTopic(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal User user) {
-        model.addAttribute("topics",topicService.getTopicById(id));
+        model.addAttribute("topic",topicService.getTopicById(id));
         return "edit-topic-form";
     }
 
