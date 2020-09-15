@@ -27,7 +27,7 @@ public class ThemeDAOImpl implements ThemeDAO {
     public List<Theme> getAllThemes() {
         return entityManager.createQuery(
                 "SELECT t FROM Theme t " +
-                        "ORDER BY t.name  asc",
+                        "ORDER BY t.id  asc",
                 Theme.class)
                 .getResultList();
     }

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $('#admin_top_comments_link').addClass('active_side_bar');
     //уведомления
     $(document).ready(bellCount());
     $(document).ready(getAllNotifications());

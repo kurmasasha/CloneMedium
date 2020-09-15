@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#admin_themes_link').addClass('active');
+    $('#admin_themes_link').addClass('active_side_bar');
 
     /**
      * обработчик нажатия на кнопку удаления темы
