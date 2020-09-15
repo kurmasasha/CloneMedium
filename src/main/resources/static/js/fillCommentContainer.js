@@ -69,7 +69,6 @@ async function printComment(comment) {
 }
 
 function commentTree() {
-    deeper = 0;
     json.forEach((comment) => {
         if(comment.isMainComment &&
             (res.indexOf(comment)== -1)){
@@ -83,7 +82,7 @@ function findChild(parentComment) {
     json.forEach((childComment)=>{
         if((childComment.mainCommentId == parentComment.id) &&
             (res.indexOf(childComment)== -1)){
-            deeper += 30;
+            setDepth(childComment);
 
             addEl(childComment);
             findChild(parentComment)
@@ -93,8 +92,20 @@ function findChild(parentComment) {
     })
 }
 
+function setDepth(comment) {
+    json.forEach((el)=>{
+        if (el.id == comment.mainCommentId){
+            deeper += 30;
+
+            setDepth(el);
+        }
+    })
+}
+
+
 function addEl(comment) {
     comment.deeper = deeper;
+    deeper = 0;
 
     res.push(comment)
 }
