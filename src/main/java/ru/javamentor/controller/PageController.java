@@ -365,6 +365,7 @@ public class PageController {
         String content = topic.getContent();
         String img = "no-img.png";
         Set<User> users = new HashSet<>();
+        boolean completeted = topic.isCompleted();
         model.getAttribute("content");
         users.add(userService.getUserByUsername(principal.getName()));
         try {
@@ -375,7 +376,8 @@ public class PageController {
                     img = loaderImages.upload(file, uploadPath);
                 }
             }
-            topicService.addTopic(title, content, true, img, users);
+
+            topicService.addTopic(title, content, completeted, img, users);
         } catch (Exception e) {
             log.error("Что-то сломалось при попытке добавления статьи!");
             log.error("Поля title и content обязательны к заполнению!");
