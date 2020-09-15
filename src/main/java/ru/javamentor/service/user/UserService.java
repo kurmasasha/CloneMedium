@@ -120,7 +120,7 @@ public interface UserService {
      * @param username - имя пользователя
      * @return - список подписок
      */
-    List<String> getAllSubscribesOfUser(String username);
+    List<User> getAllSubscribesOfUser(String username);
 
     /**
      * Метод добавления подписки

@@ -21,7 +21,7 @@
         <div class="card-body">
 
             <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
-            <form action="/user" th:object="${user}" method="post" id="editUserForm">
+            <form action="/user" th:object="${user}" method="post">
 
                 <!-- Модальное окно Уведомлений -->
                 <div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
@@ -60,11 +60,12 @@
                         <input th:field="*{lastName}" class="form-control" id="lastName-for-edit">
                     </div>
                     <br>
+
                     <!--------------------------------Блок выбора предпочитаемой темы---------------------------------->
                     <p>Предпочитаемые темы</p>
                     <div class="row">
                         <ul style="padding-left: 15px;">
-                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index<allThemes.size()/2}"
+                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index<allThemes.size()/2.0}"
                                 style="list-style-type:none;">
                                 <input type="checkbox" name="themes"
                                        th:id="theme+${theme.getId()}"
@@ -79,7 +80,7 @@
                             </li>
                         </ul>
                         <ul style="margin-left:100px">
-                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index>=allThemes.size()/2}"
+                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index>=allThemes.size()/2.0}"
                                 style="list-style-type:none;">
                                 <input type="checkbox" name="themes"
                                        th:id="theme+${theme.getId()}"
@@ -95,16 +96,15 @@
                         </ul>
                     </div>
                     <!------------------------------------------------------------------------------------------------->
-                    <!---------------------------------Блок выбора авторов для подписки-------------------------------->
-                    <div class="form-group" id="all_subscribes" style="border:1px solid lightgrey; border-radius: 5px">
-                        <label for="subscribesFromDB" style="padding: 0 12px; font-size: initial">Мои подписки: </label>
-                        <select name="subscribes" id="subscribesFromDB" multiple="multiple">
-                            <option th:each="notSubscribed : ${notSubscribedAuthors}" th:value="${notSubscribed}"
-                                    th:text="${notSubscribed}" th:selected="${false}"></option>
-                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"
-                                    th:text="${subscribe}" th:selected="${true}"></option>
-                        </select>
-                    </div>
+                    <!----------------------------------------Блок подписок-------------------------------------------->
+                    <p>Мои подписки</p>
+                    <ol style="padding-left:15px">
+                        <li th:each="author : ${subscribes}">
+                            <a th:utext="${author.getFirstName()+' ' +author.getLastName()}"
+                               th:href="@{'/topic/find/author/' + ${author.id}}">
+                            </a>
+                        </li>
+                    </ol>
                     <!------------------------------------------------------------------------------------------------->
                 </div>
                 <div class="editForm-footer">
@@ -122,7 +122,6 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
-<script src="/js/getAllThemes.js"></script>
 <script src="/js/getAllNotifications.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/util/ws.js"></script>

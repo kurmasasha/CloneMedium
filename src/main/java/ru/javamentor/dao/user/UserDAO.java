@@ -80,7 +80,7 @@ public interface UserDAO {
      * @param username - имя пользователя
      * @return - список подписок
      */
-    List<String> getAllSubscribesOfUser(String username);
+    List<User> getAllSubscribesOfUser(String username);
 
     /**
      * Метод получения всех подписчиков автора

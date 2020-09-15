@@ -150,11 +150,11 @@ public class UserDAOImpl implements UserDAO {
      * @return - список подписок
      */
     @Override
-    public List<String> getAllSubscribesOfUser(String username) {
+    public List<User> getAllSubscribesOfUser(String username) {
         return entityManager.createQuery(
-                "SELECT s.author.username FROM Subscribes s " +
+                "SELECT s.author FROM Subscribes s " +
                         "WHERE s.subscriber.username = :username",
-                String.class)
+                User.class)
                 .setParameter("username", username)
                 .getResultList();
     }

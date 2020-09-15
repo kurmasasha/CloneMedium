@@ -6,9 +6,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.javamentor.model.Theme;
 import ru.javamentor.model.User;
 import ru.javamentor.service.role.RoleService;
 import ru.javamentor.service.theme.ThemeService;
@@ -60,10 +62,7 @@ public class UserController {
         model.addAttribute("user", userDB);
         model.addAttribute("allThemes", themeService.getAllThemes());
         model.addAttribute("userThemes", userDB.getThemes());
-        List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
-        model.addAttribute("notSubscribedAuthors", notSubscribed);
-        List<String> subscribes = userService.getAllSubscribesOfUser(user.getUsername());
-        model.addAttribute("subscribes", subscribes);
+        model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
         return "userPage";
     }
 
@@ -74,23 +73,21 @@ public class UserController {
      */
     @PostMapping("/user")
     public String userUpdate(@ModelAttribute("user") User user,
-                             @RequestParam(name = "themes", required = false) Set<Long> themes,
-                             @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
+                             @RequestParam(name = "themes", required = false) Set<Long> themesIds,
                              @RequestParam(name = "file", required = false) MultipartFile file,
                              Model model,
                              BindingResult bindingResult) throws IOException {
         validatorFormEditUser.validate(user, bindingResult);
         User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
-            List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
             model.addAttribute("allThemes", themeService.getAllThemes());
             model.addAttribute("userThemes", userDB.getThemes());
-            model.addAttribute("notSubscribedAuthors", notSubscribed);
+            model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
             return "userPage";
         }
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
-        themeService.changeThemes(themes, userDB);
+        themeService.changeThemes(themesIds, userDB);
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
@@ -103,7 +100,7 @@ public class UserController {
         }
         userDB.setImg(resultFileName);
 
-        if (userService.updateUser(userDB) && userService.changeSubscribe(subscribes, userDB.getUsername())) {
+        if (userService.updateUser(userDB)) {
             return "redirect:/user";
         } else {
             model.addAttribute("message", "invalidData");
