@@ -84,7 +84,7 @@ $(document).ready(function () {
             .then(result => {
                 title.append(result.title);
                 body.append('<p>');
-                let text = linkify(result.content);
+                let text = result.content;
                 body.append(text);
                 body.append('</p>');
             });

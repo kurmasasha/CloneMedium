@@ -49,7 +49,7 @@ function topicInCard(topic) {
             <div class="topic_body">
                 <div class="topic_text">
                     ` + img + `
-                    ` + linkify(topic.content) + ` 
+                    ` + topic.content + ` 
                  </div>
             </div>
             <footer class="topic_footer">
