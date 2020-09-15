@@ -1,5 +1,6 @@
 package ru.javamentor.dao.comment;
 
+import org.springframework.data.domain.Sort;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.User;
 
@@ -55,4 +56,11 @@ public interface CommentDAO {
     void removeCommentsByTopicId(long topicId);
 
     boolean isExist(Long commentId);
+
+    /**
+     * метод для получения 5 лучших комментов
+     * @return
+     */
+    List<Comment> topFiveComment(Sort var1);
+
 }

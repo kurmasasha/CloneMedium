@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#admin_users_link').addClass('active');
+    $('#admin_users_link').addClass('active_side_bar');
     getAndPrintAllUsers($('#users_table'))
         .then();
 

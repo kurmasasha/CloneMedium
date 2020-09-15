@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма добавления статьи</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../js/ckeditor5/sample/styles.css">
+</head>
+
+<body>
+<div class="d-flex justify-content-center">
+    <form th:action="@{/addTopic}"
+          th:object="${newTopic}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+
+        <label for="formGroupExampleInput">Название топика:<font color="red">*</font></label>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Введите название"
+               name="title">
+        </div>
+
+        <div class="form-group">
+        <label>Содержимое топика:<font color="red">*</font></label>
+        <div class="row row-edit">
+            <textarea id="editor" name="content"></textarea>
+        </div>
+        </div>
+
+        <div class="form-group">
+        <div class="d-flex justify-content-sm-center">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="file">
+                <label class="custom-file-label" for="customFile">Добавить картинку</label>
+            </div>
+        </div>
+
+        <button class="btn btn-success btn-block add" type="submit" value="Lets go" id="add_topic_button">
+            Опубликовать
+        </button>
+        </div>
+    </form>
+</div>
+</body>
+
+<script src="../js/ckeditor5/build/ckeditor.js"></script>
+<script>
+    let editor;
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+
+            toolbar: {
+                items: [
+                    'alignment',
+                    '|',
+                    'bold',
+                    'italic',
+                    'strikethrough',
+                    'subscript',
+                    'superscript',
+                    'blockQuote',
+                    'undo',
+                    'redo',
+                    'link',
+                    'specialCharacters',
+                    '|',
+                    'insertTable',
+                    'bulletedList',
+                    'numberedList',
+                    'indent',
+                    'outdent',
+                    '|',
+                    // 'CKFinder',
+                    // 'imageUpload',
+                    // 'mediaEmbed',
+                    'codeBlock',
+                    'code',
+                    '|',
+                ]
+            },
+            language: 'ru',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:full',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+
+        })
+        .then(newEditor => {
+            editor = newEditor;
+
+        })
+        .catch(error => {
+            console.error('Oops, something went wrong!');
+            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+            console.warn('Build id: gwyh46tv4ta0-le6whw5ztnbc');
+            console.error(error);
+        });
+
+    document.querySelector('#add_topic_button').addEventListener('click', () => {
+        const editorData = editor.getData();
+        console.log(editorData);
+    });
+</script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"/>
+</html>

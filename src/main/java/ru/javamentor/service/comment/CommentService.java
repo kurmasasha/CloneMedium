@@ -98,4 +98,11 @@ public interface CommentService {
 
     boolean isExist(Long commentId);
 
+    /**
+     * Метод для получения 5 комментариев
+     * набравших наибольшие количество лайков
+     *
+     * @return List<Comment> - возвращает список из 5 комментариев
+     */
+    List<Comment> topFiveComment();
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
-<nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav th:fragment="home_header" class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="collapse navbar-collapse d-flex" id="navbarCollapse">
         <ul class="navbar-nav menu mr-auto d-flex flex-grow-1">
             <div style="float:left">
@@ -22,7 +22,11 @@
             </li>
         </ul>
         <!--------------------------------- Кнопка панели администратора --------------------------------------->
-        <div sec:authorize="hasAuthority('ADMIN')" th:if="${#httpServletRequest.requestURI != '/admin/allUsers'} and ${#httpServletRequest.requestURI != '/admin/moderate'} and ${#httpServletRequest.requestURI != '/admin/themes'}"class="mr-4">
+        <div sec:authorize="hasAuthority('ADMIN')" th:if="${#httpServletRequest.requestURI != '/admin/allUsers'}
+        and ${#httpServletRequest.requestURI != '/admin/moderate'}
+        and ${#httpServletRequest.requestURI != '/admin/themes'}
+        and ${#httpServletRequest.requestURI != '/admin/top_topics'}
+        and ${#httpServletRequest.requestURI != '/admin/top_comments'}"class="mr-4">
             <a th:href="@{/admin/allUsers}" class="btn btn-warning">Панель администратора</a>
         </div>
         <!--------------------------------------------------------------------------------------------------------->
