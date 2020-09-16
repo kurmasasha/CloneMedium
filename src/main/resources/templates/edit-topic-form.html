@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- set glyphicon's icons-->
+    <link rel="stylesheet" href="css/font-glyphicons.css">
+
+    <title>Title</title>
+</head>
+<body>
+
+<div class="d-flex justify-content-sm-center">
+    <div id="my_topics_container" class="container mx-0 py-3">
+        <div th:id="'edit' + ${topic.id}"
+             aria-labelledby="editTopicForm">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h5 class="modal-title" id="editTopicForm">Редактировать топик</h5>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="content-tab" data-toggle="tab"
+                                   th:href="'#content' + ${topic.id}" role="tab" aria-controls="content"
+                                   aria-selected="true">Содержимое</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="authors-tab" data-toggle="tab"
+                                   th:href="'#authors' + ${topic.id}" role="tab" aria-controls="authors"
+                                   aria-selected="false">Авторы</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" th:id="'content' + ${topic.id}" role="tabpanel"
+                                 aria-labelledby="content-tab">
+                                <form th:action="@{/topic/update}" id="editForm" method="post"
+                                      enctype="multipart/form-data">
+                                    <div class="form-group" style="display: none">
+                                        <label class="col-form-label" for="editTopicId">Id</label>
+                                        <input class="form-control" type="text" id="editTopicId" name="id"
+                                               th:value="${topic.id}">
+                                    </div>
+
+                                    <div class="form-group justify-content-center">
+                                        <label for="editTopicTitle" class="col-form-label">Заголовок</label>
+                                        <input class="form-control" type="text" id="editTopicTitle" name="title"
+                                               th:value="${topic.title}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editTopicContent" class="col-form-label">Содержание</label>
+                                        <textarea class="form-control" id="editTopicContent" name="content"
+                                                  th:inline="text">[[${topic.content}]]</textarea>
+                                    </div>
+
+                                    <div class="p-image" th:if="${topic.img != 'no-img.png'}" id="imageEditForm">
+                                        <input type="reset" value="&times;" id="resetButtonEditForm">
+                                        <br>
+                                        <img th:src="'/topic-img/' + ${topic.img}"
+                                             th:alt="'image of topic : ' + ${topic.title}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input class="form-control-file" name="file" type="file" id="editTopicFile">
+                                    </div>
+
+                                    <div class="modal-footer justify-content-center">
+                                        <a type="button" role="button" class="btn btn-secondary"
+                                           data-dismiss="modal" href="/home">
+                                            Отмена
+                                        </a>
+                                        <button type="submit" class="btn btn-primary" id="add_topic_button">Сохранить изменения</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" th:id="'authors' + ${topic.id}" role="tabpanel"
+                                 aria-labelledby="authors-tab">
+                                <div class="table-responsive table-borderless">
+                                    <table class="table table-bordered" th:id="'table' + ${topic.id}">
+                                        <tbody>
+                                        <tr th:each="author : ${topic.authors}" th:id="'tr' + ${author.id}">
+                                            <td th:text="${author.username}"></td>
+                                            <td>
+                                                <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'" href="#">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <form id="addNewAuthorForm">
+                                    <div class="form-group">
+                                        <label th:for="'addNewAuthor' + ${topic.id}" class="col-form-label">E-mail:</label>
+                                        <input class="form-control" type="text" th:id="'addNewAuthor' + ${topic.id}">
+                                    </div>
+                                </form>
+                                <button class="btn btn-success" th:onclick="'addByEmail(' + ${topic.id} + ')'">
+                                    Добавить соавтора
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script src="/js/getTopicsOfUserByHashtag.js"></script>
+<script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
+]<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script src="/js/util/topic-in-card.js"></script>
+<script src="/js/util/timeConverter.js"></script>
+<script src="/js/likedTopic.js"></script>
+<script src="/js/editAuthorsOfTopic.js"></script>
+<script src="/js/editformButtonHandler.js"></script>
+<script src="../js/ckeditor5/build/ckeditor.js"></script>
+<script>
+    let editor;
+    ClassicEditor
+        .create(document.querySelector('#editTopicContent'), {
+
+            toolbar: {
+                items: [
+                    'alignment',
+                    '|',
+                    'bold',
+                    'italic',
+                    'strikethrough',
+                    'subscript',
+                    'superscript',
+                    'blockQuote',
+                    'undo',
+                    'redo',
+                    'link',
+                    'specialCharacters',
+                    '|',
+                    'insertTable',
+                    'bulletedList',
+                    'numberedList',
+                    'indent',
+                    'outdent',
+                    '|',
+                    // 'CKFinder',
+                    // 'imageUpload',
+                    // 'mediaEmbed',
+                    'codeBlock',
+                    'code',
+                    '|',
+                ]
+            },
+            language: 'ru',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:full',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+
+        })
+        .then(newEditor => {
+            editor = newEditor;
+
+        })
+        .catch(error => {
+            console.error('Oops, something went wrong!');
+            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+            console.warn('Build id: gwyh46tv4ta0-le6whw5ztnbc');
+            console.error(error);
+        });
+
+    document.querySelector('#add_topic_button').addEventListener('click', () => {
+        const editorData = editor.getData();
+        console.log(editorData);
+    });
+</script>
+</body>
+</html>

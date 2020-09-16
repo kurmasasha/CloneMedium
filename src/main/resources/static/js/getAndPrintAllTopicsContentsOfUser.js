@@ -3,6 +3,6 @@ $(document).ready(function () {
     for (let i = 0, len = topicCards.length; i < len; i++) {
         let id = topicCards[i].id;
         let topicContent = topicCards[i].getAttribute("data-topic-content");
-        $(document.getElementById(id)).append(linkify(topicContent));
+        $(document.getElementById(id)).append(topicContent);
     }
 });

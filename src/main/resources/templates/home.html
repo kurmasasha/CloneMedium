@@ -30,104 +30,6 @@
     <div id="my_topics_container" class="container mx-0 py-3">
         <th:block th:each="topic: ${topics}">
 
-            <!-- Edit modal -->
-            <div class="modal fade" th:id="'edit' + ${topic.id}" tabindex="-1" aria-labelledby="editTopicForm"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editTopicForm">Редактировать топик</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" id="content-tab" data-toggle="tab"
-                                       th:href="'#content' + ${topic.id}" role="tab" aria-controls="content"
-                                       aria-selected="true">Содержимое</a>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="authors-tab" data-toggle="tab"
-                                       th:href="'#authors' + ${topic.id}" role="tab" aria-controls="authors"
-                                       aria-selected="false">Авторы</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" th:id="'content' + ${topic.id}" role="tabpanel"
-                                     aria-labelledby="content-tab">
-                                    <form th:action="@{/topic/update}" id="editForm" method="post"
-                                          enctype="multipart/form-data">
-                                        <div class="form-group" style="display: none">
-                                            <label class="col-form-label" for="editTopicId">Id</label>
-                                            <input class="form-control" type="text" id="editTopicId" name="id"
-                                                   th:value="${topic.id}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="editTopicTitle" class="col-form-label">Заголовок</label>
-                                            <input class="form-control" type="text" id="editTopicTitle" name="title"
-                                                   th:value="${topic.title}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="editTopicContent" class="col-form-label">Содержание</label>
-                                            <textarea class="form-control" id="editTopicContent" name="content"
-                                                      th:inline="text">[[${topic.content}]]</textarea>
-                                        </div>
-
-                                        <div class="p-image" th:if="${topic.img != 'no-img.png'}" id="imageEditForm">
-                                            <input type="reset" value="&times;" id="resetButtonEditForm">
-                                            <br>
-                                            <img th:src="'/topic-img/' + ${topic.img}"
-                                                 th:alt="'image of topic : ' + ${topic.title}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input class="form-control-file" name="file" type="file" id="editTopicFile">
-                                        </div>
-
-                                        <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                Отмена
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="tab-pane fade" th:id="'authors' + ${topic.id}" role="tabpanel"
-                                     aria-labelledby="authors-tab">
-                                    <div class="table-responsive table-borderless">
-                                        <table class="table table-bordered" th:id="'table' + ${topic.id}">
-                                            <tbody>
-                                            <tr th:each="author : ${topic.authors}" th:id="'tr' + ${author.id}">
-                                                <td th:text="${author.username}"></td>
-                                                <td>
-                                                    <a th:onclick="'removeById(' + ${topic.id} + ',' + ${author.id} + ')'" href="#">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <form id="addNewAuthorForm">
-                                    <div class="form-group">
-                                        <label th:for="'addNewAuthor' + ${topic.id}" class="col-form-label">E-mail:</label>
-                                        <input class="form-control" type="text" th:id="'addNewAuthor' + ${topic.id}">
-                                    </div>
-                                </form>
-                                    <button class="btn btn-success" th:onclick="'addByEmail(' + ${topic.id} + ')'">
-                                        Добавить соавтора
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Delete modal -->
             <div class="modal fade" th:id="'delete' + ${topic.id}" tabindex="-1" aria-labelledby="deleteTopicForm" aria-hidden="true">
                 <div class="modal-dialog">
@@ -154,7 +56,7 @@
                     </div>
                 </div>
             </div>
-<!--------------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------------------------------------------------------------------------->
             <article class="topic topic_preview">
                 <header class="row topic_meta">
                     <div class="col-10">
@@ -166,8 +68,8 @@
                            + ${authIter.index < topic.getAuthors().size() - 1 ? ', ' : ''}">
                         </a>
                         </span>
-                            <span class="topic_time"
-                                  th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
+                        <span class="topic_time"
+                              th:utext="${#temporals.format(topic.dateCreated, 'd MMMM yyyy в HH:mm', new java.util.Locale('ru'))}">
                         </span>
                     </div>
 
@@ -180,8 +82,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
                                 <!-- button edit topic -->
-                                <button type="button" class="dropdown-item" data-toggle="modal"
-                                        th:data-target="'#edit'+${topic.id}">Редактировать</button>
+                                <a type="button" class="dropdown-item" role="button"
+                                   th:href="@{'/editTopic/' + ${topic.id}}"
+                                   style="color: #111111">Редактировать</a>
 
                                 <!-- button delete topic-->
                                 <button type="button" class="dropdown-item" data-toggle="modal"
@@ -257,7 +160,7 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <!------------------------------------------------ Модальное окно ----------------------------------------------------->
-<div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>
+<!--<div th:replace="fragments/add-topic-modal :: add-topic_modal"></div>-->
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <!-- Модальное окно Уведомлений -->
@@ -281,7 +184,6 @@
 
 <script src="/js/getTopicsOfUserByHashtag.js"></script>
 <script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
-<script src="/js/addTopic.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
