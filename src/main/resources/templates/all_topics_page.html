@@ -115,8 +115,11 @@
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
+<!-- Модальное окно Уведомлений -->
+<div th:replace="fragments/notification_modal_dropdown :: notification_modal_dropdown"></div>
+
 <!------------------------------------------------ Модальное окно ----------------------------------------------------->
-<nav th:replace="fragments/add-topic-modal :: add-topic_modal"></nav>
+<nav th:replace="fragments/add-topic-modal :: add-topic_button"></nav>
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
@@ -127,13 +130,13 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/util/ws.js"></script>
+<script sec:authorize="isAuthenticated()" src="/js/getAllNotifications.js"></script>
 <script src="/js/getAllTopicsByHashtag.js"></script>
 <script src="/js/util/topic-in-card.js"></script>
 <script src="/js/util/timeConverter.js"></script>
 <script src="/js/parseText.js"></script>
 <script src="/js/likedTopic.js"></script>
 <script src="/js/getAndPrintAllTopicsContentsOfUser.js"></script>
-<script sec:authorize="isAuthenticated()" src="/js/addTopic.js"></script>
 <script sec:authorize="isAuthenticated()" src="/js/all_topics_events.js"></script>
 </body>
 </html>

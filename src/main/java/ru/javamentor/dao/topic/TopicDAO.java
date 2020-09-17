@@ -1,5 +1,6 @@
 package ru.javamentor.dao.topic;
 
+import org.springframework.data.domain.Sort;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
 
@@ -129,4 +130,11 @@ public interface TopicDAO {
     List<Topic> getModeratedTopicsByTheme(Set<Long> themesIds);
 
     boolean isExist(Long topicId);
+
+    /**
+     * метод для получения лучших постов
+     * @return
+     */
+    List<Topic> topFiveTopic();
+
 }

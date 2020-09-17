@@ -3,7 +3,7 @@ $(document).ready(function () {
     let moderate_cards = $('#moderate_cards');
     let page_number = 1;
 
-    admin_moderate_link.addClass('active');
+    admin_moderate_link.addClass('active_side_bar');
     getAndPrintNotModeratedTopicsPage(1, moderate_cards)
         .then();
     let pageSize = 5;
@@ -28,8 +28,8 @@ $(document).ready(function () {
             moderate_cards.empty();
             getAndPrintNotModeratedTopicsPage(new_page_number, moderate_cards)
                 .then();
-            $('#pi_' + page_number).removeClass('active');
-            $('#pi_' + new_page_number).addClass('active');
+            $('#pi_' + page_number).removeClass('active_side_bar');
+            $('#pi_' + new_page_number).addClass('active_side_bar');
             page_number = new_page_number;
 
         }
@@ -84,7 +84,7 @@ $(document).ready(function () {
             .then(result => {
                 title.append(result.title);
                 body.append('<p>');
-                let text = linkify(result.content);
+                let text = result.content;
                 body.append(text);
                 body.append('</p>');
             });
@@ -96,8 +96,8 @@ $(document).ready(function () {
     });
 
     // имитация нотификации
-    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+    $(document).ready(bellCount());
+    $(document).ready(getAllNotifications());
 
     // удаление формы поиска по хэштегу
     $('#finderByHashtag').detach();

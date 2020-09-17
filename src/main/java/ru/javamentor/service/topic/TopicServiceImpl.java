@@ -2,7 +2,6 @@ package ru.javamentor.service.topic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Реализация интерфейса TopicService
@@ -61,6 +61,7 @@ public class TopicServiceImpl implements TopicService {
             throw new RuntimeException();
         }
     }
+
 
     /**
      * метод для получения топика по id
@@ -446,6 +447,19 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public boolean isExist(Long topicId){
         return topicDAO.isExist(topicId);
+    }
+
+    /**
+     * метод для получения Топ 5 топиков
+     * @return
+     */
+    @Transactional
+    @Override
+    public List<Topic> topFiveTopic() {
+        return topicDAO.topFiveTopic()
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
     }
 
 }

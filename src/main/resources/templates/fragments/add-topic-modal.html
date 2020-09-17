@@ -4,61 +4,15 @@
 
 <!--------------------------------- Кнопка вызова модального окна (добавление топика) --------------------------------->
 
-<button th:fragment="add-topic_button" id="modal_add-topic_button" type="button" class="btn btn-dark"
-        data-toggle="modal" data-target="#modalWindowCreateTopic">
+<a th:fragment="add-topic_button" id="modal_add-topic_button" type="button"
+   class="btn btn-dark" role="button" href="/addTopic" style="color: white">
     Новая статья
-</button>
+</a>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
 <!--------------------------------------------------- Модальное окно -------------------------------------------------->
-<div th:fragment="add-topic_modal"
-     class="modal fade" id="modalWindowCreateTopic" tabindex="-1" role="dialog"
-     aria-labelledby="createTopic" aria-hidden="true">
-    <div id="alerts_container"></div>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Создать статью</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form name="formAddTopic">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="topic_title">Заголовок</label>
-                        <input type="text" maxlength="100" class="form-control" id="topic_title" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="topic_content">Содержание</label>
-                        <textarea class="form-control" id="topic_content" rows="10"  name="content" maxlength="2500"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-file">
-                            <input th:id="topic_img" name="file" type="file" class="custom-file-input"
-                                   id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">Картинка</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <div class="form-check">
-                        <input name="completed" style="transform:scale(2);" class="form-check-input" type="checkbox"
-                               id="checkboxCompletedTopic">
-                        <label class="form-check-label ml-1" for="checkboxCompletedTopic">Отправить на модерацию</label>
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                id="btnCloseFormCreateTopic">Закрыть
-                        </button>
-                        <button type="submit" class="btn btn-primary" id="add_topic_button">Сохранить</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 <!--------------------------------------------------------------------------------------------------------------------->
 </body>
 </html>

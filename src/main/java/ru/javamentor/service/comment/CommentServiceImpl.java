@@ -2,6 +2,7 @@ package ru.javamentor.service.comment;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.comment.CommentDAO;
@@ -12,6 +13,7 @@ import ru.javamentor.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация интерфейса для работы с комментариями
@@ -259,6 +261,19 @@ public class CommentServiceImpl implements CommentService {
 
     public boolean isExist(Long commentId){
         return commentDAO.isExist(commentId);
+    }
+
+    /**
+     * метод для получения Топ 5 комментов
+     * @return
+     */
+    @Transactional
+    @Override
+    public List<Comment> topFiveComment() {
+        return commentDAO.topFiveComment(Sort.by(Sort.Direction.DESC, "likes"))
+                .stream()
+                .limit(5)
+                .collect(Collectors.toList());
     }
 
 }

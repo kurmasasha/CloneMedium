@@ -57,7 +57,7 @@ public class NotificationsController {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = userService.getUserByEmail(auth.getName());
-            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
+            return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(currentUser.getId())), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(service.getNotificationDtoListByNotifList(service.getAllNotesById(user.getId())), HttpStatus.OK);
         }

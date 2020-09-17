@@ -13,14 +13,9 @@ $(document).ready(function(){
      *  обновляем "колокольчик" - счётчик уведомлений
      *
      */
-    $(document).ready(container($('#notif_counter')));
+    $(document).ready(bellCount());
+    $(document).ready(getAllNotifications())
 
-    /**
-     *  получаем все уведомления
-     *
-     */
-
-    $(document).ready(getAllNotifications());
     /**
      * Нажатие на кнопку поиска по хэштегу
      */

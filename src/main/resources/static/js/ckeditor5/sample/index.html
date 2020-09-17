@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"></html>
+<head>
+    <title>CKEditor 5 ClassicEditor build</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body data-editor="ClassicEditor" data-collaboration="false">
+<header>
+</header>
+<main>
+    <div class="centered">
+        <div class="row row-editor">
+            <div class="editor">
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="../build/ckeditor.js"></script>
+<script>ClassicEditor
+    .create(document.querySelector('.editor'), {
+
+        toolbar: {
+            items: [
+                'alignment',
+                '|',
+                'bold',
+                'italic',
+                'strikethrough',
+                'subscript',
+                'superscript',
+                'blockQuote',
+                'undo',
+                'redo',
+                'link',
+                'specialCharacters',
+                '|',
+                'insertTable',
+                'bulletedList',
+                'numberedList',
+                'indent',
+                'outdent',
+                '|',
+                'CKFinder',
+                'imageUpload',
+                'mediaEmbed',
+                'code',
+                'codeBlock'
+            ]
+        },
+        language: 'ru',
+        image: {
+            toolbar: [
+                'imageTextAlternative',
+                'imageStyle:full',
+                'imageStyle:side'
+            ]
+        },
+        table: {
+            contentToolbar: [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells'
+            ]
+        },
+        licenseKey: '',
+
+    })
+    .then(editor => {
+        window.editor = editor;
+
+
+    })
+    .catch(error => {
+        console.error('Oops, something went wrong!');
+        console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+        console.warn('Build id: gwyh46tv4ta0-le6whw5ztnbc');
+        console.error(error);
+    });
+</script>
+</body>

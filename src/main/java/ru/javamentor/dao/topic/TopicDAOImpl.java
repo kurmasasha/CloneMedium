@@ -1,5 +1,6 @@
 package ru.javamentor.dao.topic;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.javamentor.model.Hashtag;
 import ru.javamentor.model.Topic;
@@ -265,6 +266,19 @@ public class TopicDAOImpl implements TopicDAO {
                 .setParameter("topicId", topicId)
                 .getSingleResult();
         return count>0;
+    }
+
+
+    @Override
+    public List<Topic> topFiveTopic() {
+        return entityManager
+                .createQuery(
+                        "SELECT t FROM Topic t " +
+                                "WHERE t.isModerate = true " +
+                                "GROUP BY t.id " +
+                                "ORDER BY t.likes  DESC",
+                        Topic.class)
+                .getResultList();
     }
 
 }

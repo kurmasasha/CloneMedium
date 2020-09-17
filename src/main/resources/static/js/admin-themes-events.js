@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#admin_themes_link').addClass('active');
+    $('#admin_themes_link').addClass('active_side_bar');
 
     /**
      * обработчик нажатия на кнопку удаления темы
@@ -46,8 +46,9 @@ $(document).ready(function(){
     });
 
     // имитация нотификации
-    window.onload = getNumberOfNotificationsOfUser($('#notif_counter'));
-    setInterval( function () { getNumberOfNotificationsOfUser($('#notif_counter')).then(); }, 7000);
+    $(document).ready(bellCount());
+    $(document).ready(getAllNotifications());
+
 
     // удаление формы поиска по хэштегу
     $('#finderByHashtag').detach();
