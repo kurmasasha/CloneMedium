@@ -305,12 +305,12 @@ public class UserServiceImpl implements UserService {
      * @return - список подписок
      */
     @Override
-    public List<String> getAllSubscribesOfUser(String username) {
-        List<String> subcribes;
+    public List<User> getAllSubscribesOfUser(String username) {
+        List<User> subscribes;
         try {
-            subcribes =  userDAO.getAllSubscribesOfUser(username);
-            log.debug("IN getAllSubscribesOfUser - {} authors found", subcribes.size());
-            return subcribes;
+            subscribes =  userDAO.getAllSubscribesOfUser(username);
+            log.debug("IN getAllSubscribesOfUser - {} authors found", subscribes.size());
+            return subscribes;
         } catch (Exception e) {
             log.error("Exception while getAllSubscribesOfUser in service with user.username is {}", username);
             throw new RuntimeException();

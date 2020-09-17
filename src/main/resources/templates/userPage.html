@@ -15,11 +15,11 @@
 
 <div class="container col-md-5">
     <div class="editForm-header">
-        <h4 class="modal-title">Edit user [${user.username}]</h4>
+        <h4 class="modal-title">Edit user [[${user.username}]]</h4>
     </div>
     <div class="card">
         <div class="card-body">
-          
+
             <!--/*@thymesVar id="user" type="ru.javamentor.model.User"*/-->
             <form action="/user" th:object="${user}" method="post">
 
@@ -61,27 +61,16 @@
                     </div>
                     <br>
 
-                    <!--------------------------------Блок выбора предпочитаемой темы---------------------------------->
-                    <div class="form-group" id="all_themes" style="border:1px solid lightgrey; border-radius: 5px">
-                        <label for="themesFromDB" style="padding: 0 12px; font-size: initial">Выбери предпочитаемые темы: </label>
-                        <select name="themes" id="themesFromDB" multiple="multiple">
-                            <option th:each="theme : ${themes}" th:value="${theme.getId()}" th:text="${theme.getName()}"
-                                    th:selected="${false}"></option>
-                            <option th:each="themeOfUser : ${themesOfUser}" th:value="${themeOfUser.getId()}"
-                                    th:text="${themeOfUser.getName()}" th:selected="${true}"></option>
-                        </select>
-                    </div>
-                    <!------------------------------------------------------------------------------------------------->
-                    <!---------------------------------Блок выбора авторов для подписки-------------------------------->
-                    <div class="form-group" id="all_subscribes" style="border:1px solid lightgrey; border-radius: 5px">
-                        <label for="subscribesFromDB" style="padding: 0 12px; font-size: initial">Мои подписки: </label>
-                        <select name="subscribes" id="subscribesFromDB" multiple="multiple">
-                            <option th:each="notSubscribed : ${notSubscribedAuthors}" th:value="${notSubscribed}"
-                                    th:text="${notSubscribed}" th:selected="${false}"></option>
-                            <option th:each="subscribe : ${subscribes}" th:value="${subscribe}"
-                                    th:text="${subscribe}" th:selected="${true}"></option>
-                        </select>
-                    </div>
+                    <!----------------------------------------Блок подписок-------------------------------------------->
+                    <p>Мои подписки :</p>
+                    <ol style="padding-left:15px">
+                        <li th:each="author : ${subscribes}">
+                            <a th:utext="${author.getFirstName()+' ' +author.getLastName()}"
+                               th:href="@{'/topic/find/author/' + ${author.id}}">
+                            </a>
+                        </li>
+                    </ol>
+                    <p th:if="${subscribes.size()==0}" style="color:blue">Подписок нет</p>
                     <!------------------------------------------------------------------------------------------------->
                 </div>
                 <div class="editForm-footer">
@@ -99,7 +88,6 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
-<script src="/js/getAllThemes.js"></script>
 <script src="/js/getAllNotifications.js"></script>
 <script src="/js/header_events.js"></script>
 <script src="/js/util/ws.js"></script>
