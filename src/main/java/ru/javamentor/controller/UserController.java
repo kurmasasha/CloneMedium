@@ -60,11 +60,8 @@ public class UserController {
         User user = (User) ((Authentication) principal).getPrincipal();
         User userDB = userService.getUserById(user.getId());
         model.addAttribute("user", userDB);
-        themeService.showThemes(model, userDB);
-        List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
-        model.addAttribute("notSubscribedAuthors", notSubscribed);
-        List<String> subscribes = userService.getAllSubscribesOfUser(user.getUsername());
-        model.addAttribute("subscribes", subscribes);
+        model.addAttribute("allThemes", themeService.getAllThemes());
+        model.addAttribute("userThemes", userDB.getThemes());
         return "userPage";
     }
 
@@ -74,23 +71,20 @@ public class UserController {
      */
     @PostMapping("/user")
     public String userUpdate(@ModelAttribute("user") User user,
-                          @RequestParam(name = "themes", required = false) Set<Long> themesIds,
-                          @RequestParam(name = "subscribes", required = false) Set<String> subscribes,
-                          @RequestParam(name = "file", required = false) MultipartFile file,
-                          Model model,
-                          BindingResult bindingResult) throws IOException {
-
+                             @RequestParam(name = "themes", required = false) Set<Long> themes,
+                             @RequestParam(name = "file", required = false) MultipartFile file,
+                             Model model,
+                             BindingResult bindingResult) throws IOException {
         validatorFormEditUser.validate(user, bindingResult);
         User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
-            themeService.showThemes(model, userDB);
-            List<String> notSubscribed = userService.getAllSubscribesNotOfUser(user.getUsername());
-            model.addAttribute("notSubscribedAuthors", notSubscribed);
+            model.addAttribute("allThemes", themeService.getAllThemes());
+            model.addAttribute("userThemes", userDB.getThemes());
             return "userPage";
         }
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
-        themeService.changeThemes(themesIds, userDB);
+        themeService.changeThemes(themes, userDB);
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
@@ -98,12 +92,12 @@ public class UserController {
         String resultFileName = "no-img.png";
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             resultFileName = loaderImages.upload(file, uploadPath);
-        }else {
+        } else {
             resultFileName = userDB.getImg();
         }
         userDB.setImg(resultFileName);
 
-        if (userService.updateUser(userDB) && userService.changeSubscribe(subscribes, userDB.getUsername())) {
+        if (userService.updateUser(userDB)) {
             return "redirect:/user";
         } else {
             model.addAttribute("message", "invalidData");

@@ -53,14 +53,5 @@ public interface ThemeService {
      */
     void changeThemes(Set<Long> themesIds, User userDB);
 
-    /**
-     * Метод для отображения тем
-     *
-     * @param model - переменна для передачи тем на контроллер
-     * @param userDB - конкретный пользователь
-     * @return void
-     */
-    void showThemes(Model model, User userDB);
-
     boolean isExist(Long themeId);
 }
