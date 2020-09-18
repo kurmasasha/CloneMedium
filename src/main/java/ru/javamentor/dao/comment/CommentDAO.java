@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Интерфейс для доступа к комментариям из базы
  *
- * @version 1.0
+ * @version 2.0
  * @author Java Mentor
  */
 
@@ -56,6 +56,14 @@ public interface CommentDAO {
     void removeCommentsByTopicId(long topicId);
 
     boolean isExist(Long commentId);
+
+    /**
+     * Метод получения все дочерних комментариев
+     *
+     * @param parentId - id родительского комментария
+     * @return List<Comment> - список дочерних комментариев
+     */
+    List<Comment> getAllCommentsByParentId(Long parentId);
 
     /**
      * метод для получения 5 лучших комментов

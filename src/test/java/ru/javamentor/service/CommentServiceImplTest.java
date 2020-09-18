@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javamentor.dao.comment.CommentDAO;
 import ru.javamentor.dao.user.UserDAO;
+import ru.javamentor.dto.CommentDTO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Role;
 import ru.javamentor.model.Topic;
@@ -31,8 +32,8 @@ import java.util.Set;
 /**
  * Тесты для класса CommentServiceImpl
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 1.0
  */
 
 @RunWith(SpringRunner.class)
@@ -53,7 +54,10 @@ class CommentServiceImplTest {
      */
     @Test
     void addComment() {
-        Comment comment = commentService.addComment("testText", new User(), new Topic());
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setText("Test text");
+
+        Comment comment = commentService.addComment(commentDTO, new User());
 
         Assert.assertNotNull("Проверка создания объекта комментария", comment);
         Assert.assertNull("Проверка id комментария", comment.getId());
@@ -75,15 +79,20 @@ class CommentServiceImplTest {
      */
     @Test
     void failAddComment() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setText("");
+        commentDTO.setTopicId(1L);
+
         Mockito.doThrow(new TransactionRequiredException())
                 .when(commentDAO)
                 .addComment(ArgumentMatchers.any(Comment.class));
         Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            comments[0] = commentService.addComment("", new User(), new Topic());
+            comments[0] = commentService.addComment(commentDTO, new User());
         });
         Assert.assertNull("Проверка наличия возвращаемого объекта комментария", comments[0]);
-        Mockito.verify(commentDAO, Mockito.times(1)).addComment(ArgumentMatchers.any(Comment.class));
+        Mockito.verify(commentDAO, Mockito.times(1))
+                .addComment(ArgumentMatchers.any(Comment.class));
     }
 
     /**
@@ -350,7 +359,7 @@ class CommentServiceImplTest {
                 .getCommentById(1L);
         Comment[] comments = new Comment[1];
         Assertions.assertThrows(RuntimeException.class, () -> {
-            comments[0]= commentService.putDislikeToComment(1L, new User());
+            comments[0] = commentService.putDislikeToComment(1L, new User());
         });
         Assert.assertNull("Проверка возвращаемого объекта", comments[0]);
         Mockito.verify(commentDAO, Mockito.times(1)).getCommentById(1L);

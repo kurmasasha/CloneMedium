@@ -1,4 +1,4 @@
-document.getElementById('add_comment_button').onclick = function (e) {
+document.getElementById('add_comment_button').onclick = async function (e) {
 
     //Открывает модальное окно для неавторизованных пользователей
     $('#authorizationModal').modal('show');
@@ -8,21 +8,23 @@ document.getElementById('add_comment_button').onclick = function (e) {
     let path = location.pathname.split('/');
     let topicId = path[path.length - 1];
 
-    if(($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
+    if (($("#authorizationModal").data('bs.modal') || {})._isShown || comment !== '') {
         e.preventDefault();
     }
 
-    if(!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
+    if (!(($("#authorizationModal").data('bs.modal') || {})._isShown) && comment !== '') {
         let data = {
-            comment: comment,
-            topicId: topicId
+            text: comment,
+            topicId: topicId,
+            isMainComment: true,
+            mainCommentId: null
         }
 
         document.getElementById('textareaResize').value = '';
         document.getElementById('textareaResize').style.height = "auto";
         $('#counter').html(2000);
 
-        return fetch('/api/user/comment/add', {
+        await fetch('/api/user/comment/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -30,10 +32,8 @@ document.getElementById('add_comment_button').onclick = function (e) {
             body: JSON.stringify(data)
 
         })
-            .then(result => result.json())
-            .then(comment => {
-                let commentCard = commentInCard(comment);
-                $('#comments_container').prepend(commentCard);
-            });
+
+        await fillCommentContainer()
     }
 }
+

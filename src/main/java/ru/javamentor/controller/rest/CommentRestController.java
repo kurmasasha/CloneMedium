@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import ru.javamentor.dto.CommentDTO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Notification;
 import ru.javamentor.model.Topic;
@@ -23,8 +24,8 @@ import java.util.List;
 /**
  * Rest контроллер для комментариев
  *
- * @version 1.0
  * @author Java Mentor
+ * @version 2.0
  */
 
 @RestController
@@ -38,10 +39,10 @@ public class CommentRestController {
     private final NotificationService notificationService;
 
     @Autowired
-    public CommentRestController(UserService userService, 
-                                 CommentService commentService, 
+    public CommentRestController(UserService userService,
+                                 CommentService commentService,
                                  TopicService topicService,
-                                 WsNotificationService wsNotificationService, 
+                                 WsNotificationService wsNotificationService,
                                  NotificationService notificationService) {
         this.userService = userService;
         this.commentService = commentService;
@@ -51,7 +52,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод получение списка комментариев топика.
+     * Метод получение списка комментариев топика.
      */
     @GetMapping("/free-user/allCommentsOfTopic/{id}")
     public ResponseEntity<List<Comment>> getAllUsersByTopicId(@PathVariable(value = "id") Long topicId) {
@@ -59,7 +60,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод получение комментария по id.
+     * Метод получение комментария по id.
      */
     @GetMapping("/user/comment/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
@@ -67,45 +68,28 @@ public class CommentRestController {
         if (comment == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(comment,HttpStatus.OK);
+            return new ResponseEntity<>(comment, HttpStatus.OK);
         }
     }
 
     /**
-     *  Метод добавление комментария.
+     * Метод добавление комментария.
      */
     @PostMapping("/user/comment/add")
-    public ResponseEntity<Comment> addTopic(@RequestBody String data, @AuthenticationPrincipal User user) {
-        JSONObject jsonObj = new JSONObject(data);
-        Long topicId = Long.parseLong(jsonObj.getString("topicId"));
-        String comment = jsonObj.getString("comment");
-        Topic topic = topicService.getTopicById(topicId);
+    public ResponseEntity<Comment> addTopic(@RequestBody CommentDTO commentDTO,
+                                            @AuthenticationPrincipal User user) {
         if (user == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Comment newComment = commentService.addComment(comment, userService.getUserByEmail(auth.getName()), topic);
-            for (User u : topic.getAuthors()) {
-                Notification notification = new Notification();
-                notification.setTitle("Новый комментарий");
-                notification.setText("Пользователь " + userService.getUserByEmail(auth.getName()) + " оставил новый комментарий в статье " + topic.getTitle() + " ");
-                notification.setUser(u);
-                notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
-            }
+            Comment newComment = commentService.addComment(commentDTO, userService.getUserByEmail(auth.getName()));
+
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            Comment newComment = commentService.addComment(comment, user, topic);
-            for (User u : topic.getAuthors()) {
-                Notification notification = new Notification();
-                notification.setTitle("Новый комментарий");
-                notification.setText("Пользователь " + user.getUsername() + " оставил новый комментарий в статье " + topic.getTitle() + " ");
-                notification.setUser(u);
-                notificationService.addNotification(notification);
-                wsNotificationService.sendNotification(u, notificationService.getNotificationDto(notificationService.getById(notification.getId())));
-            }
+            Comment newComment = commentService.addComment(commentDTO, user);
+
             if (newComment != null) {
                 return new ResponseEntity<>(newComment, HttpStatus.OK);
             } else {
@@ -115,7 +99,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод изменения комментария.
+     * Метод изменения комментария.
      */
     @PutMapping("/user/comment/update")
     public ResponseEntity<String> updateComment(@RequestBody Comment comment, @AuthenticationPrincipal User user) {
@@ -127,7 +111,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод удаления комментария юзером по id.
+     * Метод удаления комментария юзером по id.
      */
     @DeleteMapping("/user/comment/delete/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long id) {
@@ -139,7 +123,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод удаления комментария админом по id.
+     * Метод удаления комментария админом по id.
      */
     @DeleteMapping("/admin/comment/delete/{id}")
     public ResponseEntity<String> deleteCommentByAdmin(@PathVariable Long id) {
@@ -151,7 +135,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод добавление лайка на комментарий.
+     * Метод добавление лайка на комментарий.
      */
     @GetMapping("/comment/addLike/{commentId}")
     public ResponseEntity<Comment> putLikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {
@@ -180,7 +164,7 @@ public class CommentRestController {
     }
 
     /**
-     *  Метод добавление дизлайка на комментарий.
+     * Метод добавление дизлайка на комментарий.
      */
     @GetMapping("/comment/addDislike/{commentId}")
     public ResponseEntity<Comment> putDislikeToComment(@PathVariable Long commentId, @AuthenticationPrincipal User user) {

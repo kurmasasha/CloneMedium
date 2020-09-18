@@ -1,5 +1,6 @@
 package ru.javamentor.service.comment;
 
+import ru.javamentor.dto.CommentDTO;
 import ru.javamentor.model.Comment;
 import ru.javamentor.model.Topic;
 import ru.javamentor.model.User;
@@ -9,20 +10,19 @@ import java.util.List;
 /**
  * Интерфейс для работы с комментариями
  *
- * @version 1.0
+ * @version 2.0
  * @autor Java Mentor
  */
 public interface CommentService {
 
     /**
-     * метод для добавления комментария
+     * Метод добавления нового комментария
      *
-     * @param text - добавляемый текст комментария
-     * @param author - добавляемый автор комментария
-     * @param topic - добавляемая статья, которую прокомментировали
-     * @return Comment - возвращает добавленный комментарий
+     * @param commentDTO - DTO комментария
+     * @param author     - автор комментария
+     * @return - Собранный из DTO комментарий
      */
-    Comment addComment(String text, User author, Topic topic);
+    Comment addComment(CommentDTO commentDTO, User author);
 
     /**
      * метод для получения комментария по id
@@ -36,7 +36,7 @@ public interface CommentService {
      * метод для обновления комментария
      *
      * @param comment - обновленный комментарий
-     * @param user - пользователь обновляющий комментарий
+     * @param user    - пользователь обновляющий комментарий
      * @return boolean - удалость обновить комментарий или нет
      */
     boolean updateComment(Comment comment, User user);
@@ -48,6 +48,14 @@ public interface CommentService {
      * @return boolean - удалость удалить комментарий или нет
      */
     boolean removeCommentById(Long id);
+
+    /**
+     * Метод получения все дочерних комментариев
+     *
+     * @param parentId - id родительского комментария
+     * @return List<Comment> - список дочерних комментариев
+     */
+    List<Comment> getAllCommentsByParentId(Long parentId);
 
     /**
      * метод для получения автора конкретного комментария
@@ -68,11 +76,9 @@ public interface CommentService {
     /**
      * метод для добавления или удаления лайка к комменту.
      *
-     *
      * @param commentId -  уникальный id комментария
-     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @param user      - пользователь, добавляющий или удаляющий лайк
      * @return comment - возвращает изменённый комметарий
-     *
      */
 
     Comment putLikeToComment(Long commentId, User user);
@@ -80,18 +86,17 @@ public interface CommentService {
     /**
      * метод для добавления или удаления дизлайка к комменту.
      *
-     *
      * @param commentId -  уникальный id комментария
-     * @param user - пользователь, добавляющий или удаляющий лайк
+     * @param user      - пользователь, добавляющий или удаляющий лайк
      * @return comment - возвращает изменённый комметарий
-     *
      */
 
     Comment putDislikeToComment(Long commentId, User user);
 
     /**
      * Метод для првоерки на установление соответствия автора комментарию.
-     * @param userId -  id юзера
+     *
+     * @param userId    -  id юзера
      * @param commentId - id комментария
      */
     boolean isAuthorOfComment(Long userId, Long commentId);

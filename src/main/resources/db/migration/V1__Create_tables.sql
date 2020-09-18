@@ -7,6 +7,8 @@ create table comments (
     topic_id bigint,
     likes int,
     dislikes int,
+    is_main_comment bit,
+    main_comment_id bigint,
     primary key (id));
 
 
