@@ -60,6 +60,7 @@ public class UserController {
         User user = (User) ((Authentication) principal).getPrincipal();
         User userDB = userService.getUserById(user.getId());
         model.addAttribute("user", userDB);
+        model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
         model.addAttribute("allThemes", themeService.getAllThemes());
         model.addAttribute("userThemes", userDB.getThemes());
         return "userPage";
@@ -78,6 +79,7 @@ public class UserController {
         validatorFormEditUser.validate(user, bindingResult);
         User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
+            model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
             model.addAttribute("allThemes", themeService.getAllThemes());
             model.addAttribute("userThemes", userDB.getThemes());
             return "userPage";
@@ -85,6 +87,7 @@ public class UserController {
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
         themeService.changeThemes(themes, userDB);
+
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
