@@ -61,6 +61,7 @@
                     </div>
                     <br>
 
+
                     <!----------------------------------------Блок подписок-------------------------------------------->
                     <p>Мои подписки :</p>
                     <ol style="padding-left:15px">
@@ -71,6 +72,42 @@
                         </li>
                     </ol>
                     <p th:if="${subscribes.size()==0}" style="color:blue">Подписок нет</p>
+
+                    <!--------------------------------Блок выбора предпочитаемой темы---------------------------------->
+                    <p>Предпочитаемые темы</p>
+                    <div class="row">
+                        <ul style="padding-left: 15px;">
+                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index<allThemes.size()/2.0}"
+                                style="list-style-type:none;">
+                                <input type="checkbox" name="themes"
+                                       th:id="theme+${theme.getId()}"
+                                       th:if="${userThemes.contains(theme)}"
+                                       th:value="${theme.getId()}"
+                                       checked/>
+                                <input type="checkbox" name="themes"
+                                       th:id="theme+${theme.getId()}"
+                                       th:if="!${userThemes.contains(theme)}"
+                                       th:value="${theme.getId()}"/>
+                                <label th:for="theme+${theme.getId()}" th:text="${theme.getName()}"></label>
+                            </li>
+                        </ul>
+                        <ul style="margin-left:100px">
+                            <li th:each="theme,iter : ${allThemes}" th:if="${iter.index>=allThemes.size()/2.0}"
+                                style="list-style-type:none;">
+                                <input type="checkbox" name="themes"
+                                       th:id="theme+${theme.getId()}"
+                                       th:if="${userThemes.contains(theme)}"
+                                       th:value="${theme.getId()}"
+                                       checked/>
+                                <input type="checkbox" name="themes"
+                                       th:id="theme+${theme.getId()}"
+                                       th:if="!${userThemes.contains(theme)}"
+                                       th:value="${theme.getId()}"/>
+                                <label th:for="theme+${theme.getId()}" th:text="${theme.getName()}"></label>
+                            </li>
+                        </ul>
+                    </div>
+
                     <!------------------------------------------------------------------------------------------------->
                 </div>
                 <div class="editForm-footer">

@@ -61,6 +61,8 @@ public class UserController {
         User userDB = userService.getUserById(user.getId());
         model.addAttribute("user", userDB);
         model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
+        model.addAttribute("allThemes", themeService.getAllThemes());
+        model.addAttribute("userThemes", userDB.getThemes());
         return "userPage";
     }
 
@@ -70,6 +72,7 @@ public class UserController {
      */
     @PostMapping("/user")
     public String userUpdate(@ModelAttribute("user") User user,
+                             @RequestParam(name = "themes", required = false) Set<Long> themes,
                              @RequestParam(name = "file", required = false) MultipartFile file,
                              Model model,
                              BindingResult bindingResult) throws IOException {
@@ -77,10 +80,14 @@ public class UserController {
         User userDB = userService.getUserById(user.getId());
         if (bindingResult.hasErrors()) {
             model.addAttribute("subscribes", userService.getAllSubscribesOfUser(user.getUsername()));
+            model.addAttribute("allThemes", themeService.getAllThemes());
+            model.addAttribute("userThemes", userDB.getThemes());
             return "userPage";
         }
         userDB.setFirstName(user.getFirstName());
         userDB.setLastName(user.getLastName());
+        themeService.changeThemes(themes, userDB);
+
         if (!user.getPassword().equals("")) {
             userDB.setPassword(user.getPassword());
         }
