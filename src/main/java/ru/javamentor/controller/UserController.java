@@ -92,6 +92,12 @@ public class UserController {
             userDB.setPassword(user.getPassword());
         }
 
+        if (user.getPhoneNumber().equals("")) {
+            userDB.setPhoneNumber(null);
+        } else {
+            userDB.setPhoneNumber(user.getPhoneNumber());
+        }
+
         String resultFileName = "no-img.png";
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             resultFileName = loaderImages.upload(file, uploadPath);

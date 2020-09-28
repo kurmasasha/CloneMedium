@@ -200,7 +200,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void deleteSubscribesOfUser(String subscriber) {
         entityManager.createNativeQuery(
-                "DELETE FROM Subscribes " +
+                "DELETE FROM subscribes " +
                         "WHERE subscriber_id = " +
                             "(SELECT id FROM users " +
                              "WHERE users.username = :subscriber)")

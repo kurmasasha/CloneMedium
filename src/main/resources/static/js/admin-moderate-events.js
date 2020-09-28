@@ -59,7 +59,34 @@ $(document).ready(function () {
 
     modModal.on('show.bs.modal', function (event) {
         let id = $(event.relatedTarget).data('id');
+        let title;
+        let text;
+        let authorList = "";
+        fetch(`/api/admin/topic/` + id)
+            .then(result => result.json())
+            .then(result => {
+                title = linkify(result.title);
+                text = linkify(result.content);
+                result.authors.forEach(function (author) {
+                    authorList += author.username + " ";
+                    }
+                )
+            });
+
         $("#Msubmit").on('click', function () {
+            let data = {'text':'*New topic!* _by ' + authorList + '_\n*' +
+                    title +
+                    '*\n_' +
+                    text + '_'
+                ,'chat_id':'-1001380896859'
+                ,'parse_mode' : 'Markdown'}
+            fetch('https://api.telegram.org/bot1279649981:AAHHMXa2s8INrfmsh-TG-MmYbFJ1coHZaPA/sendMessage', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json;charset=utf-8'},
+                body: JSON.stringify(data)
+            })
+                .then(response => console.log(JSON.stringify(response)));
+
             fetch('/api/admin/topic/moderate/' + id, {
                 method: 'POST',
             })

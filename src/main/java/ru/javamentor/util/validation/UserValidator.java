@@ -92,4 +92,17 @@ public class UserValidator implements Validator {
         }
     }
 
+    /**
+     * Проверка на валидность по номеру телефона
+     * Ориентировано на российские мобильные + городские с кодом из 3 цифр (например, Москва).
+     */
+    protected void validPhoneNumber(User user, Errors errors, Pattern pattern) {
+        matcher = pattern.matcher(user.getPhoneNumber());
+        if (!user.getPhoneNumber().equals("")) {
+            if (!matcher.matches()) {
+                errors.rejectValue("phoneNumber", "", "только цифры и символы: {'+', '-', '(', ')', ' '}");
+            }
+        }
+    }
+
 }

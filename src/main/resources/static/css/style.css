@@ -38,6 +38,11 @@ body {
   color: #fff;
 }
 
+.telegram a:hover {
+    background: #0099cc ;
+    color: #fff;
+}
+
 .ok a:hover {
   background: rgb(237, 129, 43);
   color: #fff

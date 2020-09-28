@@ -70,6 +70,7 @@ create table users (
     last_name varchar(255) not null,
     password varchar(255) not null,
     username varchar(255) not null,
+    phone_number varchar(30),
     role_id bigint,
     primary key (id));
 
